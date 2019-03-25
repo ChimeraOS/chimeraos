@@ -29,7 +29,7 @@ gamerOS is nowhere near its stated goal and is currently highly experimental. Af
  - download and boot the Arch linux install media
  - make sure networking is working, consult the Arch Linux wiki for help
  - download the install script with the following command:
-	`curl https://raw.githubusercontent.com/alkazar/gamer-os/master/install.sh > install.sh`
+	`wget https://raw.githubusercontent.com/alkazar/gamer-os/master/install.sh`
  - set permissions: `chmod +x install.sh`
  - run `./install.sh <target device>`, specifying the installation device
  - wait about 10 minutes or more depending on your internet connection for everything to install
