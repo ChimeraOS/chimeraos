@@ -29,6 +29,7 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 	exit
 fi
 
+echo 'label: mbr' | sfdisk ${DISK}
 echo 'start=2048, type=83' | sfdisk ${DISK}
 mkfs.ext4 -F ${DISK}1
 mkdir -p ${MOUNT_PATH}
