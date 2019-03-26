@@ -69,6 +69,10 @@ pacman --noconfirm -S \
 	lib32-libpulse \
 	sudo \
 	python \
+	vulkan-icd-loader \
+	lib32-vulkan-icd-loader \
+	vulkan-radeon \
+	lib32-vulkan-radeon \
 	steam
 
 # install nvidia graphics if needed
