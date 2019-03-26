@@ -3,7 +3,7 @@
 This is a fully automated install script that creates an immediately usable TV gaming experience based on Arch Linux. The only interface is Steam big picture mode.
 It can be thought of as an alternative to SteamOS.
 
-The ultimate goal of gamerOS is to be hands down the best and most reliable way to play games with a controller on your TV. You should be able to play any Linux, Windows, or console game for which emulation is possible, out of the box with no configuration required.
+The ultimate goal of gamerOS is to be hands down the best and easiest way to play games with a controller on your TV. You should be able to play any Linux, Windows, or console game for which emulation is possible, out of the box with no configuration required.
 
 gamerOS is nowhere near its stated goal and is currently highly experimental. After installing you will have a basic Arch Linux install that is able to play Steam games in Steam big picture mode.
 
@@ -11,7 +11,7 @@ gamerOS is nowhere near its stated goal and is currently highly experimental. Af
  - easily add additional software, like emulators and keep them up to date
  - fixes some issues with Proton that SteamOS exhibits, including mouse based games being unplayable
  - easy access to the latest graphics drivers
- - out of the box installation of a modified SteamOS compositor which fixes for many Linux native games, including Dead Cells
+ - out of the box installation of a modified SteamOS compositor which fixes some Linux native games, including Dead Cells
 
 ### Some downsides compared to SteamOS:
  - there is some loss of compatibility for games; it is a trade off, same games work on SteamOS, but not on gamerOS, and vice versa
@@ -30,7 +30,7 @@ gamerOS is nowhere near its stated goal and is currently highly experimental. Af
  - make sure networking is working, consult the Arch Linux wiki for help
  - download the install script with the following command:
 	`wget https://raw.githubusercontent.com/alkazar/gamer-os/master/install.sh`
- - set permissions: `chmod +x install.sh`
+ - set executable permissions: `chmod +x install.sh`
  - run `./install.sh <target device>`, specifying the installation device
  - wait about 10 minutes or more depending on your internet connection for everything to install
  - once setup is complete, restart the computer
