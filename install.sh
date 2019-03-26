@@ -84,7 +84,7 @@ mkdir -p /usr/share/fonts/truetype/ttf-dejavu
 ln -s /usr/share/fonts/TTF/DejaVuSans.ttf /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf
 
 # install steam compositor (no updates!)
-curl -L http://github.com/alkazar/steamos-compositor/releases/download/1.1.1/steamos-compositor-plus-1.1.1-1-x86_64.pkg.tar -o steamos-compositor-plus-1.1.1-1-x86_64.pkg.tar
+curl -LO http://github.com/alkazar/steamos-compositor/releases/download/1.1.1/steamos-compositor-plus-1.1.1-1-x86_64.pkg.tar
 pacman --noconfirm -U steamos-compositor-plus-1.1.1-1-x86_64.pkg.tar
 rm steamos-compositor-plus-1.1.1-1-x86_64.pkg.tar
 
