@@ -49,3 +49,7 @@ gamerOS is nowhere near its stated goal and is currently highly experimental. Af
  - a clean boot experience
  - automatic tweaks for native and proton games for out of the box usage in big picture mode
  - preinstalled emulators and automatic addition of emulated games to Steam
+
+## Discord
+
+https://discord.gg/brdNSUQ
