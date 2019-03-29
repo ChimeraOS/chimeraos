@@ -5,7 +5,7 @@ set -e
 export USERNAME=gamer
 export SYSTEM_NAME=gamer-os
 
-export MOUNT_PATH=/tmp/${SYSTEM_NAME}
+export MOUNT_PATH=/mnt
 
 if [ -z $1 ]; then
 	echo "No install disk specified. Please specify a disk from one of the following:"
@@ -29,24 +29,49 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 	exit
 fi
 
-echo 'label: mbr' | sfdisk ${DISK}
-echo 'start=2048, type=83' | sfdisk ${DISK}
-mkfs.ext4 -F ${DISK}1
-mkdir -p ${MOUNT_PATH}
-mount ${DISK}1 ${MOUNT_PATH}
-pacstrap ${MOUNT_PATH} base
+#check if it runs UEFI or BIOS
+if find /sys/firmware/efi -mindepth 1 | read; then
+	parted --script ${DISK} \
+	mklabel gpt \
+	mkpart primary 1MiB 512MiB \
+	mkpart primary 512MiB 100%
+	mkfs.ext4 -F ${DISK}2
+	mkfs.fat -F32 ${DISK}1
+	mkdir -p ${MOUNT_PATH}
+	mount ${DISK}2 ${MOUNT_PATH}
+	mkdir -p ${MOUNT_PATH}/boot/efi
+	mount ${DISK}1 ${MOUNT_PATH}/boot/efi
+else
+	 echo 'label: mbr' | sfdisk ${DISK}
+	 echo 'start=2048, type=83' | sfdisk ${DISK}
+	 mkfs.ext4 -F ${DISK}1
+	 mkdir -p ${MOUNT_PATH}
+	 mount ${DISK}1 ${MOUNT_PATH}
+fi
+
+
+pacstrap ${MOUNT_PATH} base ntfs-3g
 arch-chroot ${MOUNT_PATH} /bin/bash <<EOF
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 
 mkinitcpio -p linux
-pacman --noconfirm -S grub
+
+if find /sys/firmware/efi -mindepth 1 | read; then
+	pacman --noconfirm -S \
+	efibootmgr \
+	grub
+	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Gamer_OS
+	grub-mkconfig -o /boot/grub/grub.cfg
+else
+	pacman --noconfirm -S \
+	grub
+	grub-install --target=i386-pc ${DISK}
+	grub-mkconfig -o /boot/grub/grub.cfg
+fi
 
 # enable bluetooth connection for xbox one s controller
 sed -i 's/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"/' /etc/default/grub
-
-grub-install --target=i386-pc ${DISK}
-grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "
 [multilib]
@@ -56,8 +81,10 @@ Include = /etc/pacman.d/mirrorlist
 pacman --noconfirm -Sy
 pacman --noconfirm -S \
 	lightdm \
+	lightdm-gtk-greeter \
 	accountsservice \
 	xorg-server \
+	xorg-apps \
 	bluez \
 	bluez-utils \
 	lib32-freetype2 \
@@ -71,13 +98,22 @@ pacman --noconfirm -S \
 	python \
 	vulkan-icd-loader \
 	lib32-vulkan-icd-loader \
-	vulkan-radeon \
-	lib32-vulkan-radeon \
-	steam
+	steam \
+	steam-native-runtime
 
-# install nvidia graphics if needed
+# install NVIDIA graphics
 if lspci | grep -E -i '(vga|3d)' | grep -i nvidia > /dev/null; then
 	pacman --noconfirm -S nvidia nvidia-utils lib32-nvidia-utils
+fi
+
+# install AMD graphics
+if lspci | grep -E -i '(vga|3d)' | grep -i AMD > /dev/null; then
+	pacman --noconfirm -S vulkan-radeon lib32-vulkan-radeon xf86-video-amdgpu lib32-mesa libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
+fi
+
+# install Intel graphics
+if lspci | grep -E -i '(vga|3d)' | grep -i Intel > /dev/null; then
+	pacman --no-confirm -S mesa lib32-mesa xf86-video-intel vulkan-intel lib32-vulkan-intel
 fi
 
 systemctl enable NetworkManager
