@@ -50,7 +50,7 @@ else
 fi
 
 
-pacstrap ${MOUNT_PATH} base ntfs-3g
+pacstrap ${MOUNT_PATH} base ntfs-3g amd-ucode intel-ucode
 arch-chroot ${MOUNT_PATH} /bin/bash <<EOF
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
