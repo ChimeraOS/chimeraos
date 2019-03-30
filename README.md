@@ -41,10 +41,8 @@ gamerOS is nowhere near its stated goal and is currently highly experimental. Af
 
 ## Known issues/limitations
  - you will need to setup the timezone manually; changing the setting in Steam has no effect; consult the Arch wiki for instructions
- - UEFI is not supported; only legacy/bios boot will work at the moment
 
 ## Planned improvements
- - UEFI support
  - fully automated and safe updates
  - a clean boot experience
  - automatic tweaks for native and proton games for out of the box usage in big picture mode
