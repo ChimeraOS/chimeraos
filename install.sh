@@ -95,18 +95,25 @@ pacman --noconfirm -S \
 	python \
 	vulkan-icd-loader \
 	lib32-vulkan-icd-loader \
-	vulkan-radeon \
-	lib32-vulkan-radeon \
 	steam
 
-# install nvidia graphics if needed
+# install NVIDIA graphics driver
 if lspci | grep -E -i '(vga|3d)' | grep -i nvidia > /dev/null; then
 	pacman --noconfirm -S nvidia nvidia-utils lib32-nvidia-utils
 fi
 
-systemctl enable NetworkManager
-systemctl enable lightdm
-systemctl enable bluetooth
+# install AMD graphics driver with support for video acceleration
+if lspci | grep -E -i '(vga|3d)' | grep -i AMD > /dev/null; then
+	pacman --noconfirm -S mesa vulkan-radeon lib32-vulkan-radeon xf86-video-amdgpu lib32-mesa libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
+fi
+
+# install Intel graphics driver with support for video acceleration
+if lspci | grep -E -i '(vga|3d)' | grep -i Intel Corporation > /dev/null; then
+	pacman --no-confirm -S mesa lib32-mesa xf86-video-intel vulkan-intel lib32-vulkan-intel libva-intel-driver lib32-libva-intel-driver intel-media-driver
+fi
+
+
+systemctl enable NetworkManager lightdm bluetooth
 
 # font workaround for initial big picture mode startup
 mkdir -p /usr/share/fonts/truetype/ttf-dejavu
