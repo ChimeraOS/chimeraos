@@ -115,9 +115,7 @@ if lspci | grep -E -i '(vga|3d)' | grep -i Intel > /dev/null; then
 	pacman --no-confirm -S mesa lib32-mesa xf86-video-intel vulkan-intel lib32-vulkan-intel
 fi
 
-systemctl enable NetworkManager
-systemctl enable lightdm
-systemctl enable bluetooth
+systemctl enable NetworkManager lightdm bluetooth
 
 # font workaround for initial big picture mode startup
 mkdir -p /usr/share/fonts/truetype/ttf-dejavu
