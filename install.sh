@@ -29,24 +29,48 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 	exit
 fi
 
-echo 'label: mbr' | sfdisk ${DISK}
-echo 'start=2048, type=83' | sfdisk ${DISK}
-mkfs.ext4 -F ${DISK}1
-mkdir -p ${MOUNT_PATH}
-mount ${DISK}1 ${MOUNT_PATH}
-pacstrap ${MOUNT_PATH} base
+if find /sys/firmware/efi -mindepth 1 | read; then
+	parted --script ${DISK} \
+	mklabel gpt \
+	mkpart primary 1MiB 512MiB \
+	mkpart primary 512MiB 100%
+	mkfs.ext4 -F ${DISK}2
+	mkfs.fat -F32 ${DISK}1
+	mkdir -p ${MOUNT_PATH}
+	mount ${DISK}2 ${MOUNT_PATH}
+	mkdir -p ${MOUNT_PATH}/boot/efi
+	mount ${DISK}1 ${MOUNT_PATH}/boot/efi
+else
+	 echo 'label: mbr' | sfdisk ${DISK}
+	 echo 'start=2048, type=83' | sfdisk ${DISK}
+	 mkfs.ext4 -F ${DISK}1
+	 mkdir -p ${MOUNT_PATH}
+	 mount ${DISK}1 ${MOUNT_PATH}
+fi
+
+pacstrap ${MOUNT_PATH} base ntfs-3g
 arch-chroot ${MOUNT_PATH} /bin/bash <<EOF
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 
 mkinitcpio -p linux
-pacman --noconfirm -S grub
+
+if find /sys/firmware/efi -mindepth 1 | read; then
+	pacman --noconfirm -S \
+	efibootmgr \
+	grub
+	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Gamer_OS
+	grub-mkconfig -o /boot/grub/grub.cfg
+else
+	pacman --noconfirm -S \
+	grub
+	grub-install --target=i386-pc ${DISK}
+	grub-mkconfig -o /boot/grub/grub.cfg
+fi
 
 # enable bluetooth connection for xbox one s controller
 sed -i 's/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"/' /etc/default/grub
 
-grub-install --target=i386-pc ${DISK}
-grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "
 [multilib]
@@ -112,5 +136,10 @@ echo "${SYSTEM_NAME}" > /etc/hostname
 
 # steam controller fix
 echo "blacklist hid_steam" > /etc/modprobe.d/blacklist.conf
+
+#Rebuild RAMdisk and bootloader with fixes
+
+mkinitcpio -p linux
+grub-mkconfig -o /boot/grub/grub.cfg
 
 EOF
