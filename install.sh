@@ -48,7 +48,7 @@ else
 	 mount ${DISK}1 ${MOUNT_PATH}
 fi
 
-pacstrap ${MOUNT_PATH} base ntfs-3g
+pacstrap ${MOUNT_PATH} base ntfs-3g ntp linux-headers-$(uname -r)
 arch-chroot ${MOUNT_PATH} /bin/bash <<EOF
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
@@ -113,7 +113,14 @@ if lspci | grep -E -i '(vga|3d)' | grep -i Intel Corporation > /dev/null; then
 fi
 
 
-systemctl enable NetworkManager lightdm bluetooth
+systemctl enable NetworkManager lightdm bluetooth ntpd
+
+TIMEZONE="$(curl -s https://ipapi.co/timezone)"
+echo "Your timezone is: ${TIMEZONE}"
+timedatectl set-timezone ${TIMEZONE}
+timedatectl set-ntp 1
+echo "Your OS is configured to timezone: ${TIMEZONE}"
+
 
 # font workaround for initial big picture mode startup
 mkdir -p /usr/share/fonts/truetype/ttf-dejavu
