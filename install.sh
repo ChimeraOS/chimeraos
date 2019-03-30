@@ -29,24 +29,32 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 	exit
 fi
 
-echo 'label: mbr' | sfdisk ${DISK}
-echo 'start=2048, type=83' | sfdisk ${DISK}
-mkfs.ext4 -F ${DISK}1
 mkdir -p ${MOUNT_PATH}
-mount ${DISK}1 ${MOUNT_PATH}
+if [ -d /sys/firmware/efi ]; then
+	parted --script ${DISK} \
+		mklabel gpt \
+		mkpart primary 1mb 512mb \
+		mkpart primary 512mb 100%
+
+	mkfs.ext4 -F ${DISK}2
+	mount ${DISK}2 ${MOUNT_PATH}
+
+	mkfs.fat -F32 ${DISK}1
+	mkdir -p ${MOUNT_PATH}/boot/efi
+	mount ${DISK}1 ${MOUNT_PATH}/boot/efi
+else
+	parted --script ${DISK} \
+		mklabel msdos \
+		mkpart primary 1mb 100%
+
+	mkfs.ext4 -F ${DISK}1
+	mount ${DISK}1 ${MOUNT_PATH}
+fi
+
 pacstrap ${MOUNT_PATH} base
 arch-chroot ${MOUNT_PATH} /bin/bash <<EOF
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
-
-mkinitcpio -p linux
-pacman --noconfirm -S grub
-
-# enable bluetooth connection for xbox one s controller
-sed -i 's/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"/' /etc/default/grub
-
-grub-install --target=i386-pc ${DISK}
-grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "
 [multilib]
@@ -73,6 +81,8 @@ pacman --noconfirm -S \
 	lib32-vulkan-icd-loader \
 	vulkan-radeon \
 	lib32-vulkan-radeon \
+	efibootmgr \
+	grub \
 	steam
 
 # install nvidia graphics if needed
@@ -80,9 +90,7 @@ if lspci | grep -E -i '(vga|3d)' | grep -i nvidia > /dev/null; then
 	pacman --noconfirm -S nvidia nvidia-utils lib32-nvidia-utils
 fi
 
-systemctl enable NetworkManager
-systemctl enable lightdm
-systemctl enable bluetooth
+systemctl enable NetworkManager lightdm bluetooth
 
 # font workaround for initial big picture mode startup
 mkdir -p /usr/share/fonts/truetype/ttf-dejavu
@@ -112,5 +120,19 @@ echo "${SYSTEM_NAME}" > /etc/hostname
 
 # steam controller fix
 echo "blacklist hid_steam" > /etc/modprobe.d/blacklist.conf
+
+# enable bluetooth connection for xbox one s controller
+sed -i 's/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"/' /etc/default/grub
+
+# install bootloader
+mkinitcpio -p linux
+
+if [ -d /sys/firmware/efi ]; then
+	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=${SYSTEM_NAME}
+else
+	grub-install --target=i386-pc ${DISK}
+fi
+
+grub-mkconfig -o /boot/grub/grub.cfg
 
 EOF
