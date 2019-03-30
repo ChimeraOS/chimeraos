@@ -5,7 +5,7 @@ set -e
 export USERNAME=gamer
 export SYSTEM_NAME=gamer-os
 
-export MOUNT_PATH=/mnt
+export MOUNT_PATH=/tmp/gameros/
 
 if [ -z $1 ]; then
 	echo "No install disk specified. Please specify a disk from one of the following:"
@@ -98,8 +98,7 @@ pacman --noconfirm -S \
 	python \
 	vulkan-icd-loader \
 	lib32-vulkan-icd-loader \
-	steam \
-	steam-native-runtime
+	steam 
 
 # install NVIDIA graphics
 if lspci | grep -E -i '(vga|3d)' | grep -i nvidia > /dev/null; then
@@ -148,5 +147,9 @@ echo "${SYSTEM_NAME}" > /etc/hostname
 
 # steam controller fix
 echo "blacklist hid_steam" > /etc/modprobe.d/blacklist.conf
+
+#Update RAMdisk and bootloader
+mkinitcpio -p linux
+grub-mkconfig -o /boot/grub/grub.cfg
 
 EOF
