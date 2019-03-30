@@ -5,7 +5,7 @@ set -e
 export USERNAME=gamer
 export SYSTEM_NAME=gamer-os
 
-export MOUNT_PATH=/tmp/gameros/
+export MOUNT_PATH=/tmp/${SYSTEM_NAME}
 
 if [ -z $1 ]; then
 	echo "No install disk specified. Please specify a disk from one of the following:"
