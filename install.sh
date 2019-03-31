@@ -51,48 +51,22 @@ else
 	mount ${DISK}1 ${MOUNT_PATH}
 fi
 
+# chroot into target
 pacstrap ${MOUNT_PATH} base
-arch-chroot ${MOUNT_PATH} /bin/bash <<EOF
+arch-chroot ${MOUNT_PATH} /bin/bash
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 
+# adding multilib to pacman mirror list
 echo "
 [multilib]
 Include = /etc/pacman.d/mirrorlist
 " >> /etc/pacman.conf
 
+# system update
 pacman --noconfirm -Sy
 
-if lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: amdgpu' > /dev/null; then
-  echo "You are using AMD Graphics card with amdgpu kernel module, we are going install open source drivers"
-  pacman --noconfirm -S vulkan-radeon mesa vulkan-icd-loader xf86-video-amdgpu libva-mesa-driver mesa-vdpau lib32-libva-mesa-driver lib32-mesa-vdpau lib32-mesa lib32-vulkan-radeon
-
-elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon, amdgpu' > /dev/null; then
-  echo "You are using AMD Graphics card with radeon kernel module which supports amdgpu, we are going to switch kernel module now and insall drivers"
-  echo "blacklist radeon" > /etc/modprobe.d/blacklist.conf
-  echo "options amdgpu si_support=1" > /etc/modprobe.d/amdgpu.conf
-  echo "options amdgpu cik_support=1" >> /etc/modprobe.d/amdgpu.conf
-  echo "options radeon si_support=0" > /etc/modprobe.d/radeon.conf
-  echo "options radeon cik_support0" >> /etc/modprobe.d/radeon.conf
-  pacman --noconfirm -S vulkan-radeon mesa vulkan-icd-loader xf86-video-amdgpu libva-mesa-driver mesa-vdpau lib32-libva-mesa-driver lib32-mesa-vdpau lib32-mesa lib32-vulkan-radeon
-
-elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon' > /dev/null; then
- echo "You are using legacy AMD graphics card, we are going to install open source drivers"
- pacman --noconfirm -S  mesa lib32-mesa xf86-video-ati mesa-vdpau lib32-mesa-vdpau
-
-elif lspci | grep -E -i '(vga|3d)' | grep -i Intel Corporation > /dev/null; then
- echo "You are using Intel graphics card, we are going to install appropriate drivers"
- pacman --no-confirm -S mesa lib32-mesa xf86-video-intel vulkan-intel lib32-vulkan-intel libva-intel-driver lib32-libva-intel-driver intel-media-driver
-
-elif lspci | grep -E -i '(vga|3d)' | grep -i NVIDIA > /dev/null; then
- echo "You are using NVIDIA graphics card, we are going to install closed soruce drivers"
- pacman --noconfirm -S nvidia nvidia-utils lib32-nvidia-utils
-
-else
- echo "3D GPU not detected"
-
-fi
-
+# basic package installation
 pacman --noconfirm -S \
 	lightdm \
 	accountsservice \
@@ -118,6 +92,57 @@ pacman --noconfirm -S \
 
 systemctl enable NetworkManager lightdm bluetooth
 
+# gpu detection/driver installation
+elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon, amdgpu' > /dev/null; then
+	echo "AMD GPU with radeon kernel detected, switching kernel module and installing drivers..."
+	echo "blacklist radeon" > /etc/modprobe.d/blacklist.conf
+	echo "options amdgpu si_support=1" > /etc/modprobe.d/amdgpu.conf
+	echo "options amdgpu cik_support=1" >> /etc/modprobe.d/amdgpu.conf
+	echo "options radeon si_support=0" > /etc/modprobe.d/radeon.conf
+	echo "options radeon cik_support0" >> /etc/modprobe.d/radeon.conf
+	pacman --noconfirm -S \
+		vulkan-radeon mesa \
+		vulkan-icd-loader \
+		xf86-video-amdgpu \
+		libva-mesa-driver \
+		mesa-vdpau \
+		lib32-libva-mesa-driver \
+		lib32-mesa-vdpau \
+		lib32-mesa \
+		lib32-vulkan-radeon
+
+elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon' > /dev/null; then
+	echo "Legacy AMD GPU detected, installing drivers..."
+	pacman --noconfirm -S \
+		mesa \
+		lib32-mesa \
+		xf86-video-ati \
+		mesa-vdpau \
+		lib32-mesa-vdpau
+
+elif lspci | grep -E -i '(vga|3d)' | grep -i 'Intel Corporation' > /dev/null; then
+	echo "Intel GPU detected, installing drivers..."
+ 	pacman --noconfirm -S \
+		mesa \
+		lib32-mesa \
+		xf86-video-intel \
+		vulkan-intel \
+		lib32-vulkan-intel \
+		libva-intel-driver \
+		lib32-libva-intel-driver \
+		intel-media-driver
+
+elif lspci | grep -E -i '(vga|3d)' | grep -i 'NVIDIA' > /dev/null; then
+ 	echo "NVIDIA GPU detected, installing drivers..."
+	pacman --noconfirm -S \
+		nvidia \
+		nvidia-utils \
+		lib32-nvidia-utils
+
+else
+	echo "No GPU has been detected."
+fi
+
 # font workaround for initial big picture mode startup
 mkdir -p /usr/share/fonts/truetype/ttf-dejavu
 ln -s /usr/share/fonts/TTF/DejaVuSans.ttf /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf
@@ -127,7 +152,8 @@ curl -LO http://github.com/alkazar/steamos-compositor/releases/download/1.1.1/st
 pacman --noconfirm -U steamos-compositor-plus-1.1.1-1-x86_64.pkg.tar
 rm steamos-compositor-plus-1.1.1-1-x86_64.pkg.tar
 
-passwd -l root # disable root login
+# disable root login
+passwd -l root
 groupadd -r autologin
 useradd -m ${USERNAME} -G autologin
 echo "${USERNAME}:${USERNAME}" | chpasswd
