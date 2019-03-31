@@ -116,6 +116,12 @@ autologin-user=${USERNAME}
 autologin-session=steamos
 " > /etc/lightdm/lightdm.conf
 
+TIMEZONE="$(curl -s https://ipapi.co/timezone)"
+echo "Your timezone is: ${TIMEZONE}"
+timedatectl set-timezone ${TIMEZONE}
+timedatectl set-ntp 1
+echo "Your OS is configured to timezone: ${TIMEZONE}"
+
 echo "${SYSTEM_NAME}" > /etc/hostname
 
 # steam controller fix
@@ -124,7 +130,7 @@ echo "blacklist hid_steam" > /etc/modprobe.d/blacklist.conf
 # enable bluetooth connection for xbox one s controller
 sed -i 's/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"/' /etc/default/grub
 
-# install bootloader
+# install bootloader and rebuild RAMdisk
 mkinitcpio -p linux
 
 if [ -d /sys/firmware/efi ]; then
