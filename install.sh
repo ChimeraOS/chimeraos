@@ -51,7 +51,7 @@ else
 	mount ${DISK}1 ${MOUNT_PATH}
 fi
 
-pacstrap ${MOUNT_PATH} base
+pacstrap ${MOUNT_PATH} base ntp
 arch-chroot ${MOUNT_PATH} /bin/bash <<EOF
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
