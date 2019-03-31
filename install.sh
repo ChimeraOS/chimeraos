@@ -87,7 +87,7 @@ pacman --noconfirm -S \
 
 # install nvidia graphics if needed
 if lspci | grep -E -i '(vga|3d)' | grep -i nvidia > /dev/null; then
-	pacman --noconfirm -S nvidia nvidia-utils lib32-nvidia-utils
+	pacman --noconfirm -S nvidia nvidia-utils lib32-nvidia-utils opencl-nvidia
 fi
 
 systemctl enable NetworkManager lightdm bluetooth
