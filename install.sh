@@ -118,8 +118,8 @@ autologin-session=steamos
 
 TIMEZONE="$(curl -s https://ipapi.co/timezone)"
 echo "Your timezone is: ${TIMEZONE}"
-timedatectl set-timezone ${TIMEZONE}
-timedatectl set-ntp 1
+ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
+hwclock -systohc
 echo "Your OS is configured to timezone: ${TIMEZONE}"
 
 echo "${SYSTEM_NAME}" > /etc/hostname
