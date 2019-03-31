@@ -64,7 +64,6 @@ Include = /etc/pacman.d/mirrorlist
 pacman --noconfirm -Sy
 pacman --noconfirm -S \
 	lightdm \
-	ntp \
 	accountsservice \
 	xorg-server \
 	bluez \
@@ -93,9 +92,6 @@ fi
 
 systemctl enable NetworkManager lightdm bluetooth
 
-#Enable and start NTP protocol
-systemctl enable ntpd --now
-
 # font workaround for initial big picture mode startup
 mkdir -p /usr/share/fonts/truetype/ttf-dejavu
 ln -s /usr/share/fonts/TTF/DejaVuSans.ttf /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf
@@ -122,8 +118,8 @@ autologin-session=steamos
 
 TIMEZONE="$(curl -s https://ipapi.co/timezone)"
 echo "Your timezone is: ${TIMEZONE}"
-timedatectl set-timezone ${TIMEZONE}
-timedatectl set-ntp 1
+ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
+hwclock -systohc
 echo "Your OS is configured to timezone: ${TIMEZONE}"
 
 echo "${SYSTEM_NAME}" > /etc/hostname
