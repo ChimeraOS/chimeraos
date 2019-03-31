@@ -62,6 +62,37 @@ Include = /etc/pacman.d/mirrorlist
 " >> /etc/pacman.conf
 
 pacman --noconfirm -Sy
+
+if lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: amdgpu' > /dev/null; then
+  echo "You are using AMD Graphics card with amdgpu kernel module, we are going install open source drivers"
+  pacman --noconfirm -S vulkan-radeon mesa vulkan-icd-loader xf86-video-amdgpu libva-mesa-driver mesa-vdpau lib32-libva-mesa-driver lib32-mesa-vdpau lib32-mesa lib32-vulkan-radeon
+
+elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon, amdgpu' > /dev/null; then
+  echo "You are using AMD Graphics card with radeon kernel module which supports amdgpu, we are going to switch kernel module now and insall drivers"
+  echo "blacklist radeon" > /etc/modprobe.d/blacklist.conf
+  echo "options amdgpu si_support=1" > /etc/modprobe.d/amdgpu.conf
+  echo "options amdgpu cik_support=1" >> /etc/modprobe.d/amdgpu.conf
+  echo "options radeon si_support=0" > /etc/modprobe.d/radeon.conf
+  echo "options radeon cik_support0" >> /etc/modprobe.d/radeon.conf
+  pacman --noconfirm -S vulkan-radeon mesa vulkan-icd-loader xf86-video-amdgpu libva-mesa-driver mesa-vdpau lib32-libva-mesa-driver lib32-mesa-vdpau lib32-mesa lib32-vulkan-radeon
+
+elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon' > /dev/null; then
+ echo "You are using legacy AMD graphics card, we are going to install open source drivers"
+ pacman --noconfirm -S  mesa lib32-mesa xf86-video-ati mesa-vdpau lib32-mesa-vdpau
+
+elif lspci | grep -E -i '(vga|3d)' | grep -i Intel Corporation > /dev/null; then
+ echo "You are using Intel graphics card, we are going to install appropriate drivers"
+ pacman --no-confirm -S mesa lib32-mesa xf86-video-intel vulkan-intel lib32-vulkan-intel libva-intel-driver lib32-libva-intel-driver intel-media-driver
+
+elif lspci | grep -E -i '(vga|3d)' | grep -i NVIDIA > /dev/null; then
+ echo "You are using NVIDIA graphics card, we are going to install closed soruce drivers"
+ pacman --noconfirm -S nvidia nvidia-utils lib32-nvidia-utils
+
+else
+ echo "3D GPU not detected"
+
+fi
+
 pacman --noconfirm -S \
 	lightdm \
 	accountsservice \
@@ -84,11 +115,6 @@ pacman --noconfirm -S \
 	efibootmgr \
 	grub \
 	steam
-
-# install nvidia graphics if needed
-if lspci | grep -E -i '(vga|3d)' | grep -i nvidia > /dev/null; then
-	pacman --noconfirm -S nvidia nvidia-utils lib32-nvidia-utils
-fi
 
 systemctl enable NetworkManager lightdm bluetooth
 
@@ -125,7 +151,7 @@ echo "Your OS is configured to timezone: ${TIMEZONE}"
 echo "${SYSTEM_NAME}" > /etc/hostname
 
 # steam controller fix
-echo "blacklist hid_steam" > /etc/modprobe.d/blacklist.conf
+echo "blacklist hid_steam" >> /etc/modprobe.d/blacklist.conf
 
 # enable bluetooth connection for xbox one s controller
 sed -i 's/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"/' /etc/default/grub
