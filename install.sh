@@ -51,7 +51,7 @@ else
 	mount ${DISK}1 ${MOUNT_PATH}
 fi
 
-pacstrap ${MOUNT_PATH} base ntp
+pacstrap ${MOUNT_PATH} base
 arch-chroot ${MOUNT_PATH} /bin/bash <<EOF
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
@@ -64,6 +64,7 @@ Include = /etc/pacman.d/mirrorlist
 pacman --noconfirm -Sy
 pacman --noconfirm -S \
 	lightdm \
+	ntp \
 	accountsservice \
 	xorg-server \
 	bluez \
@@ -91,6 +92,9 @@ if lspci | grep -E -i '(vga|3d)' | grep -i nvidia > /dev/null; then
 fi
 
 systemctl enable NetworkManager lightdm bluetooth
+
+#Enable and start NTP protocol
+systemctl enable ntpd --now
 
 # font workaround for initial big picture mode startup
 mkdir -p /usr/share/fonts/truetype/ttf-dejavu
