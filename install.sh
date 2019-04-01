@@ -63,7 +63,7 @@ echo "
 Include = /etc/pacman.d/mirrorlist
 " >> /etc/pacman.conf
 
-# system update
+# update package databases
 pacman --noconfirm -Sy
 
 # basic package installation
@@ -168,12 +168,6 @@ autologin-user=${USERNAME}
 autologin-session=steamos
 " > /etc/lightdm/lightdm.conf
 
-TIMEZONE="$(curl -s https://ipapi.co/timezone)"
-echo "Your timezone is: ${TIMEZONE}"
-ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
-hwclock -systohc
-echo "Your OS is configured to timezone: ${TIMEZONE}"
-
 echo "${SYSTEM_NAME}" > /etc/hostname
 
 # steam controller fix
@@ -192,5 +186,3 @@ else
 fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
-
-EOF
