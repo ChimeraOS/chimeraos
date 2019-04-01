@@ -93,7 +93,19 @@ pacman --noconfirm -S \
 systemctl enable NetworkManager lightdm bluetooth
 
 # gpu detection/driver installation
-elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon, amdgpu' > /dev/null; then
+
+devices=$(lspci -v | grep -e 'VGA\|3D\|Display')
+
+# NVIDIA
+if echo "$devices" | grep -i 'NVIDIA Corporation' > /dev/null; then
+ 	echo "NVIDIA GPU detected, installing drivers..."
+	pacman --noconfirm -S \
+		nvidia-dkms \
+		nvidia-utils \
+		lib32-nvidia-utils
+
+# AMD
+elif echo "$devices" | grep -i 'AMD' > /dev/null; then
 	echo "AMD GPU with radeon kernel detected, switching kernel module and installing drivers..."
 	echo "blacklist radeon" > /etc/modprobe.d/blacklist.conf
 	echo "options amdgpu si_support=1" > /etc/modprobe.d/amdgpu.conf
@@ -111,16 +123,8 @@ elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon, amdgpu' > /dev
 		lib32-mesa \
 		lib32-vulkan-radeon
 
-elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon' > /dev/null; then
-	echo "Legacy AMD GPU detected, installing drivers..."
-	pacman --noconfirm -S \
-		mesa \
-		lib32-mesa \
-		xf86-video-ati \
-		mesa-vdpau \
-		lib32-mesa-vdpau
-
-elif lspci | grep -E -i '(vga|3d)' | grep -i 'Intel Corporation' > /dev/null; then
+# Intel
+elif echo "$devices" | grep -i 'Intel Corporation' > /dev/null; then
 	echo "Intel GPU detected, installing drivers..."
  	pacman --noconfirm -S \
 		mesa \
@@ -132,15 +136,6 @@ elif lspci | grep -E -i '(vga|3d)' | grep -i 'Intel Corporation' > /dev/null; th
 		lib32-libva-intel-driver \
 		intel-media-driver
 
-elif lspci | grep -E -i '(vga|3d)' | grep -i 'NVIDIA' > /dev/null; then
- 	echo "NVIDIA GPU detected, installing drivers..."
-	pacman --noconfirm -S \
-		nvidia \
-		nvidia-utils \
-		lib32-nvidia-utils
-
-else
-	echo "No GPU has been detected."
 fi
 
 # font workaround for initial big picture mode startup
@@ -192,5 +187,3 @@ else
 fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
-
-EOF
