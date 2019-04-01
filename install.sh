@@ -125,7 +125,7 @@ elif echo "$devices" | grep -i 'AMD' > /dev/null; then
 			lib32-mesa \
 			lib32-vulkan-radeon
 	else
-		echo "Legacy AMD GPU detected, installing drivers..."
+		echo "Legacy AMD/ATI GPU detected, installing drivers..."
 		pacman --noconfirm -S \
 			mesa \
 			lib32-mesa \
