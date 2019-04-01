@@ -68,6 +68,7 @@ pacman --noconfirm -Sy
 
 # basic package installation
 pacman --noconfirm -S \
+	linux-headers \
 	lightdm \
 	accountsservice \
 	xorg-server \
@@ -106,22 +107,32 @@ if echo "$devices" | grep -i 'NVIDIA Corporation' > /dev/null; then
 
 # AMD
 elif echo "$devices" | grep -i 'AMD' > /dev/null; then
-	echo "AMD GPU with radeon kernel detected, switching kernel module and installing drivers..."
-	echo "blacklist radeon" > /etc/modprobe.d/blacklist.conf
-	echo "options amdgpu si_support=1" > /etc/modprobe.d/amdgpu.conf
-	echo "options amdgpu cik_support=1" >> /etc/modprobe.d/amdgpu.conf
-	echo "options radeon si_support=0" > /etc/modprobe.d/radeon.conf
-	echo "options radeon cik_support0" >> /etc/modprobe.d/radeon.conf
-	pacman --noconfirm -S \
-		vulkan-radeon mesa \
-		vulkan-icd-loader \
-		xf86-video-amdgpu \
-		libva-mesa-driver \
-		mesa-vdpau \
-		lib32-libva-mesa-driver \
-		lib32-mesa-vdpau \
-		lib32-mesa \
-		lib32-vulkan-radeon
+	if lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon, amdgpu'; then
+		echo "AMD GPU with radeon kernel detected, switching kernel module and installing drivers..."
+		echo "blacklist radeon" > /etc/modprobe.d/blacklist.conf
+		echo "options amdgpu si_support=1" > /etc/modprobe.d/amdgpu.conf
+		echo "options amdgpu cik_support=1" >> /etc/modprobe.d/amdgpu.conf
+		echo "options radeon si_support=0" > /etc/modprobe.d/radeon.conf
+		echo "options radeon cik_support0" >> /etc/modprobe.d/radeon.conf
+		pacman --noconfirm -S \
+			vulkan-radeon mesa \
+			vulkan-icd-loader \
+			xf86-video-amdgpu \
+			libva-mesa-driver \
+			mesa-vdpau \
+			lib32-libva-mesa-driver \
+			lib32-mesa-vdpau \
+			lib32-mesa \
+			lib32-vulkan-radeon
+	else
+		echo "Legacy AMD GPU detected, installing drivers..."
+		pacman --noconfirm -S \
+			mesa \
+			lib32-mesa \
+			xf86-video-ati \
+			mesa-vdpau \
+			lib32-mesa-vdpau
+	fi
 
 # Intel
 elif echo "$devices" | grep -i 'Intel Corporation' > /dev/null; then
