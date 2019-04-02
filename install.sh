@@ -53,7 +53,7 @@ fi
 
 # chroot into target
 pacstrap ${MOUNT_PATH} base
-arch-chroot ${MOUNT_PATH} /bin/bash
+arch-chroot ${MOUNT_PATH} /bin/bash << EOF
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 
@@ -68,7 +68,6 @@ pacman --noconfirm -Sy
 
 # basic package installation
 pacman --noconfirm -S \
-	linux-headers \
 	lightdm \
 	accountsservice \
 	xorg-server \
@@ -101,7 +100,7 @@ devices=$(lspci -v | grep -e 'VGA\|3D\|Display')
 if echo "$devices" | grep -i 'NVIDIA Corporation' > /dev/null; then
  	echo "NVIDIA GPU detected, installing drivers..."
 	pacman --noconfirm -S \
-		nvidia-dkms \
+		nvidia \
 		nvidia-utils \
 		lib32-nvidia-utils
 
@@ -198,3 +197,5 @@ else
 fi
 
 grub-mkconfig -o /boot/grub/grub.cfg
+
+EOF
