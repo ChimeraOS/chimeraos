@@ -84,6 +84,7 @@ pacman --noconfirm -S \
 	pulseaudio \
 	pulseaudio-alsa \
 	pulseaudio-bluetooth \
+	alsa-firmware \
 	lib32-libpulse \
 	sudo \
 	python \
