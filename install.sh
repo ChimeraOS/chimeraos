@@ -105,7 +105,7 @@ if lspci | grep -E -i '(vga|3d|display)' | grep -i nvidia > /dev/null; then
 # AMD
 elif lspci | grep -E -i '(vga|3d|display)' | grep -i amd > /dev/null; then
 	if lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon, amdgpu' > /dev/null; then
-		echo "AMD Graphics card with radeon kernel module detected, switching kernel module and installing drivers..."
+		echo "AMD graphics card with radeon kernel module detected, switching kernel module and installing drivers..."
 		echo "blacklist radeon" >> /etc/modprobe.d/gameros.conf
 		echo "options amdgpu si_support=1" >> /etc/modprobe.d/gameros.conf
 		echo "options amdgpu cik_support=1" >> /etc/modprobe.d/gameros.conf
@@ -125,7 +125,7 @@ elif lspci | grep -E -i '(vga|3d|display)' | grep -i amd > /dev/null; then
 			xf86-video-amdgpu
 	
 	elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: amdgpu' > /dev/null; then
-		echo "AMD Graphics card with amdgpu kernel module detected, installing drivers..."
+		echo "AMD graphics card with amdgpu kernel module detected, installing drivers..."
 		pacman --noconfirm -S \
 			mesa \
 			lib32-mesa \
