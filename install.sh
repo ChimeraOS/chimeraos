@@ -82,6 +82,8 @@ pacman --noconfirm -S \
 	ttf-dejavu \
 	networkmanager \
 	pulseaudio \
+	pulseaudio-alsa \
+	pulseaudio-bluetooth \
 	lib32-libpulse \
 	sudo \
 	python \
@@ -193,6 +195,9 @@ echo "blacklist hid_steam" >> /etc/modprobe.d/gameros.conf
 
 # enable bluetooth connection for xbox one s controller
 sed -i 's/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"/' /etc/default/grub
+
+# Fix potential glitches or skips in Pulseaudio
+sed -i 's/^load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/default.pa
 
 # build initial ramdisk and install bootloader
 mkinitcpio -p linux
