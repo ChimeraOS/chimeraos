@@ -112,8 +112,6 @@ elif lspci | grep -E -i '(vga|3d|display)' | grep -i amd > /dev/null; then
 		echo "options radeon si_support=0" >> /etc/modprobe.d/gameros.conf
 		echo "options radeon cik_support=0" >> /etc/modprobe.d/gameros.conf
 		pacman --noconfirm -S \
-			mesa \
-			lib32-mesa \
 			vulkan-icd-loader \
 			lib32-vulkan-icd-loader \
 			libva-mesa-driver \
@@ -127,8 +125,6 @@ elif lspci | grep -E -i '(vga|3d|display)' | grep -i amd > /dev/null; then
 	elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: amdgpu' > /dev/null; then
 		echo "AMD graphics card with amdgpu kernel module detected, installing drivers..."
 		pacman --noconfirm -S \
-			mesa \
-			lib32-mesa \
 			vulkan-icd-loader \
 			lib32-vulkan-icd-loader \
 			libva-mesa-driver \
@@ -142,8 +138,6 @@ elif lspci | grep -E -i '(vga|3d|display)' | grep -i amd > /dev/null; then
 	else
 		echo "Legacy AMD/ATI GPU detected, installing drivers..."
 		pacman --noconfirm -S \
-			mesa \
-			lib32-mesa
 			xf86-video-ati \
 			mesa-vdpau \
 			lib32-mesa-vdpau
