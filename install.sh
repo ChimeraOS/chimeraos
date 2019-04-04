@@ -83,6 +83,7 @@ pacman --noconfirm -S \
 	networkmanager \
 	pulseaudio \
 	lib32-libpulse \
+	pulseaudio-alsa \
 	sudo \
 	python \
 	efibootmgr \
