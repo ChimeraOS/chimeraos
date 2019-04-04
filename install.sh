@@ -100,6 +100,8 @@ if lspci | grep -E -i '(vga|3d|display)' | grep -i nvidia > /dev/null; then
 	echo "NVIDIA GPU detected, installing drivers..."
 	pacman --noconfirm -S \
 		nvidia \
+		opencl-nvidia \
+		lib32-opencl-nvidia \
 		nvidia-utils \
 		lib32-nvidia-utils
 
