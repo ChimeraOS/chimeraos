@@ -103,7 +103,6 @@ pacman --noconfirm -S \
 	pulseaudio-alsa \
 	pulseaudio-bluetooth \
 	alsa-firmware \
-	pulseaudio-alsa \
 	sudo \
 	python \
 	efibootmgr \
