@@ -39,9 +39,6 @@ gamerOS is nowhere near its stated goal and is currently highly experimental. Af
  - you can log in to the terminal with the user name `gamer` and the password `gamer`
  - switch back to big picture mode by pressing `ctrl-alt-f7`
 
-## Known issues/limitations
- - you will need to setup the timezone manually; changing the setting in Steam has no effect; consult the Arch wiki for instructions
-
 ## Planned improvements
  - fully automated and safe updates
  - a clean boot experience

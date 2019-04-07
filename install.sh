@@ -176,7 +176,7 @@ rm steamos-compositor-plus-1.1.1-1-x86_64.pkg.tar
 # disable root login
 passwd -l root
 groupadd -r autologin
-useradd -m ${USERNAME} -G autologin
+useradd -m ${USERNAME} -G autologin,wheel
 echo "${USERNAME}:${USERNAME}" | chpasswd
 echo "${USERNAME}   ALL=(ALL) ALL" >> /etc/sudoers
 
@@ -188,6 +188,18 @@ session-wrapper=/etc/lightdm/Xsession
 autologin-user=${USERNAME}
 autologin-session=steamos
 " > /etc/lightdm/lightdm.conf
+
+echo "
+polkit.addRule(function(action, subject) {
+	if ((action.id == \"org.freedesktop.timedate1.set-time\" ||
+	     action.id == \"org.freedesktop.timedate1.set-timezone\" ||
+	     action.id == \"org.freedesktop.login1.power-off\" ||
+	     action.id == \"org.freedesktop.login1.reboot\") &&
+	     subject.isInGroup(\"wheel\")) {
+		return polkit.Result.YES;
+	}
+});
+" > /etc/polkit-1/rules.d/49-gameros.rules
 
 echo "${SYSTEM_NAME}" > /etc/hostname
 
