@@ -30,7 +30,7 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 mkdir -p ${MOUNT_PATH}
-if [ -d /sys/firmware/efi ]; then
+if [[ -d /sys/firmware/efi && -z $FORCE_BIOS ]]; then
 	parted --script ${DISK} \
 		mklabel gpt \
 		mkpart primary 1mb 512mb \
@@ -200,7 +200,7 @@ sed -i 's/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"/'
 # build initial ramdisk and install bootloader
 mkinitcpio -p linux
 
-if [ -d /sys/firmware/efi ]; then
+if [[ -d /sys/firmware/efi && -z $FORCE_BIOS ]]; then
 	grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=${SYSTEM_NAME}
 else
 	grub-install --target=i386-pc ${DISK}
