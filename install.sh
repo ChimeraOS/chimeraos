@@ -51,6 +51,23 @@ else
 	mount ${DISK}1 ${MOUNT_PATH}
 fi
 
+
+# detect gpu (cannot be done in chroot)
+if lspci | grep -E -i '(vga|3d|display)' | grep -i nvidia > /dev/null; then
+	GPU=nvidia
+elif lspci | grep -E -i '(vga|3d|display)' | grep -i amd > /dev/null; then
+	if lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon, amdgpu' > /dev/null; then
+		GPU=amd_radeon
+	elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: amdgpu' > /dev/null; then
+		GPU=amdgpu
+	else
+		GPU=amd_legacy
+	fi
+elif lspci | grep -E -i '(vga|3d|display)' | grep -i intel > /dev/null; then
+	GPU=intel
+fi
+
+
 # chroot into target
 pacstrap ${MOUNT_PATH} base
 arch-chroot ${MOUNT_PATH} /bin/bash <<EOF
@@ -92,11 +109,8 @@ pacman --noconfirm -S \
 
 systemctl enable NetworkManager lightdm bluetooth
 
-
-# gpu detection/driver installation
-
-# NVIDIA
-if lspci | grep -E -i '(vga|3d|display)' | grep -i nvidia > /dev/null; then
+# gpu driver installation
+if [ "$GPU" = "nvidia" ]; then
 	echo "NVIDIA GPU detected, installing drivers..."
 	pacman --noconfirm -S \
 		nvidia \
@@ -104,50 +118,42 @@ if lspci | grep -E -i '(vga|3d|display)' | grep -i nvidia > /dev/null; then
 		lib32-opencl-nvidia \
 		nvidia-utils \
 		lib32-nvidia-utils
-
-# AMD
-elif lspci | grep -E -i '(vga|3d|display)' | grep -i amd > /dev/null; then
-	if lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: radeon, amdgpu' > /dev/null; then
-		echo "AMD graphics card with radeon kernel module detected, switching kernel module and installing drivers..."
-		echo "blacklist radeon" >> /etc/modprobe.d/gameros.conf
-		echo "options amdgpu si_support=1" >> /etc/modprobe.d/gameros.conf
-		echo "options amdgpu cik_support=1" >> /etc/modprobe.d/gameros.conf
-		echo "options radeon si_support=0" >> /etc/modprobe.d/gameros.conf
-		echo "options radeon cik_support=0" >> /etc/modprobe.d/gameros.conf
-		pacman --noconfirm -S \
-			vulkan-icd-loader \
-			lib32-vulkan-icd-loader \
-			libva-mesa-driver \
-			lib32-libva-mesa-driver \
-			mesa-vdpau \
-			lib32-mesa-vdpau \
-			vulkan-radeon \
-			lib32-vulkan-radeon \
-			xf86-video-amdgpu
-	
-	elif lspci -nnk | grep -i vga -A3 | grep 'Kernel modules: amdgpu' > /dev/null; then
-		echo "AMD graphics card with amdgpu kernel module detected, installing drivers..."
-		pacman --noconfirm -S \
-			vulkan-icd-loader \
-			lib32-vulkan-icd-loader \
-			libva-mesa-driver \
-			lib32-libva-mesa-driver \
-			mesa-vdpau \
-			lib32-mesa-vdpau \
-			vulkan-radeon \
-			lib32-vulkan-radeon \
-			xf86-video-amdgpu		
-
-	else
-		echo "Legacy AMD/ATI GPU detected, installing drivers..."
-		pacman --noconfirm -S \
-			xf86-video-ati \
-			mesa-vdpau \
-			lib32-mesa-vdpau
-	fi
-
-# Intel
-elif lspci | grep -E -i '(vga|3d|display)' | grep -i intel > /dev/null; then
+elif [ "$GPU" = "amd_radeon" ]; then
+	echo "AMD graphics card with radeon kernel module detected, switching kernel module and installing drivers..."
+	echo "blacklist radeon" >> /etc/modprobe.d/gameros.conf
+	echo "options amdgpu si_support=1" >> /etc/modprobe.d/gameros.conf
+	echo "options amdgpu cik_support=1" >> /etc/modprobe.d/gameros.conf
+	echo "options radeon si_support=0" >> /etc/modprobe.d/gameros.conf
+	echo "options radeon cik_support=0" >> /etc/modprobe.d/gameros.conf
+	pacman --noconfirm -S \
+		vulkan-icd-loader \
+		lib32-vulkan-icd-loader \
+		libva-mesa-driver \
+		lib32-libva-mesa-driver \
+		mesa-vdpau \
+		lib32-mesa-vdpau \
+		vulkan-radeon \
+		lib32-vulkan-radeon \
+		xf86-video-amdgpu
+elif [ "$GPU" = "amdgpu" ]; then
+	echo "AMD graphics card with amdgpu kernel module detected, installing drivers..."
+	pacman --noconfirm -S \
+		vulkan-icd-loader \
+		lib32-vulkan-icd-loader \
+		libva-mesa-driver \
+		lib32-libva-mesa-driver \
+		mesa-vdpau \
+		lib32-mesa-vdpau \
+		vulkan-radeon \
+		lib32-vulkan-radeon \
+		xf86-video-amdgpu
+elif [ "$GPU" = "amd_legacy" ]; then
+	echo "Legacy AMD/ATI GPU detected, installing drivers..."
+	pacman --noconfirm -S \
+		xf86-video-ati \
+		mesa-vdpau \
+		lib32-mesa-vdpau
+elif [ "$GPU" = "intel" ]; then
 	echo "Intel GPU detected, installing drivers..."
 	pacman --noconfirm -S \
 		vulkan-intel \
