@@ -1,50 +1,53 @@
-# gamerOS
+# gamerOS: the definitive couch gaming experience
 
-This is a fully automated install script that creates an immediately usable TV gaming experience based on Arch Linux. The only interface is Steam big picture mode.
-It can be thought of as an alternative to SteamOS.
 
-The ultimate goal of gamerOS is to be hands down the best and easiest way to play games with a controller on your TV. You should be able to play any Linux, Windows, or console game for which emulation is possible, out of the box with no configuration required.
+### easy to install
+boot into your new gaming system within minutes
 
-gamerOS is nowhere near its stated goal and is currently highly experimental. After installing you will have a basic Arch Linux install that is able to play Steam games in Steam big picture mode.
+### minimal
+only what you need to play games and nothing more
 
-### SteamOS is great, but gamerOS allows you to:
- - easily add additional software, like emulators and keep them up to date
- - fixes some issues with Proton that SteamOS exhibits, including mouse based games being unplayable
- - easy access to the latest graphics drivers
- - out of the box installation of a modified SteamOS compositor which fixes some Linux native games, including Dead Cells
+### out of the box
+start gaming right away with zero configuration
 
-### Some downsides compared to SteamOS:
- - there is some loss of compatibility for games; it is a trade off, same games work on SteamOS, but not on gamerOS, and vice versa
- - no desktop mode but you can of course install a desktop after the fact, however, switching to desktop mode through the SteamOS menus will not work
- - updating the system must be done manually through the command line as opposed to SteamOS where it is done automatically
+### always up to date
+frequent updates delivering the latest drivers and software for an optimal experience
+
+### seamless updates
+fully automatic updates that run in the background without disrupting gameplay
+
+### controller first
+fully controller compatible interface with no mouse or keyboard required
+
+### use any controller
+support for Xbox 360, Xbox One, DualShock 4, Switch Pro, Steam controllers and more
+
+### play any game
+built-in support for playing NES, SNES, Genesis, N64, PlayStation, Wii, Steam, GOG, itch.io games and more
+
+
+## WARNING
+gamerOS is currently an experimental installer script that, when run, results in a minimal Arch Linux system capable of playing Steam games in big picture mode out of the box. The above listed features represent the project goals and are not yet implemented.
+
 
 ## Requirements
- - a dedicated computer with a single hard disk
- - for easiest installation, a wired network connection is highly recommended
- - a single monitor/TV
- - at least 5GB of disk space for the base system, but you will need a lot more to install games
- - a 3D graphics card: Intel/AMD/NVIDIA; NVIDIA binary driver is installed automatically if an NVIDIA card is detected during installation, otherwise, open source drivers are used
+ - a wired internet connection
+ - **5GB** or larger dedicated hard disk
+ - **4GB** or more RAM
 
-## Installation instructions
- - download and boot the Arch linux install media
- - make sure networking is working, consult the Arch Linux wiki for help
- - download the install script with the following command:
+
+## Installation
+ - [download](https://www.archlinux.org/download) and boot into the Arch Linux installer
+ - make sure you are connected to the internet, consult the [Arch Linux Wiki](https://wiki.archlinux.org/index.php/Network_configuration) for help
+ - download the gamerOS install script with the following command:
 	`wget https://raw.githubusercontent.com/alkazar/gamer-os/master/install.sh`
  - set executable permissions: `chmod +x install.sh`
- - run `./install.sh <target device>`, specifying the installation device
- - wait about 10 minutes or more depending on your internet connection for everything to install
+ - run `./install.sh <target device>`; for a list of installation targets run `lsblk`
  - once setup is complete, restart the computer
  - after restarting you will be presented with the SteamOS setup wizard and then Steam will start in big picture mode
- - to perform maintenance, you can open a terminal by connecting a keyboard and pressing `ctrl-alt-f2`
- - you can log in to the terminal with the user name `gamer` and the password `gamer`
- - switch back to big picture mode by pressing `ctrl-alt-f7`
+ - you can open a terminal by using the keyboard combination `ctrl + alt + f2` and log in with username `gamer` and password `gamer`; switch back to big picture mode by pressing `ctrl + alt + f7`
 
-## Planned improvements
- - fully automated and safe updates
- - a clean boot experience
- - automatic tweaks for native and proton games for out of the box usage in big picture mode
- - preinstalled emulators and automatic addition of emulated games to Steam
 
 ## Discord
 
-https://discord.gg/brdNSUQ
+You can join our community [here](https://discord.gg/brdNSUQ)!
