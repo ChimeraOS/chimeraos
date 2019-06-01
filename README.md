@@ -2,7 +2,7 @@
 
 
 ### easy to install
-boot into your new gaming system within minutes (needs work)
+boot into your new gaming system within minutes (still needs work)
 
 ### minimal
 only what you need to play games and nothing more
@@ -17,7 +17,7 @@ frequent updates delivering the latest drivers and software for an optimal exper
 fully automatic updates that run in the background without disrupting gameplay (in progress)
 
 ### controller first
-fully controller compatible interface with no mouse or keyboard required
+fully controller compatible interface with no mouse or keyboard required (but you can still use a mouse and keyboard if you like)
 
 ### use any controller
 support for Xbox 360, Xbox One, DualShock 4, Switch Pro, Steam controllers and more (game dependent)
