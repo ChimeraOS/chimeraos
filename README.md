@@ -2,7 +2,7 @@
 
 
 ### easy to install
-boot into your new gaming system within minutes
+boot into your new gaming system within minutes (needs work)
 
 ### minimal
 only what you need to play games and nothing more
@@ -14,20 +14,20 @@ start gaming right away with zero configuration
 frequent updates delivering the latest drivers and software for an optimal experience
 
 ### seamless updates
-fully automatic updates that run in the background without disrupting gameplay
+fully automatic updates that run in the background without disrupting gameplay (in progress)
 
 ### controller first
 fully controller compatible interface with no mouse or keyboard required
 
 ### use any controller
-support for Xbox 360, Xbox One, DualShock 4, Switch Pro, Steam controllers and more
+support for Xbox 360, Xbox One, DualShock 4, Switch Pro, Steam controllers and more (game dependent)
 
 ### play any game
-built-in support for playing NES, SNES, Genesis, N64, PlayStation, Wii, Steam, GOG, itch.io games and more
+out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, Steam, GOG, itch.io games and more (currently only Steam games work out of the box)
 
 
-## WARNING
-gamerOS is currently an experimental installer script that, when run, results in a minimal Arch Linux system capable of playing Steam games in big picture mode out of the box. The above listed features represent the project goals and are not yet implemented.
+## Disclaimer
+gamerOS is currently an experimental installer script that, when run, results in a minimal Arch Linux system capable of playing Steam games in big picture mode out of the box.
 
 
 ## Requirements
