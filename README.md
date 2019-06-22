@@ -6,7 +6,7 @@ gamerOS is an experimental installer script that, when run, results in a minimal
 ## Features
 
 ### easy to install
-boot into your new gaming system within minutes (still needs work)
+boot into your new gaming system within minutes (work in progress)
 
 ### minimal
 only what you need to play games and nothing more
@@ -18,7 +18,7 @@ start gaming right away with zero configuration
 frequent updates delivering the latest drivers and software for an optimal experience
 
 ### seamless updates
-fully automatic updates that run in the background without disrupting gameplay (in progress)
+fully automatic updates that run in the background without disrupting gameplay (work in progress)
 
 ### controller first
 fully controller compatible interface with no mouse or keyboard required (but you can still use a mouse and keyboard if you like)
