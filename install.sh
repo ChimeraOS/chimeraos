@@ -1,9 +1,9 @@
 #! /bin/bash
 
-FRZR_VERSION=0.0.1
+FRZR_VERSION=0.0.2
 FRZR_RELEASE=1
 
-FRZR_PKG=frzr-${FRZR_VERSION}-${FRZR_RELEASE}-x86_64.pkg.tar"
+FRZR_PKG=frzr-${FRZR_VERSION}-${FRZR_RELEASE}-x86_64.pkg.tar
 
 
 wget "https://github.com/gamer-os/frzr/releases/download/${FRZR_VERSION}/${FRZR_PKG}"
