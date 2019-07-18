@@ -18,7 +18,7 @@ start gaming right away with zero configuration
 frequent updates delivering the latest drivers and software for an optimal experience
 
 ### seamless updates
-fully automatic updates that run in the background without disrupting gameplay (in progress)
+fully automatic updates that run in the background without disrupting gameplay
 
 ### controller first
 fully controller compatible interface with no mouse or keyboard required (but you can still use a mouse and keyboard if you like)
@@ -40,7 +40,7 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
  - [download](https://www.archlinux.org/download) and boot into the Arch Linux installer
  - make sure you are connected to the internet, consult the [Arch Linux Wiki](https://wiki.archlinux.org/index.php/Network_configuration) for help
  - download the gamerOS install script with the following command:
-	`wget https://raw.githubusercontent.com/gamer-os/gamer-os/master/install.sh`
+	`wget https://raw.githubusercontent.com/gamer-os/gamer-os/frzr/install.sh`
  - set executable permissions: `chmod +x install.sh`
  - run `./install.sh <target device>`; for a list of installation targets run `lsblk`
  - once setup is complete, restart the computer
