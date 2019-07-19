@@ -7,6 +7,7 @@ This is pre-release software and is not stable. Things may change at any time re
  - cannot connect via wifi
  - no support for intel graphics
  - support only for AMD gpus that work with the amdgpu driver
+ - no UEFI support
 
 # gamerOS: the definitive couch gaming experience
 
