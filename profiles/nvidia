@@ -4,7 +4,6 @@ export SIZE="10GB"
 
 export PACKAGES="\
 	htop \
-	btrfs-progs \
 	lightdm \
 	accountsservice \
 	xorg-server \
