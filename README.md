@@ -1,7 +1,7 @@
 # gamerOS: the definitive couch gaming experience
 
 ## What is it?
-gamerOS is an experimental installer script that, when run, results in a minimal Arch Linux system capable of playing Steam games in big picture mode out of the box. gamerOS has aspirations to be its own distribution focused exclusively on gaming and can be thought of as an alternative to SteamOS. 
+gamerOS is an operating system focused exclusively on a couch gaming experience and can be thought of as an alternative to SteamOS.
 
 ## Features
 
@@ -24,10 +24,10 @@ fully automatic updates that run in the background without disrupting gameplay
 fully controller compatible interface with no mouse or keyboard required (but you can still use a mouse and keyboard if you like)
 
 ### use any controller
-support for Xbox 360, Xbox One, DualShock 4, Switch Pro, Steam controllers and more (game dependent)
+support for Xbox 360, Xbox One, DualShock 4, Switch Pro, Steam controllers and more (compatibility depends on game)
 
 ### play any game
-out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, Steam, GOG, itch.io games and more (currently only Steam games work out of the box)
+out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, Steam, GOG, itch.io games and more (currently only Steam games are supported out of the box)
 
 
 ## Requirements
