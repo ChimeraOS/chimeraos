@@ -1,7 +1,7 @@
 ### WARNING
-This is pre-release software and is not stable. Things may change at any time requiring a full re-install. Only install this at this point if you want to help with testing or are curious.
+This is pre-release software and is not stable. Things may change at any time requiring a full re-install. Only install this at this point if you want to help with testing or are curious and have a spare computer to install on.
 
-### KNOWN LIMITATIONS/ISSUES
+### KNOWN LIMITATIONS
  - cannot change user password
  - cannot set timezone
  - cannot connect via wifi
