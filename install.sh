@@ -22,6 +22,7 @@ rm ${FRZR_PKG}
 
 if [ -z "$1" ]; then
 	frzr-bootstrap
+	exit
 fi
 
 frzr-bootstrap $1 gamer
