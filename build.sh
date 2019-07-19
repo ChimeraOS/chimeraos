@@ -24,17 +24,18 @@ if [ ! -z "$3" ]; then
   PROFILE="$3"
 fi
 
-MOUNT_PATH=/tmp/gameros_build
+MOUNT_PATH=/tmp/${CHANNEL}-build
 BUILD_PATH=${MOUNT_PATH}/subvolume
 SNAP_PATH=${MOUNT_PATH}/${CHANNEL}-${VERSION}
+BUILD_IMG=${CHANNEL}-build.img
 
 mkdir -p ${MOUNT_PATH}
 
 source profiles/${PROFILE}
 
-fallocate -l ${SIZE} gameros-build.img
-mkfs.btrfs -f gameros-build.img
-mount -t btrfs -o loop,nodatacow gameros-build.img ${MOUNT_PATH}
+fallocate -l ${SIZE} ${BUILD_IMG}
+mkfs.btrfs -f ${BUILD_IMG}
+mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
 # bootstrap
@@ -150,7 +151,7 @@ cat ${BUILD_PATH}/build_info
 umount ${BUILD_PATH}
 umount ${MOUNT_PATH}
 rm -rf ${MOUNT_PATH}
-rm -rf gameros-build.img
+rm -rf ${BUILD_IMG}
 
 tar cjf ${CHANNEL}-${VERSION}.img.tar.xz ${CHANNEL}-${VERSION}.img
 rm ${CHANNEL}-${VERSION}.img
