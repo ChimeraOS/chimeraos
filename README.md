@@ -6,7 +6,7 @@ gamerOS is an experimental installer script that, when run, results in a minimal
 ## Features
 
 ### easy to install
-boot into your new gaming system within minutes (still needs work)
+boot into your new gaming system within minutes (work in progress)
 
 ### minimal
 only what you need to play games and nothing more
@@ -32,7 +32,7 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
 
 ## Requirements
  - a wired internet connection
- - **5GB** or larger dedicated hard disk
+ - **10GB** or larger dedicated hard disk
  - **4GB** or more RAM
 
 
