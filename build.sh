@@ -137,6 +137,12 @@ rm -rf /home
 mkdir /home
 EOF
 
+# must do this outside of chroot for unknown reason
+echo "
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+" > ${BUILD_PATH}/etc/resolv.conf
+
 echo "${CHANNEL}-${VERSION}" > ${BUILD_PATH}/build_info
 echo "" >> ${BUILD_PATH}/build_info
 cat ${BUILD_PATH}/manifest >> ${BUILD_PATH}/build_info
