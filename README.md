@@ -1,3 +1,13 @@
+### WARNING
+This is pre-release software and is not stable. Things may change at any time requiring a full re-install. Only install this at this point if you want to help with testing or are curious.
+
+### KNOWN LIMITATIONS/ISSUES
+ - cannot change user password
+ - cannot set timezone
+ - cannot connect via wifi
+ - no support for intel graphics
+ - support only for AMD gpus that work with the amdgpu driver
+
 # gamerOS: the definitive couch gaming experience
 
 ## What is it?
