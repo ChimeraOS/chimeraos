@@ -1,18 +1,18 @@
 ### WARNING
-This is pre-release software and is not stable. Things may change at any time requiring a full re-install. Only install this at this point if you want to help with testing or are curious and have a spare computer to install on.
+This is pre-release software and is not stable. Things may change at any time requiring a full re-install. Only install gamerOS at this point if you want to help with testing or are curious and have a spare computer to work with.
 
 ### KNOWN LIMITATIONS
  - cannot change user password
  - cannot set timezone
  - cannot connect via wifi
- - no support for intel graphics
  - support only for AMD gpus that work with the amdgpu driver
  - no UEFI support
+ - updates are in the form of full disk images around 1GB in size; so avoid this if you have metered internet; updates in the form of diffs will be added at some point
 
 # gamerOS: the definitive couch gaming experience
 
 ## What is it?
-gamerOS is an operating system focused exclusively on a couch gaming experience and can be thought of as an alternative to SteamOS.
+gamerOS is an operating system and SteamOS alternative focused exclusively on a couch gaming experience.
 
 ## Features
 
@@ -44,7 +44,7 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
 ## Requirements
  - a wired internet connection
  - **10GB** or larger dedicated hard disk
- - **4GB** or more RAM
+ - **8GB** or more RAM
 
 
 ## Installation
