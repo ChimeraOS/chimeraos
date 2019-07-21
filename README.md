@@ -46,7 +46,8 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
  - download the gamerOS install script with the following command:
 	`wget https://raw.githubusercontent.com/gamer-os/gamer-os/frzr/install.sh`
  - set executable permissions: `chmod +x install.sh`
- - run `./install.sh <target device>`; for a list of installation targets run `lsblk`
+ - run `./install.sh /dev/sdX` where `/dev/sdX` is the device you wish to install to; for a list of installation targets run `lsblk`
+ - NOTE: if you see an error related to `fsck.overlay`, it is safe to ignore
  - run `reboot` to restart the computer after setup is complete
  - after restarting you will be presented with the SteamOS setup wizard and then Steam will start in big picture mode
  - you can open a terminal by using the keyboard combination `ctrl + alt + f2` and log in with username `gamer` and password `gamer`; switch back to big picture mode by pressing `ctrl + alt + f7`
