@@ -8,6 +8,7 @@ iso_application="Gamer OS Installer"
 iso_version="$(date +%Y.%m.%d)"
 install_script="install.sh"
 
+dockerfile="docker/Dockerfile"
 output_dir="output"
 
 # get the directory of this script
@@ -19,8 +20,8 @@ mkdir -p ${work_dir}/${output_dir}
 # copy the install.sh script for inclusion on the iso
 cp -pf ${work_dir}/${install_script} ${work_dir}/gamer-os/airootfs/root/
 
-# change working directory
-cd ${work_dir}/gamer-os
+# build the docker container
+docker build -f ${work_dir}/${dockerfile} -t gamer-os-builder ${work_dir}
 
 # make the container build the iso
-exec ./build.sh -v -N ${iso_name} -L ${iso_label} -P ${iso_publisher} -A ${iso_application} -V ${iso_version} -o ${work_dir}/${output_dir}
+exec docker run --privileged --rm -ti -v ${work_dir}/${output_dir}:/root/gamer-os/out -h gamer-os-builder gamer-os-builder ./build.sh -v -N ${iso_name} -L ${iso_label} -P ${iso_publisher} -A ${iso_application} -V ${iso_version}
