@@ -44,7 +44,7 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
  - [download](https://www.archlinux.org/download) and boot into the Arch Linux installer
  - make sure you are connected to the internet, consult the [Arch Linux Wiki](https://wiki.archlinux.org/index.php/Network_configuration) for help
  - download the gamerOS install script with the following command:
-	`wget http://gamer-os.github.io/gamer-os/install.sh`
+	`wget https://gamer-os.github.io/gamer-os/install.sh`
  - set executable permissions: `chmod +x install.sh`
  - run `./install.sh /dev/sdX` where `/dev/sdX` is the device you wish to install to; for a list of installation targets run `lsblk`
  - NOTE: if you see an error related to `fsck.overlay`, it is safe to ignore
