@@ -1,11 +1,10 @@
-### LIMITATIONS
- - no UEFI support
- - updates use a lot of bandwidth (~1 GB)
-
 # gamerOS: the definitive couch gaming experience
 
 ## What is it?
 gamerOS is an operating system focused exclusively on a couch gaming experience. After installation, boot directly into Steam Big Picture and start playing your favorite games.
+
+## Known Issues
+See the GitHub issues for a list of current limitations and bugs.
 
 ## Features
 
