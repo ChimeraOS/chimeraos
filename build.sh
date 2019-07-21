@@ -121,20 +121,31 @@ options radeon cik_support=0
 " >> /etc/modprobe.d/${SYSTEM_NAME}.conf
 
 echo "
-LABEL=frzr_root /     btrfs subvol=deployments/${CHANNEL}-${VERSION},ro,noatime,nodatacow 0 0
-LABEL=frzr_root /var  btrfs subvol=var,rw,noatime,nodatacow 0 0
-LABEL=frzr_root /home btrfs subvol=home,rw,noatime,nodatacow 0 0
+LABEL=frzr_root /          btrfs subvol=deployments/${CHANNEL}-${VERSION},ro,noatime,nodatacow 0 0
+LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
+LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
+LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
 " > /etc/fstab
 
 # clean up/remove unnecessary files
-rm -rf /etc/pacman.d
-rm /boot/initramfs*
+rm -rf \
+/home \
+/var \
+/boot/initramfs-linux.img \
+/boot/initramfs-linux-fallback.img \
+/boot/syslinux \
+/usr/share/gtk-doc \
+/usr/share/man \
+/usr/share/doc \
+/usr/share/ibus \
+/usr/share/help \
+/usr/share/jack-audio-connection-kit \
+/usr/share/SFML
 
-rm -rf /var
-mkdir /var
-
-rm -rf /home
+# create necessary directories
 mkdir /home
+mkdir /var
+mkdir /frzr_root
 EOF
 
 # must do this outside of chroot for unknown reason

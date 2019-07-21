@@ -1,6 +1,6 @@
 #! /bin/bash
 
-FRZR_VERSION=0.0.2
+FRZR_VERSION=0.1.0
 FRZR_RELEASE=1
 
 FRZR_PKG=frzr-${FRZR_VERSION}-${FRZR_RELEASE}-x86_64.pkg.tar
@@ -17,4 +17,4 @@ if [ -z "$1" ]; then
 fi
 
 frzr-bootstrap $1 gamer
-frzr-deploy https://gamer-os.github.io/repo/gameros_all
+frzr-deploy https://gamer-os.github.io/repo/gameros
