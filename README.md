@@ -4,7 +4,7 @@
 gamerOS is an operating system focused exclusively on a couch gaming experience. After installation, boot directly into Steam Big Picture and start playing your favorite games.
 
 ## Known Issues
-See the GitHub issues for a list of current limitations and bugs.
+See the GitHub [issues](https://github.com/gamer-os/gamer-os/issues) for a list of current limitations and bugs.
 
 ## Features
 
