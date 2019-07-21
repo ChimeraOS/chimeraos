@@ -1,4 +1,4 @@
-#Dockerfile for building VaporOS Desktop
+#Dockerfile for building Gamer-OS
 #Based on Arch
 
 FROM archlinux/base
