@@ -1,0 +1,80 @@
+#! /bin/bash
+
+export SIZE="10GB"
+
+export PACKAGES="\
+	htop \
+	lightdm \
+	accountsservice \
+	xorg-server \
+	bluez \
+	bluez-utils \
+	lib32-freetype2 \
+	lib32-curl \
+	lib32-libgpg-error \
+	ttf-dejavu \
+	networkmanager \
+	pulseaudio \
+	lib32-libpulse \
+	pulseaudio-alsa \
+	sudo \
+	python \
+	steam \
+	retroarch \
+	retroarch-assets-xmb \
+	libretro-beetle-psx \
+	libretro-beetle-psx-hw \
+	libretro-blastem \
+	libretro-bsnes \
+	libretro-citra \
+	libretro-desmume \
+	libretro-gambatte \
+	libretro-genesis-plus-gx \
+	libretro-melonds \
+	libretro-mgba \
+	libretro-mupen64plus \
+	libretro-nestopia \
+	libretro-parallel-n64 \
+	libretro-ppsspp \
+	libretro-redream \
+	libretro-reicast \
+	libretro-scummvm \
+	libretro-snes9x \
+	libretro-yabause \
+	dolphin-emu \
+	flatpak \
+	vulkan-icd-loader \
+	lib32-vulkan-icd-loader \
+	libva-mesa-driver \
+	lib32-libva-mesa-driver \
+	mesa-vdpau \
+	lib32-mesa-vdpau \
+	vulkan-radeon \
+	lib32-vulkan-radeon \
+	xf86-video-amdgpu \
+	vulkan-intel \
+	lib32-vulkan-intel \
+	libva-intel-driver \
+	lib32-libva-intel-driver \
+	xf86-video-intel \
+	intel-media-driver \
+	nvidia \
+	opencl-nvidia \
+	lib32-opencl-nvidia \
+	nvidia-utils \
+	lib32-nvidia-utils \
+"
+
+export AUR_PACKAGES="\
+	frzr \
+	steamos-compositor-plus \
+	cemu \
+"
+
+export SERVICES="\
+	frzr-autoupdate \
+	frzr-etc \
+	NetworkManager \
+	lightdm \
+	bluetooth \
+"
