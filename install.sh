@@ -17,4 +17,4 @@ if [ -z "$1" ]; then
 fi
 
 frzr-bootstrap $1 gamer
-frzr-deploy https://gamer-os.github.io/repo/gameros
+frzr-deploy https://gamer-os.github.io/gamer-os/repos/default
