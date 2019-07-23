@@ -60,3 +60,8 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
 ## Discord
 
 You can join our community [here](https://discord.gg/brdNSUQ)!
+
+
+## Steam
+ - [group](https://steamcommunity.com/groups/gamer-os)
+ - [curator](https://store.steampowered.com/curator/35483972-gamer-os)
