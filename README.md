@@ -24,7 +24,7 @@ start gaming right away with zero configuration
 ### always up to date
 frequent updates delivering the latest drivers and software for an optimal experience
 
-### seamless updates
+### zero downtime updates
 fully automatic updates that run in the background without disrupting gameplay ([details](https://github.com/gamer-os/frzr))
 
 ### controller first
@@ -59,7 +59,7 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
 
 ## Discord
 
-You can join our community [here](https://discord.gg/brdNSUQ)!
+You can join our community [here](https://discord.gg/fyKBrv)!
 
 
 ## Steam
