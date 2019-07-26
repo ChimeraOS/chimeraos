@@ -63,6 +63,7 @@ export PACKAGES="\
 	lib32-opencl-nvidia \
 	nvidia-utils \
 	lib32-nvidia-utils \
+	xf86-video-ati \
 "
 
 export AUR_PACKAGES="\
