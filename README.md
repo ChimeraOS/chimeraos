@@ -42,6 +42,7 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
  - **4GB** or more RAM
  - a single **10GB** or larger dedicated storage device
  - a single connected TV or monitor with a resolution of 720p, 1080p, or 2160p
+ - connected keyboard required for installation only
 
 
 ## Installation
