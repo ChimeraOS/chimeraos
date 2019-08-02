@@ -125,6 +125,10 @@ LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
 " > /etc/fstab
 
+# preserve installed package database
+mkdir -p /usr/var/lib/pacman
+cp -r /var/lib/pacman/local /usr/var/lib/pacman/
+
 # clean up/remove unnecessary files
 rm -rf \
 /home \
