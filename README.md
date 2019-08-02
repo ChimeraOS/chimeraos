@@ -51,7 +51,6 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
  - make sure you have a wired internet connection
  - boot from the usb stick
  - follow the installer directions
- - complete the Steam setup wizard when gamerOS first boots
 
 
 ## Discord
