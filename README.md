@@ -13,7 +13,7 @@ See the GitHub [issues](https://github.com/gamer-os/gamer-os/issues) for a list 
 ## Features
 
 ### easy to install
-boot into your new gaming system within minutes (work in progress)
+boot into your new gaming system within minutes
 
 ### minimal
 only what you need to play games and nothing more
