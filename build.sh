@@ -111,10 +111,9 @@ echo "${SYSTEM_NAME}" > /etc/hostname
 # steam controller fix, xbox one s bluetooth fix, amdgpu setup
 echo "
 blacklist hid_steam
+blacklist radeon
 options amdgpu si_support=1
 options amdgpu cik_support=1
-options radeon si_support=1
-options radeon cik_support=1
 options bluetooth disable_ertm=1
 " > /etc/modprobe.d/${SYSTEM_NAME}.conf
 
