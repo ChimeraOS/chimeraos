@@ -46,16 +46,12 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
 
 
 ## Installation
- - [download](https://www.archlinux.org/download) and boot into the Arch Linux installer
- - make sure you are connected to the internet, consult the [Arch Linux Wiki](https://wiki.archlinux.org/index.php/Network_configuration) for help
- - download the gamerOS install script with the following command:
-	`wget https://gamer-os.github.io/gamer-os/install.sh`
- - set executable permissions: `chmod +x install.sh`
- - run `./install.sh /dev/sdX` where `/dev/sdX` is the device you wish to install to; for a list of installation targets run `lsblk`
- - NOTE: if you see an error related to `fsck.overlay`, it is safe to ignore
- - run `reboot` to restart the computer after setup is complete
- - after restarting you will be presented with the SteamOS setup wizard and then Steam will start in big picture mode
- - you can open a terminal by using the keyboard combination `ctrl + alt + f2` and log in with username `gamer` and password `gamer`; switch back to big picture mode by pressing `ctrl + alt + f7`
+ - download the installation iso from [here](https://github.com/gamer-os/install-media/releases/download/2019-08-01/gameros-2019.08.01-x86\_64.iso)
+ - use [etcher](https://www.balena.io/etcher) to flash the iso file to a usb stick
+ - make sure you have a wired internet connection
+ - boot from the usb stick
+ - follow the installer directions
+ - complete the Steam setup wizard when gamerOS first boots
 
 
 ## Discord
