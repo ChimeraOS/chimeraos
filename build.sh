@@ -50,11 +50,9 @@ mv /var/cache/pikaur/pkg/* ${BUILD_PATH}/aur/
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
 arch-chroot ${BUILD_PATH} /bin/bash <<EOF
-echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
-
-# initialize kernel module configuration file
-echo > /etc/modprobe.d/${SYSTEM_NAME}.conf
 
 # adding multilib to pacman mirror list
 echo "
@@ -110,15 +108,14 @@ polkit.addRule(function(action, subject) {
 
 echo "${SYSTEM_NAME}" > /etc/hostname
 
-# steam controller fix and amdgpu setup
+# steam controller fix, xbox one s bluetooth fix, amdgpu setup
 echo "
 blacklist hid_steam
 blacklist radeon
 options amdgpu si_support=1
 options amdgpu cik_support=1
-options radeon si_support=0
-options radeon cik_support=0
-" >> /etc/modprobe.d/${SYSTEM_NAME}.conf
+options bluetooth disable_ertm=1
+" > /etc/modprobe.d/${SYSTEM_NAME}.conf
 
 echo "
 LABEL=frzr_root /          btrfs subvol=deployments/${CHANNEL}-${VERSION},ro,noatime,nodatacow 0 0
@@ -126,6 +123,10 @@ LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
 " > /etc/fstab
+
+# preserve installed package database
+mkdir -p /usr/var/lib/pacman
+cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 
 # clean up/remove unnecessary files
 rm -rf \
