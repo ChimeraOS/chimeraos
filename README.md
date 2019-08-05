@@ -55,7 +55,7 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
 
 ## Discord
 
-You can join our community [here](https://discord.gg/fyKBrv)!
+You can join our community [here](https://discord.gg/fKsUbrt)!
 
 
 ## Steam
