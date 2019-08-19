@@ -1,6 +1,6 @@
 # gamerOS: the definitive couch gaming experience
 
-[Download & Install](#installation)
+[Download & Install](#download--install)
 
 ## What is it?
 gamerOS is an operating system focused exclusively on a couch gaming experience. After installation, boot directly into Steam Big Picture and start playing your favorite games.
