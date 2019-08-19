@@ -47,7 +47,7 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
  - connected keyboard required for installation only
 
 
-## Installation
+## Download & Install
  - download the installation iso from [here](https://github.com/gamer-os/install-media/releases/download/2019-08-01/gameros-2019.08.01-x86\_64.iso)
  - use [etcher](https://www.balena.io/etcher) to flash the iso file to a usb stick
  - make sure you have a wired internet connection
