@@ -3,6 +3,11 @@
 set -e
 set -x
 
+if [ $EUID -ne 0 ]; then
+	echo "$(basename $0) must be run as root"
+	exit 1
+fi
+
 SYSTEM_NAME=gameros
 USERNAME=gamer
 
