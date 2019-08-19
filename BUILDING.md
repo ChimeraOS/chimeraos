@@ -4,7 +4,7 @@ To building and making changes to gamerOS is possible. This document contains so
 
 # Build requirements
 
-To be able to build gamer-os you need to run **Arch Linux** on your system.
+Building the gamerOS image can currently only be done on**Arch Linux**.
 
 The following packages will need to be installed to be able to build the gamer-os image:
 - arch-install-scripts
@@ -18,3 +18,5 @@ To build run the following command:
 ./build.sh channel version
 ```
 Replace channel and version with your own. Channel should be a name and version a version number.
+
+# Building the installation media
