@@ -1,15 +1,15 @@
 # Building gamerOS
 
-To building and making changes to gamerOS is possible. This document contains some instructions on how to do so
+This document contains instructions on how to build, install and ship a new gamerOS image.
 
 # Build requirements
 
-Building the gamerOS image can currently only be done on**Arch Linux**.
+Building the gamerOS image can currently only be done on **Arch Linux**.
 
-The following packages will need to be installed to be able to build the gamer-os image:
+The following packages will need to be installed to be able to build the gamerOS image:
 - arch-install-scripts
 - btrfs-progs
-- [pikaur](https://aur.archlinux.org/packages/pikaur/)
+- [pikaur](https://aur.archlinux.org/packages/pikaur/) (not available in the official repo)
 
 # Building the gamerOS image
 
@@ -37,13 +37,13 @@ To summarize:
 - The checksum of the image should comes third on the bottom line of the file. Generate this with the ``sha256sum`` command
 - The version, img_url and checksum are seperated with tabs
 
-So replaces ``channel``, ``version``, ``image_url`` and ``checksum`` with the values for the image. Installing will only work if the version or channel is different from what is currently installed on the target machine.
+So replace ``channel``, ``version``, ``image_url`` and ``checksum`` with the values for the image. Installing will only work if the version or channel is different from what is currently installed on the target machine.
 
 # Installing the image
 
 Installing the image on the target machine is done with the [frzr](https://github.com/gamer-os/frzr) tool. It can install from either a local manifest file or one which is hosted online. It is assumed here that these instructions are executed on a gamerOS machine.
 
-The image can be installed with the following command (**Which can destroy all data on the machine! Don't run this if there is important data on the machine**):
+The image can be installed with the following command (**Which can destroy all data on the machine! Don't run this if there is important data on the machine!**):
 ```
 sudo frzr-deploy manifest_url
 ```
@@ -62,4 +62,4 @@ Creating an ISO which uses a different image requires the following steps:
 ```
 if ! frzr-deploy https://gamer-os.github.io/gamer-os/repos/default; then
 ```
-- Follow the instructions in the [README](https://github.com/gamer-os/install-media/blob/master/README.md) to build the ISO
+- Follow the instructions in the [README](https://github.com/gamer-os/install-media/blob/master/README.md) of the install-media repo to build the ISO
