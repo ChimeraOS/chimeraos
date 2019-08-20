@@ -77,4 +77,5 @@ export SERVICES="\
 	NetworkManager \
 	lightdm \
 	bluetooth \
+	fstrim.timer \
 "
