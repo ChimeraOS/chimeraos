@@ -11,6 +11,8 @@ The following packages will need to be installed to be able to build the gamerOS
 - btrfs-progs
 - [pikaur](https://aur.archlinux.org/packages/pikaur/) (not available in the official repo)
 
+Additionally the multilib repository needs to be enabled in ``/etc/pacman.conf``.
+
 # Building the gamerOS image
 
 To build run the following command:
