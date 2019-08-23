@@ -127,6 +127,7 @@ LABEL=frzr_root /          btrfs subvol=deployments/${CHANNEL}-${VERSION},ro,noa
 LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
+LABEL=efi       /boot      vfat  rw,noatime,errors=remount-ro  0 0
 " > /etc/fstab
 
 # preserve installed package database
