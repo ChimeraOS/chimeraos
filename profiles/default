@@ -64,6 +64,7 @@ export PACKAGES="\
 	nvidia-utils \
 	lib32-nvidia-utils \
 	efibootmgr \
+	dosfstools \
 "
 
 export AUR_PACKAGES="\
