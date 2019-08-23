@@ -113,6 +113,13 @@ polkit.addRule(function(action, subject) {
 
 echo "${SYSTEM_NAME}" > /etc/hostname
 
+echo "
+LSB_VERSION=1.4
+DISTRIB_ID=${CHANNEL}
+DISTRIB_RELEASE=${VERSION}
+DISTRIB_DESCRIPTION=${CHANNEL}
+" > /etc/lsb-release
+
 # steam controller fix, xbox one s bluetooth fix, amdgpu setup
 echo "
 blacklist hid_steam
