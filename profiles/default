@@ -65,7 +65,6 @@ export PACKAGES="\
 	lib32-nvidia-utils \
 	efibootmgr \
 	dosfstools \
-	arch-install-scripts \
 "
 
 export AUR_PACKAGES="\
