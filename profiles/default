@@ -71,6 +71,7 @@ export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
 	cemu \
+	plymouth \
 "
 
 export SERVICES="\
