@@ -65,6 +65,7 @@ export PACKAGES="\
 	lib32-nvidia-utils \
 	efibootmgr \
 	dosfstools \
+	arch-install-scripts \
 "
 
 export AUR_PACKAGES="\
@@ -78,7 +79,7 @@ export SERVICES="\
 	frzr-autoupdate \
 	frzr-etc \
 	NetworkManager \
-	lightdm \
+	lightdm-plymouth \
 	bluetooth \
 	fstrim.timer \
 "
