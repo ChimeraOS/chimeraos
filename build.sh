@@ -100,7 +100,7 @@ autologin-session=steamos
 " > /etc/lightdm/lightdm.conf
 
 # update mkinitcpio config
-sed -i "s/HOOKS=(base udev /HOOKS=(base udev plymouth btrfs/" /etc/mkinitcpio.conf
+sed -i "s/HOOKS=(base udev /HOOKS=(base udev plymouth btrfs /" /etc/mkinitcpio.conf
 
 echo "
 polkit.addRule(function(action, subject) {
