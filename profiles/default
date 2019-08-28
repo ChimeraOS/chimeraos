@@ -17,6 +17,7 @@ export PACKAGES="\
 	pulseaudio \
 	lib32-libpulse \
 	pulseaudio-alsa \
+	pulseaudio-bluetooth \
 	sudo \
 	python \
 	steam \
