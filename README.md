@@ -55,6 +55,14 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
  - follow the installer directions
 
 
+## Screenshots
+
+![Store](screenshots/01.png?raw=true)
+![Library](screenshots/02.png?raw=true)
+![Settings](screenshots/03.png?raw=true)
+![Game](screenshots/04.png?raw=true)
+
+
 ## Discord
 
 You can join our community [here](https://discord.gg/fKsUbrt)!
