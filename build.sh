@@ -8,6 +8,7 @@ if [ $EUID -ne 0 ]; then
 	exit 1
 fi
 
+SYSTEM_DESC=gamerOS
 SYSTEM_NAME=gameros
 USERNAME=gamer
 
@@ -128,6 +129,13 @@ LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
 " > /etc/fstab
+
+echo "
+LSB_VERSION=1.4
+DISTRIB_ID=${SYSTEM_NAME}
+DISTRIB_RELEASE=${VERSION}
+DISTRIB_DESCRIPTION=${SYSTEM_DESC}
+" > /etc/lsb-release
 
 # preserve installed package database
 mkdir -p /usr/var/lib/pacman
