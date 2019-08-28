@@ -12,7 +12,6 @@ export PACKAGES="\
 	lib32-freetype2 \
 	lib32-curl \
 	lib32-libgpg-error \
-	ttf-dejavu \
 	networkmanager \
 	pulseaudio \
 	lib32-libpulse \
@@ -20,7 +19,6 @@ export PACKAGES="\
 	pulseaudio-bluetooth \
 	sudo \
 	python \
-	steam \
 	retroarch \
 	retroarch-assets-xmb \
 	libretro-beetle-psx \
