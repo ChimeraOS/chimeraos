@@ -63,6 +63,8 @@ export PACKAGES="\
 	lib32-opencl-nvidia \
 	nvidia-utils \
 	lib32-nvidia-utils \
+	ttf-liberation \
+	wqy-zenhei \
 "
 
 export AUR_PACKAGES="\
