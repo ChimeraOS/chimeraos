@@ -12,36 +12,13 @@ export PACKAGES="\
 	lib32-freetype2 \
 	lib32-curl \
 	lib32-libgpg-error \
-	ttf-dejavu \
 	networkmanager \
 	pulseaudio \
 	lib32-libpulse \
 	pulseaudio-alsa \
+	pulseaudio-bluetooth \
 	sudo \
 	python \
-	steam \
-	retroarch \
-	retroarch-assets-xmb \
-	libretro-beetle-psx \
-	libretro-beetle-psx-hw \
-	libretro-blastem \
-	libretro-bsnes \
-	libretro-citra \
-	libretro-desmume \
-	libretro-gambatte \
-	libretro-genesis-plus-gx \
-	libretro-melonds \
-	libretro-mgba \
-	libretro-mupen64plus \
-	libretro-nestopia \
-	libretro-parallel-n64 \
-	libretro-ppsspp \
-	libretro-redream \
-	libretro-reicast \
-	libretro-scummvm \
-	libretro-snes9x \
-	libretro-yabause \
-	dolphin-emu \
 	flatpak \
 	vulkan-icd-loader \
 	lib32-vulkan-icd-loader \
@@ -65,12 +42,13 @@ export PACKAGES="\
 	lib32-nvidia-utils \
 	efibootmgr \
 	dosfstools \
+	ttf-liberation \
+	wqy-zenhei \
 "
 
 export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
-	cemu \
 	plymouth \
 "
 
