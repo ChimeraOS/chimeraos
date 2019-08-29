@@ -36,7 +36,7 @@ fully controller compatible interface with no mouse or keyboard required (but yo
 support for Xbox 360, Xbox One, DualShock 4, Switch Pro, Steam controllers and more (compatibility varies by game)
 
 ### play any game
-out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, Steam games and more (only Steam games are supported out of the box, emulators are pre-installed but currently require manual setup)
+out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, Steam games and more (only Steam games are supported out of the box, support for emulators is coming soon)
 
 
 ## Requirements
