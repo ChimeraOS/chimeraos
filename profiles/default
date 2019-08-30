@@ -40,8 +40,6 @@ export PACKAGES="\
 	lib32-opencl-nvidia \
 	nvidia-utils \
 	lib32-nvidia-utils \
-	efibootmgr \
-	dosfstools \
 	ttf-liberation \
 	wqy-zenhei \
 "
