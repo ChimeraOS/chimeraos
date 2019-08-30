@@ -54,7 +54,7 @@ export SERVICES="\
 	frzr-autoupdate \
 	frzr-etc \
 	NetworkManager \
-	lightdm-plymouth \
+	lightdm \
 	bluetooth \
 	fstrim.timer \
 "
