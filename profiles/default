@@ -47,6 +47,7 @@ export PACKAGES="\
 export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
+	plymouth \
 "
 
 export SERVICES="\

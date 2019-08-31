@@ -100,6 +100,9 @@ autologin-user=${USERNAME}
 autologin-session=steamos
 " > /etc/lightdm/lightdm.conf
 
+# update mkinitcpio config
+sed -i "s/HOOKS=(base udev /HOOKS=(base udev plymouth btrfs /" /etc/mkinitcpio.conf
+
 echo "
 polkit.addRule(function(action, subject) {
 	if ((action.id == \"org.freedesktop.timedate1.set-time\" ||
@@ -128,6 +131,7 @@ LABEL=frzr_root /          btrfs subvol=deployments/${CHANNEL}-${VERSION},ro,noa
 LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
+LABEL=efi       /boot      vfat  rw,noatime,nofail  0 0
 " > /etc/fstab
 
 echo "
