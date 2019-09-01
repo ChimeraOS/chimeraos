@@ -53,6 +53,9 @@ pikaur --noconfirm -Sw ${AUR_PACKAGES}
 mkdir ${BUILD_PATH}/aur
 mv /var/cache/pikaur/pkg/* ${BUILD_PATH}/aur/
 
+# copy initramfs config file into chroot
+cp mkinitcpio.conf ${BUILD_PATH}/
+
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
 arch-chroot ${BUILD_PATH} /bin/bash <<EOF
@@ -74,7 +77,6 @@ pacman --noconfirm -S ${PACKAGES}
 
 # install AUR packages
 pacman --noconfirm -U /aur/*
-rm -rf /aur
 
 # record installed packages & versions
 pacman -Q > /manifest
@@ -100,8 +102,8 @@ autologin-user=${USERNAME}
 autologin-session=steamos
 " > /etc/lightdm/lightdm.conf
 
-# update mkinitcpio config
-sed -i "s/HOOKS=(base udev /HOOKS=(base udev plymouth btrfs /" /etc/mkinitcpio.conf
+# build initramfs
+mkinitcpio -c /mkinitcpio.conf -g /boot/initramfs-linux.img -k /boot/vmlinuz-linux
 
 echo "
 polkit.addRule(function(action, subject) {
@@ -147,9 +149,10 @@ cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 
 # clean up/remove unnecessary files
 rm -rf \
+/aur \
+/mkinitcpio.conf \
 /home \
 /var \
-/boot/initramfs-linux.img \
 /boot/initramfs-linux-fallback.img \
 /boot/syslinux \
 /usr/share/gtk-doc \
