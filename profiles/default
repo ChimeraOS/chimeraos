@@ -48,6 +48,8 @@ export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
 	plymouth \
+	python-vdf \
+	steam-tweaks \
 "
 
 export SERVICES="\
