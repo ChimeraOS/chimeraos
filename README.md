@@ -11,6 +11,8 @@ If you want Steam in your living room, you want gamerOS.
 ## Known Issues
 See the GitHub [issues](https://github.com/gamer-os/gamer-os/issues) for a list of current limitations and bugs.
 
+## FAQ
+A list of answers to frequently asked questions is available on our [FAQ](https://github.com/gamer-os/gamer-os/wiki/FAQ) wiki page.
 
 ## Features
 
