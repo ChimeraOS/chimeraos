@@ -29,7 +29,7 @@ start gaming right away with zero configuration
 frequent updates delivering the latest drivers and software for an optimal experience
 
 ### zero downtime updates
-fully automatic updates that run in the background without disrupting gameplay ([details](https://github.com/gamer-os/frzr))
+fully automatic updates that run in the background without disrupting gameplay ([more info](https://github.com/gamer-os/frzr))
 
 ### controller first
 fully controller compatible interface with no mouse or keyboard required (but you can still use a mouse and keyboard if you really want to)
