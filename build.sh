@@ -128,6 +128,9 @@ options amdgpu cik_support=1
 options bluetooth disable_ertm=1
 " > /etc/modprobe.d/${SYSTEM_NAME}.conf
 
+# yet another steam controller fix
+echo "uinput" > /etc/modules-load.d/${SYSTEM_NAME}.conf
+
 echo "
 LABEL=frzr_root /          btrfs subvol=deployments/${CHANNEL}-${VERSION},ro,noatime,nodatacow 0 0
 LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
