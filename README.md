@@ -63,8 +63,8 @@ You can join our community [here](https://discord.gg/fKsUbrt)!
 
 
 ## Steam
- - [group](https://steamcommunity.com/groups/gamer-os)
- - [curator](https://store.steampowered.com/curator/35483972-gamer-os)
+ - Join the [Steam group](https://steamcommunity.com/groups/gamer-os)
+ - Follow our [curator](https://store.steampowered.com/curator/35483972-gamer-os) to get information on games fully tested for out of the box compatibility with gamerOS
 
 
 ## Screenshots
