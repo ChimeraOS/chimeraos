@@ -42,9 +42,10 @@ out of the box support for playing NES, SNES, Genesis, N64, PlayStation, Wii, St
 
 
 ## Requirements
+ - a dedicated computer (dual booting not supported)
  - a wired internet connection
  - **4GB** or more RAM
- - a single **10GB** or larger dedicated storage device
+ - a single **20GB** or larger storage device
  - a single connected TV or monitor with a resolution of 720p, 1080p, or 2160p
  - connected keyboard required for installation only
 
