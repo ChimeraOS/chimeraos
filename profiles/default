@@ -42,6 +42,7 @@ export PACKAGES="\
 	lib32-nvidia-utils \
 	ttf-liberation \
 	wqy-zenhei \
+	openssh \
 "
 
 export AUR_PACKAGES="\
