@@ -1,4 +1,5 @@
-# gamerOS: the definitive couch gaming experience
+# GamerOS
+### The definitive couch gaming experience
 
 [Download & Install](#download--install)
 
