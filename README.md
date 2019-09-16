@@ -4,9 +4,9 @@
 [Download & Install](#download--install)
 
 ## What is it?
-gamerOS is an operating system focused exclusively on a couch gaming experience. After installation, boot directly into Steam Big Picture and start playing your favorite games.
+GamerOS is an operating system focused exclusively on a couch gaming experience. After installation, boot directly into Steam Big Picture and start playing your favorite games.
 
-If you want Steam in your living room, you want gamerOS.
+If you want Steam in your living room, you want GamerOS.
 
 
 ## Known Issues
@@ -66,7 +66,7 @@ You can join our community [here](https://discord.gg/fKsUbrt)!
 
 ## Steam
  - Join the [Steam group](https://steamcommunity.com/groups/gamer-os)
- - Follow our [curator](https://store.steampowered.com/curator/35483972-gamer-os) to get information on games fully tested for out of the box compatibility with gamerOS
+ - Follow our [curator](https://store.steampowered.com/curator/35483972-gamer-os) to get information on games fully tested for out of the box compatibility with GamerOS
 
 
 ## Screenshots
