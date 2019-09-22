@@ -8,7 +8,7 @@ if [ $EUID -ne 0 ]; then
 	exit 1
 fi
 
-SYSTEM_DESC=gamerOS
+SYSTEM_DESC=GamerOS
 SYSTEM_NAME=gameros
 USERNAME=gamer
 
