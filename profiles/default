@@ -50,6 +50,7 @@ export AUR_PACKAGES="\
 	steamos-compositor-plus \
 	plymouth \
 	python-vdf \
+	pycrc \
 	steam-tweaks \
 "
 
