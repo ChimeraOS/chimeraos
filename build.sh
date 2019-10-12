@@ -172,6 +172,10 @@ mkdir /var
 mkdir /frzr_root
 EOF
 
+# install custom plymouth theme
+rm -rf ${BUILD_PATH}/usr/share/plymouth
+cp -r plymouth ${BUILD_PATH}/usr/share/
+
 # must do this outside of chroot for unknown reason
 echo "
 nameserver 8.8.8.8

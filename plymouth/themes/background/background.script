@@ -1,0 +1,6 @@
+wallpaper_image = Image("background.png");
+screen_width = Window.GetWidth();
+screen_height = Window.GetHeight();
+resized_wallpaper_image = wallpaper_image.Scale(screen_width,screen_height);
+wallpaper_sprite = Sprite(resized_wallpaper_image);
+wallpaper_sprite.SetZ(-100);

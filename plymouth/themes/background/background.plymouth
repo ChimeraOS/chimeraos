@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Background
+Description=Display static background
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/simple
+ScriptFile=/usr/share/plymouth/themes/simple/simple.script
