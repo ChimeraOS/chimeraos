@@ -43,6 +43,27 @@ export PACKAGES="\
 	ttf-liberation \
 	wqy-zenhei \
 	openssh \
+	retroarch \
+	retroarch-assets-xmb \
+	libretro-beetle-psx \
+	libretro-beetle-psx-hw \
+	libretro-blastem \
+	libretro-bsnes \
+	libretro-citra \
+	libretro-desmume \
+	libretro-gambatte \
+	libretro-genesis-plus-gx \
+	libretro-melonds \
+	libretro-mgba \
+	libretro-mupen64plus-next \
+	libretro-nestopia \
+	libretro-parallel-n64 \
+	libretro-ppsspp \
+	libretro-redream \
+	libretro-reicast \
+	libretro-scummvm \
+	libretro-snes9x \
+	libretro-yabause \
 "
 
 export AUR_PACKAGES="\
@@ -52,6 +73,8 @@ export AUR_PACKAGES="\
 	python-vdf \
 	pycrc \
 	steam-tweaks \
+	libretro-flycast-git \
+	dolphin-emu-nogui-git \
 "
 
 export SERVICES="\
