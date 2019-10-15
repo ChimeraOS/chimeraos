@@ -43,6 +43,11 @@ export PACKAGES="\
 	ttf-liberation \
 	wqy-zenhei \
 	openssh \
+	diffutils \
+	logrotate \
+	vim \
+	which \
+	linux-firmware \
 	retroarch \
 	retroarch-assets-xmb \
 	libretro-beetle-psx \
