@@ -69,6 +69,7 @@ export PACKAGES="\
 	libretro-scummvm \
 	libretro-snes9x \
 	libretro-yabause \
+	dolphin-emu \
 "
 
 export AUR_PACKAGES="\
@@ -80,7 +81,6 @@ export AUR_PACKAGES="\
 	pycrc \
 	steam-tweaks \
 	libretro-flycast-git \
-	dolphin-emu-nogui-git \
 "
 
 export SERVICES="\
