@@ -150,6 +150,9 @@ DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 mkdir -p /usr/var/lib/pacman
 cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 
+# set plymouth theme
+plymouth-set-default-theme -R simple-image
+
 # clean up/remove unnecessary files
 rm -rf \
 /aur \
@@ -172,9 +175,8 @@ mkdir /var
 mkdir /frzr_root
 EOF
 
-# install custom plymouth theme
-rm -rf ${BUILD_PATH}/usr/share/plymouth
-cp -r plymouth ${BUILD_PATH}/usr/share/
+# install custom image for plymouth theme
+cp background.png ${BUILD_PATH}/usr/share/plymouth/themes/simple-image/img.png
 
 # must do this outside of chroot for unknown reason
 echo "
