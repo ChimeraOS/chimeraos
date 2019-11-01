@@ -70,6 +70,7 @@ export PACKAGES="\
 	libretro-snes9x \
 	libretro-yabause \
 	dolphin-emu \
+	nss-mdns \
 "
 
 export AUR_PACKAGES="\
@@ -90,4 +91,5 @@ export SERVICES="\
 	lightdm \
 	bluetooth \
 	fstrim.timer \
+	avahi-daemon \
 "
