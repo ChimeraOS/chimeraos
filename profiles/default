@@ -49,7 +49,6 @@ export PACKAGES="\
 	which \
 	linux-firmware \
 	retroarch \
-	retroarch-assets-xmb \
 	libretro-beetle-psx \
 	libretro-beetle-psx-hw \
 	libretro-blastem \
@@ -82,6 +81,8 @@ export AUR_PACKAGES="\
 	pycrc \
 	steam-tweaks \
 	libretro-flycast-git \
+	steam-buddy \
+	retroarch-autoconfig-udev-git \
 "
 
 export SERVICES="\
@@ -92,4 +93,5 @@ export SERVICES="\
 	bluetooth \
 	fstrim.timer \
 	avahi-daemon \
+	steam-buddy \
 "

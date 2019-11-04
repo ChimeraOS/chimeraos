@@ -149,6 +149,9 @@ DISTRIB_RELEASE=${VERSION}
 DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
+# disable retroarch menu in joypad configs
+find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
+
 # preserve installed package database
 mkdir -p /usr/var/lib/pacman
 cp -r /var/lib/pacman/local /usr/var/lib/pacman/
@@ -170,7 +173,8 @@ rm -rf \
 /usr/share/ibus \
 /usr/share/help \
 /usr/share/jack-audio-connection-kit \
-/usr/share/SFML
+/usr/share/SFML \
+/usr/share/libretro/autoconfig/udev/Xbox_360_Wireless_Receiver_Chinese01.cfg
 
 # create necessary directories
 mkdir /home
