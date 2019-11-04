@@ -128,6 +128,9 @@ options amdgpu cik_support=1
 options bluetooth disable_ertm=1
 " > /etc/modprobe.d/${SYSTEM_NAME}.conf
 
+# enable multicast dns in avahi
+sed -i "/^hosts:/ s/resolve/mdns resolve/" /etc/nsswitch.conf
+
 # yet another steam controller fix
 echo "uinput" > /etc/modules-load.d/${SYSTEM_NAME}.conf
 
