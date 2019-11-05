@@ -75,7 +75,7 @@ export PACKAGES="\
 export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
-	plymouth-git \
+	plymouth \
 	plymouth-theme-simple-image-git \
 	python-vdf \
 	pycrc \
