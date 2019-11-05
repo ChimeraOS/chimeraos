@@ -70,6 +70,7 @@ export PACKAGES="\
 	libretro-yabause \
 	dolphin-emu \
 	nss-mdns \
+	haveged \
 "
 
 export AUR_PACKAGES="\
@@ -94,4 +95,5 @@ export SERVICES="\
 	fstrim.timer \
 	avahi-daemon \
 	steam-buddy \
+	haveged \
 "
