@@ -149,6 +149,13 @@ DISTRIB_RELEASE=${VERSION}
 DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
+# add postupdate notification script
+echo "
+#! /bin/bash
+touch /var/run/reboot-required
+" > /usr/bin/frzr-postupdate-script
+chmod +x /usr/bin/frzr-postupdate-script
+
 # disable retroarch menu in joypad configs
 find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
 
