@@ -94,6 +94,8 @@ export SERVICES="\
 	bluetooth \
 	fstrim.timer \
 	avahi-daemon \
-	steam-buddy \
+	steam-buddy@gamer.service \
+	steam-buddy-proxy@gamer.service \
+	steam-buddy-proxy@gamer.socket \
 	haveged \
 "
