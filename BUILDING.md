@@ -46,7 +46,7 @@ The image can be installed with the following command (**Which can destroy all y
 ```
 sudo frzr-deploy manifest_url
 ```
-Replace ``manifest_url`` with either the url to the image or with ``"file:///path/to/manifest"``.
+Replace ``manifest_url`` with either the url of the manifest file or with its location on disk like so:``"file:///path/to/manifest"``
 
 Now reboot the system and the new image should be used.
 
