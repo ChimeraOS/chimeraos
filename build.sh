@@ -166,6 +166,13 @@ cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 # set plymouth theme
 plymouth-set-default-theme -R simple-image
 
+echo "
+[Daemon]
+Theme=simple-image
+ShowDelay=0
+DeviceTimeout=5
+" > /etc/plymouth/plymouthd.conf
+
 # clean up/remove unnecessary files
 rm -rf \
 /aur \

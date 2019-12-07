@@ -90,7 +90,7 @@ export SERVICES="\
 	frzr-autoupdate \
 	frzr-etc \
 	NetworkManager \
-	lightdm \
+	lightdm-plymouth \
 	bluetooth \
 	fstrim.timer \
 	avahi-daemon \
