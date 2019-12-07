@@ -93,6 +93,10 @@ useradd -m ${USERNAME} -G autologin,wheel
 echo "${USERNAME}:${USERNAME}" | chpasswd
 echo "${USERNAME}   ALL=(ALL) ALL" >> /etc/sudoers
 
+# link the vi command to vim
+ln -s /usr/bin/vim /usr/bin/vi
+
+# set default session in lightdm
 echo "
 [LightDM]
 run-directory=/run/lightdm
