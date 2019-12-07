@@ -194,8 +194,8 @@ cp background.png ${BUILD_PATH}/usr/share/plymouth/themes/simple-image/img.png
 
 # must do this outside of chroot for unknown reason
 echo "
-nameserver 8.8.8.8
-nameserver 8.8.4.4
+nameserver 1.1.1.1
+nameserver 1.0.0.1
 " > ${BUILD_PATH}/etc/resolv.conf
 
 echo "${CHANNEL}-${VERSION}" > ${BUILD_PATH}/build_info
