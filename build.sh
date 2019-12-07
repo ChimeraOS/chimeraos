@@ -91,7 +91,7 @@ passwd --lock root
 groupadd -r autologin
 useradd -m ${USERNAME} -G autologin,wheel
 echo "${USERNAME}:${USERNAME}" | chpasswd
-echo "${USERNAME}   ALL=(ALL) ALL" >> /etc/sudoers
+sed -i "\$i%${USERNAME}   ALL=(ALL) ALL" /etc/sudoers
 
 echo "
 [LightDM]
