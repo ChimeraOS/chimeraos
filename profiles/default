@@ -84,6 +84,7 @@ export AUR_PACKAGES="\
 	libretro-flycast-git \
 	steam-buddy \
 	retroarch-autoconfig-udev-git \
+	alienware-alpha-wmi \
 "
 
 export SERVICES="\
