@@ -91,7 +91,7 @@ passwd --lock root
 groupadd -r autologin
 useradd -m ${USERNAME} -G autologin,wheel
 echo "${USERNAME}:${USERNAME}" | chpasswd
-sed -i "\$i%${USERNAME}   ALL=(ALL) ALL" /etc/sudoers
+echo "${USERNAME}   ALL=(ALL) ALL" > /etc/sudoers.d/${USERNAME}
 
 # link the vi command to vim
 ln -s /usr/bin/vim /usr/bin/vi
