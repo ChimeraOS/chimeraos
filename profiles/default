@@ -71,6 +71,8 @@ export PACKAGES="\
 	dolphin-emu \
 	nss-mdns \
 	haveged \
+	openbox \
+	termite \
 "
 
 export AUR_PACKAGES="\
@@ -82,6 +84,7 @@ export AUR_PACKAGES="\
 	pycrc \
 	steam-tweaks \
 	libretro-flycast-git \
+	libretro-beetle-pce-fast-git \
 	steam-buddy \
 	retroarch-autoconfig-udev-git \
 	alienware-alpha-wmi \
