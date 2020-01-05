@@ -137,6 +137,7 @@ blacklist hid_steam
 blacklist radeon
 options amdgpu si_support=1
 options amdgpu cik_support=1
+options amdgpu noretry=0
 options bluetooth disable_ertm=1
 " > /etc/modprobe.d/${SYSTEM_NAME}.conf
 
