@@ -56,6 +56,10 @@ mv /var/cache/pikaur/pkg/* ${BUILD_PATH}/aur/
 # copy initramfs config file into chroot
 cp mkinitcpio.conf ${BUILD_PATH}/
 
+# copy extra certificate files into chroot
+mkdir ${BUILD_PATH}/extra_certs
+cp certs/*.crt ${BUILD_PATH}/extra_certs
+
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
 arch-chroot ${BUILD_PATH} /bin/bash <<EOF
@@ -181,9 +185,13 @@ ShowDelay=0
 DeviceTimeout=5
 " > /etc/plymouth/plymouthd.conf
 
+# install extra certificates
+trust anchor --store /extra_certs/*.crt
+
 # clean up/remove unnecessary files
 rm -rf \
 /aur \
+/extra_certs \
 /mkinitcpio.conf \
 /home \
 /var \
