@@ -51,14 +51,10 @@ pacstrap ${BUILD_PATH} base
 rm -rf /var/cache/pikaur/pkg/*
 pikaur --noconfirm -Sw ${AUR_PACKAGES}
 mkdir ${BUILD_PATH}/aur
-mv /var/cache/pikaur/pkg/* ${BUILD_PATH}/aur/
+cp /var/cache/pikaur/pkg/* ${BUILD_PATH}/aur/
 
-# copy initramfs config file into chroot
-cp mkinitcpio.conf ${BUILD_PATH}/
-
-# copy extra certificate files into chroot
-mkdir ${BUILD_PATH}/extra_certs
-cp certs/*.crt ${BUILD_PATH}/extra_certs
+# copy files into chroot
+cp -R rootfs/. ${BUILD_PATH}/
 
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
@@ -101,9 +97,6 @@ ${USERNAME} ALL=(ALL) ALL
 #includedir /etc/sudoers.d
 " > /etc/sudoers
 
-# link the vi command to vim
-ln -s /usr/bin/vim /usr/bin/vi
-
 # set default session in lightdm
 echo "
 [LightDM]
@@ -114,38 +107,10 @@ autologin-user=${USERNAME}
 autologin-session=steamos
 " > /etc/lightdm/lightdm.conf
 
-# build initramfs
-mkinitcpio -c /mkinitcpio.conf -g /boot/initramfs-linux.img -k /boot/vmlinuz-linux
-
-echo "
-polkit.addRule(function(action, subject) {
-	if ((action.id == \"org.freedesktop.timedate1.set-time\" ||
-	     action.id == \"org.freedesktop.timedate1.set-timezone\" ||
-	     action.id == \"org.freedesktop.login1.power-off\" ||
-	     action.id == \"org.freedesktop.login1.reboot\") &&
-	     subject.isInGroup(\"wheel\")) {
-		return polkit.Result.YES;
-	}
-});
-" > /etc/polkit-1/rules.d/49-${SYSTEM_NAME}.rules
-
 echo "${SYSTEM_NAME}" > /etc/hostname
-
-# steam controller fix, xbox one s bluetooth fix, amdgpu setup
-echo "
-blacklist hid_steam
-blacklist radeon
-options amdgpu si_support=1
-options amdgpu cik_support=1
-options amdgpu noretry=0
-options bluetooth disable_ertm=1
-" > /etc/modprobe.d/${SYSTEM_NAME}.conf
 
 # enable multicast dns in avahi
 sed -i "/^hosts:/ s/resolve/mdns resolve/" /etc/nsswitch.conf
-
-# yet another steam controller fix
-echo "uinput" > /etc/modules-load.d/${SYSTEM_NAME}.conf
 
 echo "
 LABEL=frzr_root /          btrfs subvol=deployments/${CHANNEL}-${VERSION},ro,noatime,nodatacow 0 0
@@ -162,13 +127,6 @@ DISTRIB_RELEASE=${VERSION}
 DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
-# add postupdate notification script
-echo "
-#! /bin/bash
-touch /var/run/reboot-required
-" > /usr/bin/frzr-postupdate-script
-chmod +x /usr/bin/frzr-postupdate-script
-
 # disable retroarch menu in joypad configs
 find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
 
@@ -179,13 +137,6 @@ cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 # set plymouth theme
 plymouth-set-default-theme -R simple-image
 
-echo "
-[Daemon]
-Theme=simple-image
-ShowDelay=0
-DeviceTimeout=5
-" > /etc/plymouth/plymouthd.conf
-
 # install extra certificates
 trust anchor --store /extra_certs/*.crt
 
@@ -193,7 +144,6 @@ trust anchor --store /extra_certs/*.crt
 rm -rf \
 /aur \
 /extra_certs \
-/mkinitcpio.conf \
 /home \
 /var \
 /boot/initramfs-linux-fallback.img \
@@ -212,15 +162,6 @@ mkdir /home
 mkdir /var
 mkdir /frzr_root
 EOF
-
-# install custom image for plymouth theme
-cp background.png ${BUILD_PATH}/usr/share/plymouth/themes/simple-image/img.png
-
-# must do this outside of chroot for unknown reason
-echo "
-nameserver 1.1.1.1
-nameserver 1.0.0.1
-" > ${BUILD_PATH}/etc/resolv.conf
 
 echo "${CHANNEL}-${VERSION}" > ${BUILD_PATH}/build_info
 echo "" >> ${BUILD_PATH}/build_info
