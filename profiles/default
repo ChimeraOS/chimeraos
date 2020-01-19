@@ -103,5 +103,6 @@ export SERVICES="\
 	steam-buddy-proxy@gamer.service \
 	steam-buddy-proxy@gamer.socket \
 	haveged \
+	systemd-timesyncd \
 	xow \
 "
