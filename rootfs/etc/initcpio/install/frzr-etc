@@ -1,0 +1,11 @@
+#!/bin/bash
+build() {
+	  add_binary findmnt
+    add_runscript
+}
+help() {
+    cat <<HELPEOF
+This provides a support for mounting the overlay for /etc
+via a late running hook.
+HELPEOF
+}

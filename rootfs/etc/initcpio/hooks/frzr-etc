@@ -1,0 +1,24 @@
+#!/usr/bin/ash
+run_latehook() {
+  local rootfs realtab frzropts frzrsrc
+  rootfs="/new_root"
+  realtab="${rootfs}/etc/fstab"
+
+  if [ -f "${realtab}" ]; then
+    # read values from fstab
+    frzrsrc=$(findmnt -snero source --tab-file="$realtab" -T /frzr_root)
+    frzropts=$(findmnt -snero options --tab-file="$realtab" -T /frzr_root)
+
+    if [ -z "${frzropts}" ]; then
+      mount "${frzrsrc}" ${rootfs}/frzr_root
+    else
+      mount -o "${frzropts}" "${frzrsrc}" ${rootfs}/frzr_root
+    fi
+  else
+    # fallback, when not found in fstab
+    mount /dev/disk/by-label/frzr_root \${rootfs}/frzr_root
+  fi
+
+  # mount etc from frzr_root as overlay
+  mount -t overlay overlay -o lowerdir=${rootfs}/etc,upperdir=${rootfs}/frzr_root/etc,workdir=${rootfs}/frzr_root/.etc,index=off ${rootfs}/etc
+}
