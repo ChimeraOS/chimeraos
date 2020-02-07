@@ -135,10 +135,14 @@ mkdir -p /usr/var/lib/pacman
 cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 
 # set plymouth theme
+mv /usr/share/plymouth/themes/simple-image/gameros.png /usr/share/plymouth/themes/simple-image/img.png
 plymouth-set-default-theme -R simple-image
 
 # install extra certificates
 trust anchor --store /extra_certs/*.crt
+
+# rebuild initramfs (required to pick up plymouth changes)
+mkinitcpio -c /etc/mkinitcpio.conf -g /boot/initramfs-linux.img -k /boot/vmlinuz-linux
 
 # clean up/remove unnecessary files
 rm -rf \
@@ -179,7 +183,7 @@ umount ${MOUNT_PATH}
 rm -rf ${MOUNT_PATH}
 rm -rf ${BUILD_IMG}
 
-tar cjf ${CHANNEL}-${VERSION}.img.tar.xz ${CHANNEL}-${VERSION}.img
+tar caf ${CHANNEL}-${VERSION}.img.tar.xz ${CHANNEL}-${VERSION}.img
 rm ${CHANNEL}-${VERSION}.img
 
 sha256sum ${CHANNEL}-${VERSION}.img.tar.xz

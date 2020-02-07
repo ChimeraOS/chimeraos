@@ -64,7 +64,6 @@ export PACKAGES="\
 	libretro-parallel-n64 \
 	libretro-ppsspp \
 	libretro-redream \
-	libretro-reicast \
 	libretro-scummvm \
 	libretro-snes9x \
 	libretro-yabause \
@@ -88,7 +87,11 @@ export AUR_PACKAGES="\
 	steam-buddy \
 	retroarch-autoconfig-udev-git \
 	alienware-alpha-wmi \
-	xow-git \
+	xow \
+	gamemode \
+	lib32-gamemode \
+	mangohud \
+	lib32-mangohud \
 "
 
 export SERVICES="\
