@@ -141,9 +141,6 @@ plymouth-set-default-theme -R simple-image
 # install extra certificates
 trust anchor --store /extra_certs/*.crt
 
-# rebuild initramfs (required to pick up plymouth changes)
-mkinitcpio -c /etc/mkinitcpio.conf -g /boot/initramfs-linux.img -k /boot/vmlinuz-linux
-
 # clean up/remove unnecessary files
 rm -rf \
 /aur \
