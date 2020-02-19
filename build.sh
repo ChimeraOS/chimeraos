@@ -134,10 +134,6 @@ find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i
 mkdir -p /usr/var/lib/pacman
 cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 
-# set plymouth theme
-mv /usr/share/plymouth/themes/simple-image/gameros.png /usr/share/plymouth/themes/simple-image/img.png
-plymouth-set-default-theme -R simple-image
-
 # install extra certificates
 trust anchor --store /extra_certs/*.crt
 

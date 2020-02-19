@@ -77,8 +77,6 @@ export PACKAGES="\
 export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
-	plymouth \
-	plymouth-theme-simple-image-git \
 	python-vdf \
 	pycrc \
 	steam-tweaks \
@@ -99,7 +97,7 @@ export SERVICES="\
 	frzr-autoupdate \
 	frzr-etc \
 	NetworkManager \
-	lightdm-plymouth \
+	lightdm \
 	bluetooth \
 	fstrim.timer \
 	avahi-daemon \
