@@ -95,7 +95,6 @@ export AUR_PACKAGES="\
 
 export SERVICES="\
 	frzr-autoupdate \
-	frzr-etc \
 	NetworkManager \
 	lightdm \
 	bluetooth \
