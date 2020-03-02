@@ -112,6 +112,16 @@ echo "${SYSTEM_NAME}" > /etc/hostname
 # enable multicast dns in avahi
 sed -i "/^hosts:/ s/resolve/mdns resolve/" /etc/nsswitch.conf
 
+# configure ssh
+echo "
+AuthorizedKeysFile	.ssh/authorized_keys
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM yes
+PrintMotd no # pam does that
+Subsystem	sftp	/usr/lib/ssh/sftp-server
+" > /etc/ssh/sshd_config
+
 echo "
 LABEL=frzr_root /          btrfs subvol=deployments/${CHANNEL}-${VERSION},ro,noatime,nodatacow 0 0
 LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
