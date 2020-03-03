@@ -98,7 +98,7 @@ ${USERNAME} ALL=(ALL) ALL
 " > /etc/sudoers
 
 # set the default editor, so visudo works
-echo "export EDITOR=/usr/bin/vim" > /etc/bash.bashrc
+echo "export EDITOR=/usr/bin/vim" >> /etc/bash.bashrc
 
 # set default session in lightdm
 echo "
