@@ -76,6 +76,7 @@ export PACKAGES="\
 	haveged \
 	openbox \
 	termite \
+	pulsemixer \
 "
 
 export AUR_PACKAGES="\
