@@ -22,15 +22,7 @@ export PACKAGES="\
 	flatpak \
 	vulkan-icd-loader \
 	lib32-vulkan-icd-loader \
-	libva-mesa-driver \
-	lib32-libva-mesa-driver \
-	mesa-vdpau \
-	lib32-mesa-vdpau \
-	vulkan-radeon \
-	lib32-vulkan-radeon \
 	xf86-video-amdgpu \
-	vulkan-intel \
-	lib32-vulkan-intel \
 	libva-intel-driver \
 	lib32-libva-intel-driver \
 	xf86-video-intel \
@@ -91,6 +83,8 @@ export AUR_PACKAGES="\
 	lib32-gamemode \
 	mangohud \
 	lib32-mangohud \
+	mesa-aco-git \
+	lib32-mesa-aco-git \
 "
 
 export SERVICES="\
