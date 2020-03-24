@@ -77,6 +77,7 @@ export PACKAGES="\
 	openbox \
 	termite \
 	pulsemixer \
+	usbutils \
 "
 
 export AUR_PACKAGES="\
