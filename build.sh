@@ -8,9 +8,11 @@ if [ $EUID -ne 0 ]; then
 	exit 1
 fi
 
-SYSTEM_DESC=GamerOS
-SYSTEM_NAME=gameros
-USERNAME=gamer
+SYSTEM_DESC=${SYSTEM_NAME:-GamerOS}
+SYSTEM_NAME=${SYSTEM_NAME:-gameros}
+USERNAME=${USERNAME:-gamer}
+BUILD_USER=${BUILD_USER:-}
+OUTPUT_DIR=${OUTPUT_DIR:-}
 
 if [ -z "$1" ]; then
   echo "channel must be specified"
@@ -48,10 +50,17 @@ btrfs subvolume create ${BUILD_PATH}
 pacstrap ${BUILD_PATH} base
 
 # build AUR packages to be installed later
-rm -rf /var/cache/pikaur/pkg/*
-pikaur --noconfirm -Sw ${AUR_PACKAGES}
+PIKAUR_CMD="pikaur --noconfirm -Sw ${AUR_PACKAGES}"
+PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
+PIKAUR_CACHE="/var/cache/pikaur/pkg"
+if [ -n "${BUILD_USER}" ]; then
+	PIKAUR_RUN=(su - "${BUILD_USER}" -c "${PIKAUR_CMD}")
+	PIKAUR_CACHE="$(eval echo ~${BUILD_USER})/.cache/pikaur/pkg"
+fi
+rm -rf ${PIKAUR_CACHE}/*.pkg.tar.xz
+"${PIKAUR_RUN[@]}"
 mkdir ${BUILD_PATH}/aur
-cp /var/cache/pikaur/pkg/* ${BUILD_PATH}/aur/
+cp ${PIKAUR_CACHE}/* ${BUILD_PATH}/aur/
 
 # copy files into chroot
 cp -R rootfs/. ${BUILD_PATH}/
@@ -193,3 +202,9 @@ tar caf ${CHANNEL}-${VERSION}.img.tar.xz ${CHANNEL}-${VERSION}.img
 rm ${CHANNEL}-${VERSION}.img
 
 sha256sum ${CHANNEL}-${VERSION}.img.tar.xz
+
+# Move the image to the output directory, if one was specified.
+if [ -n "${OUTPUT_DIR}" ]; then
+	mkdir -p "${OUTPUT_DIR}"
+	mv ${CHANNEL}-${VERSION}.img.tar.xz ${OUTPUT_DIR}
+fi

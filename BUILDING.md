@@ -21,6 +21,16 @@ To build the image, run the following command:
 ```
 Replace `<channel>` and `<version>` with your own values. Channel should be a name and version, the version number. Neither the name nor the version should include a hyphen (`-`) character.
 
+## Building the GamerOS image using Docker
+
+To build the docker image, run the following:
+
+`docker build -t gameros-builder:latest .`
+
+Then build the GamerOS image with the following:
+
+`docker run -it --rm -v $(pwd)/output:/output --privileged gameros-builder:latest <channel> <version>`
+
 # Preparing for installation of the image
 
 To be able to install the generated image file (`<channel>-<version>.img.tar.xz`) it will need to be uploaded to a location which is accessible to the GamerOS system on which it will be installed. This can be a webserver or on the GamerOS system itself. In addition, a manifest file needs to be created.
