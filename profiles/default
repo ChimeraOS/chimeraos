@@ -91,6 +91,7 @@ export AUR_PACKAGES="\
 	lib32-gamemode \
 	mangohud \
 	lib32-mangohud \
+	vkbasalt \
 "
 
 export SERVICES="\
