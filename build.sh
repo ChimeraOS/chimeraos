@@ -167,6 +167,7 @@ rm -rf \
 /var \
 /boot/initramfs-linux-fallback.img \
 /boot/syslinux \
+/usr/include \
 /usr/share/gtk-doc \
 /usr/share/man \
 /usr/share/doc \
