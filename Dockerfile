@@ -4,7 +4,7 @@ LABEL contributor="shadowapex@gmail.com"
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
 	pacman --noconfirm -Syy && \
 	pacman --noconfirm -Syu && \
-	pacman --noconfirm -S arch-install-scripts btrfs-progs pyalpm sudo && \
+	pacman --noconfirm -S arch-install-scripts btrfs-progs pyalpm sudo reflector && \
 	pacman --noconfirm -S --needed base-devel git && \
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
 	useradd build -G wheel -m && \
@@ -15,6 +15,8 @@ RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.co
 # Add a fake systemd-run script to workaround pikaur requirement.
 RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 version'; fi\nmkdir -p /var/cache/pikaur\n" >> /usr/bin/systemd-run && \
 	chmod +x /usr/bin/systemd-run
+
+RUN reflector --verbose --latest 20 --country "United States" --sort rate --save /etc/pacman.d/mirrorlist
 
 # Add the project to the container.
 ADD . /gamer-os

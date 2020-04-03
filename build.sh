@@ -57,7 +57,7 @@ if [ -n "${BUILD_USER}" ]; then
 	PIKAUR_RUN=(su - "${BUILD_USER}" -c "${PIKAUR_CMD}")
 	PIKAUR_CACHE="$(eval echo ~${BUILD_USER})/.cache/pikaur/pkg"
 fi
-rm -rf ${PIKAUR_CACHE}/*.pkg.tar.xz
+rm -rf ${PIKAUR_CACHE}/*
 "${PIKAUR_RUN[@]}"
 mkdir ${BUILD_PATH}/aur
 cp ${PIKAUR_CACHE}/* ${BUILD_PATH}/aur/
