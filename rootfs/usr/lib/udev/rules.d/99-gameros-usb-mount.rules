@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="partition", ENV{ID_BUS}=="usb", ENV{ID_FS_LABEL}!="efi", ENV{ID_FS_LABEL}!="frzr_root", RUN+="/usr/bin/systemd-mount --no-block --no-ask-password --owner=wouter --collect $env{DEVNAME} /home/wouter/mount/$env{ID_VENDOR}_$env{ID_MODEL}_$env{ID_FS_UUID}"
+ACTION=="remove", SUBSYSTEM=="block", ENV{DEVTYPE}=="partition", ENV{ID_BUS}=="usb", RUN+="/usr/bin/find /home/wouter/mount/ -mindepth 1 -maxdepth 1 -type d -exec /usr/bin/rmdir --ignore-fail-on-non-empty {} ;"
