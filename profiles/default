@@ -55,6 +55,7 @@ export PACKAGES="\
 	libretro-bsnes \
 	libretro-bsnes-hd \
 	libretro-citra \
+	libretro-dolphin \
 	libretro-desmume \
 	libretro-gambatte \
 	libretro-genesis-plus-gx \
