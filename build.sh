@@ -4,7 +4,7 @@ set -e
 set -x
 
 if [ $EUID -ne 0 ]; then
-	echo "$(basename $0) must be run as root"
+	echo "$(basename "$0") must be run as root"
 	exit 1
 fi
 
@@ -28,7 +28,7 @@ CHANNEL=$1
 VERSION=$2
 PROFILE=default
 
-if [ ! -z "$3" ]; then
+if [ -n "$3" ]; then
   PROFILE="$3"
 fi
 
@@ -37,17 +37,17 @@ BUILD_PATH=${MOUNT_PATH}/subvolume
 SNAP_PATH=${MOUNT_PATH}/${CHANNEL}-${VERSION}
 BUILD_IMG=${CHANNEL}-build.img
 
-mkdir -p ${MOUNT_PATH}
+mkdir -p "${MOUNT_PATH}"
 
-source profiles/${PROFILE}
+source profiles/"${PROFILE}"
 
-fallocate -l ${SIZE} ${BUILD_IMG}
-mkfs.btrfs -f ${BUILD_IMG}
-mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
-btrfs subvolume create ${BUILD_PATH}
+fallocate -l "${SIZE}" "${BUILD_IMG}"
+mkfs.btrfs -f "${BUILD_IMG}"
+mount -t btrfs -o loop,nodatacow "${BUILD_IMG}" "${MOUNT_PATH}"
+btrfs subvolume create "${BUILD_PATH}"
 
 # bootstrap
-pacstrap ${BUILD_PATH} base
+pacstrap "${BUILD_PATH}" base
 
 # build AUR packages to be installed later
 PIKAUR_CMD="pikaur --noconfirm -Sw ${AUR_PACKAGES}"
@@ -55,19 +55,19 @@ PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
 PIKAUR_CACHE="/var/cache/pikaur/pkg"
 if [ -n "${BUILD_USER}" ]; then
 	PIKAUR_RUN=(su - "${BUILD_USER}" -c "${PIKAUR_CMD}")
-	PIKAUR_CACHE="$(eval echo ~${BUILD_USER})/.cache/pikaur/pkg"
+	PIKAUR_CACHE="$(eval echo ~"${BUILD_USER}")/.cache/pikaur/pkg"
 fi
-rm -rf ${PIKAUR_CACHE}/*
+rm -rf "${PIKAUR_CACHE}"/*
 "${PIKAUR_RUN[@]}"
-mkdir ${BUILD_PATH}/aur
-cp ${PIKAUR_CACHE}/* ${BUILD_PATH}/aur/
+mkdir "${BUILD_PATH}"/aur
+cp "${PIKAUR_CACHE}"/* "${BUILD_PATH}"/aur/
 
 # copy files into chroot
-cp -R rootfs/. ${BUILD_PATH}/
+cp -R rootfs/. "${BUILD_PATH}"/
 
 # chroot into target
-mount --bind ${BUILD_PATH} ${BUILD_PATH}
-arch-chroot ${BUILD_PATH} /bin/bash <<EOF
+mount --bind "${BUILD_PATH}" "${BUILD_PATH}"
+arch-chroot "${BUILD_PATH}" /bin/bash <<EOF
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
@@ -183,29 +183,29 @@ mkdir /var
 mkdir /frzr_root
 EOF
 
-echo "${CHANNEL}-${VERSION}" > ${BUILD_PATH}/build_info
-echo "" >> ${BUILD_PATH}/build_info
-cat ${BUILD_PATH}/manifest >> ${BUILD_PATH}/build_info
-rm ${BUILD_PATH}/manifest
+echo "${CHANNEL}-${VERSION}" > "${BUILD_PATH}"/build_info
+echo "" >> "${BUILD_PATH}"/build_info
+cat "${BUILD_PATH}"/manifest >> "${BUILD_PATH}"/build_info
+rm "${BUILD_PATH}"/manifest
 
-btrfs subvolume snapshot -r ${BUILD_PATH} ${SNAP_PATH}
-btrfs send -f ${CHANNEL}-${VERSION}.img ${SNAP_PATH}
+btrfs subvolume snapshot -r "${BUILD_PATH}" "${SNAP_PATH}"
+btrfs send -f "${CHANNEL}"-"${VERSION}".img "${SNAP_PATH}"
 
-cat ${BUILD_PATH}/build_info
+cat "${BUILD_PATH}"/build_info
 
 # clean up
-umount ${BUILD_PATH}
-umount ${MOUNT_PATH}
-rm -rf ${MOUNT_PATH}
-rm -rf ${BUILD_IMG}
+umount "${BUILD_PATH}"
+umount "${MOUNT_PATH}"
+rm -rf "${MOUNT_PATH}"
+rm -rf "${BUILD_IMG}"
 
-tar caf ${CHANNEL}-${VERSION}.img.tar.xz ${CHANNEL}-${VERSION}.img
-rm ${CHANNEL}-${VERSION}.img
+tar caf "${CHANNEL}"-"${VERSION}".img.tar.xz "${CHANNEL}"-"${VERSION}".img
+rm "${CHANNEL}"-"${VERSION}".img
 
-sha256sum ${CHANNEL}-${VERSION}.img.tar.xz
+sha256sum "${CHANNEL}"-"${VERSION}".img.tar.xz
 
 # Move the image to the output directory, if one was specified.
 if [ -n "${OUTPUT_DIR}" ]; then
 	mkdir -p "${OUTPUT_DIR}"
-	mv ${CHANNEL}-${VERSION}.img.tar.xz ${OUTPUT_DIR}
+	mv "${CHANNEL}"-"${VERSION}".img.tar.xz "${OUTPUT_DIR}"
 fi
