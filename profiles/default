@@ -1,6 +1,6 @@
 #! /bin/bash
 
-export SIZE="10GB"
+export SIZE="5GB"
 
 export PACKAGES="\
 	htop \
