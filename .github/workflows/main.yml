@@ -13,7 +13,7 @@ jobs:
       - name: Create docker image for building GamerOS
         run: docker build --no-cache -t gameros-builder:latest .
       - name: Build GamerOS btrfs image
-        run: docker run -it --rm -v $(pwd)/output:/output --privileged=true gameros-builder:latest gameros TEST
+        run: docker run --rm -v $(pwd)/output:/output --privileged=true gameros-builder:latest gameros TEST
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
         with:
