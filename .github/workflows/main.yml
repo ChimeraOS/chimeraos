@@ -1,0 +1,21 @@
+name: GamerOS build
+on: push
+jobs:
+  build:
+    name: GamerOS build
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Change directory
+        run: cd $GITHUB_WORKSPACE
+      - name: Obtain base Arch docker image
+        run: docker pull archlinux:latest
+      - name: Create docker image for building GamerOS
+        run: docker build --no-cache -t gameros-builder:latest .
+      - name: Build GamerOS btrfs image
+        run: docker run -it --rm -v $(pwd)/output:/output --privileged=true gameros-builder:latest gameros TEST
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: images
+          path: output
