@@ -57,10 +57,10 @@ if [ -n "${BUILD_USER}" ]; then
 	PIKAUR_RUN=(su - "${BUILD_USER}" -c "${PIKAUR_CMD}")
 	PIKAUR_CACHE="$(eval echo ~${BUILD_USER})/.cache/pikaur/pkg"
 fi
-rm -rf ${PIKAUR_CACHE}/*
-"${PIKAUR_RUN[@]}"
-mkdir ${BUILD_PATH}/aur
-cp ${PIKAUR_CACHE}/* ${BUILD_PATH}/aur/
+#rm -rf ${PIKAUR_CACHE}/*
+#"${PIKAUR_RUN[@]}"
+#mkdir ${BUILD_PATH}/aur
+#cp ${PIKAUR_CACHE}/* ${BUILD_PATH}/aur/
 
 # copy files into chroot
 cp -R rootfs/. ${BUILD_PATH}/
@@ -79,19 +79,19 @@ Include = /etc/pacman.d/mirrorlist
 " >> /etc/pacman.conf
 
 # update package databases
-pacman --noconfirm -Sy
+#pacman --noconfirm -Sy
 
 # install packages
-pacman --noconfirm -S ${PACKAGES}
+#pacman --noconfirm -S ${PACKAGES}
 
 # install AUR packages
-pacman --noconfirm -U /aur/*
+#pacman --noconfirm -U /aur/*
 
 # record installed packages & versions
 pacman -Q > /manifest
 
 # enable services
-systemctl enable ${SERVICES}
+#systemctl enable ${SERVICES}
 
 # disable root login
 passwd --lock root
@@ -150,7 +150,7 @@ DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
 # disable retroarch menu in joypad configs
-find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
+#find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
 
 # preserve installed package database
 mkdir -p /usr/var/lib/pacman
