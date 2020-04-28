@@ -32,4 +32,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./output/*.xz
+          asset_name: system_image.tar.xz
           asset_content_type: application/x-xz
