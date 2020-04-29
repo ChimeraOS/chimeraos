@@ -13,18 +13,18 @@ OUTPUT_DIR=${OUTPUT_DIR:-}
 
 source manifest
 
-if [ -z "$SYSTEM_NAME" ]; then
+if [ -z "${SYSTEM_NAME}" ]; then
   echo "SYSTEM_NAME must be specified"
   exit
 fi
 
-if [ -z "$VERSION" ]; then
+if [ -z "${VERSION}" ]; then
   echo "VERSION must be specified"
   exit
 fi
 
 if [ -n "$1" ]; then
-	VERSION="$VERSION_$1"
+	VERSION="${VERSION}_${1}"
 fi
 
 MOUNT_PATH=/tmp/${SYSTEM_NAME}-build
