@@ -187,7 +187,7 @@ rm ${BUILD_PATH}/manifest
 btrfs subvolume snapshot -r ${BUILD_PATH} ${SNAP_PATH}
 btrfs send -f ${SYSTEM_NAME}-${VERSION}.img ${SNAP_PATH}
 
-cat ${BUILD_PATH}/build_info
+cp ${BUILD_PATH}/build_info build_info.txt
 
 # clean up
 umount ${BUILD_PATH}
@@ -200,12 +200,14 @@ IMG_FILENAME="${SYSTEM_NAME}-${VERSION}.img.tar.xz"
 tar caf ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
 rm ${SYSTEM_NAME}-${VERSION}.img
 
-sha256sum ${SYSTEM_NAME}-${VERSION}.img.tar.xz
+sha256sum ${SYSTEM_NAME}-${VERSION}.img.tar.xz > sha256sum.txt
 
 # Move the image to the output directory, if one was specified.
 if [ -n "${OUTPUT_DIR}" ]; then
 	mkdir -p "${OUTPUT_DIR}"
 	mv ${IMG_FILENAME} ${OUTPUT_DIR}
+	mv build_info ${OUTPUT_DIR}
+	mv sha256sum ${OUTPUT_DIR}
 fi
 
 # set outputs for github actions
