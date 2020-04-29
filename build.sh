@@ -23,8 +23,11 @@ if [ -z "${VERSION}" ]; then
   exit
 fi
 
+DISPLAY_VERSION=${VERSION}
+
 if [ -n "$1" ]; then
 	VERSION="${VERSION}_${1}"
+	DISPLAY_VERSION="${VERSION} (${1})"
 fi
 
 MOUNT_PATH=/tmp/${SYSTEM_NAME}-build
@@ -138,7 +141,7 @@ LABEL=frzr_efi  /boot      vfat  rw,noatime,nofail  0 0
 echo "
 LSB_VERSION=1.4
 DISTRIB_ID=${SYSTEM_NAME}
-DISTRIB_RELEASE=${VERSION}
+DISTRIB_RELEASE=${DISPLAY_VERSION}
 DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
@@ -207,4 +210,5 @@ fi
 
 # set outputs for github actions
 echo "::set-output name=version::${VERSION}"
+echo "::set-output name=display_version::${DISPLAY_VERSION}"
 echo "::set-output name=image_filename::${IMG_FILENAME}"
