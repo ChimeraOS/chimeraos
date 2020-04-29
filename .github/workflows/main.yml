@@ -10,18 +10,19 @@ jobs:
         run: cd $GITHUB_WORKSPACE
       - name: Obtain base docker image
         run: docker pull archlinux:latest
-      - name: Create docker image for build
-        run: docker build --no-cache -t gameros-builder:latest .
-      - name: Build btrfs system image
-        run: docker run --rm -v $(pwd)/output:/output --privileged=true gameros-builder:latest gameros ${{ github.sha }}
+      - name: Create docker build image
+        run: docker build --no-cache -t image-builder:latest .
+      - name: Build system image
+        id: build_image
+        run: docker run --rm -v $(pwd)/output:/output --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: tag_${{ github.sha }}
-          release_name: Release ${{ github.sha }}
+          tag_name: ${{ steps.build_image.outputs.version }}
+          release_name: ${{ steps.build_image.outputs.version }}
           draft: false
           prerelease: true
       - name: Upload system image
@@ -31,6 +32,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./output/gameros-${{ github.sha }}.img.tar.xz
-          asset_name: gameros-${{ github.sha }}.img.tar.xz
+          asset_path: ./output/${{ steps.build_image.outputs.image_filename }}
+          asset_name: ${{ steps.build_image.outputs.image_filename }}
           asset_content_type: application/x-xz
