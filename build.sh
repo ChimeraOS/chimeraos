@@ -26,8 +26,8 @@ fi
 DISPLAY_VERSION=${VERSION}
 
 if [ -n "$1" ]; then
-	VERSION="${VERSION}_${1}"
 	DISPLAY_VERSION="${VERSION} (${1})"
+	VERSION="${VERSION}_${1}"
 fi
 
 MOUNT_PATH=/tmp/${SYSTEM_NAME}-build
