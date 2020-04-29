@@ -22,7 +22,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.build_image.outputs.version }}
-          release_name: ${{ steps.build_image.outputs.display_version }}
+          release_name: ${{ steps.build_image.outputs.display_name }} ${{ steps.build_image.outputs.display_version }} [UNSTABLE]
           draft: false
           prerelease: true
       - name: Upload system image

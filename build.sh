@@ -211,4 +211,5 @@ fi
 # set outputs for github actions
 echo "::set-output name=version::${VERSION}"
 echo "::set-output name=display_version::${DISPLAY_VERSION}"
+echo "::set-output name=display_name::${SYSTEM_DESC}"
 echo "::set-output name=image_filename::${IMG_FILENAME}"
