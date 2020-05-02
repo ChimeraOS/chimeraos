@@ -13,7 +13,7 @@ makedepends=('git' 'python2')
 
 _libname=mame_libretro
 _gitname=mame
-source=("git+https://github.com/libretro/${_gitname}.git#commit=4c9da7f442f395a3673f876770e01cc2a479bea9")
+source=("git+https://github.com/libretro/${_gitname}.git")
 sha256sums=('SKIP')
 
 pkgver() {
@@ -23,7 +23,7 @@ pkgver() {
 
 build() {
   cd "${_gitname}"
-  make OSD="retro" verbose=1 RETRO=1 NOWERROR=1 OS="linux" TARGETOS="linux" CONFIG="libretro" NO_USE_MIDI="1" PTR64=1 TARGET=mame SUBTARGET=arcade
+  make OSD="retro" verbose=1 RETRO=1 NOWERROR=1 OS="linux" TARGETOS="linux" CONFIG="libretro" NO_USE_MIDI="1" PTR64=1 TARGET=mame MAME=mametiny64 SUBTARGET=tiny
 }
 
 package() {
