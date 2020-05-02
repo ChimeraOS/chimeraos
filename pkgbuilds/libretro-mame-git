@@ -8,7 +8,7 @@ pkgdesc="libretro implementation of MAME. (Arcade)"
 url="https://github.com/libretro/mame"
 license=('custom:MAME License')
 groups=('libretro')
-depends=('zlib' 'glibc' 'libretro-core-info')
+depends=('zlib' 'glibc' 'libretro-core-info' 'libglvnd')
 makedepends=('git' 'python2')
 
 _libname=mame_libretro
