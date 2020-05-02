@@ -58,6 +58,7 @@ rm -rf ${PIKAUR_CACHE}/*
 "${PIKAUR_RUN[@]}"
 mkdir ${BUILD_PATH}/aur
 cp ${PIKAUR_CACHE}/* ${BUILD_PATH}/aur/
+rm -rf ${PIKAUR_CACHE}/*
 
 # copy files into chroot
 cp -R rootfs/. ${BUILD_PATH}/
@@ -80,9 +81,11 @@ pacman --noconfirm -Sy
 
 # install packages
 pacman --noconfirm -S ${PACKAGES}
+rm -rf /var/cache/pacman/pkg/*
 
 # install AUR packages
 pacman --noconfirm -U /aur/*
+rm -rf /aur/*
 
 # record installed packages & versions
 pacman -Q > /manifest

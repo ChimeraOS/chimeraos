@@ -23,10 +23,10 @@ pkgver() {
 
 build() {
   cd "${_gitname}"
-  make OSD="retro" verbose=1 RETRO=1 NOWERROR=1 OS="linux" TARGETOS="linux" CONFIG="libretro" NO_USE_MIDI="1" PTR64=1 TARGET=mame MAME=mametiny64 SUBTARGET=tiny
+  make OSD="retro" verbose=1 RETRO=1 NOWERROR=1 OS="linux" TARGETOS="linux" CONFIG="libretro" NO_USE_MIDI="1" PTR64=1 TARGET=mame SUBTARGET=arcade
 }
 
 package() {
-  install -Dm644 "${_gitname}/mametiny_libretro.so" "${pkgdir}/usr/lib/libretro/${_libname}.so"
+  install -Dm644 "${_gitname}/mamearcade_libretro.so" "${pkgdir}/usr/lib/libretro/${_libname}.so"
   install -Dm644 "${_gitname}/docs/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/license.txt"
 }
