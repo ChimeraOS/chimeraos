@@ -27,6 +27,6 @@ build() {
 }
 
 package() {
-  install -Dm644 "${_gitname}/mamearcade_libretro.so" "${pkgdir}/usr/lib/libretro/${_libname}.so"
+  install -Dm644 "${_gitname}/mametiny_libretro.so" "${pkgdir}/usr/lib/libretro/${_libname}.so"
   install -Dm644 "${_gitname}/docs/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/license.txt"
 }
