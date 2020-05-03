@@ -105,7 +105,7 @@ export AUR_PACKAGES="\
 "
 
 export LOCAL_AUR_PACKAGES="\
-	libretro-mame-git \
+	libretro-mame-bin \
 "
 
 export SERVICES="\
