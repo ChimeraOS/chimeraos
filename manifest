@@ -13,6 +13,7 @@ export PACKAGES="\
 	xorg-server \
 	bluez \
 	bluez-utils \
+	bluez-plugins \
 	lib32-freetype2 \
 	lib32-curl \
 	lib32-libgpg-error \
