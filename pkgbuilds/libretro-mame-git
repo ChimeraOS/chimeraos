@@ -1,32 +1,20 @@
-# Maintainer:  Oliver Jaksch <arch-aur@com-in.de>
-
-pkgname=libretro-mame-git
-pkgver=71661.abca8f7ac5
+pkgname=libretro-mame-bin
+pkgver=abca8f7ac5
 pkgrel=1
-arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h')
+arch=('x86_64')
 pkgdesc="libretro implementation of MAME. (Arcade)"
 url="https://github.com/libretro/mame"
 license=('custom:MAME License')
 groups=('libretro')
 depends=('zlib' 'glibc' 'libretro-core-info')
-makedepends=('git' 'python2' 'libglvnd' 'alsa-lib')
 
 _libname=mame_libretro
-_gitname=mame
-source=("git+https://github.com/libretro/${_gitname}.git")
-sha256sums=('SKIP')
-
-pkgver() {
-  cd "${_gitname}"
-  echo $(git rev-list --count HEAD).$(git rev-parse --short HEAD)
-}
-
-build() {
-  cd "${_gitname}"
-  make OSD="retro" verbose=1 RETRO=1 NOWERROR=1 OS="linux" TARGETOS="linux" CONFIG="libretro" NO_USE_MIDI="1" PTR64=1 TARGET=mame SUBTARGET=arcade
-}
+source=("https://github.com/alkazar/libretro-mame-bin/releases/download/$pkgver/mame_libretro.so"
+        "https://github.com/alkazar/libretro-mame-bin/releases/download/$pkgver/license.txt")
+sha256sums=('c6c6c96fab838cc3808ba2746c70e8b326301f813726389aa79ce2fa1b492dc1'
+            '6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01')
 
 package() {
-  install -Dm644 "${_gitname}/mamearcade_libretro.so" "${pkgdir}/usr/lib/libretro/${_libname}.so"
-  install -Dm644 "${_gitname}/docs/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/license.txt"
+  install -Dm644 "mame_libretro.so" "${pkgdir}/usr/lib/libretro/mame_libretro.so"
+  install -Dm644 "license.txt" "${pkgdir}/usr/share/licenses/${pkgname}/license.txt"
 }
