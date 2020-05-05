@@ -24,10 +24,12 @@ if [ -z "${VERSION}" ]; then
 fi
 
 DISPLAY_VERSION=${VERSION}
+LSB_VERSION=${VERSION}
 
 if [ -n "$1" ]; then
 	DISPLAY_VERSION="${VERSION} (${1})"
 	VERSION="${VERSION}_${1}"
+	LSB_VERSION="\"${LSB_VERSION}　(${1})\""
 fi
 
 MOUNT_PATH=/tmp/${SYSTEM_NAME}-build
@@ -146,7 +148,7 @@ LABEL=frzr_efi  /boot      vfat  rw,noatime,nofail  0 0
 echo "
 LSB_VERSION=1.4
 DISTRIB_ID=${SYSTEM_NAME}
-DISTRIB_RELEASE=${DISPLAY_VERSION}
+DISTRIB_RELEASE=${LSB_VERSION}
 DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
