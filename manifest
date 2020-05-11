@@ -85,6 +85,7 @@ export PACKAGES="\
 	pulsemixer \
 	usbutils \
 	qt5-webengine \
+	ethtool \
 "
 
 export AUR_PACKAGES="\
