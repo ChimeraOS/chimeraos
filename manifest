@@ -84,7 +84,6 @@ export PACKAGES="\
 	termite \
 	pulsemixer \
 	usbutils \
-	qt5-webengine \
 	ethtool \
 "
 
@@ -104,7 +103,6 @@ export AUR_PACKAGES="\
 	lib32-gamemode \
 	mangohud \
 	lib32-mangohud \
-	yuzu-mainline-git-bin \
 "
 
 export LOCAL_AUR_PACKAGES="\
