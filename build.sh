@@ -8,38 +8,36 @@ if [ $EUID -ne 0 ]; then
 	exit 1
 fi
 
-SYSTEM_DESC=${SYSTEM_NAME:-GamerOS}
-SYSTEM_NAME=${SYSTEM_NAME:-gameros}
-USERNAME=${USERNAME:-gamer}
 BUILD_USER=${BUILD_USER:-}
 OUTPUT_DIR=${OUTPUT_DIR:-}
 
-if [ -z "$1" ]; then
-  echo "channel must be specified"
+source manifest
+
+if [ -z "${SYSTEM_NAME}" ]; then
+  echo "SYSTEM_NAME must be specified"
   exit
 fi
 
-if [ -z "$2" ]; then
-  echo "version must be specified"
+if [ -z "${VERSION}" ]; then
+  echo "VERSION must be specified"
   exit
 fi
 
-CHANNEL=$1
-VERSION=$2
-PROFILE=default
+DISPLAY_VERSION=${VERSION}
+LSB_VERSION=${VERSION}
 
-if [ ! -z "$3" ]; then
-  PROFILE="$3"
+if [ -n "$1" ]; then
+	DISPLAY_VERSION="${VERSION} (${1})"
+	VERSION="${VERSION}_${1}"
+	LSB_VERSION="${LSB_VERSION}　(${1})"
 fi
 
-MOUNT_PATH=/tmp/${CHANNEL}-build
+MOUNT_PATH=/tmp/${SYSTEM_NAME}-build
 BUILD_PATH=${MOUNT_PATH}/subvolume
-SNAP_PATH=${MOUNT_PATH}/${CHANNEL}-${VERSION}
-BUILD_IMG=${CHANNEL}-build.img
+SNAP_PATH=${MOUNT_PATH}/${SYSTEM_NAME}-${VERSION}
+BUILD_IMG=${SYSTEM_NAME}-build.img
 
 mkdir -p ${MOUNT_PATH}
-
-source profiles/${PROFILE}
 
 fallocate -l ${SIZE} ${BUILD_IMG}
 mkfs.btrfs -f ${BUILD_IMG}
@@ -50,17 +48,19 @@ btrfs subvolume create ${BUILD_PATH}
 pacstrap ${BUILD_PATH} base
 
 # build AUR packages to be installed later
-PIKAUR_CMD="pikaur --noconfirm -Sw ${AUR_PACKAGES}"
+PIKAUR_CMD="pikaur --noconfirm -Sw ${AUR_PACKAGES} && pushd pkgbuilds && pikaur --noconfirm -Pw ${LOCAL_AUR_PACKAGES} && popd"
 PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
-PIKAUR_CACHE="/var/cache/pikaur/pkg"
+PIKAUR_CACHE="/var/cache/pikaur"
 if [ -n "${BUILD_USER}" ]; then
+	su - "${BUILD_USER}" -c "cp -r /workdir/pkgbuilds ."
 	PIKAUR_RUN=(su - "${BUILD_USER}" -c "${PIKAUR_CMD}")
-	PIKAUR_CACHE="$(eval echo ~${BUILD_USER})/.cache/pikaur/pkg"
+	PIKAUR_CACHE="$(eval echo ~${BUILD_USER})/.cache/pikaur"
 fi
-rm -rf ${PIKAUR_CACHE}/*
+rm -rf ${PIKAUR_CACHE}
 "${PIKAUR_RUN[@]}"
 mkdir ${BUILD_PATH}/aur
-cp ${PIKAUR_CACHE}/* ${BUILD_PATH}/aur/
+cp ${PIKAUR_CACHE}/pkg/* ${BUILD_PATH}/aur/
+rm -rf ${PIKAUR_CACHE}
 
 # copy files into chroot
 cp -R rootfs/. ${BUILD_PATH}/
@@ -68,6 +68,9 @@ cp -R rootfs/. ${BUILD_PATH}/
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
 arch-chroot ${BUILD_PATH} /bin/bash <<EOF
+set -e
+set -x
+
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
@@ -135,7 +138,7 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
 echo "
-LABEL=frzr_root /          btrfs subvol=deployments/${CHANNEL}-${VERSION},ro,noatime,nodatacow 0 0
+LABEL=frzr_root /          btrfs subvol=deployments/${SYSTEM_NAME}-${VERSION},ro,noatime,nodatacow 0 0
 LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
@@ -145,7 +148,7 @@ LABEL=frzr_efi  /boot      vfat  rw,noatime,nofail  0 0
 echo "
 LSB_VERSION=1.4
 DISTRIB_ID=${SYSTEM_NAME}
-DISTRIB_RELEASE=${VERSION}
+DISTRIB_RELEASE=\"${LSB_VERSION}\"
 DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
@@ -183,15 +186,15 @@ mkdir /var
 mkdir /frzr_root
 EOF
 
-echo "${CHANNEL}-${VERSION}" > ${BUILD_PATH}/build_info
+echo "${SYSTEM_NAME}-${VERSION}" > ${BUILD_PATH}/build_info
 echo "" >> ${BUILD_PATH}/build_info
 cat ${BUILD_PATH}/manifest >> ${BUILD_PATH}/build_info
 rm ${BUILD_PATH}/manifest
 
 btrfs subvolume snapshot -r ${BUILD_PATH} ${SNAP_PATH}
-btrfs send -f ${CHANNEL}-${VERSION}.img ${SNAP_PATH}
+btrfs send -f ${SYSTEM_NAME}-${VERSION}.img ${SNAP_PATH}
 
-cat ${BUILD_PATH}/build_info
+cp ${BUILD_PATH}/build_info build_info.txt
 
 # clean up
 umount ${BUILD_PATH}
@@ -199,13 +202,23 @@ umount ${MOUNT_PATH}
 rm -rf ${MOUNT_PATH}
 rm -rf ${BUILD_IMG}
 
-tar caf ${CHANNEL}-${VERSION}.img.tar.xz ${CHANNEL}-${VERSION}.img
-rm ${CHANNEL}-${VERSION}.img
+IMG_FILENAME="${SYSTEM_NAME}-${VERSION}.img.tar.xz"
 
-sha256sum ${CHANNEL}-${VERSION}.img.tar.xz
+tar caf ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
+rm ${SYSTEM_NAME}-${VERSION}.img
+
+sha256sum ${SYSTEM_NAME}-${VERSION}.img.tar.xz > sha256sum.txt
 
 # Move the image to the output directory, if one was specified.
 if [ -n "${OUTPUT_DIR}" ]; then
 	mkdir -p "${OUTPUT_DIR}"
-	mv ${CHANNEL}-${VERSION}.img.tar.xz ${OUTPUT_DIR}
+	mv ${IMG_FILENAME} ${OUTPUT_DIR}
+	mv build_info.txt ${OUTPUT_DIR}
+	mv sha256sum.txt ${OUTPUT_DIR}
 fi
+
+# set outputs for github actions
+echo "::set-output name=version::${VERSION}"
+echo "::set-output name=display_version::${DISPLAY_VERSION}"
+echo "::set-output name=display_name::${SYSTEM_DESC}"
+echo "::set-output name=image_filename::${IMG_FILENAME}"

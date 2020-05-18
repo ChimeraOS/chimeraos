@@ -19,7 +19,7 @@ RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 
 RUN reflector --verbose --latest 20 --country "United States" --sort rate --save /etc/pacman.d/mirrorlist
 
 # Add the project to the container.
-ADD . /gamer-os
+ADD . /workdir
 
 # Build pikaur packages as the 'build' user
 ENV BUILD_USER build
@@ -27,5 +27,5 @@ ENV BUILD_USER build
 # Built image will be moved here. This should be a host mount to get the output.
 ENV OUTPUT_DIR /output
 
-WORKDIR /gamer-os
-ENTRYPOINT ["/gamer-os/build.sh"]
+WORKDIR /workdir
+ENTRYPOINT ["/workdir/build.sh"]

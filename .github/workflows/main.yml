@@ -1,21 +1,54 @@
-name: GamerOS build
+name: System image build
 on: push
 jobs:
   build:
-    name: GamerOS build
+    name: System image build
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
-      - name: Obtain base Arch docker image
+      - name: Obtain base docker image
         run: docker pull archlinux:latest
-      - name: Create docker image for building GamerOS
-        run: docker build --no-cache -t gameros-builder:latest .
-      - name: Build GamerOS btrfs image
-        run: docker run --rm -v $(pwd)/output:/output --privileged=true gameros-builder:latest gameros TEST
-      - name: Upload artifact
-        uses: actions/upload-artifact@v1.0.0
+      - name: Create docker build image
+        run: docker build --no-cache -t image-builder:latest .
+      - name: Build system image
+        id: build_image
+        run: docker run --rm -v $(pwd)/output:/output --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: images
-          path: output
+          tag_name: ${{ steps.build_image.outputs.version }}
+          release_name: ${{ steps.build_image.outputs.display_name }} ${{ steps.build_image.outputs.display_version }} [UNSTABLE]
+          draft: false
+          prerelease: true
+      - name: Upload system image
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./output/${{ steps.build_image.outputs.image_filename }}
+          asset_name: ${{ steps.build_image.outputs.image_filename }}
+          asset_content_type: application/x-xz
+      - name: Upload build info
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./output/build_info.txt
+          asset_name: build_info.txt
+          asset_content_type: text/plain
+      - name: Upload sha256sum
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./output/sha256sum.txt
+          asset_name: sha256sum.txt
+          asset_content_type: text/plain
