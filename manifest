@@ -77,6 +77,7 @@ export PACKAGES="\
 	libretro-flycast \
 	libretro-play \
 	libretro-kronos \
+	libretro-beetle-pce-fast \
 	dolphin-emu \
 	nss-mdns \
 	haveged \
@@ -85,24 +86,26 @@ export PACKAGES="\
 	pulsemixer \
 	usbutils \
 	ethtool \
+	\
+	gamemode \
+	lib32-gamemode \
+	mangohud \
+	lib32-mangohud \
+	python-vdf \
+	yuzu-mainline-git \
+	rpcs3-git \
+	libretro-stella2014-git \
 "
 
 export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
-	python-vdf \
 	pycrc \
 	steam-tweaks \
-	libretro-beetle-pce-fast-git \
-	libretro-stella2014-git \
 	steam-buddy \
 	retroarch-autoconfig-udev-git \
 	alienware-alpha-wmi \
 	xow \
-	gamemode \
-	lib32-gamemode \
-	mangohud \
-	lib32-mangohud \
 "
 
 export LOCAL_AUR_PACKAGES="\

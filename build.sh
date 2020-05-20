@@ -75,11 +75,20 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
 
-# adding multilib to pacman mirror list
+# add multilib and chaotic-aur repos
 echo "
 [multilib]
 Include = /etc/pacman.d/mirrorlist
+
+[chaotic-aur]
+Server = http://lonewolf-builder.duckdns.org/$repo/x86_64
+Server = https://repo.kitsuna.net/x86_64
+Server = http://chaotic.bangl.de/$repo/x86_64
 " >> /etc/pacman.conf
+
+# add trust for chaotic-aur
+pacman-key --keyserver keys.mozilla.org -r 3056513887B78AEB
+pacman-key --lsign-key 3056513887B78AEB
 
 # update package databases
 pacman --noconfirm -Sy
