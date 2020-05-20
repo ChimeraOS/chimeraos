@@ -88,6 +88,7 @@ Server = http://chaotic.bangl.de/$repo/x86_64
 
 # add trust for chaotic-aur
 pacman-key --keyserver keys.mozilla.org -r 3056513887B78AEB
+pacman-key --lsign-key 3056513887B78AEB
 
 # update package databases
 pacman --noconfirm -Sy
