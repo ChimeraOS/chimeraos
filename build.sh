@@ -218,6 +218,7 @@ tar caf ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
 rm ${SYSTEM_NAME}-${VERSION}.img
 
 sha256sum ${SYSTEM_NAME}-${VERSION}.img.tar.xz > sha256sum.txt
+cat sha256sum.txt
 
 # Move the image to the output directory, if one was specified.
 if [ -n "${OUTPUT_DIR}" ]; then
