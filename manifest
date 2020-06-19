@@ -103,6 +103,7 @@ export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
 	pycrc \
+	python-inotify-simple \
 	steam-tweaks \
 	steam-buddy \
 	retroarch-autoconfig-udev-git \
@@ -123,6 +124,7 @@ export SERVICES="\
 	steam-buddy@gamer.service \
 	steam-buddy-proxy@gamer.service \
 	steam-buddy-proxy@gamer.socket \
+	steam-patch@gamer.service \
 	haveged \
 	systemd-timesyncd \
 	xow \
