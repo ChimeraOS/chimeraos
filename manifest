@@ -87,6 +87,7 @@ export PACKAGES="\
 	usbutils \
 	ethtool \
 	nano \
+	xow \
 	chaotic-aur/gamescope-git \
 	chaotic-aur/gamemode \
 	chaotic-aur/lib32-gamemode \
@@ -96,7 +97,6 @@ export PACKAGES="\
 	chaotic-aur/yuzu-mainline-git \
 	chaotic-aur/rpcs3-git \
 	chaotic-aur/libretro-stella2014-git \
-	chaotic-aur/xow-git \
 "
 
 export AUR_PACKAGES="\
