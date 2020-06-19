@@ -86,6 +86,7 @@ export PACKAGES="\
 	pulsemixer \
 	usbutils \
 	ethtool \
+	nano \
 	chaotic-aur/gamescope-git \
 	chaotic-aur/gamemode \
 	chaotic-aur/lib32-gamemode \
