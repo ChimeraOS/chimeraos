@@ -109,6 +109,7 @@ export AUR_PACKAGES="\
 	xow \
 	retroarch-autoconfig-udev-git \
 	alienware-alpha-wmi \
+	mame-tools \
 "
 
 export SERVICES="\
