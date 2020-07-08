@@ -96,6 +96,7 @@ export PACKAGES="\
 	chaotic-aur/yuzu-mainline-git \
 	chaotic-aur/rpcs3-git \
 	chaotic-aur/libretro-stella2014-git \
+	chaotic-aur/libretro-mame-git \
 "
 
 export AUR_PACKAGES="\
@@ -108,10 +109,6 @@ export AUR_PACKAGES="\
 	xow \
 	retroarch-autoconfig-udev-git \
 	alienware-alpha-wmi \
-"
-
-export LOCAL_AUR_PACKAGES="\
-	libretro-mame-bin \
 "
 
 export SERVICES="\

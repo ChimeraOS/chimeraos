@@ -48,7 +48,7 @@ btrfs subvolume create ${BUILD_PATH}
 pacstrap ${BUILD_PATH} base
 
 # build AUR packages to be installed later
-PIKAUR_CMD="pikaur --noconfirm -Sw ${AUR_PACKAGES} && pushd pkgbuilds && pikaur --noconfirm -Pw ${LOCAL_AUR_PACKAGES} && popd"
+PIKAUR_CMD="pikaur --noconfirm -Sw ${AUR_PACKAGES}"
 PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
 PIKAUR_CACHE="/var/cache/pikaur"
 if [ -n "${BUILD_USER}" ]; then
