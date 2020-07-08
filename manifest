@@ -70,7 +70,6 @@ export PACKAGES="\
 	libretro-nestopia \
 	libretro-parallel-n64 \
 	libretro-ppsspp \
-	libretro-redream \
 	libretro-scummvm \
 	libretro-snes9x \
 	libretro-yabause \
