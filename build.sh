@@ -52,7 +52,6 @@ PIKAUR_CMD="pikaur --noconfirm -Sw ${AUR_PACKAGES}"
 PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
 PIKAUR_CACHE="/var/cache/pikaur"
 if [ -n "${BUILD_USER}" ]; then
-	su - "${BUILD_USER}" -c "cp -r /workdir/pkgbuilds ."
 	PIKAUR_RUN=(su - "${BUILD_USER}" -c "${PIKAUR_CMD}")
 	PIKAUR_CACHE="$(eval echo ~${BUILD_USER})/.cache/pikaur"
 fi
