@@ -152,6 +152,7 @@ LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
 LABEL=frzr_efi  /boot      vfat  rw,noatime,nofail  0 0
+LABEL=frzr_boot /boot      vfat  rw,noatime,nofail  0 0
 " > /etc/fstab
 
 echo "
