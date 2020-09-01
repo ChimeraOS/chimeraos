@@ -10,7 +10,7 @@ RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.co
 	useradd build -G wheel -m && \
 	su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur" && \
 	su - build -c "cd /tmp/pikaur && makepkg -f" && \
-	pacman --noconfirm -U /tmp/pikaur/pikaur-*.pkg.tar.xz
+	pacman --noconfirm -U /tmp/pikaur/pikaur-*.pkg.tar.zst
 
 # Add a fake systemd-run script to workaround pikaur requirement.
 RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 version'; fi\nmkdir -p /var/cache/pikaur\n" >> /usr/bin/systemd-run && \
