@@ -4,7 +4,7 @@ export VERSION="20"
 export SYSTEM_DESC="GamerOS"
 export SYSTEM_NAME="gameros"
 export USERNAME="gamer"
-export SIZE="6GB"
+export SIZE="6500MB"
 
 export PACKAGES="\
 	htop \
