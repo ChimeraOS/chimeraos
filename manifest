@@ -80,7 +80,7 @@ export PACKAGES="\
 	libretro-beetle-pce-fast \
 	libretro-picodrive \
 	dolphin-emu \
-	pcsx2 \
+	fmt \
 	nss-mdns \
 	haveged \
 	openbox \
