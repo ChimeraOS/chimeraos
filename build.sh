@@ -83,12 +83,14 @@ Include = /etc/pacman.d/mirrorlist
 Server = http://lonewolf-builder.duckdns.org/$repo/x86_64
 Server = https://repo.kitsuna.net/x86_64
 Server = http://chaotic.bangl.de/$repo/x86_64
+Server = https://chaotic.tn.dedyn.io/x86_64
 " >> /etc/pacman.conf
 
 # add trust for chaotic-aur
 pacman-key --init
-pacman-key --keyserver keys.mozilla.org -r 3056513887B78AEB
+pacman-key --keyserver hkp://keyserver.ubuntu.com -r 3056513887B78AEB 8A9E14A07010F7E3
 pacman-key --lsign-key 3056513887B78AEB
+pacman-key --lsign-key 8A9E14A07010F7E3
 
 # update package databases
 pacman --noconfirm -Sy
