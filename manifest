@@ -90,6 +90,7 @@ export PACKAGES="\
 	ethtool \
 	nano \
 	boost-libs \
+	nvidia-settings \
 	chaotic-aur/gamescope-git \
 	chaotic-aur/gamemode \
 	chaotic-aur/lib32-gamemode \
@@ -114,6 +115,7 @@ export AUR_PACKAGES="\
 	retroarch-autoconfig-udev-git \
 	alienware-alpha-wmi \
 	bcache-tools \
+	mame-tools \
 "
 
 export SERVICES="\
