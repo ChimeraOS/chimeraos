@@ -76,21 +76,21 @@ locale-gen
 
 # set archive date if specified
 if [ -n "${ARCHIVE_DATE}" ]; then
-	echo "
+	echo '
 	Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch
-	" > /etc/pacman.d/mirrorlist
+	' > /etc/pacman.d/mirrorlist
 fi
 
 # add multilib and chaotic-aur repos
-echo "
+echo '
 [multilib]
 Include = /etc/pacman.d/mirrorlist
 
 [chaotic-aur]
 Server = https://repo.kitsuna.net/x86_64
-Server = http://chaotic.bangl.de/$repo/x86_64
+Server = http://chaotic.bangl.de/\$repo/x86_64
 Server = https://chaotic.tn.dedyn.io/x86_64
-" >> /etc/pacman.conf
+' >> /etc/pacman.conf
 
 # add trust for chaotic-aur
 pacman-key --init
@@ -99,7 +99,7 @@ pacman-key --lsign-key 3056513887B78AEB
 pacman-key --lsign-key 8A9E14A07010F7E3
 
 # update package databases
-pacman --noconfirm -Sy
+pacman --noconfirm -Syy
 
 # install packages
 pacman --noconfirm -S ${PACKAGES}
