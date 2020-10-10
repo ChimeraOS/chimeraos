@@ -117,6 +117,7 @@ export AUR_PACKAGES="\
 	alienware-alpha-wmi \
 	bcache-tools \
 	mame-tools \
+	libretro-ppsspp-gameros \
 "
 
 export SERVICES="\
