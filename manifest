@@ -71,7 +71,6 @@ export PACKAGES="\
 	libretro-mupen64plus-next \
 	libretro-nestopia \
 	libretro-parallel-n64 \
-	libretro-ppsspp \
 	libretro-scummvm \
 	libretro-snes9x \
 	libretro-yabause \
