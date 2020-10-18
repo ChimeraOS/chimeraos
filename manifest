@@ -110,13 +110,13 @@ export AUR_PACKAGES="\
 	pycrc \
 	python-inotify-simple \
 	steam-tweaks \
+	libretro-ppsspp-gameros \
 	steam-buddy \
 	xow \
 	retroarch-autoconfig-udev-git \
 	alienware-alpha-wmi \
 	bcache-tools \
 	mame-tools \
-	libretro-ppsspp-gameros \
 "
 
 export SERVICES="\
