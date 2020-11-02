@@ -5,7 +5,7 @@ export SYSTEM_DESC="GamerOS"
 export SYSTEM_NAME="gameros"
 export USERNAME="gamer"
 export SIZE="6500MB"
-export ARCHIVE_DATE="2020/09/19"
+export ARCHIVE_DATE="2020/10/24"
 
 export PACKAGES="\
 	htop \
@@ -71,7 +71,6 @@ export PACKAGES="\
 	libretro-mupen64plus-next \
 	libretro-nestopia \
 	libretro-parallel-n64 \
-	libretro-ppsspp \
 	libretro-scummvm \
 	libretro-snes9x \
 	libretro-yabause \
@@ -92,9 +91,9 @@ export PACKAGES="\
 	nano \
 	boost-libs \
 	nvidia-settings \
+	gamemode \
+	lib32-gamemode \
 	chaotic-aur/gamescope-git \
-	chaotic-aur/gamemode \
-	chaotic-aur/lib32-gamemode \
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
 	chaotic-aur/python-vdf \
@@ -111,6 +110,7 @@ export AUR_PACKAGES="\
 	pycrc \
 	python-inotify-simple \
 	steam-tweaks \
+	libretro-ppsspp-gameros \
 	steam-buddy \
 	xow \
 	retroarch-autoconfig-udev-git \
