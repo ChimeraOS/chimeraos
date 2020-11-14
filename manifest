@@ -32,6 +32,7 @@ export PACKAGES="\
 	libva-mesa-driver \
 	lib32-libva-mesa-driver \
 	mesa-vdpau \
+	mesa-demos \
 	lib32-mesa-vdpau \
 	vulkan-radeon \
 	lib32-vulkan-radeon \
@@ -53,6 +54,7 @@ export PACKAGES="\
 	diffutils \
 	logrotate \
 	vim \
+	unzip \
 	which \
 	linux-firmware \
 	retroarch \
@@ -117,6 +119,7 @@ export AUR_PACKAGES="\
 	alienware-alpha-wmi \
 	bcache-tools \
 	mame-tools \
+	libretro-virtualjaguar-git \
 "
 
 export SERVICES="\
