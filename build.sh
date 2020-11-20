@@ -113,6 +113,9 @@ pacman -Q > /manifest
 # enable services
 systemctl enable ${SERVICES}
 
+# enable user services
+systemctl --global enable ${USER_SERVICES}
+
 # disable root login
 passwd --lock root
 

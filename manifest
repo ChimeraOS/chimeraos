@@ -129,12 +129,15 @@ export SERVICES="\
 	bluetooth \
 	fstrim.timer \
 	avahi-daemon \
-	steam-buddy@gamer.service \
-	steam-buddy-proxy@gamer.service \
-	steam-buddy-proxy@gamer.socket \
+	steam-buddy-proxy.service \
+	steam-buddy-proxy.socket \
 	steam-patch@gamer.service \
 	haveged \
 	systemd-timesyncd \
 	xow \
 	sshd \
+"
+
+export USER_SERVICES="\
+	steam-buddy.service \
 "
