@@ -4,7 +4,7 @@ export VERSION="22"
 export SYSTEM_DESC="GamerOS"
 export SYSTEM_NAME="gameros"
 export USERNAME="gamer"
-export SIZE="6500MB"
+export SIZE="7000MB"
 export ARCHIVE_DATE="2020/12/19"
 
 export PACKAGES="\
