@@ -81,6 +81,7 @@ export PACKAGES="\
 	libretro-kronos \
 	libretro-beetle-pce-fast \
 	libretro-picodrive \
+	libretro-ppsspp \
 	dolphin-emu \
 	fmt \
 	nss-mdns \
@@ -95,6 +96,9 @@ export PACKAGES="\
 	nvidia-settings \
 	gamemode \
 	lib32-gamemode \
+	podman \
+	podman-compose \
+	lshw \
 	chaotic-aur/gamescope-git \
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
@@ -112,7 +116,6 @@ export AUR_PACKAGES="\
 	pycrc \
 	python-inotify-simple \
 	steam-tweaks \
-	libretro-ppsspp-gameros \
 	steam-buddy \
 	xow \
 	retroarch-autoconfig-udev-git \
@@ -120,6 +123,7 @@ export AUR_PACKAGES="\
 	bcache-tools \
 	mame-tools \
 	libretro-virtualjaguar-git \
+	libretro-opera-git \
 "
 
 export SERVICES="\
