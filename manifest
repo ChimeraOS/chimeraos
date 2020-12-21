@@ -99,6 +99,7 @@ export PACKAGES="\
 	podman \
 	podman-compose \
 	lshw \
+	rsync \
 	chaotic-aur/gamescope-git \
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
