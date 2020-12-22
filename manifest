@@ -87,7 +87,6 @@ export PACKAGES="\
 	nss-mdns \
 	haveged \
 	openbox \
-	termite \
 	pulsemixer \
 	usbutils \
 	ethtool \

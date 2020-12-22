@@ -198,6 +198,7 @@ rm -rf \
 /usr/share/help \
 /usr/share/jack-audio-connection-kit \
 /usr/share/SFML \
+/usr/share/applications \
 /usr/share/libretro/autoconfig/udev/Xbox_360_Wireless_Receiver_Chinese01.cfg
 
 # create necessary directories
