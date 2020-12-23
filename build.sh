@@ -57,9 +57,12 @@ if [ -n "${BUILD_USER}" ]; then
 fi
 rm -rf ${PIKAUR_CACHE}
 "${PIKAUR_RUN[@]}"
-mkdir ${BUILD_PATH}/aur
-cp ${PIKAUR_CACHE}/pkg/* ${BUILD_PATH}/aur/
+mkdir ${BUILD_PATH}/extra_pkgs
+cp ${PIKAUR_CACHE}/pkg/* ${BUILD_PATH}/extra_pkgs
 rm -rf ${PIKAUR_CACHE}
+
+# download package overrides
+wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
 
 # copy files into chroot
 cp -R rootfs/. ${BUILD_PATH}/
@@ -107,8 +110,8 @@ pacman --noconfirm -Syy
 # install packages
 pacman --noconfirm -S ${PACKAGES}
 
-# install AUR packages
-pacman --noconfirm -U /aur/*
+# install AUR & override packages
+pacman --noconfirm -U /extra_pkgs/*
 
 # record installed packages & versions
 pacman -Q > /manifest
@@ -187,7 +190,7 @@ trust anchor --store /extra_certs/*.crt
 
 # clean up/remove unnecessary files
 rm -rf \
-/aur \
+/extra_pkgs \
 /extra_certs \
 /home \
 /var \

@@ -5,7 +5,7 @@ export SYSTEM_DESC="GamerOS"
 export SYSTEM_NAME="gameros"
 export USERNAME="gamer"
 export SIZE="7000MB"
-export ARCHIVE_DATE="2020/11/19"
+export ARCHIVE_DATE="2020/12/22"
 
 export PACKAGES="\
 	htop \
@@ -108,6 +108,10 @@ export PACKAGES="\
 	chaotic-aur/libretro-stella2014-git \
 	chaotic-aur/libretro-mame-git \
 	chaotic-aur/legendary \
+"
+
+export PACKAGE_OVERRIDES="\
+	https://archive.archlinux.org/repos/2020/12/01/core/os/x86_64/libseccomp-2.4.2-1-x86_64.pkg.tar.zst \
 "
 
 export AUR_PACKAGES="\
