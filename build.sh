@@ -87,9 +87,12 @@ echo '
 Include = /etc/pacman.d/mirrorlist
 
 [chaotic-aur]
-Server = https://repo.kitsuna.net/x86_64
-Server = http://chaotic.bangl.de/\$repo/x86_64
-Server = https://chaotic.tn.dedyn.io/x86_64
+Server = https://builds.garudalinux.org/repos/$repo/$arch
+Server = https://repo.kitsuna.net/$arch
+Server = https://chaotic.tn.dedyn.io/$arch
+Server = https://repo.jkanetwork.com/repo/$repo/$arch
+Server = http://chaotic.bangl.de/$repo/$arch
+Server = https://mirror.maakpain.kro.kr/garuda/$repo/$arch
 ' >> /etc/pacman.conf
 
 # add trust for chaotic-aur
