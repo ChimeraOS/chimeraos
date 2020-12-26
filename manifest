@@ -99,13 +99,8 @@ export PACKAGES="\
 	podman-compose \
 	lshw \
 	rsync \
-	chaotic-aur/gamescope-git \
-	chaotic-aur/mangohud \
-	chaotic-aur/lib32-mangohud \
-	chaotic-aur/python-vdf \
-	chaotic-aur/yuzu-mainline-git \
-	chaotic-aur/rpcs3-git \
-	chaotic-aur/libretro-stella2014-git \
+	chaotic-aur/yuzu-mainline-bin \
+	chaotic-aur/rpcs3 \
 	chaotic-aur/libretro-mame-git \
 	chaotic-aur/legendary \
 "
@@ -132,6 +127,12 @@ export AUR_PACKAGES="\
 	libretro-virtualjaguar-git \
 	libretro-opera-git \
 	wyvern \
+	mangohud \
+	mangohud-common \
+	lib32-mangohud \
+	python-vdf \
+	gamescope \
+	libretro-stella2014-git \
 "
 
 export SERVICES="\
