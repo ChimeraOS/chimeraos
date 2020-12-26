@@ -109,9 +109,11 @@ pacman --noconfirm -Syy
 
 # install packages
 pacman --noconfirm -S ${PACKAGES}
+rm -rf /var/cache/pacman/pkg
 
 # install AUR & override packages
 pacman --noconfirm -U /extra_pkgs/*
+rm -rf /var/cache/pacman/pkg
 
 # record installed packages & versions
 pacman -Q > /manifest
