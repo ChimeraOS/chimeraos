@@ -110,6 +110,7 @@ export PACKAGE_OVERRIDES="\
 	https://archive.archlinux.org/repos/2020/12/18/core/os/x86_64/systemd-libs-247.1-4-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/repos/2020/12/18/core/os/x86_64/systemd-sysvcompat-247.1-4-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/repos/2020/12/18/multilib/os/x86_64/lib32-systemd-247.1-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/repos/2020/12/01/core/os/x86_64/libseccomp-2.4.2-1-x86_64.pkg.tar.zst \
 "
 
 export AUR_PACKAGES="\
