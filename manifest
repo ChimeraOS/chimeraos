@@ -15,6 +15,7 @@ export PACKAGES="\
 	bluez \
 	bluez-utils \
 	bluez-plugins \
+	bluez-hid2hci \
 	lib32-freetype2 \
 	lib32-curl \
 	lib32-libgpg-error \
