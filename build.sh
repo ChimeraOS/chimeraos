@@ -193,19 +193,9 @@ rm -rf \
 /extra_pkgs \
 /extra_certs \
 /home \
-/var \
-/boot/initramfs-linux-fallback.img \
-/boot/syslinux \
-/usr/include \
-/usr/share/gtk-doc \
-/usr/share/man \
-/usr/share/doc \
-/usr/share/ibus \
-/usr/share/help \
-/usr/share/jack-audio-connection-kit \
-/usr/share/SFML \
-/usr/share/applications \
-/usr/share/libretro/autoconfig/udev/Xbox_360_Wireless_Receiver_Chinese01.cfg
+/var
+
+rm -rf ${FILES_TO_DELETE}
 
 # create necessary directories
 mkdir /home

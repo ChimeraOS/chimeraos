@@ -159,3 +159,18 @@ export SERVICES="\
 export USER_SERVICES="\
 	steam-buddy.service \
 "
+
+export FILES_TO_DELETE="\
+	/boot/initramfs-linux-fallback.img \
+	/boot/syslinux \
+	/usr/include \
+	/usr/share/gtk-doc \
+	/usr/share/man \
+	/usr/share/doc \
+	/usr/share/ibus \
+	/usr/share/help \
+	/usr/share/jack-audio-connection-kit \
+	/usr/share/SFML \
+	/usr/share/applications \
+	/usr/share/libretro/autoconfig/udev/Xbox_360_Wireless_Receiver_Chinese01.cfg \
+"
