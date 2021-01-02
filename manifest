@@ -101,6 +101,7 @@ export PACKAGES="\
 	lshw \
 	rsync \
 	dosbox \
+	broadcom-wl \
 	chaotic-aur/gamescope-git \
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
