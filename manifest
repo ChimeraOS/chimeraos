@@ -106,22 +106,11 @@ export PACKAGES="\
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
 	chaotic-aur/python-vdf \
-	chaotic-aur/yuzu-mainline-git \
-	chaotic-aur/rpcs3-git \
-	chaotic-aur/libretro-stella2014-git \
+	chaotic-aur/yuzu-mainline-bin \
+	chaotic-aur/rpcs3 \
 	chaotic-aur/libretro-mame-git \
 	chaotic-aur/legendary \
 	chaotic-aur/boxtron \
-"
-
-export PACKAGE_OVERRIDES="\
-	https://archive.archlinux.org/repos/2020/12/18/core/os/x86_64/systemd-247.1-4-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/repos/2020/12/18/core/os/x86_64/systemd-libs-247.1-4-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/repos/2020/12/18/core/os/x86_64/systemd-sysvcompat-247.1-4-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/repos/2020/12/18/multilib/os/x86_64/lib32-systemd-247.1-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/repos/2020/12/01/core/os/x86_64/libseccomp-2.4.2-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/repos/2020/12/12/extra/os/x86_64/boost-libs-1.74.0-2-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/repos/2020/12/12/community/os/x86_64/innoextract-1.9-2-x86_64.pkg.tar.zst \
 "
 
 export AUR_PACKAGES="\
@@ -138,6 +127,7 @@ export AUR_PACKAGES="\
 	mame-tools \
 	libretro-virtualjaguar-git \
 	libretro-opera-git \
+	libretro-stella-git \
 	wyvern \
 "
 

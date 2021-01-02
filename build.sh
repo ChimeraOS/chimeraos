@@ -62,7 +62,9 @@ cp ${PIKAUR_CACHE}/pkg/* ${BUILD_PATH}/extra_pkgs
 rm -rf ${PIKAUR_CACHE}
 
 # download package overrides
-wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
+if [ -n "${PACKAGE_OVERRIDES}" ]; then
+	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
+fi
 
 # copy files into chroot
 cp -R rootfs/. ${BUILD_PATH}/
@@ -90,7 +92,7 @@ echo '
 Include = /etc/pacman.d/mirrorlist
 
 [chaotic-aur]
-Server = http://chaotic.bangl.de/\$repo/\$arch
+Server = https://builds.garudalinux.org/repos/$repo/$arch
 ' >> /etc/pacman.conf
 
 # add trust for chaotic-aur
