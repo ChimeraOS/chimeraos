@@ -109,6 +109,7 @@ export PACKAGES="\
 	chaotic-aur/yuzu-mainline-bin \
 	chaotic-aur/rpcs3 \
 	chaotic-aur/libretro-mame-git \
+	chaotic-aur/libretro-stella2014-git \
 	chaotic-aur/legendary \
 	chaotic-aur/boxtron \
 "
@@ -127,7 +128,6 @@ export AUR_PACKAGES="\
 	mame-tools \
 	libretro-virtualjaguar-git \
 	libretro-opera-git \
-	libretro-stella-git \
 	wyvern \
 "
 
