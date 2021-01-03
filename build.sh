@@ -92,7 +92,7 @@ echo '
 Include = /etc/pacman.d/mirrorlist
 
 [chaotic-aur]
-Server = https://builds.garudalinux.org/repos/$repo/$arch
+Server = https://builds.garudalinux.org/repos/\$repo/\$arch
 ' >> /etc/pacman.conf
 
 # add trust for chaotic-aur
