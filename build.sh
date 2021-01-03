@@ -141,6 +141,7 @@ echo "export EDITOR=/usr/bin/vim" >> /etc/bash.bashrc
 echo "
 [LightDM]
 run-directory=/run/lightdm
+logind-check-graphical=true
 [Seat:*]
 session-wrapper=/etc/lightdm/Xsession
 autologin-user=${USERNAME}
