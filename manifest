@@ -102,7 +102,6 @@ export PACKAGES="\
 	rsync \
 	dosbox \
 	broadcom-wl \
-	chaotic-aur/gamescope-git \
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
 	chaotic-aur/python-vdf \
@@ -130,6 +129,7 @@ export AUR_PACKAGES="\
 	libretro-virtualjaguar-git \
 	libretro-opera-git \
 	wyvern \
+	gamescope \
 "
 
 export SERVICES="\
