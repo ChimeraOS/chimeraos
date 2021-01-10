@@ -102,6 +102,7 @@ export PACKAGES="\
 	rsync \
 	dosbox \
 	broadcom-wl \
+	intel-undervolt \
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
 	chaotic-aur/python-vdf \
