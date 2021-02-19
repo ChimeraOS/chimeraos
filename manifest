@@ -103,6 +103,9 @@ export PACKAGES="\
 	dosbox \
 	broadcom-wl \
 	intel-undervolt \
+	cifs-utils \
+	nfs-utils \
+	smbclient \
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
 	chaotic-aur/python-vdf \
