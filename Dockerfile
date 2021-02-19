@@ -2,7 +2,6 @@ FROM archlinux:latest
 LABEL contributor="shadowapex@gmail.com"
 
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
-	mkdir -p /var/lib/pacman && \
 	pacman --noconfirm -Syy && \
 	pacman --noconfirm -Syu && \
 	pacman --noconfirm -S arch-install-scripts btrfs-progs pyalpm sudo reflector python-commonmark wget && \
