@@ -1,6 +1,2 @@
+# Hyperkin Duke
 ATTRS{idVendor}=="2e24", ATTRS{idProduct}=="0652", RUN+="/sbin/modprobe xpad" RUN+="/bin/sh -c 'echo 2e24 0652 > /sys/bus/usb/drivers/xpad/new_id'"
-
-
-# 2e24 0652 is the Hyperkin Duke
-# 2e24 1688 is the Hyperkin X91
-# 2e24 168d is the Hyperkin X91 Ice
