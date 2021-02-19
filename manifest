@@ -134,6 +134,7 @@ export AUR_PACKAGES="\
 	libretro-opera-git \
 	wyvern \
 	gamescope \
+	luxtorpeda-git \
 "
 
 export SERVICES="\
