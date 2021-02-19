@@ -1,4 +1,4 @@
-FROM archlinux:latest
+FROM archlinux:base-20210207.0.15200
 LABEL contributor="shadowapex@gmail.com"
 
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
