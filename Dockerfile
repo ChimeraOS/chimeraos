@@ -1,4 +1,4 @@
-FROM archlinux:base-devel-20210131.0.14634
+FROM archlinux:base-devel-20210214.0.15477
 LABEL contributor="shadowapex@gmail.com"
 
 ENV GLIBC glibc-linux4-2.33-4-x86_64.pkg.tar.zst
