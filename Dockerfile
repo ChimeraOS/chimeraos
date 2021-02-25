@@ -1,11 +1,5 @@
-FROM archlinux:base-devel-20210214.0.15477
+FROM archlinux:base-devel
 LABEL contributor="shadowapex@gmail.com"
-
-ENV GLIBC glibc-linux4-2.33-4-x86_64.pkg.tar.zst
-
-# Workaround for issues with pacman package
-RUN curl -LO https://repo.archlinuxcn.org/x86_64/${GLIBC} &&  \
- 	bsdtar -C / -xvf ${GLIBC}
 
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
 	pacman --noconfirm -Syy && \
