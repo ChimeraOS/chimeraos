@@ -35,7 +35,7 @@ fi
 MOUNT_PATH=/tmp/${SYSTEM_NAME}-build
 BUILD_PATH=${MOUNT_PATH}/subvolume
 SNAP_PATH=${MOUNT_PATH}/${SYSTEM_NAME}-${VERSION}
-BUILD_IMG=${SYSTEM_NAME}-build.img
+BUILD_IMG=/output/${SYSTEM_NAME}-build.img
 
 mkdir -p ${MOUNT_PATH}
 
