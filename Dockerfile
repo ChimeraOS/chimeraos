@@ -2,7 +2,7 @@ FROM archlinux:base-devel
 LABEL contributor="shadowapex@gmail.com"
 
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
-	pacman --noconfirm -Syy && \
+	pacman --noconfirm -Syyu && \
 	pacman --noconfirm -S arch-install-scripts btrfs-progs pyalpm sudo reflector python-commonmark wget && \
 	pacman --noconfirm -S --needed git && \
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
