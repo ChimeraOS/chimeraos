@@ -5,7 +5,7 @@ export SYSTEM_DESC="GamerOS"
 export SYSTEM_NAME="gameros"
 export USERNAME="gamer"
 export SIZE="7200MB"
-export ARCHIVE_DATE="2021/02/26"
+export ARCHIVE_DATE=
 
 export PACKAGES="\
 	htop \
