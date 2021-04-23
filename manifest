@@ -121,7 +121,6 @@ export PACKAGES="\
 export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
-	pycrc \
 	python-inotify-simple \
 	steam-tweaks \
 	steam-buddy \
