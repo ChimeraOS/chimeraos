@@ -137,7 +137,7 @@ export AUR_PACKAGES="\
 "
 
 export SERVICES="\
-	frzr-autoupdate \
+	frzr-autoupdate.timer \
 	NetworkManager \
 	lightdm \
 	bluetooth \
@@ -145,7 +145,6 @@ export SERVICES="\
 	avahi-daemon \
 	steam-buddy-proxy.service \
 	steam-buddy-proxy.socket \
-	steam-patch@gamer.service \
 	haveged \
 	systemd-timesyncd \
 	xow \
@@ -154,6 +153,8 @@ export SERVICES="\
 
 export USER_SERVICES="\
 	steam-buddy.service \
+	steam-patch.service \
+	gamemoded.service \
 "
 
 export FILES_TO_DELETE="\
