@@ -4,7 +4,7 @@ export VERSION="24"
 export SYSTEM_DESC="GamerOS"
 export SYSTEM_NAME="gameros"
 export USERNAME="gamer"
-export SIZE="7200MB"
+export SIZE="8000MB"
 export ARCHIVE_DATE=
 
 export PACKAGES="\
