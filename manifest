@@ -116,7 +116,6 @@ export PACKAGES="\
 	chaotic-aur/libretro-stella2014-git \
 	chaotic-aur/legendary \
 	chaotic-aur/boxtron \
-	chaotic-aur/xemu-git \
 "
 
 export AUR_PACKAGES="\
