@@ -107,6 +107,7 @@ export PACKAGES="\
 	nfs-utils \
 	smbclient \
 	mame-tools \
+	chaotic-aur/xow \
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
 	chaotic-aur/python-vdf \
@@ -124,7 +125,6 @@ export AUR_PACKAGES="\
 	python-inotify-simple \
 	steam-tweaks \
 	steam-buddy \
-	xow \
 	retroarch-autoconfig-udev-git \
 	alienware-alpha-wmi \
 	bcache-tools \
