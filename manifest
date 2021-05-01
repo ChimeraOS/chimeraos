@@ -145,7 +145,6 @@ export SERVICES="\
 	steam-buddy-proxy.socket \
 	haveged \
 	systemd-timesyncd \
-	xow \
 	sshd \
 "
 
