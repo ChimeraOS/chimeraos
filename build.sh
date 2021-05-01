@@ -105,11 +105,11 @@ pacman-key --lsign-key 8A9E14A07010F7E3
 pacman --noconfirm -Syy
 
 # install packages
-pacman --noconfirm -S ${PACKAGES}
+pacman --noconfirm -S --overwrite '*' ${PACKAGES}
 rm -rf /var/cache/pacman/pkg
 
 # install AUR & override packages
-pacman --noconfirm -U /extra_pkgs/*
+pacman --noconfirm -U --overwrite '*' /extra_pkgs/*
 rm -rf /var/cache/pacman/pkg
 
 # record installed packages & versions
@@ -205,6 +205,9 @@ mkdir /home
 mkdir /var
 mkdir /frzr_root
 EOF
+
+# copy files into chroot again
+cp -R rootfs/. ${BUILD_PATH}/
 
 echo "${SYSTEM_NAME}-${VERSION}" > ${BUILD_PATH}/build_info
 echo "" >> ${BUILD_PATH}/build_info
