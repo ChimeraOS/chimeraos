@@ -1,0 +1,10 @@
+[Unit]
+Description=Xbox One Wireless Dongle Driver
+
+[Service]
+ExecStart=/usr/bin/xow
+DynamicUser=true
+Restart=on-success
+
+# Uncomment the following line to enable compatibility mode
+# Environment="XOW_COMPATIBILITY=1"
