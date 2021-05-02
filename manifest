@@ -83,7 +83,6 @@ export PACKAGES="\
 	libretro-beetle-pce-fast \
 	libretro-picodrive \
 	libretro-ppsspp \
-	dolphin-emu \
 	fmt \
 	nss-mdns \
 	haveged \
@@ -108,6 +107,8 @@ export PACKAGES="\
 	smbclient \
 	mame-tools \
 	chaotic-aur/xow \
+	chaotic-aur/dolphin-emu-git \
+	chaotic-aur/dolphin-emu-nogui-git \
 	chaotic-aur/mangohud \
 	chaotic-aur/lib32-mangohud \
 	chaotic-aur/python-vdf \
