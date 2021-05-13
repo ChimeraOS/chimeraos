@@ -181,9 +181,6 @@ DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 # disable retroarch menu in joypad configs
 find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
 
-# automatically power-on Bluetooth dongles when plugged in
-grep -E ^AutoEnable=.* /etc/bluetooth/main.conf && sed -i s/^AutoEnable=.*/AutoEnable=true/g /etc/bluetooth/main.conf || echo "AutoEnable=true" >> /etc/bluetooth/main.conf
-
 # preserve installed package database
 mkdir -p /usr/var/lib/pacman
 cp -r /var/lib/pacman/local /usr/var/lib/pacman/
