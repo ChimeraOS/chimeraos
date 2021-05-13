@@ -131,6 +131,7 @@ export AUR_PACKAGES="\
 	bcache-tools \
 	libretro-virtualjaguar-git \
 	libretro-opera-git \
+	libretro-pcsx2-git \
 	wyvern \
 	gamescope \
 "
