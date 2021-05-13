@@ -1,6 +1,6 @@
 #! /bin/bash
 
-export VERSION="24"
+export VERSION="25"
 export SYSTEM_DESC="GamerOS"
 export SYSTEM_NAME="gameros"
 export USERNAME="gamer"
