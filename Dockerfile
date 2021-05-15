@@ -21,7 +21,9 @@ RUN reflector --verbose --latest 20 --country "United States" --sort rate --save
 ADD . /workdir
 
 # Build pikaur packages as the 'build' user
-ENV BUILD_USER build
+ENV BUILD_USER "build"
+
+ENV GNUPGHOME  "/etc/pacman.d/gnupg"
 
 # Built image will be moved here. This should be a host mount to get the output.
 ENV OUTPUT_DIR /output
