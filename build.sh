@@ -75,6 +75,8 @@ arch-chroot ${BUILD_PATH} /bin/bash <<EOF
 set -e
 set -x
 
+export GNUPGHOME="/etc/pacman.d/gnupg"
+
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
