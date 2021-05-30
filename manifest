@@ -20,6 +20,8 @@ export PACKAGES="\
 	lib32-curl \
 	lib32-libgpg-error \
 	networkmanager \
+	pipewire \
+	lib32-pipewire \
 	pulseaudio \
 	lib32-libpulse \
 	pulseaudio-alsa \
