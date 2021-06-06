@@ -174,3 +174,8 @@ export FILES_TO_DELETE="\
 	/usr/share/libretro/autoconfig/udev/Gasia_PS_Gamepad_USB.cfg \
 	/usr/share/libretro/autoconfig/udev/Sony-PlayStation3-DualShock3-Controller-Bluetooth.cfg \
 "
+
+postinstallhook() {
+	# disable retroarch menu in joypad configs
+	find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
+}

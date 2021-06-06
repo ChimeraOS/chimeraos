@@ -180,15 +180,15 @@ DISTRIB_RELEASE=\"${LSB_VERSION}\"
 DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
-# disable retroarch menu in joypad configs
-find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
-
 # preserve installed package database
 mkdir -p /usr/var/lib/pacman
 cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 
 # install extra certificates
 trust anchor --store /extra_certs/*.crt
+
+# run post install hook
+postinstallhook
 
 # clean up/remove unnecessary files
 rm -rf \
