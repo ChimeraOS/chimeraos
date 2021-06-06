@@ -108,6 +108,7 @@ export PACKAGES="\
 	nfs-utils \
 	smbclient \
 	mame-tools \
+	usb_modeswitch \
 	chaotic-aur/xow \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
@@ -178,4 +179,11 @@ export FILES_TO_DELETE="\
 postinstallhook() {
 	# disable retroarch menu in joypad configs
 	find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
+
+	# download and add racing wheel udev rules
+	pushd /usr/lib/udev/rules.d
+	curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-fanatec-wheel-perms.rules
+	curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-logitech-wheel-perms.rules
+	curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-thrustmaster-wheel-perms.rules
+	popd
 }
