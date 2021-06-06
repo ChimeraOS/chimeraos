@@ -109,6 +109,7 @@ export PACKAGES="\
 	smbclient \
 	mame-tools \
 	usb_modeswitch \
+	sxhkd \
 	chaotic-aur/xow \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
@@ -127,7 +128,6 @@ export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
 	python-inotify-simple \
-	steam-tweaks \
 	steam-buddy \
 	retroarch-autoconfig-udev-git \
 	alienware-alpha-wmi \
@@ -137,6 +137,7 @@ export AUR_PACKAGES="\
 	libretro-pcsx2-git \
 	wyvern \
 	gamescope \
+	srt-live-server \
 "
 
 export SERVICES="\
@@ -157,6 +158,7 @@ export USER_SERVICES="\
 	steam-buddy.service \
 	steam-patch.service \
 	gamemoded.service \
+	sxhkd.service \
 "
 
 export FILES_TO_DELETE="\
