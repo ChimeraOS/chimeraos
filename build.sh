@@ -90,20 +90,21 @@ if [ -n "${ARCHIVE_DATE}" ]; then
 	' > /etc/pacman.d/mirrorlist
 fi
 
+# add trust for chaotic-aur
+pacman-key --init
+pacman-key --recv-key 3056513887B78AEB
+pacman-key --lsign-key 3056513887B78AEB
+
 # add multilib and chaotic-aur repos
+pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-'{keyring,mirrorlist}'.pkg.tar.zst'
+
 echo '
 [multilib]
 Include = /etc/pacman.d/mirrorlist
 
 [chaotic-aur]
-Server = https://builds.garudalinux.org/repos/\$repo/\$arch
+Include = /etc/pacman.d/chaotic-mirrorlist
 ' >> /etc/pacman.conf
-
-# add trust for chaotic-aur
-pacman-key --init
-pacman-key --keyserver hkp://keyserver.ubuntu.com -r 3056513887B78AEB 8A9E14A07010F7E3
-pacman-key --lsign-key 3056513887B78AEB
-pacman-key --lsign-key 8A9E14A07010F7E3
 
 # update package databases
 pacman --noconfirm -Syy
