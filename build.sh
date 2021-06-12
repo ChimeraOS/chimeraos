@@ -117,9 +117,6 @@ rm -rf /var/cache/pacman/pkg
 pacman --noconfirm -U --overwrite '*' /extra_pkgs/*
 rm -rf /var/cache/pacman/pkg
 
-# record installed packages & versions
-pacman -Q > /manifest
-
 # enable services
 systemctl enable ${SERVICES}
 
@@ -183,15 +180,18 @@ DISTRIB_RELEASE=\"${LSB_VERSION}\"
 DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
-# preserve installed package database
-mkdir -p /usr/var/lib/pacman
-cp -r /var/lib/pacman/local /usr/var/lib/pacman/
-
 # install extra certificates
 trust anchor --store /extra_certs/*.crt
 
 # run post install hook
 postinstallhook
+
+# record installed packages & versions
+pacman -Q > /manifest
+
+# preserve installed package database
+mkdir -p /usr/var/lib/pacman
+cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 
 # clean up/remove unnecessary files
 rm -rf \
