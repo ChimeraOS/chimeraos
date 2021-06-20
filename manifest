@@ -85,7 +85,6 @@ export PACKAGES="\
 	libretro-beetle-pce-fast \
 	libretro-picodrive \
 	libretro-ppsspp \
-	fmt \
 	nss-mdns \
 	haveged \
 	openbox \
