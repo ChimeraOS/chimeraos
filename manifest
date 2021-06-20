@@ -110,6 +110,7 @@ export PACKAGES="\
 	mame-tools \
 	usb_modeswitch \
 	sxhkd \
+	fmt \
 	chaotic-aur/xow \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
