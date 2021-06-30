@@ -137,6 +137,7 @@ export AUR_PACKAGES="\
 	libretro-pcsx2-git \
 	wyvern \
 	gamescope \
+	gamescope-session-git \
 	srt-live-server \
 "
 
