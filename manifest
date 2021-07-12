@@ -193,9 +193,6 @@ postinstallhook() {
 	# downgrade libusb due to https://github.com/medusalix/xow/issues/141
 	curl -L -O https://archive.archlinux.org/repos/2021/01/12/core/os/x86_64/libusb-1.0.23-3-x86_64.pkg.tar.zst
 
-	# downgrade retroarch due to https://github.com/libretro/RetroArch/issues/12577
-	curl -L -O https://archive.archlinux.org/repos/2021/06/07/community/os/x86_64/retroarch-1.9.3-1-x86_64.pkg.tar.zst
-
 	pacman --noconfirm -U *.pkg.tar.zst
 	rm *.pkg.tar.zst
 }
