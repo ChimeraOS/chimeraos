@@ -8,6 +8,8 @@ export SIZE="8000MB"
 export ARCHIVE_DATE=""
 
 export PACKAGES="\
+	amd-ucode \
+	intel-ucode \
 	htop \
 	lightdm \
 	accountsservice \
