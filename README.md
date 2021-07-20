@@ -1,3 +1,3 @@
 DO NOT DOWNLOAD DIRECTLY FROM THE RELEASES PAGE. FOLLOW THE LINK BELOW FOR DOWNLOAD AND INSTALLATION INSTRUCTIONS.
 
-[GamerOS website](https://gamer-os.github.io)
+[ChimeraOS website](https://chimeraos.org)
