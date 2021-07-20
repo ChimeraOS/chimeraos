@@ -102,8 +102,8 @@ export PACKAGES="\
 	rsync \
 	dosbox \
 	broadcom-wl \
-    ipw2100-fw \
-    ipw2200-fw \
+	ipw2100-fw \
+	ipw2200-fw \
 	intel-undervolt \
 	cifs-utils \
 	nfs-utils \
