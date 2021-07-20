@@ -28,6 +28,9 @@ export PACKAGES="\
 	lib32-libpulse \
 	pulseaudio-alsa \
 	alsa-utils \
+	alsa-firmware \
+	sof-firmware \
+	alsa-ucm-conf \
 	pulseaudio-bluetooth \
 	sudo \
 	python \
