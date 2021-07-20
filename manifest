@@ -98,7 +98,6 @@ export PACKAGES="\
 	ethtool \
 	nano \
 	boost-libs \
-	nvidia-settings \
 	gamemode \
 	lib32-gamemode \
 	podman \
