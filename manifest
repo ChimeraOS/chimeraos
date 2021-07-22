@@ -90,6 +90,7 @@ export PACKAGES="\
 	libretro-beetle-pce-fast \
 	libretro-picodrive \
 	libretro-ppsspp \
+	libretro-shaders-slang \
 	nss-mdns \
 	haveged \
 	openbox \
@@ -116,6 +117,7 @@ export PACKAGES="\
 	usb_modeswitch \
 	sxhkd \
 	fmt \
+	udisks2 \
 	chaotic-aur/xow \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
