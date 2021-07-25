@@ -1,19 +1,19 @@
-# Building GamerOS
+# Building ChimeraOS
 
-This document contains instructions on how to build, install and ship a new GamerOS image.
+This document contains instructions on how to build, install and ship a new ChimeraOS image.
 
 # Build requirements
 
-Building the GamerOS image can currently only be done on **Arch Linux**.
+Building the ChimeraOS image can currently only be done on **Arch Linux**.
 
-The following packages will need to be installed to be able to build the GamerOS image:
+The following packages will need to be installed to be able to build the ChimeraOS image:
 - arch-install-scripts
 - btrfs-progs
 - [pikaur](https://aur.archlinux.org/packages/pikaur/) (not available in the official repo)
 
 Additionally the multilib repository needs to be enabled in ``/etc/pacman.conf``.
 
-# Building the GamerOS image
+# Building the ChimeraOS image
 
 To build the image, run the following command:
 ```
@@ -21,21 +21,21 @@ To build the image, run the following command:
 ```
 Replace `<channel>` and `<version>` with your own values. Channel should be a name and version, the version number. Neither the name nor the version should include a hyphen (`-`) character.
 
-## Building the GamerOS image using Docker
+## Building the ChimeraOS image using Docker
 
 To build the docker image, run the following:
 
-`docker build -t gameros-builder:latest .`
+`docker build -t chimeraos-builder:latest .`
 
-Then build the GamerOS image with the following:
+Then build the ChimeraOS image with the following:
 
-`docker run -it --rm -v $(pwd)/output:/output --privileged=true gameros-builder:latest <channel> <version>`
+`docker run -it --rm -v $(pwd)/output:/output --privileged=true chimeraos-builder:latest <channel> <version>`
 
 # Preparing for installation of the image
 
-To be able to install the generated image file (`<channel>-<version>.img.tar.xz`) it will need to be uploaded to a location which is accessible to the GamerOS system on which it will be installed. This can be a webserver or on the GamerOS system itself. In addition, a manifest file needs to be created.
+To be able to install the generated image file (`<channel>-<version>.img.tar.xz`) it will need to be uploaded to a location which is accessible to the ChimeraOS system on which it will be installed. This can be a webserver or on the ChimeraOS system itself. In addition, a manifest file needs to be created.
 
-The manifest file contains all the information required for the imaging tool [frzr](https://github.com/gamer-os/frzr) to install the image. It can only be read if it has the following format:
+The manifest file contains all the information required for the imaging tool [frzr](https://github.com/chimeraos/frzr) to install the image. It can only be read if it has the following format:
 ```
 channel
 version image_url checksum
@@ -50,7 +50,7 @@ version image_url checksum
 
 # Installing the image
 
-Installing the image on the target machine is done with the [frzr](https://github.com/gamer-os/frzr) tool. It can install from either a local manifest file or one which is hosted online. It is assumed here that these instructions are executed on a GamerOS machine.
+Installing the image on the target machine is done with the [frzr](https://github.com/chimeraos/frzr) tool. It can install from either a local manifest file or one which is hosted online. It is assumed here that these instructions are executed on a ChimeraOS machine.
 
 The image can be installed with the following command (**Which can destroy all your data! Don't run this if there is important data on your machine!**):
 ```
@@ -62,13 +62,13 @@ Now reboot the system and the new image should be used.
 
 # Creating an ISO which installs the image
 
-GamerOS ships an ISO which installs the latest GamerOS image on a system. Installing custom images is also possible.
+ChimeraOS ships an ISO which installs the latest ChimeraOS image on a system. Installing custom images is also possible.
 
 Creating an ISO which uses a different image requires the following steps:
 
-- Clone the [GamerOS install-media repo](https://github.com/gamer-os/install-media) with git
-- Change the url in the following line of the file ``install-media/gamer-os/airootfs/root/install.sh`` to the location of the manifest file created in the previous step (adding it to the airootfs directory will make it available on the ISO):
+- Clone the [ChimeraOS install-media repo](https://github.com/chimeraos/install-media) with git
+- Change the url in the following line of the file ``install-media/chimeraos/airootfs/root/install.sh`` to the location of the manifest file created in the previous step (adding it to the airootfs directory will make it available on the ISO):
 ```
-if ! frzr-deploy https://gamer-os.github.io/gamer-os/repos/default; then
+if ! frzr-deploy https://chimeraos.github.io/chimeraos/repos/default; then
 ```
-- Follow the instructions in the [README](https://github.com/gamer-os/install-media/blob/master/README.md) of the install-media repo to build the ISO
+- Follow the instructions in the [README](https://github.com/chimeraos/install-media/blob/master/README.md) of the install-media repo to build the ISO
