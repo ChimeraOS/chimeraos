@@ -128,6 +128,7 @@ export PACKAGES="\
 	chaotic-aur/libretro-stella2014-git \
 	chaotic-aur/legendary \
 	chaotic-aur/boxtron \
+	chaotic-aur/rtl88x2bu-dkms-git \
 "
 
 export AUR_PACKAGES="\
