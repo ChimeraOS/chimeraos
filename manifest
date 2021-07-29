@@ -4,7 +4,7 @@ export VERSION="26"
 export SYSTEM_DESC="ChimeraOS"
 export SYSTEM_NAME="chimeraos"
 export USERNAME="gamer"
-export SIZE="8000MB"
+export SIZE="8500MB"
 export ARCHIVE_DATE=""
 
 export PACKAGES="\
