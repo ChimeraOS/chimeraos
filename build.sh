@@ -50,18 +50,14 @@ btrfs subvolume create ${BUILD_PATH}
 pacstrap ${BUILD_PATH} base
 
 # build AUR packages to be installed later
-PIKAUR_CMD="pikaur --noconfirm -Sw ${AUR_PACKAGES}"
+PIKAUR_CMD="PKGDEST=/tmp/temp_repo pikaur --noconfirm -Sw ${AUR_PACKAGES}"
 PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
-PIKAUR_CACHE="/var/cache/pikaur"
 if [ -n "${BUILD_USER}" ]; then
 	PIKAUR_RUN=(su "${BUILD_USER}" -c "${PIKAUR_CMD}")
-	PIKAUR_CACHE="$(eval echo ~${BUILD_USER})/.cache/pikaur"
 fi
-rm -rf ${PIKAUR_CACHE}
 "${PIKAUR_RUN[@]}"
 mkdir ${BUILD_PATH}/extra_pkgs
-cp ${PIKAUR_CACHE}/pkg/* ${BUILD_PATH}/extra_pkgs
-rm -rf ${PIKAUR_CACHE}
+cp /tmp/temp_repo/* ${BUILD_PATH}/extra_pkgs
 
 # download package overrides
 if [ -n "${PACKAGE_OVERRIDES}" ]; then
