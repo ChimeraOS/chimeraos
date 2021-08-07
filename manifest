@@ -148,6 +148,7 @@ export AUR_PACKAGES="\
 	gamescope \
 	gamescope-session-git \
 	srt-live-server \
+	r8152-dkms \
 "
 
 export SERVICES="\
