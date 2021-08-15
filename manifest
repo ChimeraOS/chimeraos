@@ -166,6 +166,7 @@ export SERVICES="\
 	haveged \
 	systemd-timesyncd \
 	sshd \
+	udisks2 \
 "
 
 export USER_SERVICES="\
