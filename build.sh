@@ -176,6 +176,18 @@ DISTRIB_RELEASE=\"${LSB_VERSION}\"
 DISTRIB_DESCRIPTION=${SYSTEM_DESC}
 " > /etc/lsb-release
 
+echo '
+NAME="${SYSTEM_DESC}"
+VERSION="${VERSION}"
+PRETTY_NAME="${SYSTEM_DESC} ${VERSION}"
+ID=${SYSTEM_NAME}
+ID_LIKE=arch
+ANSI_COLOR="1;31"
+HOME_URL="${WEBSITE}"
+DOCUMENTATION_URL="${DOCUMENTATION_URL}"
+BUG_REPORT_URL="${BUG_REPORT_URL}"
+' > /etc/os-release
+
 # install extra certificates
 trust anchor --store /extra_certs/*.crt
 

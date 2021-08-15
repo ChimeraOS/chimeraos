@@ -6,6 +6,9 @@ export SYSTEM_NAME="chimeraos"
 export USERNAME="gamer"
 export SIZE="10000MB"
 export ARCHIVE_DATE=""
+export WEBSITE="https://chimeraos.org"
+export DOCUMENTATION_URL="https://chimeraos.org/about"
+export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
 export PACKAGES="\
 	amd-ucode \
