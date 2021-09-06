@@ -93,6 +93,7 @@ export PACKAGES="\
 	libretro-beetle-pce-fast \
 	libretro-picodrive \
 	libretro-ppsspp \
+	libretro-pcsx2 \
 	libretro-shaders-slang \
 	nss-mdns \
 	haveged \
@@ -146,7 +147,6 @@ export AUR_PACKAGES="\
 	bcache-tools \
 	libretro-virtualjaguar-git \
 	libretro-opera-git \
-	libretro-pcsx2-git \
 	wyvern \
 	gamescope \
 	gamescope-session-git \
