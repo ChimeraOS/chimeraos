@@ -125,6 +125,7 @@ export PACKAGES="\
 	sxhkd \
 	fmt \
 	udisks2 \
+	udiskie \
 	chaotic-aur/xow \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
