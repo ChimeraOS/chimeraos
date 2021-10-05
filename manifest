@@ -61,7 +61,7 @@ export PACKAGES="\
 	lib32-opencl-nvidia \
 	nvidia-utils \
 	lib32-nvidia-utils \
-    nvidia-prime \
+	nvidia-prime \
 	ttf-liberation \
 	wqy-zenhei \
 	openssh \
