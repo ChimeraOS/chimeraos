@@ -156,7 +156,6 @@ export AUR_PACKAGES="\
 	gamescope-session-git \
 	srt-live-server \
 	r8152-dkms \
-	xpadneo-dkms \
 "
 
 export SERVICES="\
@@ -171,7 +170,6 @@ export SERVICES="\
 	haveged \
 	systemd-timesyncd \
 	sshd \
-	udisks2 \
 "
 
 export USER_SERVICES="\
