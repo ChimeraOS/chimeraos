@@ -71,6 +71,7 @@ export PACKAGES="\
 	unzip \
 	which \
 	linux-firmware \
+	linux-headers \
 	retroarch \
 	libretro-beetle-psx \
 	libretro-beetle-psx-hw \
