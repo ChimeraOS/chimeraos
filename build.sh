@@ -206,7 +206,8 @@ rm -rf \
 /extra_pkgs \
 /extra_certs \
 /home \
-/var
+/var \
+/usr/src/*
 
 rm -rf ${FILES_TO_DELETE}
 
