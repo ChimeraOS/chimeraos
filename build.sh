@@ -207,7 +207,6 @@ rm -rf \
 /extra_certs \
 /home \
 /var \
-/usr/src/*
 
 rm -rf ${FILES_TO_DELETE}
 
