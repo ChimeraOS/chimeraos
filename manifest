@@ -127,6 +127,8 @@ export PACKAGES="\
 	fmt \
 	udisks2 \
 	udiskie \
+	openal \
+	lib32-openal \
 	chaotic-aur/xow \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
