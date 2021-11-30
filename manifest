@@ -129,6 +129,7 @@ export PACKAGES="\
 	udiskie \
 	openal \
 	lib32-openal \
+	wavpack \
 	chaotic-aur/xow \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
