@@ -130,6 +130,8 @@ export PACKAGES="\
 	openal \
 	lib32-openal \
 	wavpack \
+	libcurl-gnutls \
+	libidn11 \
 	chaotic-aur/xow \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
