@@ -120,6 +120,8 @@ export PACKAGES="\
 	intel-undervolt \
 	cifs-utils \
 	nfs-utils \
+        ldmtool \
+        ntfs-3g \
 	smbclient \
 	mame-tools \
 	usb_modeswitch \
