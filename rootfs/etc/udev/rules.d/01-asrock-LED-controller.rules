@@ -1,0 +1,2 @@
+# Disable Asrock LED controller
+ SUBSYSTEM=="usb", ATTRS{idVendor}=="26ce", ATTRS{idProduct}=="01a2", ATTR{authorized}="0"
