@@ -163,6 +163,7 @@ export AUR_PACKAGES="\
 	srt-live-server \
 	r8152-dkms \
 	xpadneo-dkms \
+	goodix-gpdwin3-dkms \
 "
 
 export SERVICES="\
