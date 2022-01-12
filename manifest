@@ -26,15 +26,14 @@ export PACKAGES="\
 	lib32-libgpg-error \
 	networkmanager \
 	pipewire \
+	pipewire-pulse \
+	pipewire-alsa \
 	lib32-pipewire \
-	pulseaudio \
 	lib32-libpulse \
-	pulseaudio-alsa \
 	alsa-utils \
 	alsa-firmware \
 	sof-firmware \
 	alsa-ucm-conf \
-	pulseaudio-bluetooth \
 	sudo \
 	python \
 	flatpak \
