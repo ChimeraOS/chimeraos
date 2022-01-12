@@ -1,2 +1,5 @@
 # Hyperkin Duke
 ATTRS{idVendor}=="2e24", ATTRS{idProduct}=="0652", RUN+="/sbin/modprobe xpad" RUN+="/bin/sh -c 'echo 2e24 0652 > /sys/bus/usb/drivers/xpad/new_id'"
+
+# OneXPlayer Gamepad
+ATTRS{idVendor}=="2563", ATTRS{idProduct}=="058d", RUN+="/sbin/modprobe xpad" RUN+="/bin/sh -c 'echo 2563 058d > /sys/bus/usb/drivers/xpad/new_id'"
