@@ -218,6 +218,7 @@ EOF
 
 # copy files into chroot again
 cp -R rootfs/. ${BUILD_PATH}/
+rm -rf ${BUILD_PATH}/extra_certs
 
 echo "${SYSTEM_NAME}-${VERSION}" > ${BUILD_PATH}/build_info
 echo "" >> ${BUILD_PATH}/build_info
