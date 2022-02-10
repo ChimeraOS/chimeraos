@@ -132,7 +132,6 @@ export PACKAGES="\
 	wavpack \
 	libcurl-gnutls \
 	libidn11 \
-	chaotic-aur/xow \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
 	chaotic-aur/mangohud \
@@ -162,6 +161,7 @@ export AUR_PACKAGES="\
 	gamescope-session-git \
 	srt-live-server \
 	r8152-dkms \
+	xone-dkms \
 	xpadneo-dkms \
 	goodix-gpdwin3-dkms \
 "
