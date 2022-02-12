@@ -162,6 +162,7 @@ export AUR_PACKAGES="\
 	srt-live-server \
 	r8152-dkms \
 	xone-dkms \
+	xpad-noone-dkms \
 	xpadneo-dkms \
 	goodix-gpdwin3-dkms \
 "
