@@ -165,7 +165,6 @@ export AUR_PACKAGES="\
 	xpad-noone-dkms \
 	xpadneo-dkms \
 	goodix-gpdwin3-dkms \
-	rpcs3-bin \
 "
 
 export SERVICES="\
