@@ -133,6 +133,7 @@ export PACKAGES="\
 	libcurl-gnutls \
 	libidn11 \
 	gamescope \
+	liquidctl \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
 	chaotic-aur/mangohud \
