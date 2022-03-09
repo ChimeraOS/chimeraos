@@ -165,7 +165,6 @@ export AUR_PACKAGES="\
 	xone-dkms \
 	xpad-noone-dkms \
 	xpadneo-dkms \
-	goodix-gpdwin3-dkms \
 	systemd-suspend-modules \
 "
 
