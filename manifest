@@ -164,7 +164,8 @@ export AUR_PACKAGES="\
 	r8152-dkms \
 	xone-dkms \
 	xpad-noone-dkms \
-	xpadneo-dkms \
+	xpadneo-dkms\
+	systemd-suspend-modules \
 "
 
 export SERVICES="\
