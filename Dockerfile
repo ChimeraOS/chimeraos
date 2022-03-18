@@ -1,8 +1,8 @@
 FROM archlinux:base-devel
-LABEL contributor="shadowapex@gmail.com"
+LABEL contributor="shadowapex at gmail dot com"
 
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
-	pacman --noconfirm -Syyu && \
+	pacman --noconfirm -Syu && \
 	pacman --noconfirm -S arch-install-scripts btrfs-progs pyalpm sudo reflector python-commonmark wget xcb-util-wm fmt && \
 	pacman --noconfirm -S --needed git && \
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
@@ -30,3 +30,4 @@ ENV OUTPUT_DIR /output
 
 WORKDIR /workdir
 ENTRYPOINT ["/workdir/build.sh"]
+CMD [$1, $2]

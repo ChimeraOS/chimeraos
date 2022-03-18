@@ -15,6 +15,9 @@ export GNUPGHOME="/etc/pacman.d/gnupg"
 
 source manifest
 
+CHANNEL=$1
+VERSION=$2
+
 if [ -z "${SYSTEM_NAME}" ]; then
   echo "SYSTEM_NAME must be specified"
   exit

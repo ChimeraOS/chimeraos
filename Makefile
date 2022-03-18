@@ -1,7 +1,11 @@
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-CHANNEL=
-VERSION=
+ifndef CHANNEL
+$(error CHANNEL is not set. Must set CHANNEL=value in the build command.)
+endif
+ifndef VERSION
+$(error VERSION is not set. Must set VERSION=value in the build command.)
+endif
 
 .PHONY: build
 build: builder
