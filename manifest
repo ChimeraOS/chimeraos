@@ -165,6 +165,7 @@ export AUR_PACKAGES="\
 	xone-dkms \
 	xpad-noone-dkms \
 	xpadneo-dkms \
+	bcm20702a1-firmware \
 	systemd-suspend-modules \
 "
 
