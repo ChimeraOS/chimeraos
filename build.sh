@@ -129,6 +129,7 @@ echo "${USERNAME}:${USERNAME}" | chpasswd
 echo "
 root ALL=(ALL) ALL
 ${USERNAME} ALL=(ALL) ALL
+${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/steamos-update
 #includedir /etc/sudoers.d
 " > /etc/sudoers
 
