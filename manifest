@@ -140,6 +140,7 @@ export PACKAGES="\
 	chaotic-aur/lib32-mangohud \
 	chaotic-aur/python-vdf \
 	chaotic-aur/yuzu-mainline-git \
+	chaotic-aur/rpcs3-git \
 	chaotic-aur/libretro-mame-git \
 	chaotic-aur/libretro-stella2014-git \
 	chaotic-aur/legendary \
