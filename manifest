@@ -132,7 +132,6 @@ export PACKAGES="\
 	wavpack \
 	libcurl-gnutls \
 	libidn11 \
-	gamescope \
 	liquidctl \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
@@ -160,6 +159,7 @@ export AUR_PACKAGES="\
 	libretro-virtualjaguar-git \
 	libretro-opera-git \
 	wyvern \
+	gamescope-git \
 	gamescope-session-git \
 	srt-live-server \
 	r8152-dkms \
