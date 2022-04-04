@@ -1,0 +1,96 @@
+#! /bin/bash
+
+# Currently, the only valid GPU vendor is AMD.
+# See: /usr/share/hwdata/pci.ids
+# 0300 and 0302 are VGA/3D class
+AMD_VENDOR_ID="1002"
+GPU_OK=$(lspci -nm | awk '{print $1 " " $2 " " $3}' | grep -E '300|302' | grep -E "${AMD_VENDOR_ID}")
+DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+SESSION_CONFIG="${CONFIG_HOME}/environment.d/01-chimera-session.conf"
+CLIENT_BETA_CONFIG="${DATA_HOME}/Steam/package/beta"
+DECK_CLIENT_STRING="steampal_stable_9a24a2bf68596b860cb6710d9ea307a76c29a04d"
+SESSION_LIST=('bigpicture' 'desktop')
+SELECTED_SESSION="$1"
+
+if [ -n "${GPU_OK}" ]; then
+	SESSION_LIST+=('gamepadui')
+fi
+
+mkdir -p "${CONFIG_HOME}/environment.d"
+
+function print_session_list() {
+	# detect active session
+	CURRENT_SESSION="bigpicture"
+	if grep ${DECK_CLIENT_STRING} ${CLIENT_BETA_CONFIG} &> /dev/null; then
+		CURRENT_SESSION="gamepadui"
+	fi
+
+	if grep "openbox" ${SESSION_CONFIG} &> /dev/null; then
+		CURRENT_SESSION="desktop"
+	fi
+
+	# print active and available sessions
+	for t in ${SESSION_LIST[@]}; do
+		if [ "${CURRENT_SESSION}" = "${t}" ]; then
+			echo "* $t"
+		else
+			echo "  $t"
+		fi
+	done
+}
+
+function bigpicture() {
+	# switch to Big Picture Mode (SteamOS compositor plus/Xorg)
+	rm -f ${CLIENT_BETA_CONFIG}
+	echo '' > ${SESSION_CONFIG}
+	sudo chimera-session-use-lightdm
+}
+
+function desktop() {
+	# switch to Desktop (Openbox/Xorg)
+	rm -f ${CLIENT_BETA_CONFIG}
+	echo 'STEAMCMD="steam"'  > ${SESSION_CONFIG}
+	echo 'COMPOSITORCMD="openbox"' >> ${SESSION_CONFIG}
+	sudo chimera-session-use-lightdm
+}
+
+function gamepadui() {
+	# switch to Gamepad/Deck UI (Gamescope/Wayland)
+	echo ${DECK_CLIENT_STRING} > ${CLIENT_BETA_CONFIG}
+	echo '' > ${SESSION_CONFIG}
+	sudo chimera-session-use-gamescope
+}
+
+function print_invalid_session() {
+	echo "Unknown or invalid session type: ${SELECTED_SESSION}"
+	echo
+	echo "Available session types:"
+	print_session_list
+}
+
+
+
+# print current and available sessions when no argument specified
+if [ -z "${SELECTED_SESSION}" ]; then
+	print_session_list
+	exit
+fi
+
+# print message when invalid session is specified
+if [[ ! "${SESSION_LIST[*]}" =~ "${SELECTED_SESSION}" ]]; then
+	print_invalid_session
+	exit
+fi
+
+# apply the specified session type
+if [ "${SELECTED_SESSION}" = "bigpicture" ]; then
+	echo "Switching to bigpicture"
+	bigpicture
+elif [ "${SELECTED_SESSION}" = "desktop" ]; then
+	echo "Switching to desktop"
+	desktop
+elif [ "${SELECTED_SESSION}" = "gamepadui" ]; then
+	echo "Switching to gamepadui"
+	gamepadui
+fi
