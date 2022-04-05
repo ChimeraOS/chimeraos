@@ -50,8 +50,8 @@ function bigpicture() {
 function desktop() {
 	# switch to Desktop (Openbox/Xorg)
 	rm -f ${CLIENT_BETA_CONFIG}
-	echo 'STEAMCMD="steam"'  > ${SESSION_CONFIG}
-	echo 'COMPOSITORCMD="openbox"' >> ${SESSION_CONFIG}
+	echo 'export STEAMCMD="steam"'  > ${SESSION_CONFIG}
+	echo 'export COMPOSITORCMD="openbox"' >> ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm
 }
 
