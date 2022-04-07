@@ -1,0 +1,2 @@
+#This will give read and write permissions to hidraw-devices
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", GROUP="1000", MODE="0664"
