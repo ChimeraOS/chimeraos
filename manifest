@@ -169,7 +169,8 @@ export AUR_PACKAGES="\
 	xpad-noone-dkms \
 	xpadneo-dkms \
 	bcm20702a1-firmware \
-	systemd-suspend-modules \
+	python-evdev \
+	aya-neo-fixes-git \
 "
 
 export SERVICES="\
@@ -184,6 +185,7 @@ export SERVICES="\
 	haveged \
 	systemd-timesyncd \
 	sshd \
+	neo-controller \
 "
 
 export USER_SERVICES="\
