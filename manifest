@@ -27,6 +27,8 @@ export PACKAGES="\
 	networkmanager \
 	pipewire \
 	lib32-pipewire \
+  xdg-desktop-portal \
+  xdg-desktop-portal-wlr \
 	pulseaudio \
 	lib32-libpulse \
 	pulseaudio-alsa \
