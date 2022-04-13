@@ -170,6 +170,7 @@ export AUR_PACKAGES="\
 	xpadneo-dkms \
 	bcm20702a1-firmware \
 	systemd-suspend-modules \
+	nintendo-udev \
 "
 
 export SERVICES="\
