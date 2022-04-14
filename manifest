@@ -171,6 +171,7 @@ export AUR_PACKAGES="\
 	bcm20702a1-firmware \
 	python-evdev \
 	aya-neo-fixes-git \
+	nintendo-udev \
 "
 
 export SERVICES="\

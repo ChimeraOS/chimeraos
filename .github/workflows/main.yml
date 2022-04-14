@@ -1,5 +1,8 @@
 name: System image build
-on: push
+on:
+  push:
+    branches:
+    - 'master'
 jobs:
   build:
     name: System image build
