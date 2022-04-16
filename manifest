@@ -165,6 +165,8 @@ export AUR_PACKAGES="\
 	gamescope-session-git \
 	srt-live-server \
 	r8152-dkms \
+	rtl8812au-dkms-git \
+	rtl8814au-dkms-git \
 	xone-dkms \
 	xpad-noone-dkms \
 	xpadneo-dkms \
