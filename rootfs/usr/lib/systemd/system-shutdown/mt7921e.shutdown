@@ -1,3 +1,0 @@
-#!/bin/sh
-# Unload the mt7921e driver to avoid kernel panic on reboot.
-/sbin/rmmod mt7921e
