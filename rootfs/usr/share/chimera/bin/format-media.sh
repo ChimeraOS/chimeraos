@@ -1,4 +1,5 @@
 #!/bin/bash
+# Modified from SteamOS 3 format-sdcard.sh
 
 set -e
 MEDIA=$1
