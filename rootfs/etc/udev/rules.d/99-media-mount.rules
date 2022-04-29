@@ -1,0 +1,8 @@
+# Originally from https://serverfault.com/a/767079
+# Modified from SteamOS 3 99-sdcard-mount.rules
+# Run a mount script through systemd on any removable media activity
+
+KERNEL=="mmcblk0p[0-9]]", ACTION=="add", RUN+="/bin/systemctl start media-mount@%k.service"
+KERNEL=="mmcblk0p[0-9]]", ACTION=="remove", RUN+="/bin/systemctl stop media-mount@%k.service"
+KERNEL=="sd[a-z][0-9]", SUBSYSTEMS=="usb", ACTION=="add", RUN+="/bin/systemctl start media-mount@%k.service"
+KERNEL=="sd[a-z][0-9]", SUBSYSTEMS=="usb", ACTION=="remove", RUN+="/bin/systemctl stop media-mount@%k.service"

@@ -1,0 +1,11 @@
+# From https://serverfault.com/a/767079
+# Modified from SteamOS 3 sdcard-mount@.service
+
+[Unit]
+Description=Mount removable media on %i
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/share/chimera/bin/media-mount.sh add %i
+ExecStop=/usr/share/chimera/bin/media-mount.sh remove %i
