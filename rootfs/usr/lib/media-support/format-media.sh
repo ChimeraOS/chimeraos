@@ -17,7 +17,7 @@ then
   sync
 
   # Initialize a steam library.
-  /usr/share/chimera/bin/init-media.sh ${PART}
+  /usr/lib/media-support/init-media.sh ${PART}
   systemctl start media-mount@${PART}.service
   echo "Format complete"
   exit 0

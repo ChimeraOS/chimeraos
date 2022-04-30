@@ -7,5 +7,5 @@ Description=Mount removable media on %i
 [Service]
 Type=oneshot
 RemainAfterExit=true
-ExecStart=/usr/share/chimera/bin/media-mount.sh add %i
-ExecStop=/usr/share/chimera/bin/media-mount.sh remove %i
+ExecStart=/usr/lib/media-support/mount-media.sh add %i
+ExecStop=/usr/lib/media-support/mount-media.sh remove %i

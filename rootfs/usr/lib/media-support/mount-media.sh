@@ -20,13 +20,6 @@ ACTION=$1
 DEVBASE=$2
 DEVICE="/dev/${DEVBASE}"
 
-MOUNT_LOCK="/var/run/media-mount.lock"
-if [[ -e $MOUNT_LOCK && $(pgrep -F $MOUNT_LOCK) ]]; then
-    echo "$MOUNT_LOCK is active: ignoring action $ACTION"
-    # Do not return a success exit code: it could end up putting the service in 'started' state without doing the mount work (further start commands will be ignored after that)
-    exit 1
-fi
-
 # See if this drive is already mounted, and if so where
 MOUNT_POINT=$(/bin/mount | /bin/grep ${DEVICE} | /usr/bin/awk '{ print $3 }')
 
