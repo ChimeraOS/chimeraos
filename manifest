@@ -137,8 +137,6 @@ export PACKAGES="\
 	liquidctl \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
-	chaotic-aur/mangohud \
-	chaotic-aur/lib32-mangohud \
 	chaotic-aur/python-vdf \
 	chaotic-aur/yuzu-mainline-git \
 	chaotic-aur/rpcs3-git \
