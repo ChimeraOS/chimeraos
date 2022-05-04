@@ -174,6 +174,7 @@ export AUR_PACKAGES="\
 	python-evdev \
 	aya-neo-fixes-git \
 	nintendo-udev \
+	steam-removable-media-git \
 "
 
 export SERVICES="\
