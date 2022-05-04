@@ -239,9 +239,9 @@ postinstallhook() {
 	curl -L -O https://archive.archlinux.org/repos/2022/04/01/extra/os/x86_64/nvidia-utils-510.54-1-x86_64.pkg.tar.zst
 	curl -L -O https://archive.archlinux.org/repos/2022/04/01/extra/os/x86_64/opencl-nvidia-510.54-1-x86_64.pkg.tar.zst
 
-  # get mangohud packages from Valve (current AUR package doesn't build mangoapp)
-  curl -L -O https://steamdeck-packages.steamos.cloud/archlinux-mirror/jupiter-main/os/x86_64/lib32-mangohud-0.6.6.1.r156.g8b801e8-1-x86_64.pkg.tar.zst
-  curl -L -O https://steamdeck-packages.steamos.cloud/archlinux-mirror/jupiter-main/os/x86_64/mangohud-0.6.6.1.r156.g8b801e8-1-x86_64.pkg.tar.zst
+	# get mangohud packages from Valve (current AUR package doesn't build mangoapp)
+	curl -L -O https://steamdeck-packages.steamos.cloud/archlinux-mirror/jupiter-main/os/x86_64/lib32-mangohud-0.6.6.1.r222.gae85730-1-x86_64.pkg.tar.zst
+	curl -L -O https://steamdeck-packages.steamos.cloud/archlinux-mirror/jupiter-main/os/x86_64/mangohud-0.6.6.1.r222.gae85730-1-x86_64.pkg.tar.zst
 
 	pacman --noconfirm -U *.pkg.tar.zst
 	rm *.pkg.tar.zst
