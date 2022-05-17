@@ -188,7 +188,6 @@ export SERVICES="\
 	systemd-timesyncd \
 	sshd \
 	neo-controller \
-	phantom-input \
 "
 
 export USER_SERVICES="\
