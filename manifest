@@ -189,7 +189,6 @@ export SERVICES="\
 	haveged \
 	systemd-timesyncd \
 	sshd \
-	neo-controller \
 "
 
 export USER_SERVICES="\
