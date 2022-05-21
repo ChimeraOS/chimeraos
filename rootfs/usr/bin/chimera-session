@@ -4,7 +4,7 @@ DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 SESSION_CONFIG="${CONFIG_HOME}/environment.d/01-chimera-session.conf"
 CLIENT_BETA_CONFIG="${DATA_HOME}/Steam/package/beta"
-DECK_CLIENT_STRING="steampal_stable_9a24a2bf68596b860cb6710d9ea307a76c29a04d"
+DECK_CLIENT_STRING="steamdeck_stable"
 SESSION_LIST=('bigpicture' 'desktop' 'gamepadui')
 SELECTED_SESSION="$1"
 
