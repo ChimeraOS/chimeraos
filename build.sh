@@ -132,6 +132,7 @@ echo "
 root ALL=(ALL) ALL
 ${USERNAME} ALL=(ALL) ALL
 ${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/steamos-update
+${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/jupiter-biosupdate
 ${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
 ${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
 ${USERNAME} ALL=(ALL) NOPASSWD: /usr/lib/media-support/format-media.sh*
