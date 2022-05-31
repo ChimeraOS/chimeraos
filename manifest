@@ -161,6 +161,10 @@ export AUR_PACKAGES="\
 	libretro-virtualjaguar-git \
 	libretro-opera-git \
 	wyvern \
+	mangohud \
+	lib32-mangohud \
+	mangoapp \
+	lib32-mangoapp \
 	gamescope-git \
 	gamescope-session-git \
 	srt-live-server \
