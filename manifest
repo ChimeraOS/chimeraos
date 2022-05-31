@@ -135,8 +135,6 @@ export PACKAGES="\
 	libcurl-gnutls \
 	libidn11 \
 	liquidctl \
-	chaotic-aur/mangohud-x11 \
-	chaotic-aur/lib32-mangohud-x11 \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
 	chaotic-aur/python-vdf \
