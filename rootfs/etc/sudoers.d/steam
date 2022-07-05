@@ -1,0 +1,3 @@
+gamer ALL=(ALL) NOPASSWD: /usr/bin/steamos-update
+gamer ALL=(ALL) NOPASSWD: /usr/bin/jupiter-biosupdate
+gamer ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
