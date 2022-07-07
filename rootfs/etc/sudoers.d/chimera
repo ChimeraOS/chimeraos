@@ -1,3 +1,0 @@
-gamer ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
-gamer ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
-gamer ALL=(ALL) NOPASSWD: /usr/lib/media-support/format-media.sh*

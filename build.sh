@@ -128,6 +128,14 @@ passwd --lock root
 groupadd -r autologin
 useradd -m ${USERNAME} -G autologin,wheel
 echo "${USERNAME}:${USERNAME}" | chpasswd
+echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/steamos-update
+${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/jupiter-biosupdate
+${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
+" > /etc/sudoers.d/steam
+echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
+${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
+${USERNAME} ALL=(ALL) NOPASSWD: /usr/lib/media-support/format-media.sh*
+" > /etc/sudoers.d/chimera
 
 # set the default editor, so visudo works
 echo "export EDITOR=/usr/bin/vim" >> /etc/bash.bashrc
