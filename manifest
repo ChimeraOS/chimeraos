@@ -135,6 +135,7 @@ export PACKAGES="\
 	libcurl-gnutls \
 	libidn11 \
 	liquidctl \
+	dmidecode \
 	chaotic-aur/mangoapp \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
@@ -147,7 +148,6 @@ export PACKAGES="\
 	chaotic-aur/boxtron \
 	chaotic-aur/rtl88x2bu-dkms-git \
 	chaotic-aur/rtw89-dkms-git \
-	dmidecode \
 	chaotic-aur/alvr \
 "
 
