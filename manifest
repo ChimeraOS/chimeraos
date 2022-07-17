@@ -175,7 +175,6 @@ export AUR_PACKAGES="\
 	nintendo-udev \
 	steam-removable-media-git \
 	rz608-fix-git \
-	handygccs-git \
 "
 
 export SERVICES="\
@@ -190,7 +189,6 @@ export SERVICES="\
 	haveged \
 	systemd-timesyncd \
 	sshd \
-	handycon \
 "
 
 export USER_SERVICES="\
