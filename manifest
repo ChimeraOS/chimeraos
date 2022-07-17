@@ -174,7 +174,6 @@ export AUR_PACKAGES="\
 	bcm20702a1-firmware \
 	nintendo-udev \
 	steam-removable-media-git \
-	rz608-fix-git \
 "
 
 export SERVICES="\
