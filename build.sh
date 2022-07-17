@@ -236,8 +236,8 @@ btrfs send -f ${SYSTEM_NAME}-${VERSION}.img ${SNAP_PATH}
 cp ${BUILD_PATH}/build_info build_info.txt
 
 # clean up
-umount --force ${BUILD_PATH}
-umount --force ${MOUNT_PATH}
+umount ${BUILD_PATH}
+umount ${MOUNT_PATH}
 rm -rf ${MOUNT_PATH}
 rm -rf ${BUILD_IMG}
 
