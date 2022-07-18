@@ -148,6 +148,7 @@ export PACKAGES="\
 	chaotic-aur/boxtron \
 	chaotic-aur/rtl88x2bu-dkms-git \
 	chaotic-aur/rtw89-dkms-git \
+	chaotic-aur/alvr \
 "
 
 export AUR_PACKAGES="\
