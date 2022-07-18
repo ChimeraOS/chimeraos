@@ -128,6 +128,9 @@ passwd --lock root
 groupadd -r autologin
 useradd -m ${USERNAME} -G autologin,wheel
 echo "${USERNAME}:${USERNAME}" | chpasswd
+
+# Add sudo permissions
+sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^# //g' /etc/sudoers
 echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/steamos-update
 ${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/jupiter-biosupdate
 ${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
