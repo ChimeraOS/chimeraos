@@ -88,6 +88,9 @@ if [ -n "${ARCHIVE_DATE}" ]; then
 	' > /etc/pacman.d/mirrorlist
 fi
 
+# Enable ParallelDownloads
+sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf
+
 # add trust for chaotic-aur
 pacman-key --init
 pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
