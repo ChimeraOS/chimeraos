@@ -69,6 +69,14 @@ fi
 # copy files into chroot
 cp -R manifest rootfs/. ${BUILD_PATH}/
 
+# add chaotic-aur and copy keys into chroot
+pacman-key --init
+pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
+pacman-key --lsign-key FBA220DFC880C036
+pacman --noconfirm -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-'{keyring,mirrorlist}'.pkg.tar.zst'
+rm -rf ${BUILD_PATH}/etc/pacman.d
+cp -R /etc/pacman.d ${BUILD_PATH}/etc/
+
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
 arch-chroot ${BUILD_PATH} /bin/bash <<EOF
@@ -91,14 +99,7 @@ fi
 # Enable ParallelDownloads
 sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf
 
-# add trust for chaotic-aur
-pacman-key --init
-pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
-pacman-key --lsign-key FBA220DFC880C036
-
 # add multilib and chaotic-aur repos
-pacman --noconfirm -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-'{keyring,mirrorlist}'.pkg.tar.zst'
-
 echo '
 [multilib]
 Include = /etc/pacman.d/mirrorlist
