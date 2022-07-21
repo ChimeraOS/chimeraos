@@ -1,6 +1,12 @@
 FROM archlinux:base-devel
 LABEL contributor="shadowapex@gmail.com"
 
+# Allow building with multiple cores (4)
+RUN echo -e "MAKEFLAGS=\"-j$(nproc)\"" >> /etc/makepkg.conf
+
+# Allow multiple downloads
+RUN sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf
+
 RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
 	pacman --noconfirm -Syyu && \
 	pacman --noconfirm -S arch-install-scripts btrfs-progs pyalpm sudo reflector python-commonmark wget xcb-util-wm fmt && \
@@ -15,7 +21,7 @@ RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.co
 RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 version'; fi\nmkdir -p /var/cache/pikaur\n" >> /usr/bin/systemd-run && \
 	chmod +x /usr/bin/systemd-run
 
-RUN reflector --verbose --latest 20 --country "United States" --sort rate --save /etc/pacman.d/mirrorlist
+RUN reflector --verbose --latest 20 --sort rate --save /etc/pacman.d/mirrorlist
 
 # Add the project to the container.
 ADD . /workdir
