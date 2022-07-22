@@ -11,7 +11,14 @@ export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
 export PACKAGES="\
+	plasma-desktop \
 	plasma-wayland-session \
+	kservice \
+	kscreen \
+	bluedevil \
+	plasma-nm \
+	plasma-pa \
+	xdg-desktop-portal-kde \
 	dolphin \
 	discover \
 	konsole \
