@@ -17,7 +17,7 @@ jobs:
         run: docker build --no-cache -t image-builder:latest .
       - name: Build system image
         id: build_image
-        run: docker run --rm -v $(pwd)/output:/output --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
+        run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
       - name: Create release
         id: create_release
         uses: actions/create-release@v1

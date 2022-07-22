@@ -24,7 +24,7 @@ RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 
 RUN reflector --verbose --latest 20 --sort rate --save /etc/pacman.d/mirrorlist
 
 # Add the project to the container.
-ADD . /workdir
+#ADD . /workdir
 
 # Build pikaur packages as the 'build' user
 ENV BUILD_USER "build"
