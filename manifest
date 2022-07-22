@@ -11,6 +11,9 @@ export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
 export PACKAGES="\
+	plasma-wayland-session \
+	discover \
+	konsole \
 	amd-ucode \
 	intel-ucode \
 	htop \
