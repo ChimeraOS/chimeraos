@@ -16,6 +16,7 @@ export PACKAGES="\
 	kservice \
 	kscreen \
 	bluedevil \
+	powerdevil \
 	plasma-nm \
 	plasma-pa \
 	xdg-desktop-portal-kde \
