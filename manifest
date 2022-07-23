@@ -11,18 +11,13 @@ export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
 export PACKAGES="\
-	plasma-desktop \
-	plasma-wayland-session \
-	kservice \
-	kscreen \
-	bluedevil \
-	powerdevil \
-	plasma-nm \
-	plasma-pa \
-	xdg-desktop-portal-kde \
-	dolphin \
-	discover \
-	konsole \
+	gnome-desktop \
+	gnome-control-center \
+	gnome-session \
+	gnome-shell \
+	gnome-software \
+	gnome-terminal \
+	nautilus \
 	amd-ucode \
 	intel-ucode \
 	htop \
