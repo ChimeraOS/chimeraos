@@ -183,6 +183,7 @@ export SERVICES="\
 	NetworkManager \
 	lightdm \
 	bluetooth \
+	bluetooth-workaround \
 	fstrim.timer \
 	avahi-daemon \
 	chimera-proxy.service \

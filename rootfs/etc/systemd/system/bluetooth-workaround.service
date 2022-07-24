@@ -1,0 +1,10 @@
+[Unit]
+Description="Bluetooth workaround"
+
+[Service]
+Type=oneshot
+ExecStart=mkdir -p /var/lib/bluetooth
+Before=bluetooth.service
+
+[Install]
+WantedBy=multi-user.target
