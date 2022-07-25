@@ -38,6 +38,7 @@ export PACKAGES="\
 	lib32-curl \
 	lib32-libgpg-error \
 	networkmanager \
+	lib32-libnm \
 	pipewire \
 	lib32-pipewire \
 	xdg-desktop-portal \
@@ -239,5 +240,12 @@ postinstallhook() {
 	curl -L -O https://archive.archlinux.org/repos/2022/01/09/community/os/x86_64/libretro-flycast-4475-1-x86_64.pkg.tar.zst
 
 	pacman --noconfirm -U *.pkg.tar.zst
+
+	# Use jupiter-steam for bootstrapping purposes
+	curl -L -O https://steamdeck-packages.steamos.cloud/archlinux-mirror/jupiter-main/os/x86_64/steam-jupiter-stable-1.0.0.74-2.19-x86_64.pkg.tar.zst
+
+	# auto-solve steam conflict
+	yes | pacman -U steam-jupiter-stable-1.0.0.74-2.19-x86_64.pkg.tar.zst
+
 	rm *.pkg.tar.zst
 }
