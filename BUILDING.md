@@ -29,7 +29,7 @@ To build the docker image, run the following:
 
 Then build the ChimeraOS image with the following:
 
-`docker run -it --rm -v $(pwd)/output:/output --privileged=true chimeraos-builder:latest <channel> <version>`
+`docker run -it --rm -v $(pwd):/workdir -v $(pwd)/output:/output --privileged=true chimeraos-builder:latest <channel> <version>`
 
 # Preparing for installation of the image
 
