@@ -3,8 +3,7 @@
 DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 SESSION_CONFIG="${CONFIG_HOME}/environment.d/01-chimera-session.conf"
-CLIENT_BETA_CONFIG="${DATA_HOME}/Steam/package/beta"
-DECK_CLIENT_STRING="steamdeck_stable"
+LIGHTDM_CONFIG="/etc/lightdm/lightdm.conf"
 SESSION_LIST=('bigpicture' 'desktop' 'gamepadui')
 SELECTED_SESSION="$1"
 
@@ -14,11 +13,11 @@ mkdir -p "${CONFIG_HOME}/environment.d"
 function print_session_list() {
 	# detect active session
 	CURRENT_SESSION="bigpicture"
-	if grep ${DECK_CLIENT_STRING} ${CLIENT_BETA_CONFIG} &> /dev/null; then
+	if systemctl status gamescope@gamer &> /dev/null; then
 		CURRENT_SESSION="gamepadui"
 	fi
 
-	if grep "openbox" ${SESSION_CONFIG} &> /dev/null; then
+	if grep "openbox" ${LIGHTDM_CONFIG} &> /dev/null; then
 		CURRENT_SESSION="desktop"
 	fi
 
@@ -34,26 +33,21 @@ function print_session_list() {
 
 function bigpicture() {
 	# switch to Big Picture Mode (SteamOS compositor plus/Xorg)
-	rm -f ${CLIENT_BETA_CONFIG}
 	echo '' > ${SESSION_CONFIG}
-	sudo chimera-session-use-lightdm
+	sudo chimera-session-use-lightdm steamos
 	systemctl --user enable sxhkd
 	systemctl --user restart sxhkd
 }
 
 function desktop() {
 	# switch to Desktop (Openbox/Xorg)
-	rm -f ${CLIENT_BETA_CONFIG}
-	echo 'export STEAMCMD="steam"'  > ${SESSION_CONFIG}
-	echo 'export COMPOSITORCMD="openbox"' >> ${SESSION_CONFIG}
-	sudo chimera-session-use-lightdm
+	sudo chimera-session-use-lightdm openbox
 	systemctl --user enable sxhkd
 	systemctl --user restart sxhkd
 }
 
 function gamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
-	echo ${DECK_CLIENT_STRING} > ${CLIENT_BETA_CONFIG}
 	echo '' > ${SESSION_CONFIG}
 	systemctl --user disable sxhkd
 	systemctl --user stop sxhkd

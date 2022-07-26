@@ -1,5 +1,6 @@
 #! /bin/bash
 
+sed -i "/autologin-session/c\autologin-session=$1" /etc/lightdm/lightdm.conf
 systemctl disable gamescope@gamer
 systemctl stop gamescope@gamer
 systemctl enable lightdm
