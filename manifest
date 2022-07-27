@@ -11,13 +11,22 @@ export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
 export PACKAGES="\
-	gnome-desktop \
 	gnome-control-center \
 	gnome-session \
 	gnome-shell \
 	gnome-software \
 	gnome-terminal \
+	gnome-keyring \
+	gnome-menus \
+	gnome-system-monitor \
 	nautilus \
+	sushi \
+	eog \
+	evince \
+	file-roller \
+	gedit \
+	xdg-user-dirs-gtk \
+	xdg-desktop-portal-gnome \
 	amd-ucode \
 	intel-ucode \
 	htop \
