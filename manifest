@@ -17,6 +17,7 @@ export PACKAGES="\
 	lightdm \
 	accountsservice \
 	xorg-server \
+	xorg-xdpyinfo \
 	bluez \
 	bluez-utils \
 	bluez-plugins \
