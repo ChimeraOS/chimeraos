@@ -1,0 +1,9 @@
+# dconf path
+[org/gnome/desktop/background]
+
+# dconf key names and their corresponding values
+picture-uri='file:///usr/share/backgrounds/chimeraos/chimeraos_background.png'
+picture-uri-dark='file:///usr/share/backgrounds/chimeraos/chimeraos_background.png'
+picture-options='scaled'
+primary-color='000000'
+secondary-color='000000'
