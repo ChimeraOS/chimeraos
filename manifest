@@ -136,7 +136,6 @@ export PACKAGES="\
 	libidn11 \
 	liquidctl \
 	dmidecode \
-	gamescope \
 	chaotic-aur/mangoapp \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
@@ -163,6 +162,7 @@ export AUR_PACKAGES="\
 	libretro-virtualjaguar-git \
 	libretro-opera-git \
 	wyvern \
+	gamescope-plus \
 	gamescope-session-git \
 	srt-live-server \
 	r8152-dkms \
