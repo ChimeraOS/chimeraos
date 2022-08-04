@@ -85,6 +85,7 @@ export PACKAGES="\
 	libretro-desmume \
 	libretro-gambatte \
 	libretro-genesis-plus-gx \
+	libretro-mame \
 	libretro-melonds \
 	libretro-mgba \
 	libretro-mupen64plus-next \
@@ -143,7 +144,6 @@ export PACKAGES="\
 	chaotic-aur/python-vdf \
 	chaotic-aur/yuzu-mainline-git \
 	chaotic-aur/rpcs3-git \
-	chaotic-aur/libretro-mame-git \
 	chaotic-aur/libretro-stella2014-git \
 	chaotic-aur/legendary \
 	chaotic-aur/boxtron \
