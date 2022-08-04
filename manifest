@@ -145,6 +145,7 @@ export PACKAGES="\
 	chaotic-aur/yuzu-mainline-git \
 	chaotic-aur/rpcs3-git \
 	chaotic-aur/libretro-stella2014-git \
+	chaotic-aur/libretro-opera-git \
 	chaotic-aur/legendary \
 	chaotic-aur/boxtron \
 	chaotic-aur/rtl88x2bu-dkms-git \
@@ -161,7 +162,6 @@ export AUR_PACKAGES="\
 	alienware-alpha-wmi \
 	bcache-tools \
 	libretro-virtualjaguar-git \
-	libretro-opera-git \
 	wyvern \
 	gamescope-session-git \
 	r8152-dkms \
