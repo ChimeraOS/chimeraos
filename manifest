@@ -5,7 +5,7 @@ export SYSTEM_DESC="ChimeraOS"
 export SYSTEM_NAME="chimeraos"
 export USERNAME="gamer"
 export SIZE="10000MB"
-export ARCHIVE_DATE="2022/08/02"
+export ARCHIVE_DATE="2022/07/30"
 export WEBSITE="https://chimeraos.org"
 export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
@@ -85,7 +85,6 @@ export PACKAGES="\
 	libretro-desmume \
 	libretro-gambatte \
 	libretro-genesis-plus-gx \
-	libretro-mame \
 	libretro-melonds \
 	libretro-mgba \
 	libretro-mupen64plus-next \
@@ -228,10 +227,8 @@ postinstallhook() {
 	# avoid some broken libretro cores
 	curl -L -O https://archive.archlinux.org/repos/2022/01/09/community/os/x86_64/libretro-flycast-4475-1-x86_64.pkg.tar.zst
 
-	# avoid broken 5.18.15 kernel
-	curl -L -O https://archive.archlinux.org/repos/2022/07/30/core/os/x86_64/linux-5.18.14.arch1-1-x86_64.pkg.tar.zst
-	curl -L -O https://archive.archlinux.org/repos/2022/07/30/core/os/x86_64/linux-api-headers-5.17.5-2-any.pkg.tar.zst
-	curl -L -O https://archive.archlinux.org/repos/2022/07/30/core/os/x86_64/linux-headers-5.18.14.arch1-1-x86_64.pkg.tar.zst
+	# manually download libretro-mame since it is new and not in 2022/07/30
+	curl -L -O https://archive.archlinux.org/repos/2022/08/02/community/os/x86_64/libretro-mame-83471-1-x86_64.pkg.tar.zst
 
 	pacman --noconfirm -U *.pkg.tar.zst
 	rm *.pkg.tar.zst
