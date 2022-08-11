@@ -13,7 +13,7 @@ mkdir -p "${CONFIG_HOME}/environment.d"
 function print_session_list() {
 	# detect active session
 	CURRENT_SESSION="unknown"
-	if grep "openbox" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+	if grep "gnome" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
 		CURRENT_SESSION="desktop"
 	fi
 
@@ -45,7 +45,7 @@ function bigpicture() {
 
 function desktop() {
 	# switch to Desktop (Openbox/Xorg)
-	sudo chimera-session-use-lightdm openbox
+	sudo chimera-session-use-lightdm gnome
 	systemctl --user enable sxhkd
 	systemctl --user restart sxhkd
 }
