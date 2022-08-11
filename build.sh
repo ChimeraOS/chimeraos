@@ -147,16 +147,9 @@ ${USERNAME} ALL=(ALL) NOPASSWD: /usr/lib/media-support/format-media.sh*
 # set the default editor, so visudo works
 echo "export EDITOR=/usr/bin/vim" >> /etc/bash.bashrc
 
-# set default session in lightdm
-echo "
-[LightDM]
-run-directory=/run/lightdm
-logind-check-graphical=true
-[Seat:*]
-session-wrapper=/etc/lightdm/Xsession
+echo "[Seat:*]
 autologin-user=${USERNAME}
-autologin-session=steamos
-" > /etc/lightdm/lightdm.conf
+" > /etc/lightdm/lightdm.conf.d/00-autologin-user.conf
 
 echo "${SYSTEM_NAME}" > /etc/hostname
 
@@ -243,14 +236,14 @@ btrfs send -f ${SYSTEM_NAME}-${VERSION}.img ${SNAP_PATH}
 cp ${BUILD_PATH}/build_info build_info.txt
 
 # clean up
-umount ${BUILD_PATH}
-umount ${MOUNT_PATH}
+umount -l ${BUILD_PATH}
+umount -l ${MOUNT_PATH}
 rm -rf ${MOUNT_PATH}
 rm -rf ${BUILD_IMG}
 
 IMG_FILENAME="${SYSTEM_NAME}-${VERSION}.img.tar.xz"
 
-tar caf ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
+tar -c -I'xz -9 -T0' -f ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
 rm ${SYSTEM_NAME}-${VERSION}.img
 
 sha256sum ${SYSTEM_NAME}-${VERSION}.img.tar.xz > sha256sum.txt

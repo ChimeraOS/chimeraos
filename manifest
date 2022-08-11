@@ -1,6 +1,6 @@
 #! /bin/bash
 
-export VERSION="34"
+export VERSION="35"
 export SYSTEM_DESC="ChimeraOS"
 export SYSTEM_NAME="chimeraos"
 export USERNAME="gamer"
@@ -92,6 +92,7 @@ export PACKAGES="\
 	libretro-desmume \
 	libretro-gambatte \
 	libretro-genesis-plus-gx \
+	libretro-mame \
 	libretro-melonds \
 	libretro-mgba \
 	libretro-mupen64plus-next \
@@ -149,8 +150,8 @@ export PACKAGES="\
 	chaotic-aur/python-vdf \
 	chaotic-aur/yuzu-mainline-git \
 	chaotic-aur/rpcs3-git \
-	chaotic-aur/libretro-mame-git \
 	chaotic-aur/libretro-stella2014-git \
+	chaotic-aur/libretro-opera-git \
 	chaotic-aur/legendary \
 	chaotic-aur/boxtron \
 	chaotic-aur/rtl88x2bu-dkms-git \
@@ -167,11 +168,9 @@ export AUR_PACKAGES="\
 	alienware-alpha-wmi \
 	bcache-tools \
 	libretro-virtualjaguar-git \
-	libretro-opera-git \
 	wyvern \
-	gamescope-git \
+	gamescope-plus \
 	gamescope-session-git \
-	srt-live-server \
 	r8152-dkms \
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
@@ -190,6 +189,7 @@ export SERVICES="\
 	NetworkManager \
 	lightdm \
 	bluetooth \
+	bluetooth-workaround \
 	fstrim.timer \
 	avahi-daemon \
 	chimera-proxy.service \
