@@ -11,13 +11,19 @@ export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
 export PACKAGES="\
-	gnome-desktop \
 	gnome-control-center \
 	gnome-session \
 	gnome-shell \
 	gnome-software \
 	gnome-terminal \
+	gnome-keyring \
+	gnome-system-monitor \
 	nautilus \
+	eog \
+	file-roller \
+	gedit \
+	xdg-user-dirs-gtk \
+	xdg-desktop-portal-gnome \
 	amd-ucode \
 	intel-ucode \
 	htop \
@@ -144,6 +150,7 @@ export PACKAGES="\
 	libidn11 \
 	liquidctl \
 	dmidecode \
+	iio-sensor-proxy \
 	chaotic-aur/mangoapp \
 	chaotic-aur/dolphin-emu-git \
 	chaotic-aur/dolphin-emu-nogui-git \
