@@ -152,11 +152,7 @@ export PACKAGES="\
 	dmidecode \
 	iio-sensor-proxy \
 	chaotic-aur/mangoapp \
-	chaotic-aur/dolphin-emu-git \
-	chaotic-aur/dolphin-emu-nogui-git \
 	chaotic-aur/python-vdf \
-	chaotic-aur/yuzu-mainline-git \
-	chaotic-aur/rpcs3-git \
 	chaotic-aur/libretro-stella2014-git \
 	chaotic-aur/libretro-opera-git \
 	chaotic-aur/legendary \
