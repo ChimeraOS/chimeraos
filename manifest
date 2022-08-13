@@ -20,7 +20,6 @@ export PACKAGES="\
 	gnome-menus \
 	gnome-system-monitor \
 	nautilus \
-	sushi \
 	eog \
 	evince \
 	file-roller \
