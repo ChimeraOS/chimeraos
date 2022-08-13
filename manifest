@@ -20,7 +20,6 @@ export PACKAGES="\
 	gnome-system-monitor \
 	nautilus \
 	eog \
-	evince \
 	file-roller \
 	gedit \
 	xdg-user-dirs-gtk \
