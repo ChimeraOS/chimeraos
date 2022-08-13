@@ -17,7 +17,6 @@ export PACKAGES="\
 	gnome-software \
 	gnome-terminal \
 	gnome-keyring \
-	gnome-menus \
 	gnome-system-monitor \
 	nautilus \
 	eog \
