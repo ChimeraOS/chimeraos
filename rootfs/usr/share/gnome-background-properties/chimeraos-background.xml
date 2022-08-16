@@ -6,6 +6,14 @@
     <filename>/usr/share/backgrounds/chimeraos/chimeraos_background.png</filename>
     <options>scaled</options>
     <shade_type>solid</shade_type>
+    <pcolor>#230512</pcolor>
+    <scolor>#230512</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>ChimeraOS Background Black</name>
+    <filename>/usr/share/backgrounds/chimeraos/chimeraos_background_black.png</filename>
+    <options>scaled</options>
+    <shade_type>solid</shade_type>
     <pcolor>#000000</pcolor>
     <scolor>#000000</scolor>
   </wallpaper>
