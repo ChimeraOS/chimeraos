@@ -1,0 +1,70 @@
+#! /usr/bin/bash
+
+set -e
+
+die() { echo >&2 "!! $*"; exit 1; }
+
+CONF_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
+SENTINEL_FILE="steamos-session-select"
+
+# For sanity this shipped file must be present, to ensure we're still on a normal-looking Chieraos setup.
+CHECK_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
+
+session="${1:-gamescope}"
+
+session_launcher=""
+create_sentinel=""
+
+
+# We use "plasma" as "desktop" to hook up to SteamOS's scripts
+case "$session" in
+  plasma)
+    session_launcher="gnome-wayland"
+    create_sentinel=1
+  ;;
+  gamescope)
+    session_launcher="gamescope-session"
+    create_sentinel=1
+  ;;
+  *)
+    echo >&2 "!! Unrecognized session '$session'"
+    exit 1
+  ;;
+esac
+
+if [[ "$2" == "--sentinel-created" ]]; then
+    SENTINEL_CREATED=1
+fi
+
+# Update config sentinel
+if [[ -z $SENTINEL_CREATED ]]; then
+  [[ -n ${HOME+x} ]] || die "No \$HOME variable"
+  config_dir="${XDG_CONF_DIR:-"$HOME/.config"}"
+  (
+    cd "$HOME"
+    mkdir -p "$config_dir"
+    cd "$config_dir"
+    echo "$session_launcher" > "$SENTINEL_FILE"
+  )
+
+  # If we were executed as a session user and then re-execute as root below, we don't want to set root's sentinel too
+  export SENTINEL_CREATED=1
+  echo "Updated user selected session to $session_launcher"
+fi
+
+# Become root
+if [[ $EUID != 0 ]]; then
+  exec pkexec "$(realpath $0)" "$session" --sentinel-created
+  exit 1
+fi
+
+{
+  echo "[Seat:*]"
+  echo "autologin-session=$session_launcher"
+} > "$CONF_FILE"
+
+echo "Updated system autologin session to $session_launcher"
+systemctl reset-failed lightdm
+systemctl restart lightdm
+echo "Restarted LightDM"
+
