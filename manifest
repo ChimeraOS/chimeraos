@@ -10,6 +10,8 @@ export WEBSITE="https://chimeraos.org"
 export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
+export KERNEL_PACKAGE="linux"
+
 export PACKAGES="\
 	gnome-control-center \
 	gnome-session \
@@ -72,7 +74,8 @@ export PACKAGES="\
 	lib32-libva-intel-driver \
 	xf86-video-intel \
 	intel-media-driver \
-	nvidia \
+	dkms \
+	nvidia-dkms \
 	opencl-nvidia \
 	lib32-opencl-nvidia \
 	nvidia-utils \
@@ -87,7 +90,6 @@ export PACKAGES="\
 	unzip \
 	which \
 	linux-firmware \
-	linux-headers \
 	retroarch \
 	libretro-beetle-psx \
 	libretro-beetle-psx-hw \
