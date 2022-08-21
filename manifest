@@ -117,7 +117,6 @@ export PACKAGES="\
 	libretro-picodrive \
 	libretro-ppsspp \
 	libretro-pcsx2 \
-	libretro-shaders-slang \
 	nss-mdns \
 	haveged \
 	openbox \
