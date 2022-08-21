@@ -249,4 +249,7 @@ postinstallhook() {
 	yes | pacman -U steam-jupiter-stable-1.0.0.74-2.19-x86_64.pkg.tar.zst
 
 	rm *.pkg.tar.zst
+
+	# Remove build tools for slimmer image
+	pacman --noconfirm -Rnsdd make gcc
 }
