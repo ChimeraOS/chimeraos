@@ -76,8 +76,6 @@ export PACKAGES="\
 	intel-media-driver \
 	dkms \
 	nvidia-dkms \
-	opencl-nvidia \
-	lib32-opencl-nvidia \
 	nvidia-utils \
 	lib32-nvidia-utils \
 	nvidia-prime \
