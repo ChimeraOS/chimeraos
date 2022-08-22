@@ -76,8 +76,6 @@ export PACKAGES="\
 	intel-media-driver \
 	dkms \
 	nvidia-dkms \
-	opencl-nvidia \
-	lib32-opencl-nvidia \
 	nvidia-utils \
 	lib32-nvidia-utils \
 	nvidia-prime \
@@ -105,7 +103,6 @@ export PACKAGES="\
 	libretro-beetle-pce-fast \
 	libretro-picodrive \
 	libretro-ppsspp \
-	libretro-shaders-slang \
 	nss-mdns \
 	haveged \
 	openbox \
@@ -117,7 +114,6 @@ export PACKAGES="\
 	gamemode \
 	lib32-gamemode \
 	podman \
-	podman-compose \
 	lshw \
 	rsync \
 	dosbox \
