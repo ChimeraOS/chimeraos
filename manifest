@@ -127,7 +127,6 @@ export PACKAGES="\
 	gamemode \
 	lib32-gamemode \
 	podman \
-	podman-compose \
 	lshw \
 	rsync \
 	dosbox \
