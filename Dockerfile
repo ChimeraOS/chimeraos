@@ -1,9 +1,6 @@
 FROM archlinux:base-devel
 LABEL contributor="shadowapex@gmail.com"
 
-# Allow building with multiple cores (4)
-RUN echo -e "MAKEFLAGS=\"-j$(nproc)\"" >> /etc/makepkg.conf
-
 # Allow multiple downloads
 RUN sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf
 
