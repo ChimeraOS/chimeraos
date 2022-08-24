@@ -105,7 +105,6 @@ export PACKAGES="\
 	libretro-ppsspp \
 	nss-mdns \
 	haveged \
-	openbox \
 	pulsemixer \
 	usbutils \
 	ethtool \
