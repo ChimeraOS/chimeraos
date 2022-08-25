@@ -110,7 +110,6 @@ export PACKAGES="\
 	usbutils \
 	ethtool \
 	nano \
-	boost-libs \
 	gamemode \
 	lib32-gamemode \
 	podman \
