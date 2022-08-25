@@ -232,5 +232,8 @@ postinstallhook() {
 	rm *.pkg.tar.zst
 
 	# Remove build tools for slimmer image
-	pacman --noconfirm -Rnsdd make gcc
+	rm /usr/share/libalpm/hooks/70-dkms-install.hook
+	rm /usr/share/libalpm/hooks/70-dkms-upgrade.hook
+	rm /usr/share/libalpm/hooks/71-dkms-remove.hook
+	pacman --noconfirm -Rnsdd make gcc dkms ${KERNEL_PACKAGE}-headers
 }
