@@ -157,6 +157,7 @@ export AUR_PACKAGES="\
 	r8152-dkms \
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
+	oxp-platform-dkms-git \
 	xone-dkms \
 	xpad-noone-dkms \
 	xpadneo-dkms \
