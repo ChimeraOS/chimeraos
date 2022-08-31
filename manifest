@@ -72,7 +72,6 @@ export PACKAGES="\
 	lib32-vulkan-intel \
 	libva-intel-driver \
 	lib32-libva-intel-driver \
-	xf86-video-intel \
 	intel-media-driver \
 	dkms \
 	nvidia-dkms \
