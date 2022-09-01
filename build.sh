@@ -51,6 +51,16 @@ btrfs subvolume create ${BUILD_PATH}
 # bootstrap
 pacstrap ${BUILD_PATH} base
 
+# Workaround for pygame broken by newer SDL library
+pushd /tmp
+curl -L -O https://raw.githubusercontent.com/archlinux/svntogit-community/packages/python-pygame/trunk/PKGBUILD
+if [ -n "${BUILD_USER}" ]; then
+	su "${BUILD_USER}" -c "PKGDEST=/tmp/temp_repo makepkg -s --noconfirm"
+else
+	bash -c "PKGDEST=/tmp/temp_repo makepkg -s --noconfirm"
+fi
+popd
+
 # build AUR packages to be installed later
 PIKAUR_CMD="PKGDEST=/tmp/temp_repo pikaur --noconfirm -Sw ${AUR_PACKAGES}"
 PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
