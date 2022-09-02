@@ -133,7 +133,6 @@ export PACKAGES="\
 	liquidctl \
 	dmidecode \
 	iio-sensor-proxy \
-	chaotic-aur/mangoapp \
 	chaotic-aur/python-vdf \
 	chaotic-aur/libretro-stella2014-git \
 	chaotic-aur/libretro-opera-git \
@@ -154,6 +153,7 @@ export AUR_PACKAGES="\
 	wyvern \
 	gamescope-plus \
 	gamescope-session-git \
+	mangoapp \
 	r8152-dkms \
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
