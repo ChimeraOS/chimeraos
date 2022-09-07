@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Return to Gaming Mode
+Name=Game Mode
 Exec=/usr/bin/steamos-session-select gamescope
 Icon=/usr/share/icons/chimeraos/scalable/actions/return-to-game-mode.svg
 Terminal=false
