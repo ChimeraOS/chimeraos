@@ -226,4 +226,17 @@ postinstallhook() {
 	rm /usr/share/libalpm/hooks/70-dkms-upgrade.hook
 	rm /usr/share/libalpm/hooks/71-dkms-remove.hook
 	pacman --noconfirm -Rnsdd make gcc dkms ${KERNEL_PACKAGE}-headers
+
+	# clean up desktop shortcuts
+	sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
+	find /usr/share/applications/* | \
+	grep -v org.gnome.Terminal.desktop | \
+	grep -v gnome-system-monitor.desktop | \
+	grep -v org.gnome.Settings.desktop | \
+	grep -v org.gnome.gedit.desktop | \
+	grep -v org.gnome.Nautilus.desktop | \
+	grep -v org.gnome.Software.desktop | \
+	grep -v steam.desktop | \
+	grep -v org.chimeraos.Gamescope.desktop | \
+	xargs -I {} sh -c "echo NoDisplay=true >> {}"
 }

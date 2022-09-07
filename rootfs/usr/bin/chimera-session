@@ -44,6 +44,9 @@ function bigpicture() {
 }
 
 function desktop() {
+	# clear the clutter of steam desktop shortcuts
+	grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/.local/share/applications/* | xargs -I {} rm {}
+
 	# switch to Desktop (Openbox/Xorg)
 	sudo chimera-session-use-lightdm gnome
 	systemctl --user enable sxhkd
