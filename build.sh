@@ -138,9 +138,7 @@ echo "${USERNAME}:${USERNAME}" | chpasswd
 
 # Add sudo permissions
 sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^# //g' /etc/sudoers
-echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/steamos-update
-${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/jupiter-biosupdate
-${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
+echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
 " > /etc/sudoers.d/steam
 echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
 ${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
