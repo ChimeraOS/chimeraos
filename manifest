@@ -239,4 +239,7 @@ postinstallhook() {
 	grep -v steam.desktop | \
 	grep -v org.chimeraos.Gamescope.desktop | \
 	xargs -I {} sh -c "echo NoDisplay=true >> {}"
+
+	# force -steamdeck option in desktop mode to prevent constant steam updates
+	sed -i 's,Exec=/usr/bin/steam-runtime,Exec=/usr/bin/steam-runtime -steamdeck,' /usr/share/applications/steam.desktop
 }
