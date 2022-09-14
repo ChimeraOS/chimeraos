@@ -43,16 +43,16 @@ export PACKAGES="\
 	lib32-libnm \
 	pipewire \
 	lib32-pipewire \
-	pipewire-alsa \
-	pipewire-pulse \
-	pipewire-jack \
-	gst-plugin-pipewire \
 	xdg-desktop-portal \
 	xdg-desktop-portal-wlr \
+	pulseaudio \
+	lib32-libpulse \
+	pulseaudio-alsa \
 	alsa-utils \
 	alsa-firmware \
 	sof-firmware \
 	alsa-ucm-conf \
+	pulseaudio-bluetooth \
 	sudo \
 	python \
 	flatpak \
