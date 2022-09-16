@@ -18,12 +18,11 @@ export PACKAGES="\
 	gnome-shell \
 	gnome-software \
 	gnome-terminal \
+	gnome-text-editor \
 	gnome-keyring \
-	gnome-system-monitor \
 	nautilus \
 	eog \
 	file-roller \
-	gedit \
 	xdg-user-dirs-gtk \
 	xdg-desktop-portal-gnome \
 	amd-ucode \
