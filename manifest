@@ -17,7 +17,7 @@ export PACKAGES="\
 	gnome-session \
 	gnome-shell \
 	gnome-software \
-	gnome-terminal \
+	gnome-console \
 	gnome-text-editor \
 	gnome-keyring \
 	nautilus \
