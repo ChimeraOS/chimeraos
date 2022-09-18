@@ -230,11 +230,10 @@ postinstallhook() {
 	sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
 	find /usr/share/applications/* | \
 	grep -v org.gnome.Terminal.desktop | \
-	grep -v gnome-system-monitor.desktop | \
 	grep -v org.gnome.Settings.desktop | \
-	grep -v org.gnome.gedit.desktop | \
 	grep -v org.gnome.Nautilus.desktop | \
 	grep -v org.gnome.Software.desktop | \
+	grep -v org.gnome.TextEditor.desktop | \
 	grep -v steam.desktop | \
 	grep -v org.chimeraos.Gamescope.desktop | \
 	xargs -I {} sh -c "echo NoDisplay=true >> {}"
