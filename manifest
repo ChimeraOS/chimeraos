@@ -226,6 +226,12 @@ postinstallhook() {
 	rm /usr/share/libalpm/hooks/71-dkms-remove.hook
 	pacman --noconfirm -Rnsdd make gcc dkms ${KERNEL_PACKAGE}-headers
 
+	# remove dolphin standalone emulator files (only need /usr/share/dolphin-emu/sys)
+	rm /usr/bin/dolphin-emu
+	rm /usr/bin/dolphin-emu-nogui
+	rm /usr/bin/dolphin-tool
+	rm /usr/share/applications/dolphin-emu.desktop
+
 	# clean up desktop shortcuts
 	sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
 	find /usr/share/applications/* | \
