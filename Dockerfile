@@ -18,7 +18,7 @@ RUN echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.co
 RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 version'; fi\nmkdir -p /var/cache/pikaur\n" >> /usr/bin/systemd-run && \
 	chmod +x /usr/bin/systemd-run
 
-RUN reflector --verbose --latest 20 --sort rate --save /etc/pacman.d/mirrorlist
+RUN reflector --verbose --latest 20 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
 
 # Build pikaur packages as the 'build' user
 ENV BUILD_USER "build"
