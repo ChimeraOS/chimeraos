@@ -13,6 +13,7 @@ export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 export KERNEL_PACKAGE="linux"
 
 export PACKAGES="\
+	libcec \
 	gnome-control-center \
 	gnome-session \
 	gnome-shell \
