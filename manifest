@@ -167,6 +167,8 @@ export AUR_PACKAGES="\
 "
 
 export SERVICES="\
+	cec-active-source.timer \
+	cec-poweroff-tv.service \
 	frzr-autoupdate.timer \
 	NetworkManager \
 	lightdm \

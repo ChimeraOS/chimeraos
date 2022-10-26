@@ -1,0 +1,9 @@
+[Unit]
+Description=Trigger cec-active-source at boot
+
+[Timer]
+OnBootSec=1
+OnStartupSec=1
+
+[Install]
+WantedBy=timers.target
