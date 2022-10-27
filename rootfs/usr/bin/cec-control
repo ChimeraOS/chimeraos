@@ -1,29 +1,30 @@
 #!/bin/bash
 ACTION="$1"
 
-# DEFAULTS
-CEC_TVID=0
-CEC_WAKE=true
-CEC_SETSOURCE=true
-CEC_ONPOWEROFF_STANDBY=true
-CEC_ONSLEEP_STANDBY=false
 
 # Source environment from ~/.config/environment.d with user overrides
 set -a
-for i in "${HOME}"/.config/environment.d/*.conf ;
+for i in /home/gamer/.config/environment.d/*.conf ;
 do
     [[ -f "${i}" ]] && . "${i}"
 done
 set +a
 
+# OVERRIDE WITH DEFAULTS IF NOT SET
+CEC_TVID=${CEC_TVID:-0}
+CEC_WAKE=${CEC_WAKE:-true}
+CEC_SETSOURCE=${CEC_SETSOURCE:-true}
+CEC_ONPOWEROFF_STANDBY=${CEC_ONPOWEROFF_STANDBY:-true}
+CEC_ONSLEEP_STANDBY=${CEC_ONSLEEP_STANDBY:-false}
+
 # Run specified actions
 if [ "${ACTION}" = "onboot" ] && [ "$CEC_WAKE" = true ]; then
-    echo "on $CEC_TVID" | cec-client -s
+    echo "on $CEC_TVID" | cec-client -s -d 1
     if [ "CEC_SETSOURCE" = true ]; then
-	    echo "as" | cec-client -s
+            echo "as" | cec-client -s -d 1
     fi
 elif [ "${ACTION}" = "onpoweroff" ] && [ "$CEC_ONPOWEROFF_STANDBY" = true ]; then
-    echo "standby $CEC_TVID" | cec-client -s
+    echo "standby $CEC_TVID" | cec-client -s -d 1
 elif [ "${ACTION}" = "onsleep" ] && [ "$CEC_ONSLEEP_STANDBY" = true ]; then
-    echo "standby $CEC_TVID" | cec-client -s
+    echo "standby $CEC_TVID" | cec-client -s -d 1
 fi
