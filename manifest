@@ -167,7 +167,7 @@ export AUR_PACKAGES="\
 "
 
 export SERVICES="\
-	cec-active-source.timer \
+	cec-active-source.service \
 	cec-poweroff-tv.service \
 	frzr-autoupdate.timer \
 	NetworkManager \

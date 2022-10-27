@@ -5,3 +5,6 @@ Description=Set this device to the CEC Active Source
 Type=oneshot
 ExecStartPre=bash -c "echo 'on 0' | cec-client -s"
 ExecStart=bash -c "echo 'as' | cec-client -s"
+
+[Install]
+WantedBy=multi-user.target
