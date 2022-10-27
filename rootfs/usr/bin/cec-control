@@ -1,0 +1,29 @@
+#!/bin/bash
+ACTION="$1"
+
+# DEFAULTS
+CEC_TVID=0
+CEC_WAKE=true
+CEC_SETSOURCE=true
+CEC_ONPOWEROFF_STANDBY=true
+CEC_ONSLEEP_STANDBY=false
+
+# Source environment from ~/.config/environment.d with user overrides
+set -a
+for i in "${HOME}"/.config/environment.d/*.conf ;
+do
+    [[ -f "${i}" ]] && . "${i}"
+done
+set +a
+
+# Run specified actions
+if [ "${ACTION}" = "onboot" ] && [ "$CEC_WAKE" = true ]; then
+    echo "on $CEC_TVID" | cec-client -s
+    if [ "CEC_SETSOURCE" = true ]; then
+	    echo "as" | cec-client -s
+    fi
+elif [ "${ACTION}" = "onpoweroff" ] && [ "$CEC_ONPOWEROFF_STANDBY" = true ]; then
+    echo "standby $CEC_TVID" | cec-client -s
+elif [ "${ACTION}" = "onsleep" ] && [ "$CEC_ONSLEEP_STANDBY" = true ]; then
+    echo "standby $CEC_TVID" | cec-client -s
+fi

@@ -1,11 +1,11 @@
 [Unit]
-Description=Use CEC to power off TV
+Description=Run CEC actions for poweroff
 DefaultDependencies=no
 Before=final.target
 
 [Service]
 Type=oneshot
-ExecStart=bash -c "echo 'standby 0' | cec-client -s"
+ExecStart=/usr/bin/cec-control onpoweroff
 
 [Install]
 WantedBy=poweroff.target
