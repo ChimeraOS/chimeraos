@@ -131,7 +131,6 @@ export PACKAGES="\
 	dmidecode \
 	iio-sensor-proxy \
 	chaotic-aur/mangoapp \
-	chaotic-aur/python-vdf \
 	chaotic-aur/libretro-stella2014-git \
 	chaotic-aur/libretro-opera-git \
 	chaotic-aur/legendary \
@@ -143,6 +142,7 @@ export PACKAGES="\
 export AUR_PACKAGES="\
 	frzr \
 	steamos-compositor-plus \
+	python-vdf \
 	chimera \
 	python-inotify-simple \
 	retroarch-autoconfig-udev-git \
