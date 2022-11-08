@@ -11,7 +11,6 @@ fi
 BUILD_USER=${BUILD_USER:-}
 OUTPUT_DIR=${OUTPUT_DIR:-}
 
-export GNUPGHOME="/etc/pacman.d/gnupg"
 
 source manifest
 
@@ -48,8 +47,6 @@ mkfs.btrfs -f ${BUILD_IMG}
 mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
-# bootstrap
-pacstrap ${BUILD_PATH} base
 
 # build AUR packages to be installed later
 export GIT_ALLOW_PROTOCOL=file:https:git
@@ -59,24 +56,20 @@ if [ -n "${BUILD_USER}" ]; then
 	PIKAUR_RUN=(su "${BUILD_USER}" -c "${PIKAUR_CMD}")
 fi
 "${PIKAUR_RUN[@]}"
-mkdir ${BUILD_PATH}/extra_pkgs
-cp /tmp/temp_repo/* ${BUILD_PATH}/extra_pkgs
 
 # download package overrides
 if [ -n "${PACKAGE_OVERRIDES}" ]; then
 	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
 fi
 
+# bootstrap
+pacstrap ${BUILD_PATH} base
+
 # copy files into chroot
 cp -R manifest rootfs/. ${BUILD_PATH}/
 
-# add chaotic-aur and copy keys into chroot
-pacman-key --init
-pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
-pacman-key --lsign-key FBA220DFC880C036
-pacman --noconfirm -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-'{keyring,mirrorlist}'.pkg.tar.zst'
-rm -rf ${BUILD_PATH}/etc/pacman.d
-cp -R /etc/pacman.d ${BUILD_PATH}/etc/
+mkdir ${BUILD_PATH}/extra_pkgs
+cp /tmp/temp_repo/* ${BUILD_PATH}/extra_pkgs
 
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
@@ -85,6 +78,9 @@ set -e
 set -x
 
 source /manifest
+
+pacman-key --init
+pacman-key --populate
 
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
@@ -96,6 +92,11 @@ if [ -n "${ARCHIVE_DATE}" ]; then
 	Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch
 	' > /etc/pacman.d/mirrorlist
 fi
+
+# add chaotic-aur and copy keys into chroot
+pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
+pacman-key --lsign-key FBA220DFC880C036
+pacman --noconfirm -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-'{keyring,mirrorlist}'.pkg.tar.zst'
 
 # Enable ParallelDownloads
 sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf
