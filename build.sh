@@ -62,8 +62,8 @@ if [ -n "${PACKAGE_OVERRIDES}" ]; then
 	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
 fi
 
-# bootstrap
-pacstrap ${BUILD_PATH} base
+# bootstrap using our configuration
+pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
 
 # copy files into chroot
 cp -R manifest rootfs/. ${BUILD_PATH}/
@@ -79,7 +79,6 @@ set -x
 
 source /manifest
 
-pacman-key --init
 pacman-key --populate
 
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
@@ -98,14 +97,8 @@ pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
 pacman-key --lsign-key FBA220DFC880C036
 pacman --noconfirm -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-'{keyring,mirrorlist}'.pkg.tar.zst'
 
-# Enable ParallelDownloads
-sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf
-
-# add multilib and chaotic-aur repos
+# chaotic-aur repos
 echo '
-[multilib]
-Include = /etc/pacman.d/mirrorlist
-
 [chaotic-aur]
 Include = /etc/pacman.d/chaotic-mirrorlist
 ' >> /etc/pacman.conf
