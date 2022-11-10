@@ -130,13 +130,6 @@ export PACKAGES="\
 	liquidctl \
 	dmidecode \
 	iio-sensor-proxy \
-	chaotic-aur/mangoapp \
-	chaotic-aur/libretro-stella2014-git \
-	chaotic-aur/libretro-opera-git \
-	chaotic-aur/legendary \
-	chaotic-aur/boxtron \
-	chaotic-aur/rtl88x2bu-dkms-git \
-	chaotic-aur/rtw89-dkms-git \
 "
 
 export AUR_PACKAGES="\
@@ -163,6 +156,13 @@ export AUR_PACKAGES="\
 	steam-removable-media-git \
 	rz608-fix-git \
 	handygccs-git \
+	mangoapp \
+	libretro-stella2014-git \
+	libretro-opera-git \
+	legendary \
+	boxtron \
+	rtl88x2bu-dkms-git \
+	rtw89-dkms-git \
 "
 
 export SERVICES="\
