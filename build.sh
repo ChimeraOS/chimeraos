@@ -91,16 +91,6 @@ if [ -n "${ARCHIVE_DATE}" ]; then
 	' > /etc/pacman.d/mirrorlist
 fi
 
-# add chaotic-aur and copy keys into chroot
-pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
-pacman-key --lsign-key FBA220DFC880C036
-pacman --noconfirm -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-'{keyring,mirrorlist}'.pkg.tar.zst'
-
-# chaotic-aur repos
-echo '
-[chaotic-aur]
-Include = /etc/pacman.d/chaotic-mirrorlist
-' >> /etc/pacman.conf
 
 # update package databases
 pacman --noconfirm -Syy
