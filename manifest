@@ -17,7 +17,7 @@ export PACKAGES="\
 	gnome-session \
 	gnome-shell \
 	gnome-software \
-	gnome-terminal \
+	gnome-console \
 	gnome-text-editor \
 	gnome-keyring \
 	nautilus \
@@ -233,7 +233,9 @@ postinstallhook() {
 	# clean up desktop shortcuts
 	sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
 	find /usr/share/applications/* | \
-	grep -v org.gnome.Terminal.desktop | \
+	grep -v org.gnome.Console.desktop | \
+	grep -v org.gnome.DiskUtility.desktop | \
+	grep -v org.gnome.FileRoller.desktop | \
 	grep -v org.gnome.Settings.desktop | \
 	grep -v org.gnome.Nautilus.desktop | \
 	grep -v org.gnome.Software.desktop | \
