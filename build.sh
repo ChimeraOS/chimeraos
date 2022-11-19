@@ -50,7 +50,7 @@ btrfs subvolume create ${BUILD_PATH}
 
 # build AUR packages to be installed later
 export GIT_ALLOW_PROTOCOL=file:https:git
-PIKAUR_CMD="PKGDEST=/tmp/temp_repo pikaur --noconfirm -Sw ${AUR_PACKAGES}"
+PIKAUR_CMD="PKGDEST=/tmp/temp_repo pikaur --noconfirm --keepbuilddeps -Sw ${AUR_PACKAGES}"
 PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
 if [ -n "${BUILD_USER}" ]; then
 	PIKAUR_RUN=(su "${BUILD_USER}" -c "${PIKAUR_CMD}")
