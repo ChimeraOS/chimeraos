@@ -47,7 +47,7 @@ mkfs.btrfs -f ${BUILD_IMG}
 mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
-# set archive date if specified
+# set archive date if specified and force update/downgrade builder
 if [ -n "${ARCHIVE_DATE}" ]; then
 	echo "
 	Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch
