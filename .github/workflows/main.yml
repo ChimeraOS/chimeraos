@@ -23,40 +23,18 @@ jobs:
       - name: Build system image
         id: build_image
         run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
+
       - name: Create release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ steps.build_image.outputs.version }}
-          release_name: ${{ steps.build_image.outputs.display_name }} ${{ steps.build_image.outputs.display_version }} [UNSTABLE]
+          name: ${{ steps.build_image.outputs.display_name }} ${{ steps.build_image.outputs.display_version }} [UNSTABLE]
           draft: false
           prerelease: true
-      - name: Upload system image
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./output/${{ steps.build_image.outputs.image_filename }}
-          asset_name: ${{ steps.build_image.outputs.image_filename }}
-          asset_content_type: application/x-xz
-      - name: Upload build info
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./output/build_info.txt
-          asset_name: build_info.txt
-          asset_content_type: text/plain
-      - name: Upload sha256sum
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./output/sha256sum.txt
-          asset_name: sha256sum.txt
-          asset_content_type: text/plain
+          fail_on_unmatched_files: true
+          files: |
+            output/${{ steps.build_image.outputs.image_filename }}
+            output/build_info.txt
+            output/sha256sum.txt
