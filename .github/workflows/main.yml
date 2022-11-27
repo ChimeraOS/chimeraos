@@ -6,14 +6,14 @@ on:
 jobs:
   build:
     name: System image build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.build_image.outputs.version }}
       display_name: ${{ steps.build_image.outputs.display_name }}
       display_version: ${{ steps.build_image.outputs.display_version }}
       image_filename: ${{ steps.build_image.outputs.image_filename }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
       - name: Obtain base docker image
