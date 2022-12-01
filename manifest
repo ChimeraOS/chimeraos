@@ -45,6 +45,7 @@ export PACKAGES="\
 	pipewire-alsa \
 	pipewire-pulse \
 	pipewire-jack \
+	wireplumber \
 	gst-plugin-pipewire \
 	xdg-desktop-portal \
 	xdg-desktop-portal-wlr \
