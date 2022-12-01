@@ -108,6 +108,7 @@ export PACKAGES="\
 	ethtool \
 	nano \
 	gamemode \
+	gamescope \
 	lib32-gamemode \
 	podman \
 	lshw \
@@ -141,7 +142,6 @@ export AUR_PACKAGES="\
 	alienware-alpha-wmi \
 	libretro-virtualjaguar-git \
 	wyvern \
-	gamescope-plus \
 	gamescope-session-git \
 	r8152-dkms \
 	r8168-dkms \
