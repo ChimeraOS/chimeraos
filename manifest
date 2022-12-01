@@ -144,6 +144,7 @@ export AUR_PACKAGES="\
 	gamescope-plus \
 	gamescope-session-git \
 	r8152-dkms \
+	r8168-dkms \
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
 	oxp-platform-dkms-git \
