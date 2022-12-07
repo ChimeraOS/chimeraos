@@ -162,6 +162,7 @@ export AUR_PACKAGES="\
 	libretro-opera-git \
 	legendary \
 	boxtron \
+	ryzenadj-git \
 	rtl88x2bu-dkms-git \
 	rtw89-dkms-git \
 "
