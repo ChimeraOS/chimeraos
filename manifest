@@ -159,6 +159,7 @@ export AUR_PACKAGES="\
 	rz608-fix-git \
 	handygccs-git \
 	mangoapp \
+	hhfc-git \
 	libretro-stella2014-git \
 	libretro-opera-git \
 	legendary \
