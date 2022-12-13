@@ -25,6 +25,7 @@ export PACKAGES="\
 	file-roller \
 	xdg-user-dirs-gtk \
 	xdg-desktop-portal-gnome \
+	fuse2 \
 	amd-ucode \
 	intel-ucode \
 	htop \
