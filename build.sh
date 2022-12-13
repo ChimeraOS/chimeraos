@@ -47,6 +47,13 @@ mkfs.btrfs -f ${BUILD_IMG}
 mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
+# set archive date if specified and force update/downgrade builder
+if [ -n "${ARCHIVE_DATE}" ]; then
+	echo "
+	Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch
+	" > /etc/pacman.d/mirrorlist
+	pacman -Syyuu --noconfirm
+fi
 
 # build AUR packages to be installed later
 export GIT_ALLOW_PROTOCOL=file:https:git
@@ -83,13 +90,6 @@ pacman-key --populate
 
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 locale-gen
-
-# set archive date if specified
-if [ -n "${ARCHIVE_DATE}" ]; then
-	echo '
-	Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch
-	' > /etc/pacman.d/mirrorlist
-fi
 
 
 # update package databases
@@ -221,6 +221,14 @@ echo "${SYSTEM_NAME}-${VERSION}" > ${BUILD_PATH}/build_info
 echo "" >> ${BUILD_PATH}/build_info
 cat ${BUILD_PATH}/manifest >> ${BUILD_PATH}/build_info
 rm ${BUILD_PATH}/manifest
+
+# freeze archive date of build to avoid package drift on unlock
+# if no archive date is set
+if [ -z "${ARCHIVE_DATE}" ]; then
+	export TODAY_DATE=$(date +%Y/%m/%d)
+	echo "Server=https://archive.archlinux.org/repos/${TODAY_DATE}/\$repo/os/\$arch" > \
+	${BUILD_PATH}/etc/pacman.d/mirrorlist
+fi
 
 btrfs subvolume snapshot -r ${BUILD_PATH} ${SNAP_PATH}
 btrfs send -f ${SYSTEM_NAME}-${VERSION}.img ${SNAP_PATH}
