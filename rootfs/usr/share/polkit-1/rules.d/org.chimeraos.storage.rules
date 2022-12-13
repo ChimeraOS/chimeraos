@@ -1,0 +1,15 @@
+// Refer to: http://storaged.org/doc/udisks2-api/latest/udisks-polkit-actions.html
+polkit.addRule(function(action, subject) {
+    var YES = polkit.Result.YES;
+    var permission = {
+        "org.freedesktop.udisks2.eject-media": YES,
+        "org.freedesktop.udisks2.power-off-drive": YES,
+        "org.freedesktop.udisks2.filesystem-unmount-others": YES,
+        "org.freedesktop.udisks2.eject-media-other-seat": YES,
+        "org.freedesktop.udisks2.power-off-drive-other-seat": YES
+    };
+    if (subject.isInGroup("wheel")) {
+        return permission[action.id];
+    }
+});
+
