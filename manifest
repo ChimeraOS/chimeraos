@@ -133,7 +133,6 @@ export PACKAGES="\
 "
 
 export AUR_PACKAGES="\
-	chimeraos-device-quirks-git \
 	frzr \
 	steamos-compositor-plus \
 	python-vdf \

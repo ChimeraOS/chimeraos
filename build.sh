@@ -55,8 +55,23 @@ if [ -n "${ARCHIVE_DATE}" ]; then
 	pacman -Syyuu --noconfirm
 fi
 
-# build AUR packages to be installed later
 export GIT_ALLOW_PROTOCOL=file:https:git
+# build own PKGBUILDs and install them before anything else
+mkdir -p /tmp/pkgs
+cp -rv pkgs/* /tmp/pkgs/.
+for package in /tmp/pkgs/*; do
+	echo "Building ${package}"
+	PIKAUR_CMD="PKGDEST=/tmp/temp_repo \
+		pikaur --noconfirm -S -P ${package}/PKGBUILD"
+	PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
+	if [ -n "${BUILD_USER}" ]; then
+		chown -R "${BUILD_USER}" "${package}"
+		PIKAUR_RUN=(su "${BUILD_USER}" -c "${PIKAUR_CMD}")
+	fi
+	"${PIKAUR_RUN[@]}"
+done
+
+# build AUR packages to be installed later
 PIKAUR_CMD="PKGDEST=/tmp/temp_repo pikaur --noconfirm -Sw ${AUR_PACKAGES}"
 PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
 if [ -n "${BUILD_USER}" ]; then
