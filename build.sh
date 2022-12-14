@@ -142,6 +142,7 @@ echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
 echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
 ${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
 ${USERNAME} ALL=(ALL) NOPASSWD: /usr/lib/media-support/format-media.sh*
+${USERNAME} ALL=(ALL) NOPASSWD: /usr/lib/hwsupport/format-sdcard.sh*
 " > /etc/sudoers.d/chimera
 
 # set the default editor, so visudo works
