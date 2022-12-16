@@ -61,7 +61,7 @@ mkdir -p /tmp/pkgs
 cp -rv pkgs/* /tmp/pkgs/.
 for package in /tmp/pkgs/*; do
 	echo "Building ${package}"
-	PIKAUR_CMD="PKGDEST=/tmp/temp_repo \
+	PIKAUR_CMD="PKGDEST=/tmp/own_pkgbuilds \
 		pikaur --noconfirm -S -P ${package}/PKGBUILD"
 	PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
 	if [ -n "${BUILD_USER}" ]; then
@@ -91,7 +91,9 @@ pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
 cp -R manifest rootfs/. ${BUILD_PATH}/
 
 mkdir ${BUILD_PATH}/extra_pkgs
+mkdir ${BUILD_PATH}/own_pkgs
 cp /tmp/temp_repo/* ${BUILD_PATH}/extra_pkgs
+cp /tmp/own_pkgbuilds/* ${BUILD_PATH}/own_pkgs
 
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
@@ -113,11 +115,15 @@ pacman --noconfirm -Syy
 # install kernel package
 pacman --noconfirm -S "${KERNEL_PACKAGE}" "${KERNEL_PACKAGE}-headers"
 
+# install own override packages
+pacman --noconfirm -U --overwrite '*' /own_pkgs/*
+rm -rf /var/cache/pacman/pkg
+
 # install packages
 pacman --noconfirm -S --overwrite '*' ${PACKAGES}
 rm -rf /var/cache/pacman/pkg
 
-# install AUR & override packages
+# install AUR packages
 pacman --noconfirm -U --overwrite '*' /extra_pkgs/*
 rm -rf /var/cache/pacman/pkg
 
