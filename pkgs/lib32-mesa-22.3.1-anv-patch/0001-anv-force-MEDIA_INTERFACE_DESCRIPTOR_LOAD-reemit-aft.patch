@@ -1,0 +1,52 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Sun, 12 Jun 2022 23:59:05 +0300
+Subject: [PATCH] anv: force MEDIA_INTERFACE_DESCRIPTOR_LOAD reemit after
+ 3D->GPGPU switch
+
+Seems to fix a hang in the following titles :
+   - Age of Empire 4
+   - Monster Hunter Rise
+
+where the HW is hung on a PIPE_CONTROL after a GPGPU_WALKER but no
+MEDIA_INTERFACE_DESCRIPTOR_LOAD was emitted since the switch from 3D
+to GPGPU.
+
+This would happen in the following case :
+
+   vkCmdBindPipeline(COMPUTE, cs_pipeline);
+   vkCmdDispatch(...);
+   vkCmdBindPipeline(GRAPHICS, gfx_pipeline);
+   vkCmdDraw(...);
+   vkCmdDispatch(...);
+
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ src/intel/vulkan/genX_cmd_buffer.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/src/intel/vulkan/genX_cmd_buffer.c b/src/intel/vulkan/genX_cmd_buffer.c
+index d56f9037fde1..e03dc16c1fc5 100644
+--- a/src/intel/vulkan/genX_cmd_buffer.c
++++ b/src/intel/vulkan/genX_cmd_buffer.c
+@@ -6001,6 +6001,20 @@ genX(flush_pipeline_select)(struct anv_cmd_buffer *cmd_buffer,
+    }
+ #endif
+ 
++#if GFX_VERx10 == 120
++   /* Undocumented workaround to force the re-emission of
++    * MEDIA_INTERFACE_DESCRIPTOR_LOAD when switching from 3D to Compute
++    * pipeline without rebinding a pipeline :
++    *    vkCmdBindPipeline(COMPUTE, cs_pipeline);
++    *    vkCmdDispatch(...);
++    *    vkCmdBindPipeline(GRAPHICS, gfx_pipeline);
++    *    vkCmdDraw(...);
++    *    vkCmdDispatch(...);
++    */
++   if (pipeline == _3D)
++      cmd_buffer->state.compute.pipeline_dirty = true;
++#endif
++
+    /* From "BXML » GT » MI » vol1a GPU Overview » [Instruction]
+     * PIPELINE_SELECT [DevBWR+]":
+     *

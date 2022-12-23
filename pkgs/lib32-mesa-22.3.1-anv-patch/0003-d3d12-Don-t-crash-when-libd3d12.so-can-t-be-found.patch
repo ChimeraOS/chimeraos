@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>
+Date: Sun, 4 Dec 2022 00:17:57 +0000
+Subject: [PATCH] d3d12: Don't crash when libd3d12.so can't be found
+
+`d3d12_destroy_screen` is called by `d3d12_create_dxcore_screen` after
+`d3d12_init_screen_base` fails and attempts to call `util_dl_close` on
+a NULL pointer, leading to an abort.
+
+To fix this, only close the library after if it was actually opened.
+---
+ src/gallium/drivers/d3d12/d3d12_screen.cpp | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/gallium/drivers/d3d12/d3d12_screen.cpp b/src/gallium/drivers/d3d12/d3d12_screen.cpp
+index 1cbe1fbdd5ec..c21c60e4a29c 100644
+--- a/src/gallium/drivers/d3d12/d3d12_screen.cpp
++++ b/src/gallium/drivers/d3d12/d3d12_screen.cpp
+@@ -741,7 +741,8 @@ d3d12_destroy_screen(struct d3d12_screen *screen)
+    slab_destroy_parent(&screen->transfer_pool);
+    mtx_destroy(&screen->submit_mutex);
+    mtx_destroy(&screen->descriptor_pool_mutex);
+-   util_dl_close(screen->d3d12_mod);
++   if (screen->d3d12_mod)
++      util_dl_close(screen->d3d12_mod);
+    glsl_type_singleton_decref();
+    FREE(screen);
+ }
