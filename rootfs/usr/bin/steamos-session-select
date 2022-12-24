@@ -11,12 +11,14 @@ SENTINEL_FILE="steamos-session-select"
 CHECK_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
 
 session="${1:-gamescope}"
+session_type="wayland"
 
-session_launcher=""
+session_launcher="gamescope-session"
 create_sentinel=""
 
 if [[ "$2" == "--sentinel-created" ]]; then
-    SENTINEL_CREATED=1
+  SENTINEL_CREATED=1
+  session_type="wayland"
 fi
 
 # Update config sentinel
@@ -25,11 +27,16 @@ if [[ -z $SENTINEL_CREATED ]]; then
 
   [[ -n ${HOME+x} ]] || die "No \$HOME variable"
   config_dir="${XDG_CONF_DIR:-"$HOME/.config"}"
-  (
+  session_type=$(
     cd "$HOME"
     mkdir -p "$config_dir"
     cd "$config_dir"
-    echo "$session_launcher" > "$SENTINEL_FILE"
+    if [[ -f "steamos-session-type" ]]; then
+      cp steamos-session-type "$SENTINEL_FILE"
+    else
+      echo "wayland" > "$SENTINEL_FILE"
+    fi
+    cat "$SENTINEL_FILE"
   )
 
   # clear steam game desktop shortcut clutter
@@ -38,13 +45,18 @@ if [[ -z $SENTINEL_CREATED ]]; then
 
   # If we were executed as a session user and then re-execute as root below, we don't want to set root's sentinel too
   export SENTINEL_CREATED=1
-  echo "Updated user selected session to $session_launcher"
 fi
 
 # We use "plasma" as "desktop" to hook up to SteamOS's scripts
 case "$session" in
+  plasma-wayland-persistent)
+    session_launcher="gnome-session"
+  ;;
+  plasma-x11-persistent)
+    session_launcher="gnome-session"
+  ;;
   plasma)
-    session_launcher="gnome-wayland"
+    session_launcher="gnome-session-oneshot"
     create_sentinel=1
   ;;
   gamescope)
@@ -56,6 +68,8 @@ case "$session" in
     exit 1
   ;;
 esac
+
+echo "Updated user selected session to $session_launcher"
 
 # Become root
 if [[ $EUID != 0 ]]; then
