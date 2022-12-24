@@ -220,6 +220,7 @@ fi
 
 # clean up/remove unnecessary files
 rm -rf \
+/own_pkgs \
 /extra_pkgs \
 /extra_certs \
 /home \
