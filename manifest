@@ -13,188 +13,191 @@ export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 export KERNEL_PACKAGE="linux"
 
 export PACKAGES="\
+	accountsservice \
+	alsa-firmware \
+	alsa-ucm-conf \
+	alsa-utils \
+	amd-ucode \
+	bluez \
+	bluez-hid2hci \
+	bluez-plugins \
+	bluez-utils \
+	broadcom-wl-dkms \
+	cifs-utils \
+	diffutils \
+	dkms \
+	dmidecode \
+	dosbox \
+	eog \
+	ethtool \
+	file-roller \
+	flatpak \
+	fmt \
+	fuse2 \
+	gamemode \
+	gnome-console \
 	gnome-control-center \
+	gnome-keyring \
 	gnome-session \
 	gnome-shell \
 	gnome-software \
-	gnome-console \
 	gnome-text-editor \
-	gnome-keyring \
-	nautilus \
-	eog \
-	file-roller \
-	xdg-user-dirs-gtk \
-	xdg-desktop-portal-gnome \
-	fuse2 \
-	amd-ucode \
-	intel-ucode \
-	htop \
-	lightdm \
-	accountsservice \
-	xorg-server \
-	bluez \
-	bluez-utils \
-	bluez-plugins \
-	bluez-hid2hci \
-	lib32-freetype2 \
-	lib32-curl \
-	lib32-libgpg-error \
-	networkmanager \
-	lib32-libnm \
-	pipewire \
-	lib32-pipewire \
-	pipewire-alsa \
-	pipewire-pulse \
-	pipewire-jack \
-	wireplumber \
 	gst-plugin-pipewire \
-	xdg-desktop-portal \
-	xdg-desktop-portal-wlr \
-	alsa-utils \
-	alsa-firmware \
-	sof-firmware \
-	alsa-ucm-conf \
-	sudo \
-	python \
-	flatpak \
-	vulkan-icd-loader \
-	lib32-vulkan-icd-loader \
-	mesa-demos \
-	libva-vdpau-driver \
-	lib32-libva-vdpau-driver \
-	xf86-video-amdgpu \
-	libva-intel-driver \
-	lib32-libva-intel-driver \
+	haveged \
+	htop \
+	iio-sensor-proxy \
 	intel-media-driver \
-	dkms \
-	nvidia-dkms \
-	nvidia-utils \
+	intel-ucode \
+	intel-undervolt \
+	lib32-curl \
+	lib32-freetype2 \
+	lib32-gamemode \
+	lib32-libgpg-error \
+	lib32-libnm \
+	lib32-libva-intel-driver \
+	lib32-libva-vdpau-driver \
 	lib32-nvidia-utils \
-	nvidia-prime \
-	ttf-liberation \
-	wqy-zenhei \
-	openssh \
-	diffutils \
-	logrotate \
-	vim \
-	unzip \
-	which \
-	linux-firmware \
-	retroarch \
+	lib32-openal \
+	lib32-pipewire \
+	lib32-vulkan-icd-loader \
+	libcurl-gnutls \
+	libidn11 \
+	libretro-beetle-pce-fast \
 	libretro-beetle-psx-hw \
 	libretro-dolphin \
+	libretro-flycast \
 	libretro-genesis-plus-gx \
+	libretro-kronos \
 	libretro-mame \
 	libretro-mgba \
 	libretro-mupen64plus-next \
 	libretro-nestopia \
-	libretro-snes9x \
-	libretro-flycast \
-	libretro-play \
-	libretro-kronos \
-	libretro-beetle-pce-fast \
 	libretro-picodrive \
+	libretro-play \
 	libretro-ppsspp \
-	nss-mdns \
-	haveged \
-	pulsemixer \
-	usbutils \
-	ethtool \
-	nano \
-	gamemode \
-	lib32-gamemode \
-	podman \
-	lshw \
-	rsync \
-	dosbox \
-	broadcom-wl-dkms \
-	intel-undervolt \
-	cifs-utils \
-	nfs-utils \
-	smbclient \
-	usb_modeswitch \
-	sxhkd \
-	fmt \
-	openal \
-	lib32-openal \
-	wavpack \
-	libcurl-gnutls \
-	libidn11 \
+	libretro-snes9x \
+	libva-intel-driver \
+	libva-vdpau-driver \
+	lightdm \
+	linux-firmware \
 	liquidctl \
-	dmidecode \
-	iio-sensor-proxy \
+	logrotate \
+	lshw \
+	mesa-demos \
+	nano \
+	nautilus \
+	networkmanager \
+	nfs-utils \
+	nss-mdns \
+	nvidia-dkms \
+	nvidia-prime \
+	nvidia-utils \
+	openal \
+	openssh \
+	pipewire \
+	pipewire-alsa \
+	pipewire-jack \
+	pipewire-pulse \
+	podman \
+	pulsemixer \
+	python \
+	retroarch \
+	rsync \
+	smbclient \
+	sof-firmware \
+	sudo \
+	sxhkd \
+	ttf-liberation \
+	unzip \
+	usb_modeswitch \
+	usbutils \
+	vim \
+	vulkan-icd-loader \
+	wavpack \
+	which \
+	wireplumber \
+	wqy-zenhei \
+	xdg-desktop-portal \
+	xdg-desktop-portal-gnome \
+	xdg-desktop-portal-wlr \
+	xdg-user-dirs-gtk \
+	xf86-video-amdgpu \
+	xorg-server \
 "
 
 export AUR_PACKAGES="\
+	alienware-alpha-wmi \
+	bcm20702a1-firmware \
+	boxtron \
+	chimera \
 	chimeraos-device-quirks-git \
 	frzr \
-	steamos-compositor-plus \
-	python-vdf \
-	chimera \
-	python-inotify-simple \
-	retroarch-autoconfig-udev-git \
-	alienware-alpha-wmi \
-	libretro-virtualjaguar-git \
-	wyvern \
 	gamescope-plus \
 	gamescope-session-git \
+	handygccs-git \
+	hhfc-git \
+	legendary \
+	libretro-opera-git \
+	libretro-stella2014-git \
+	libretro-virtualjaguar-git \
+	nintendo-udev \
+	oxp-platform-dkms-git \
+	python-inotify-simple \
+	python-vdf \
 	r8152-dkms \
 	r8168-dkms \
+	retroarch-autoconfig-udev-git \
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
-	oxp-platform-dkms-git \
+	rtl88x2bu-dkms-git \
+	rtw89-dkms-git \
+	ryzenadj-git \
+	ryzenadj-controller-git \
+	rz608-fix-git \
+	steam-removable-media-git \
+	steamos-compositor-plus \
+	wyvern \
 	xone-dkms \
 	xpad-noone-dkms \
 	xpadneo-dkms \
-	bcm20702a1-firmware \
-	nintendo-udev \
-	steam-removable-media-git \
-	rz608-fix-git \
-	handygccs-git \
-	hhfc-git \
-	libretro-stella2014-git \
-	libretro-opera-git \
-	legendary \
-	boxtron \
-	ryzenadj-git \
-	rtl88x2bu-dkms-git \
-	rtw89-dkms-git \
 "
 
 export SERVICES="\
-	frzr-autoupdate.timer \
 	NetworkManager \
-	lightdm \
+	avahi-daemon \
 	bluetooth \
 	bluetooth-workaround \
-	fstrim.timer \
-	avahi-daemon \
 	chimera-proxy.service \
 	chimera-proxy.socket \
-	haveged \
-	systemd-timesyncd \
-	sshd \
+	frzr-autoupdate.timer \
+	fstrim.timer \
 	handycon \
+	haveged \
+	lightdm \
+	ryzenadj-controller
+	sshd \
+	systemd-timesyncd \
 "
 
 export USER_SERVICES="\
 	chimera.service \
-	steam-patch.service \
 	gamemoded.service \
+	ryzen-tctl \
+	steam-patch.service \
 	sxhkd.service \
 "
 
 export FILES_TO_DELETE="\
 	/boot/initramfs-linux-fallback.img \
 	/boot/syslinux \
-	/usr/share/gtk-doc \
-	/usr/share/man \
-	/usr/share/doc \
-	/usr/share/help \
 	/usr/share/SFML \
-	/usr/share/libretro/autoconfig/udev/Xbox_360_Wireless_Receiver_Chinese01.cfg \
+	/usr/share/doc \
+	/usr/share/gtk-doc \
+	/usr/share/help \
 	/usr/share/libretro/autoconfig/udev/Gasia_PS_Gamepad_USB.cfg \
 	/usr/share/libretro/autoconfig/udev/Sony-PlayStation3-DualShock3-Controller-Bluetooth.cfg \
+	/usr/share/libretro/autoconfig/udev/Xbox_360_Wireless_Receiver_Chinese01.cfg \
+	/usr/share/man \
 "
 
 postinstallhook() {
@@ -229,15 +232,15 @@ postinstallhook() {
 	# clean up desktop shortcuts
 	sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
 	find /usr/share/applications/* | \
+	grep -v org.chimeraos.Gamescope.desktop | \
 	grep -v org.gnome.Console.desktop | \
 	grep -v org.gnome.DiskUtility.desktop | \
 	grep -v org.gnome.FileRoller.desktop | \
-	grep -v org.gnome.Settings.desktop | \
 	grep -v org.gnome.Nautilus.desktop | \
+	grep -v org.gnome.Settings.desktop | \
 	grep -v org.gnome.Software.desktop | \
 	grep -v org.gnome.TextEditor.desktop | \
 	grep -v steam.desktop | \
-	grep -v org.chimeraos.Gamescope.desktop | \
 	xargs -I {} sh -c "echo NoDisplay=true >> {}"
 
 	# force -steamdeck option in desktop mode to prevent constant steam updates
