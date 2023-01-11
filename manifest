@@ -174,7 +174,7 @@ export SERVICES="\
 	handycon \
 	haveged \
 	lightdm \
-	ryzenadj-controller
+	ryzenadj-controller \
 	sshd \
 	systemd-timesyncd \
 "
