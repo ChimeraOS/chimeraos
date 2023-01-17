@@ -1,0 +1,31 @@
+# Maintainer: kylon
+_pkgbase=goodix-gpdwin3
+pkgname=${_pkgbase}-dkms
+pkgver=1.2
+pkgrel=1
+pkgdesc="Goodix touchscreen driver for GPDWIN3"
+arch=('any')
+url=https://github.com/pastaq/goodix-gpdwin3-dkms
+license=('GPL2')
+depends=('dkms')
+_tag=7c6bdedc0263dae0828da5dfce146c432f14776a
+source=("git+${url}.git#tag=${_tag}")
+sha256sums=('SKIP')
+
+package() {
+  cd "${srcdir}"/"${pkgname}"
+  local install_dir="${pkgdir}"/usr/src/${_pkgbase}-${pkgver}
+  install -Dm644 dkms.conf "${install_dir}/dkms.conf"
+
+  # Set name and version
+  sed -e "s/@_PKGBASE@/${_pkgbase}/" \
+      -e "s/@PKGVER@/${pkgver}/" \
+      -i "${install_dir}"/dkms.conf
+
+  install -Dm644 goodix.c "${install_dir}/goodix.c"
+  install -Dm644 goodix.h "${install_dir}/goodix.h"
+  install -Dm644 goodix_fwupload.c "${install_dir}/goodix_fwupload.c"
+  install -Dm644 Makefile "${install_dir}/Makefile"
+  install -Dm644 goodixgpdw3.conf "${pkgdir}/etc/modprobe.d/goodixgpdw3.conf"
+}
+
