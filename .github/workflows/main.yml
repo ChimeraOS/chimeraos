@@ -4,7 +4,45 @@ on:
     branches:
     - 'master'
 jobs:
+  # create json so pkgbuilds can be run in parrallel.
+  list-pkgbuilds:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: set-matrix
+        run: echo "matrix=$(ls -d pkgs/* | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+
+  pkgbuild:
+    needs: list-pkgbuilds
+    name: Build package
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        pkgbuild_dir: ${{ fromJson(needs.list-pkgbuilds.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Makepkg Build and Check
+        id: makepkg
+        uses: boukehaarsma23/pkgbuild-action@v3.0.0
+        with:
+          pkgdir: ${{ matrix.pkgbuild_dir }}
+          namcapDisable: yes
+    # remove any epoch (:) in name, replace with --
+      - name: remove epoch in name
+        run: 
+          find ${{ matrix.pkgbuild_dir }}/*.pkg.tar.zst -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//:/--}"' bash {} \;
+      - name: Upload Package Archives
+        uses: actions/upload-artifact@v3
+        with:
+            name: custom-packages
+            path: ${{ matrix.pkgbuild_dir }}/*.pkg.tar*
+
   build:
+    needs: pkgbuild
     name: System image build
     runs-on: ubuntu-latest
     outputs:
@@ -14,6 +52,16 @@ jobs:
       image_filename: ${{ steps.build_image.outputs.image_filename }}
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+            name: custom-packages
+            path: pkgs/
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: pkgs/
+      # readd any epoch (:) in name, replaced with -- in previous step
+      - name: readd epoch in name
+        run: find pkgs/*.pkg.tar* -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//--/:}"' bash {} \;
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
       - name: Obtain base docker image
