@@ -42,7 +42,7 @@ jobs:
         with:
           pkgdir: ${{ matrix.package }}
           namcapDisable: yes
-    # remove any epoch (:) in name, replace with --
+    # remove any epoch (:) in name, replace with -- since not allowed in artifacts
       - if: ${{ steps.aur-cache.outputs.cache-hit != 'true' || endsWith( matrix.package, '-git') }}
         name: remove epoch in name
         run:
@@ -78,7 +78,7 @@ jobs:
         with:
           pkgdir: ${{ matrix.pkgbuild_dir }}
           namcapDisable: yes
-    # remove any epoch (:) in name, replace with --
+    # remove any epoch (:) in name, replace with -- since not allowed in artifacts
       - if: ${{ steps.custom-cache.outputs.cache-hit != 'true' || endsWith( matrix.pkgbuild_dir, 'git') }}
         name: remove epoch in name
         run:
@@ -116,11 +116,6 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
         working-directory: aur-pkgs/
-      # readd any epoch (:) in name, replaced with -- in previous step
-      - name: readd epoch in name
-        run: find pkgs/*.pkg.tar* -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//--/:}"' bash {} \;
-      - name: readd epoch in name
-        run: find aur-pkgs/*.pkg.tar* -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//--/:}"' bash {} \;
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
       - name: Obtain base docker image
