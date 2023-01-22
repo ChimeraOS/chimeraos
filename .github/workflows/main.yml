@@ -28,13 +28,14 @@ jobs:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
     steps:
       - run: git clone https://aur.archlinux.org/${{ matrix.package }}.git ${{ matrix.package }}
-      - name: Cache package
+      - if: ${{ !endsWith( matrix.package, '-git') }}
+        name: Cache package
         id: aur-cache
         uses: actions/cache@v3
         with:
           key: ${{ matrix.package }}-${{ hashFiles(format('{0}/PKGBUILD', matrix.package)) }}
           path: ${{ matrix.package }}/*.pkg.tar*
-      - if: ${{ steps.aur-cache.outputs.cache-hit != 'true'}}
+      - if: ${{ steps.aur-cache.outputs.cache-hit != 'true' || endsWith( matrix.package, '-git') }}
         name: Makepkg Build and Check
         id: makepkg
         uses: boukehaarsma23/pkgbuild-action@v3.0.0
@@ -42,7 +43,7 @@ jobs:
           pkgdir: ${{ matrix.package }}
           namcapDisable: yes
     # remove any epoch (:) in name, replace with --
-      - if: ${{ steps.aur-cache.outputs.cache-hit != 'true'}}
+      - if: ${{ steps.aur-cache.outputs.cache-hit != 'true' || endsWith( matrix.package, '-git') }}
         name: remove epoch in name
         run:
           find ${{ matrix.package }}/*.pkg.tar.zst -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//:/--}"' bash {} \;
@@ -63,13 +64,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Cache package
+      - if: ${{ !endsWith( matrix.pkgbuild_dir, '-git') }}}}
+        name: Cache package
         id: custom-cache
         uses: actions/cache@v3
         with:
           key: ${{ matrix.pkgbuild_dir }}-${{ hashFiles(format('{0}/PKGBUILD', matrix.pkgbuild_dir)) }}
           path: ${{ matrix.pkgbuild_dir }}/*.pkg.tar*
-      - if: ${{ steps.custom-cache.outputs.cache-hit != 'true'}}
+      - if: ${{ steps.custom-cache.outputs.cache-hit != 'true' || endsWith( matrix.pkgbuild_dir, '-git') }}
         name: Makepkg Build and Check
         id: makepkg
         uses: boukehaarsma23/pkgbuild-action@v3.0.0
@@ -77,7 +79,7 @@ jobs:
           pkgdir: ${{ matrix.pkgbuild_dir }}
           namcapDisable: yes
     # remove any epoch (:) in name, replace with --
-      - if: ${{ steps.custom-cache.outputs.cache-hit != 'true'}}
+      - if: ${{ steps.custom-cache.outputs.cache-hit != 'true' || endsWith( matrix.pkgbuild_dir, 'git') }}
         name: remove epoch in name
         run:
           find ${{ matrix.pkgbuild_dir }}/*.pkg.tar.zst -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//:/--}"' bash {} \;
