@@ -28,14 +28,22 @@ jobs:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
     steps:
       - run: git clone https://aur.archlinux.org/${{ matrix.package }}.git ${{ matrix.package }}
-      - name: Makepkg Build and Check
+      - name: Cache package
+        id: aur-cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ matrix.package }}-${{ hashFiles(format('{0}/PKGBUILD', matrix.package)) }}
+          path: ${{ matrix.package }}/*.pkg.tar*
+      - if: ${{ steps.aur-cache.outputs.cache-hit != 'true'}}
+        name: Makepkg Build and Check
         id: makepkg
         uses: boukehaarsma23/pkgbuild-action@v3.0.0
         with:
           pkgdir: ${{ matrix.package }}
           namcapDisable: yes
     # remove any epoch (:) in name, replace with --
-      - name: remove epoch in name
+      - if: ${{ steps.aur-cache.outputs.cache-hit != 'true'}}
+        name: remove epoch in name
         run:
           find ${{ matrix.package }}/*.pkg.tar.zst -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//:/--}"' bash {} \;
       - name: Upload Package Archives
@@ -55,14 +63,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Makepkg Build and Check
+      - name: Cache package
+        id: custom-cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ matrix.pkgbuild_dir }}-${{ hashFiles(format('{0}/PKGBUILD', matrix.pkgbuild_dir)) }}
+          path: ${{ matrix.pkgbuild_dir }}/*.pkg.tar*
+      - if: ${{ steps.custom-cache.outputs.cache-hit != 'true'}}
+        name: Makepkg Build and Check
         id: makepkg
         uses: boukehaarsma23/pkgbuild-action@v3.0.0
         with:
           pkgdir: ${{ matrix.pkgbuild_dir }}
           namcapDisable: yes
     # remove any epoch (:) in name, replace with --
-      - name: remove epoch in name
+      - if: ${{ steps.custom-cache.outputs.cache-hit != 'true'}}
+        name: remove epoch in name
         run:
           find ${{ matrix.pkgbuild_dir }}/*.pkg.tar.zst -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//:/--}"' bash {} \;
       - name: Upload Package Archives
