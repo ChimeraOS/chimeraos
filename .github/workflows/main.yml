@@ -8,20 +8,50 @@ jobs:
   list-pkgbuilds:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      custom-pkgs: ${{ steps.set-custom-pkgs.outputs.matrix }}
+      aur-pkgs: ${{ steps.set-aur-pkgs.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
-      - id: set-matrix
+      - id: set-custom-pkgs
         run: echo "matrix=$(ls -d pkgs/* | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+      - id: set-aur-pkgs
+        run: source ./manifest ; echo "matrix=$(echo ${AUR_PACKAGES} | jq -R -s -c 'split(" ")[:-1]')" >> $GITHUB_OUTPUT
+        shell: bash
 
-  pkgbuild:
+  aur-pkgbuild:
+    needs: list-pkgbuilds
+    name: Build AUR package
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
+    steps:
+      - run: git clone https://aur.archlinux.org/${{ matrix.package }}.git ${{ matrix.package }}
+      - name: Makepkg Build and Check
+        id: makepkg
+        uses: boukehaarsma23/pkgbuild-action@v3.0.0
+        with:
+          pkgdir: ${{ matrix.package }}
+          namcapDisable: yes
+    # remove any epoch (:) in name, replace with --
+      - name: remove epoch in name
+        run:
+          find ${{ matrix.package }}/*.pkg.tar.zst -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//:/--}"' bash {} \;
+      - name: Upload Package Archives
+        uses: actions/upload-artifact@v3
+        with:
+            name: aur-packages
+            path: ${{ matrix.package }}/*.pkg.tar*
+
+  custom-pkgbuild:
     needs: list-pkgbuilds
     name: Build package
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
-        pkgbuild_dir: ${{ fromJson(needs.list-pkgbuilds.outputs.matrix) }}
+        pkgbuild_dir: ${{ fromJson(needs.list-pkgbuilds.outputs.custom-pkgs) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,7 +72,9 @@ jobs:
             path: ${{ matrix.pkgbuild_dir }}/*.pkg.tar*
 
   build:
-    needs: pkgbuild
+    needs:
+      - custom-pkgbuild
+      - aur-pkgbuild
     name: System image build
     runs-on: ubuntu-latest
     outputs:
@@ -56,9 +88,16 @@ jobs:
         with:
             name: custom-packages
             path: pkgs/
+      - uses: actions/download-artifact@v3
+        with:
+            name: aur-packages
+            path: aur-pkgs/
       - name: Display structure of downloaded files
         run: ls -R
         working-directory: pkgs/
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: aur-pkgs/
       # readd any epoch (:) in name, replaced with -- in previous step
       - name: readd epoch in name
         run: find pkgs/*.pkg.tar* -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//--/:}"' bash {} \;
