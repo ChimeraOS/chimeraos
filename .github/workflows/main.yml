@@ -38,7 +38,7 @@ jobs:
       - if: ${{ steps.aur-cache.outputs.cache-hit != 'true' || endsWith( matrix.package, '-git') }}
         name: Makepkg Build and Check
         id: makepkg
-        uses: boukehaarsma23/pkgbuild-action@v3.0.0
+        uses: boukehaarsma23/pkgbuild-action@v4.0.0
         with:
           pkgdir: ${{ matrix.package }}
           namcapDisable: yes
@@ -74,7 +74,7 @@ jobs:
       - if: ${{ steps.custom-cache.outputs.cache-hit != 'true' || endsWith( matrix.pkgbuild_dir, '-git') }}
         name: Makepkg Build and Check
         id: makepkg
-        uses: boukehaarsma23/pkgbuild-action@v3.0.0
+        uses: boukehaarsma23/pkgbuild-action@v4.0.0
         with:
           pkgdir: ${{ matrix.pkgbuild_dir }}
           namcapDisable: yes
