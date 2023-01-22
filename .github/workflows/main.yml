@@ -33,7 +33,7 @@ jobs:
           namcapDisable: yes
     # remove any epoch (:) in name, replace with --
       - name: remove epoch in name
-        run: 
+        run:
           find ${{ matrix.pkgbuild_dir }}/*.pkg.tar.zst -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//:/--}"' bash {} \;
       - name: Upload Package Archives
         uses: actions/upload-artifact@v3
