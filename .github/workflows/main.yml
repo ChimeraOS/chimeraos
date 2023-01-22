@@ -119,6 +119,8 @@ jobs:
       # readd any epoch (:) in name, replaced with -- in previous step
       - name: readd epoch in name
         run: find pkgs/*.pkg.tar* -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//--/:}"' bash {} \;
+      - name: readd epoch in name
+        run: find aur-pkgs/*.pkg.tar* -type f -name '*:*' -execdir bash -c 'mv "$1" "${1//--/:}"' bash {} \;
       - name: Change directory
         run: cd $GITHUB_WORKSPACE
       - name: Obtain base docker image
