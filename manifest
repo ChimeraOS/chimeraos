@@ -147,6 +147,7 @@ export AUR_PACKAGES="\
 	python-bmi160-i2c \
 	python-inotify-simple \
 	python-leveldb \
+	python-smbus2 \
 	python-vdf \
 	r8152-dkms \
 	retroarch-autoconfig-udev-git \
