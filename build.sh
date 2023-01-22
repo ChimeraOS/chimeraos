@@ -55,15 +55,6 @@ if [ -n "${ARCHIVE_DATE}" ]; then
 	pacman -Syyuu --noconfirm
 fi
 
-export GIT_ALLOW_PROTOCOL=file:https:git
-# build AUR packages to be installed later
-PIKAUR_CMD="PKGDEST=/tmp/temp_repo pikaur --noconfirm -Sw ${AUR_PACKAGES}"
-PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
-if [ -n "${BUILD_USER}" ]; then
-	PIKAUR_RUN=(su "${BUILD_USER}" -c "${PIKAUR_CMD}")
-fi
-"${PIKAUR_RUN[@]}"
-
 # download package overrides
 if [ -n "${PACKAGE_OVERRIDES}" ]; then
 	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
@@ -80,7 +71,7 @@ mkdir ${BUILD_PATH}/own_pkgs
 mkdir ${BUILD_PATH}/extra_pkgs
 
 cp -rv pkgs/*.pkg.tar* ${BUILD_PATH}/own_pkgs
-cp /tmp/temp_repo/* ${BUILD_PATH}/extra_pkgs
+cp -rv aur-pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
 
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
