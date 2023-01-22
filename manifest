@@ -131,6 +131,7 @@ export AUR_PACKAGES="\
 	boxtron \
 	chimera \
 	chimeraos-device-quirks-git \
+	f3 \
 	frzr \
 	gamescope-plus \
 	gamescope-session-git \
@@ -142,7 +143,10 @@ export AUR_PACKAGES="\
 	libretro-virtualjaguar-git \
 	nintendo-udev \
 	oxp-platform-dkms-git \
+	ponymix \
+	python-bmi160-i2c \
 	python-inotify-simple \
+	python-leveldb \
 	python-vdf \
 	r8152-dkms \
 	retroarch-autoconfig-udev-git \
@@ -157,6 +161,7 @@ export AUR_PACKAGES="\
 	steamos-compositor-plus \
 	wyvern \
 	xone-dkms \
+	xone-dongle-firmware \
 	xpad-noone-dkms \
 	xpadneo-dkms \
 "
