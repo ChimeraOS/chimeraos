@@ -264,7 +264,7 @@ rm -rf ${BUILD_IMG}
 
 IMG_FILENAME="${SYSTEM_NAME}-${VERSION}.img.tar.xz"
 
-tar -c -I'xz -6 -T2' -f ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
+tar -c -I'xz -8 -T4' -f ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
 rm ${SYSTEM_NAME}-${VERSION}.img
 
 sha256sum ${SYSTEM_NAME}-${VERSION}.img.tar.xz > sha256sum.txt
