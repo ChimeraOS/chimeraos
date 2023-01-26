@@ -26,10 +26,10 @@ Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
  1 file changed, 14 insertions(+)
 
 diff --git a/src/intel/vulkan/genX_cmd_buffer.c b/src/intel/vulkan/genX_cmd_buffer.c
-index d56f9037fde1..e03dc16c1fc5 100644
+index c28267563c4b..fadd2631c06c 100644
 --- a/src/intel/vulkan/genX_cmd_buffer.c
 +++ b/src/intel/vulkan/genX_cmd_buffer.c
-@@ -6001,6 +6001,20 @@ genX(flush_pipeline_select)(struct anv_cmd_buffer *cmd_buffer,
+@@ -6028,6 +6028,20 @@ genX(flush_pipeline_select)(struct anv_cmd_buffer *cmd_buffer,
     }
  #endif
  

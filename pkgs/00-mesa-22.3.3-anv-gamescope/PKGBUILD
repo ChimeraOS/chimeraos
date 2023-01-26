@@ -3,16 +3,16 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 # Contributor: Andreas Radke <andyrtr@archlinux.org>
 
-pkgbase=mesa-anv-patch
-pkgname=('vulkan-mesa-layers-anv-patch'
-				 'vulkan-intel-anv-patch'
-				 'vulkan-radeon-anv-patch'
-				 'vulkan-swrast-anv-patch'
-				 'libva-mesa-driver-anv-patch'
-				 'mesa-vdpau-anv-patch'
-				 'mesa-anv-patch')
+pkgbase=mesa-anv-gamescope
+pkgname=('vulkan-mesa-layers-anv-gamescope'
+				 'vulkan-intel-anv-gamescope'
+				 'vulkan-radeon-anv-gamescope'
+				 'vulkan-swrast-anv-gamescope'
+				 'libva-mesa-driver-anv-gamescope'
+				 'mesa-vdpau-anv-gamescope'
+				 'mesa-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification - patched ANV for gamescope"
-pkgver=22.3.1
+pkgver=22.3.3
 pkgrel=1
 arch=('x86_64')
 makedepends=('python-mako' 'libxml2' 'libx11' 'xorgproto' 'libdrm' 'libxshmfence' 'libxxf86vm'
@@ -22,12 +22,19 @@ makedepends=('python-mako' 'libxml2' 'libx11' 'xorgproto' 'libdrm' 'libxshmfence
 makedepends+=('rust' 'rust-bindgen' 'spirv-tools' 'spirv-llvm-translator') # rusticl dependencies
 url="https://www.mesa3d.org/"
 license=('custom')
-options=('debug' '!lto')
+options=('!lto')
 source=(https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz
         0001-anv-force-MEDIA_INTERFACE_DESCRIPTOR_LOAD-reemit-aft.patch
-        0001-anv-gamescope.patch
+        0002-iris-Retry-DRM_IOCTL_I915_GEM_EXECBUFFER2-on-ENOMEM.patch
+        0003-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
+        0004-anv-gamescope.patch
         LICENSE)
-sha512sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+sha512sums=('dcf166bc7c80e6ad09337e0188219e5ea4bdc558bc4b4ca35ce30d5421568f6b5328e5508b3175a2696521214e466354d8652ade22468ce448d9f61d5709c8a1'
+            '6150324d4e4b974bd2398157decaceef69bb0867d878d60fb9f4d15fa2fc52948edd27b787846cc1e552a331f7e91953bd3c4a4500d5445df1dba1fe3326bcfe'
+            '33067a6fab6c078cb829b6266ab5e328929923ace7c580c3b347f25682b4427a5f7cfd52234311636fc23e03beb021c543020d3deb30bf8515f58bf78173bde8'
+            '94f25da531a1ccbb630f0b1ccd80fe85aae60cba7b6e29b2761d4014b79f611eb4b89b2e29e2501231620ee381bc91e546ad2158cf76ec2d6c678d048553eba0'
+            '8311742ebaf3c16e534083f2cdb19819bd2e70ecfb0de02eb1064678bb21ee8de703927db4bc68d2bbd83908bb4fd3cf018b9189b5fbb645a2139e195c86d3c2'
+            'f9f0d0ccf166fe6cb684478b6f1e1ab1f2850431c06aa041738563eb1808a004e52cdec823c103c9e180f03ffc083e95974d291353f0220fe52ae6d4897fecc7')
 
 prepare() {
   cd mesa-$pkgver
@@ -36,7 +43,14 @@ prepare() {
   # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/17247
   # https://github.com/HansKristian-Work/vkd3d-proton/issues/1200
   patch -Np1 -i ../0001-anv-force-MEDIA_INTERFACE_DESCRIPTOR_LOAD-reemit-aft.patch
-  patch -Np1 -i ../0001-anv-gamescope.patch
+
+  # https://gitlab.freedesktop.org/drm/intel/-/issues/6851
+  # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/20449
+  patch -Np1 -i ../0002-iris-Retry-DRM_IOCTL_I915_GEM_EXECBUFFER2-on-ENOMEM.patch
+  patch -Np1 -i ../0003-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
+
+  # Patch for Gamescope compatibility
+  patch -Np1 -i ../0004-anv-gamescope.patch
 }
 
 build() {
@@ -97,7 +111,7 @@ _install() {
   done
 }
 
-package_vulkan-mesa-layers-anv-patch() {
+package_vulkan-mesa-layers-anv-gamescope() {
   pkgdesc="Mesa's Vulkan layers"
   depends=('libdrm' 'libxcb' 'wayland' 'python')
   conflicts=('vulkan-mesa-layers' 'vulkan-mesa-layer')
@@ -112,7 +126,7 @@ package_vulkan-mesa-layers-anv-patch() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
-package_vulkan-intel-anv-patch() {
+package_vulkan-intel-anv-gamescope() {
   pkgdesc="Intel's Vulkan mesa driver"
   depends=('wayland' 'libx11' 'libxshmfence' 'libdrm' 'zstd' 'systemd-libs')
   optdepends=('vulkan-mesa-layers: additional vulkan layers')
@@ -125,7 +139,7 @@ package_vulkan-intel-anv-patch() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
-package_vulkan-radeon-anv-patch() {
+package_vulkan-radeon-anv-gamescope() {
   pkgdesc="Radeon's Vulkan mesa driver"
   depends=('wayland' 'libx11' 'libxshmfence' 'libelf' 'libdrm' 'llvm-libs' 'systemd-libs')
   optdepends=('vulkan-mesa-layers: additional vulkan layers')
@@ -139,7 +153,7 @@ package_vulkan-radeon-anv-patch() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
-package_vulkan-swrast-anv-patch() {
+package_vulkan-swrast-anv-gamescope() {
   pkgdesc="Vulkan software rasteriser driver"
   depends=('wayland' 'libx11' 'libxshmfence' 'libdrm' 'zstd' 'llvm-libs' 'systemd-libs' 'libunwind')
   optdepends=('vulkan-mesa-layers: additional vulkan layers')
@@ -153,7 +167,7 @@ package_vulkan-swrast-anv-patch() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
-package_libva-mesa-driver-anv-patch() {
+package_libva-mesa-driver-anv-gamescope() {
   pkgdesc="VA-API implementation for gallium"
   depends=('libdrm' 'libx11' 'llvm-libs' 'expat' 'libelf' 'libxshmfence')
   depends+=('libexpat.so')
@@ -165,7 +179,7 @@ package_libva-mesa-driver-anv-patch() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
-package_mesa-vdpau-anv-patch() {
+package_mesa-vdpau-anv-gamescope() {
   pkgdesc="Mesa VDPAU drivers"
   depends=('libdrm' 'libx11' 'llvm-libs' 'expat' 'libelf' 'libxshmfence')
   depends+=('libexpat.so')
@@ -177,7 +191,7 @@ package_mesa-vdpau-anv-patch() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
-package_mesa-anv-patch() {
+package_mesa-anv-gamescope() {
   depends=('libdrm' 'wayland' 'libxxf86vm' 'libxdamage' 'libxshmfence' 'libelf'
            'libomxil-bellagio' 'libunwind' 'llvm-libs' 'lm_sensors' 'libglvnd'
            'zstd' 'vulkan-icd-loader')
