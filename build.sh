@@ -47,23 +47,6 @@ mkfs.btrfs -f ${BUILD_IMG}
 mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
-# set archive date if specified and force update/downgrade builder
-if [ -n "${ARCHIVE_DATE}" ]; then
-	echo "
-	Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch
-	" > /etc/pacman.d/mirrorlist
-	pacman -Syyuu --noconfirm
-fi
-
-# download package overrides
-mkdir ${BUILD_PATH}/extra_pkgs
-if [ -n "${PACKAGE_OVERRIDES}" ]; then
-	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
-fi
-
-# install package overrides for use during build
-pacman --noconfirm -U --overwrite '*' ${BUILD_PATH}/extra_pkgs/*
-
 export GIT_ALLOW_PROTOCOL=file:https:git
 # build own PKGBUILDs and install them before anything else
 mkdir -p /tmp/pkgs
