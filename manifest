@@ -101,6 +101,7 @@ export PACKAGES="\
 	podman \
 	pulsemixer \
 	python \
+	python-inotify-simple \
 	retroarch \
 	rsync \
 	smbclient \
@@ -142,7 +143,6 @@ export AUR_PACKAGES="\
 	libretro-virtualjaguar-git \
 	nintendo-udev \
 	oxp-platform-dkms-git \
-	python-inotify-simple \
 	python-vdf \
 	r8152-dkms \
 	retroarch-autoconfig-udev-git \
