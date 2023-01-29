@@ -4,7 +4,26 @@ on:
     branches:
     - 'master'
 jobs:
+  build-environment:
+    name: Build environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Change directory
+        run: cd $GITHUB_WORKSPACE
+      - name: Obtain base docker image
+        run: docker pull archlinux:base-devel
+      - name: Create docker build image
+        run: docker build --no-cache -t image-builder:latest .
+      - name: Save docker image
+        run: docker save -o image-builder:latest > /tmp/builder.tar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: image-builder
+          path: /tmp/builder.tar
+
   build:
+    needs: build-environment
     name: System image build
     runs-on: ubuntu-latest
     permissions:
@@ -16,12 +35,12 @@ jobs:
       image_filename: ${{ steps.build_image.outputs.image_filename }}
     steps:
       - uses: actions/checkout@v3
-      - name: Change directory
-        run: cd $GITHUB_WORKSPACE
-      - name: Obtain base docker image
-        run: docker pull archlinux:latest
-      - name: Create docker build image
-        run: docker build --no-cache -t image-builder:latest .
+      - name: Download builder
+        uses: actions/download-artifact@v3
+        with:
+          name: image-builder
+          path: /tmp
+      - run: docker load --input /tmp/builder.tar
       - name: Build system image
         id: build_image
         run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
