@@ -62,7 +62,7 @@ pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
 cp -R manifest rootfs/. ${BUILD_PATH}/
 
 mkdir ${BUILD_PATH}/own_pkgs
-cp /tmp/temp_repo/* ${BUILD_PATH}/extra_pkgs
+cp -rv aur-pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
 # Own packages already exist in docker container
 cp -rv /pkgs/**/*.pkg.tar* ${BUILD_PATH}/own_pkgs
 
