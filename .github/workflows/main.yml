@@ -9,14 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Change directory
-        run: cd $GITHUB_WORKSPACE
-      - name: Obtain base docker image
-        run: docker pull archlinux:base-devel
-      - name: Create docker build image
-        run: docker build --no-cache -t image-builder:latest .
-      - name: Save docker image
-        run: docker save -o image-builder:latest > /tmp/builder.tar
+      - uses: docker/setup-buildx-action@v2
+      - name: build builder image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          tags: image-builder:latest
+          outputs: type=docker,dest=/tmp/builder.tar
       - uses: actions/upload-artifact@v3
         with:
           name: image-builder
