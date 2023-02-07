@@ -55,7 +55,7 @@ case "$session" in
   plasma-x11-persistent)
     session_launcher="gnome-session"
   ;;
-  plasma)
+  desktop|plasma)
     session_launcher="gnome-session-oneshot"
     create_sentinel=1
   ;;
