@@ -48,9 +48,9 @@ function desktop() {
 	grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/* | tr '\n' '\0' | xargs -0 -I {} rm {}
 
 	# switch to Desktop (Openbox/Xorg)
-	sudo chimera-session-use-lightdm gnome
-	systemctl --user enable sxhkd
-	systemctl --user restart sxhkd
+	sudo chimera-session-use-lightdm gnome-session-oneshot
+	systemctl --user disable sxhkd
+	systemctl --user stop sxhkd
 }
 
 function gamepadui() {
