@@ -64,6 +64,7 @@ export PACKAGES="\
 	libidn11 \
 	libretro-beetle-pce-fast \
 	libretro-beetle-psx-hw \
+	libretro-desmume \
 	libretro-dolphin \
 	libretro-flycast \
 	libretro-genesis-plus-gx \
