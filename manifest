@@ -50,15 +50,19 @@ export PACKAGES="\
 	intel-ucode \
 	intel-undervolt \
 	lib32-curl \
+	lib32-fontconfig \
 	lib32-freetype2 \
 	lib32-gamemode \
 	lib32-libgpg-error \
 	lib32-libnm \
+	lib32-libxinerama \
+	lib32-libva \
 	lib32-libva-intel-driver \
 	lib32-libva-vdpau-driver \
 	lib32-nvidia-utils \
 	lib32-openal \
 	lib32-pipewire \
+	lib32-systemd \
 	lib32-vulkan-icd-loader \
 	libcurl-gnutls \
 	libidn11 \
