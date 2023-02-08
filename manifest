@@ -56,6 +56,7 @@ export PACKAGES="\
 	lib32-libgpg-error \
 	lib32-libnm \
 	lib32-libxinerama \
+	lib32-libxcrypt-compat \
 	lib32-libva \
 	lib32-libva-intel-driver \
 	lib32-libva-vdpau-driver \
@@ -82,6 +83,7 @@ export PACKAGES="\
 	libretro-snes9x \
 	libva-intel-driver \
 	libva-vdpau-driver \
+	libxcrypt-compat \
 	lightdm \
 	linux-firmware \
 	liquidctl \
