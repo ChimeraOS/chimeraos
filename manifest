@@ -115,7 +115,6 @@ export PACKAGES="\
 	smbclient \
 	sof-firmware \
 	sudo \
-	sxhkd \
 	ttf-liberation \
 	unzip \
 	usb_modeswitch \
@@ -191,7 +190,6 @@ export USER_SERVICES="\
 	gamemoded.service \
 	ryzen-tctl \
 	steam-patch.service \
-	sxhkd.service \
 "
 
 export FILES_TO_DELETE="\

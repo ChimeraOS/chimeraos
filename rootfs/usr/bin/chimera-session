@@ -39,8 +39,6 @@ function bigpicture() {
 	# switch to Big Picture Mode (SteamOS compositor plus/Xorg)
 	echo '' > ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm steamos
-	systemctl --user enable sxhkd
-	systemctl --user restart sxhkd
 }
 
 function desktop() {
@@ -49,16 +47,12 @@ function desktop() {
 
 	# switch to Desktop (Openbox/Xorg)
 	sudo chimera-session-use-lightdm gnome-session-oneshot
-	systemctl --user disable sxhkd
-	systemctl --user stop sxhkd
 }
 
 function gamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session
-	systemctl --user disable sxhkd
-	systemctl --user stop sxhkd
 }
 
 function print_invalid_session() {
