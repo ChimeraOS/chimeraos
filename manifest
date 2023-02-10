@@ -30,6 +30,7 @@ export PACKAGES="\
 	dosbox \
 	eog \
 	ethtool \
+	ffmpeg \
 	file-roller \
 	flatpak \
 	fmt \
