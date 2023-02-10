@@ -7,7 +7,7 @@ die() { echo >&2 "!! $*"; exit 1; }
 CONF_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
 SENTINEL_FILE="steamos-session-select"
 
-# For sanity this shipped file must be present, to ensure we're still on a normal-looking Chieraos setup.
+# For sanity this shipped file must be present, to ensure we're still on a normal-looking Chimeraos setup.
 CHECK_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
 
 session="${1:-gamescope}"
