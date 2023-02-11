@@ -176,7 +176,6 @@ export SERVICES="\
 	bluetooth-workaround \
 	chimera-proxy.service \
 	chimera-proxy.socket \
-	frzr-autoupdate.timer \
 	fstrim.timer \
 	handycon \
 	haveged \
