@@ -76,12 +76,14 @@ export PACKAGES="\
 	libretro-genesis-plus-gx \
 	libretro-kronos \
 	libretro-mame \
+	libretro-mesen-s\
 	libretro-mgba \
 	libretro-mupen64plus-next \
 	libretro-nestopia \
 	libretro-picodrive \
 	libretro-play \
 	libretro-ppsspp \
+	libretro-prosystem \
 	libretro-snes9x \
 	libva-intel-driver \
 	libva-vdpau-driver \
