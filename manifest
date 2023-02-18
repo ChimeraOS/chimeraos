@@ -38,6 +38,7 @@ export PACKAGES="\
 	gamemode \
 	gnome-console \
 	gnome-control-center \
+	gnome-disk-utility \
 	gnome-keyring \
 	gnome-session \
 	gnome-shell \
