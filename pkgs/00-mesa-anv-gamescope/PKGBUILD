@@ -12,7 +12,7 @@ pkgname=('vulkan-mesa-layers-anv-gamescope'
 				 'mesa-vdpau-anv-gamescope'
 				 'mesa-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification - patched ANV for gamescope"
-pkgver=22.3.4
+pkgver=23.0.0
 pkgrel=1
 arch=('x86_64')
 makedepends=('python-mako' 'libxml2' 'libx11' 'xorgproto' 'libdrm' 'libxshmfence' 'libxxf86vm'
@@ -29,7 +29,7 @@ source=(https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz
         0003-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
         0004-anv-gamescope.patch
         LICENSE)
-sha512sums=('6af340153244d3e95d0e155a45d6db134335654d62590797ae0ef6ba44c2ccfe91ebf95f70ff82c67cee108ac35536767b1f6848d6d1129f52eb9e8414ee321d'
+sha512sums=('127e2759a2a31cacd65a0891719ab7bb4a9188844022b4bccaebbedce9c550b9ccb160ad519178ea0d851c4bcb8f0f56febda248ed2ba82b5ddf804855e4694b'
             '6150324d4e4b974bd2398157decaceef69bb0867d878d60fb9f4d15fa2fc52948edd27b787846cc1e552a331f7e91953bd3c4a4500d5445df1dba1fe3326bcfe'
             '33067a6fab6c078cb829b6266ab5e328929923ace7c580c3b347f25682b4427a5f7cfd52234311636fc23e03beb021c543020d3deb30bf8515f58bf78173bde8'
             '94f25da531a1ccbb630f0b1ccd80fe85aae60cba7b6e29b2761d4014b79f611eb4b89b2e29e2501231620ee381bc91e546ad2158cf76ec2d6c678d048553eba0'
