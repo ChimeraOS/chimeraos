@@ -1,0 +1,23 @@
+# Migrate bootloader away from syslinux
+post_install() {
+  # Actions after install
+  # Check if we have syslinux installed, if not exit
+  local mount_path=$1
+  local subvol=$2
+
+  if ![ -d "$mount_path"/boot/syslinux.cfg ] ; then
+    return 0
+  fi
+
+  echo "Running post install bootloader migration"
+
+  if [ -d /sys/firmware/efi/efivars ]; then
+    echo "UEFI boot detected, installing systemd-boot"
+    bootctl install
+    # Remove syslinux configuration
+    rm "$mount_path"/boot/syslinux.cfg
+  else
+    echo "We are not in a UEFI boot. Consider changing to UEFI boot"
+  fi
+}
+
