@@ -4,7 +4,7 @@ DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 SESSION_CONFIG="${CONFIG_HOME}/environment.d/01-chimera-session.conf"
 SESSION_LIGHTDM_CONFIG="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
-SESSION_LIST=('bigpicture' 'desktop' 'gamepadui')
+SESSION_LIST=('bigpicture' 'desktop' 'desktop-xorg' 'gamepadui')
 SELECTED_SESSION="$1"
 
 
@@ -15,6 +15,10 @@ function print_session_list() {
 	CURRENT_SESSION="unknown"
 	if grep "gnome" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
 		CURRENT_SESSION="desktop"
+	fi
+
+	if grep "gnome-xorg" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+		CURRENT_SESSION="desktop-xorg"
 	fi
 
 	if grep "steamos" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
@@ -35,6 +39,11 @@ function print_session_list() {
 	done
 }
 
+function clean_steam_shortcuts() {
+	# clear steam game desktop shortcut clutter
+	grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/* | tr '\n' '\0' | xargs -0 -I {} rm {}
+}
+
 function bigpicture() {
 	# switch to Big Picture Mode (SteamOS compositor plus/Xorg)
 	echo '' > ${SESSION_CONFIG}
@@ -42,11 +51,17 @@ function bigpicture() {
 }
 
 function desktop() {
-	# clear steam game desktop shortcut clutter
-	grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/* | tr '\n' '\0' | xargs -0 -I {} rm {}
+	clean_steam_shortcuts
 
-	# switch to Desktop (Openbox/Xorg)
-	sudo chimera-session-use-lightdm gnome-session-oneshot
+	# switch to Desktop
+	sudo chimera-session-use-lightdm gnome-wayland
+}
+
+function desktop_xorg() {
+	clean_steam_shortcuts
+
+	# switch to Desktop (Xorg)
+	sudo chimera-session-use-lightdm gnome-xorg
 }
 
 function gamepadui() {
@@ -83,6 +98,9 @@ if [ "${SELECTED_SESSION}" = "bigpicture" ]; then
 elif [ "${SELECTED_SESSION}" = "desktop" ]; then
 	echo "Switching to desktop"
 	desktop
+elif [ "${SELECTED_SESSION}" = "desktop-xorg" ]; then
+	echo "Switching to desktop-xorg"
+	desktop_xorg
 elif [ "${SELECTED_SESSION}" = "gamepadui" ]; then
 	echo "Switching to gamepadui"
 	gamepadui
