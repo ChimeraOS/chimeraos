@@ -5,17 +5,27 @@ post_install() {
   local mount_path=$1
   local subvol=$2
 
-  if ![ -d "$mount_path"/boot/syslinux.cfg ] ; then
-    return 0
+  if ! [ -d "$mount_path"/boot/syslinux ]; then
+    echo "Legacy bios dont appear to be in use, checking for UEFI.."
+    if ! [ -f "$mount_path"/boot/EFI/BOOT/syslinux.cfg ]; then
+      echo "Syslinux doesn't appear to be in use for legacy or UEFi configurations"
+      return 0
+    fi
   fi
 
   echo "Running post install bootloader migration"
 
   if [ -d /sys/firmware/efi/efivars ]; then
     echo "UEFI boot detected, installing systemd-boot"
-    bootctl install
     # Remove syslinux configuration
-    rm "$mount_path"/boot/syslinux.cfg
+    if [ -d "$mount_path"/boot/syslinux ]; then
+      rm -rf "$mount_path"/boot/syslinux
+    fi
+    
+    if [ -f "$mount_path"/boot/EFI/BOOT/syslinux.cfg ]; then
+      rm "$mount_path"/boot/EFI/BOOT/syslinux.cfg
+    fi
+    bootctl install
   else
     echo "We are not in a UEFI boot. Consider changing to UEFI boot"
   fi
