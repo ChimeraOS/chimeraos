@@ -85,7 +85,6 @@ export PACKAGES="\
 	libretro-picodrive \
 	libretro-play \
 	libretro-ppsspp \
-	libretro-prosystem \
 	libretro-snes9x \
 	libva-intel-driver \
 	libva-vdpau-driver \
@@ -152,6 +151,7 @@ export AUR_PACKAGES="\
 	legendary \
   lib32-gamescope-plus \
 	libretro-opera-git \
+	libretro-prosystem-git \
 	libretro-stella2014-git \
 	libretro-virtualjaguar-git \
 	nintendo-udev \
