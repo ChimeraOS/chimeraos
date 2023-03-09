@@ -15,7 +15,6 @@ export KERNEL_PACKAGE="linux-lts"
 export PACKAGES="\
 	accountsservice \
 	alsa-firmware \
-	alsa-ucm-conf \
 	alsa-utils \
 	amd-ucode \
 	bluez \
@@ -139,6 +138,7 @@ export PACKAGES="\
 
 export AUR_PACKAGES="\
 	alienware-alpha-wmi \
+	alsa-ucm-conf-git \
 	bcm20702a1-firmware \
 	boxtron \
 	chimera \
