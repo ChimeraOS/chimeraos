@@ -117,6 +117,7 @@ export PACKAGES="\
 	rsync \
 	smbclient \
 	sof-firmware \
+	steam \
 	sudo \
 	ttf-liberation \
 	unzip \
