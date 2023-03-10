@@ -138,7 +138,6 @@ export PACKAGES="\
 
 export AUR_PACKAGES="\
 	alienware-alpha-wmi \
-	alsa-ucm-conf-git \
 	bcm20702a1-firmware \
 	boxtron \
 	chimera \
