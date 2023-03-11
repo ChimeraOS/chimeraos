@@ -82,7 +82,7 @@ export PACKAGES="\
 	libretro-mupen64plus-next \
 	libretro-nestopia \
 	libretro-picodrive \
-	libretro-play \
+	libretro-pcsx2 \
 	libretro-ppsspp \
 	libretro-snes9x \
 	libva-intel-driver \
