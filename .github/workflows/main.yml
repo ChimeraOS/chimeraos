@@ -7,6 +7,8 @@ jobs:
   build:
     name: System image build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     outputs:
       version: ${{ steps.build_image.outputs.version }}
       display_name: ${{ steps.build_image.outputs.display_name }}
