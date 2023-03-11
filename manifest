@@ -35,6 +35,7 @@ export PACKAGES="\
 	fmt \
 	fuse2 \
 	gamemode \
+	git \
 	gnome-console \
 	gnome-control-center \
 	gnome-disk-utility \
