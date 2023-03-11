@@ -150,6 +150,7 @@ export AUR_PACKAGES="\
 	handygccs-git \
 	hhfc-git \
 	legendary \
+	lib32-gamescope-plus \
 	libretro-opera-git \
 	libretro-prosystem-git \
 	libretro-stella2014-git \
