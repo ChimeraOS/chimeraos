@@ -1,5 +1,4 @@
-# Require reboot
+# triggers notification for reboot in old BPM
 post_install() {
-  echo "Set up /var/run/reboot-required"
   touch /var/run/reboot-required
 }
