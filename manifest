@@ -10,12 +10,11 @@ export WEBSITE="https://chimeraos.org"
 export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
-export KERNEL_PACKAGE="linux"
+export KERNEL_PACKAGE="linux-lts"
 
 export PACKAGES="\
 	accountsservice \
 	alsa-firmware \
-	alsa-ucm-conf \
 	alsa-utils \
 	amd-ucode \
 	bluez \
@@ -36,6 +35,7 @@ export PACKAGES="\
 	fmt \
 	fuse2 \
 	gamemode \
+	git \
 	gnome-console \
 	gnome-control-center \
 	gnome-disk-utility \
@@ -71,17 +71,19 @@ export PACKAGES="\
 	libidn11 \
 	libretro-beetle-pce-fast \
 	libretro-beetle-psx-hw \
+	libretro-citra \
 	libretro-desmume \
 	libretro-dolphin \
 	libretro-flycast \
 	libretro-genesis-plus-gx \
 	libretro-kronos \
 	libretro-mame \
+	libretro-mesen-s\
 	libretro-mgba \
 	libretro-mupen64plus-next \
 	libretro-nestopia \
+	libretro-pcsx2 \
 	libretro-picodrive \
-	libretro-play \
 	libretro-ppsspp \
 	libretro-snes9x \
 	libva-intel-driver \
@@ -116,6 +118,7 @@ export PACKAGES="\
 	rsync \
 	smbclient \
 	sof-firmware \
+	steam \
 	sudo \
 	ttf-liberation \
 	unzip \
@@ -147,8 +150,9 @@ export AUR_PACKAGES="\
 	handygccs-git \
 	hhfc-git \
 	legendary \
-  lib32-gamescope-plus \
+	lib32-gamescope-plus \
 	libretro-opera-git \
+	libretro-prosystem-git \
 	libretro-stella2014-git \
 	libretro-virtualjaguar-git \
 	nintendo-udev \
