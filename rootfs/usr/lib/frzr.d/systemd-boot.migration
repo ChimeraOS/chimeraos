@@ -36,7 +36,7 @@ post_install() {
 	if [ -e ${MOUNT_PATH}/boot/${NAME}/intel-ucode.img ] ; then
 		INTEL_UCODE="initrd /${NAME}/intel-ucode.img"
 	fi
-    
+
 	if [ -e ${SUBVOL}/usr/lib/frzr.d/bootconfig.conf ] ; then
 		ADDITIONAL_ARGUMENTS="$ADDITIONAL_ARGUMENTS $(cat ${SUBVOL}/usr/lib/frzr.d/bootconfig.conf)"
 	fi
