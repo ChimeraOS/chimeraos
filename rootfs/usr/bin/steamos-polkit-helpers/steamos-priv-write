@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -eu
+
+if [[ $EUID -ne 0 ]];
+then
+    exec pkexec --disable-internal-agent "$0" "$@"
+fi
+
+WRITE_PATH="$1"
+WRITE_VALUE="$2"
+
+function CommitWrite()
+{
+    echo "commit: $WRITE_VALUE -> $WRITE_PATH" | systemd-cat -t p-steamos-priv-write -p warning
+    echo "$WRITE_VALUE" > "$WRITE_PATH"
+    chmod a+w "$WRITE_PATH"
+    exit 0
+}
+
+function DeclineWrite()
+{
+    echo "decline: $WRITE_VALUE -> $WRITE_PATH" | systemd-cat -t p-steamos-priv-write -p err
+    echo "$WRITE_VALUE" > "$WRITE_PATH"
+    exit 1
+}
+
+echo "checking: $WRITE_PATH" | systemd-cat -t p-steamos-priv-write -p warning
+if [[ "$WRITE_PATH" == /sys/class/backlight/*/brightness ]]; then
+   CommitWrite
+fi
+
+if [[ "$WRITE_PATH" == /sys/devices/*/*/*/*/hwmon/hwmon*/led_brightness ]]; then
+   CommitWrite
+fi
+
+if [[ "$WRITE_PATH" == /sys/devices/*/*/*/*/hwmon/hwmon*/content_adaptive_brightness ]]; then
+   CommitWrite
+fi
+
+DeclineWrite
