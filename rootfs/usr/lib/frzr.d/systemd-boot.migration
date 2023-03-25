@@ -1,22 +1,15 @@
 # Migrate to systemd-boot
 post_install() {
 	local MOUNT_PATH=$1
-	local SUBVOL=$2
-	local NAME=$3
 
-	local BOOT_CFG="${MOUNT_PATH}/boot/loader/entries/frzr.conf"
-	local AMD_UCODE=""
-	local INTEL_UCODE=""
-	local ADDITIONAL_ARGUMENTS=""
-
-	if [ -e ${BOOT_CFG} ]; then
+	if [ -e ${MOUNT_PATH}/boot/loader/random-seed ]; then
 		# migration has already completed, exit silently
 		return 0
 	fi
 
 	echo "Migrating to systemd-boot..."
 
-	if [ "$#" -lt 3 ]; then
+	if [ "$#" -lt 1 ]; then
 		echo "Migration aborted: not enough arguments"
 		return 1
 	fi
@@ -29,35 +22,5 @@ post_install() {
 	rm -rf ${MOUNT_PATH}/boot/EFI
 	bootctl --esp-path=${MOUNT_PATH}/boot/ install
 
-	if [ -e ${MOUNT_PATH}/boot/${NAME}/amd-ucode.img ] ; then
-		AMD_UCODE="initrd /${NAME}/amd-ucode.img"
-	fi
-
-	if [ -e ${MOUNT_PATH}/boot/${NAME}/intel-ucode.img ] ; then
-		INTEL_UCODE="initrd /${NAME}/intel-ucode.img"
-	fi
-
-	if [ -e ${SUBVOL}/usr/lib/frzr.d/bootconfig.conf ] ; then
-		ADDITIONAL_ARGUMENTS="$ADDITIONAL_ARGUMENTS $(cat ${SUBVOL}/usr/lib/frzr.d/bootconfig.conf)"
-	fi
-
-	echo "default frzr.conf" > ${MOUNT_PATH}/boot/loader/loader.conf
-	get_boot_cfg "${NAME}" "${AMD_UCODE}" "${INTEL_UCODE}" "${ADDTIONAL_ARGUMENTS}" > ${BOOT_CFG}
-
 	echo "Migration to systemd-boot complete"
-}
-
-
-get_boot_cfg() {
-	local version=${1}
-	local amd_ucode=${2}
-	local intel_ucode=${3}
-	local additional_arguments=${4}
-
-echo "title ${version}
-linux /${version}/vmlinuz-linux
-${amd_ucode}
-${intel_ucode}
-initrd /${version}/initramfs-linux.img
-options root=LABEL=frzr_root rw rootflags=subvol=deployments/${version} quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_priority=3 ${additional_arguments}"
 }
