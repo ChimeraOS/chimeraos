@@ -33,6 +33,7 @@ export PACKAGES="\
 	file-roller \
 	flatpak \
 	fmt \
+	fuse-zip \
 	fuse2 \
 	gamemode \
 	git \
