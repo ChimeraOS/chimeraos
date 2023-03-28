@@ -163,6 +163,7 @@ export AUR_PACKAGES="\
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
 	rtl88x2bu-dkms-git \
+	rtl8821au-dkms-git \
 	rtw89-dkms-git \
 	ryzenadj-git \
 	ryzenadj-controller-git \
