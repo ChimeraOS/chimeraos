@@ -18,23 +18,23 @@ enough memory. Once the batch is submiited and snapshots_landed gets
 flipped, iris_get_query_result() can proceed normally.
 
 Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6851
-(cherry picked from commit 3b38add239795fa5fe97ae37e6ec62cab4f1f968)
+(cherry picked from commit 35462bab70db7312b2960796344c37738c93ce91)
 ---
  src/gallium/drivers/iris/iris_batch.c | 11 ++++++++---
  1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/src/gallium/drivers/iris/iris_batch.c b/src/gallium/drivers/iris/iris_batch.c
-index c7a08a0e1f5f..9e7b43f1dc2c 100644
+index ec32d88cc9bc..8b49615a9901 100644
 --- a/src/gallium/drivers/iris/iris_batch.c
 +++ b/src/gallium/drivers/iris/iris_batch.c
-@@ -981,9 +981,14 @@ submit_batch(struct iris_batch *batch)
+@@ -987,9 +987,14 @@ submit_batch(struct iris_batch *batch)
     }
  
     int ret = 0;
--   if (!batch->screen->devinfo->no_hw &&
+-   if (!batch->screen->devinfo.no_hw &&
 -       intel_ioctl(batch->screen->fd, DRM_IOCTL_I915_GEM_EXECBUFFER2, &execbuf))
 -      ret = -errno;
-+   if (!batch->screen->devinfo->no_hw) {
++   if (!batch->screen->devinfo.no_hw) {
 +      do {
 +         ret = intel_ioctl(batch->screen->fd, DRM_IOCTL_I915_GEM_EXECBUFFER2, &execbuf);
 +      } while (ret && errno == ENOMEM);
