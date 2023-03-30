@@ -1,0 +1,5 @@
+# Provide nopasswd access for the session script to modify these specific systemd units
+ALL ALL=(ALL) NOPASSWD: /usr/bin/systemctl enable --now handycon
+ALL ALL=(ALL) NOPASSWD: /usr/bin/systemctl disable --now handycon
+ALL ALL=(ALL) NOPASSWD: /usr/bin/systemctl enable --now ryzenadj-controller
+ALL ALL=(ALL) NOPASSWD: /usr/bin/systemctl disable --now ryzenadj-controller

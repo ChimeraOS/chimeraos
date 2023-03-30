@@ -31,6 +31,7 @@ export PACKAGES="\
 	ethtool \
 	ffmpeg \
 	file-roller \
+	firejail \
 	flatpak \
 	fmt \
 	fuse2 \
@@ -156,6 +157,8 @@ export AUR_PACKAGES="\
 	libretro-stella2014-git \
 	libretro-virtualjaguar-git \
 	nintendo-udev \
+	opengamepadui-bin \
+	opengamepadui-session-git \
 	oxp-platform-dkms-git \
 	python-vdf \
 	r8152-dkms \

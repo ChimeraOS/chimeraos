@@ -4,7 +4,7 @@ DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 SESSION_CONFIG="${CONFIG_HOME}/environment.d/01-chimera-session.conf"
 SESSION_LIGHTDM_CONFIG="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
-SESSION_LIST=('bigpicture' 'desktop' 'desktop-xorg' 'gamepadui')
+SESSION_LIST=('bigpicture' 'desktop' 'desktop-xorg' 'gamepadui' 'opengamepadui' 'gamepadui-with-qam')
 SELECTED_SESSION="$1"
 
 
@@ -28,6 +28,15 @@ function print_session_list() {
 	if grep "gamescope-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
 		CURRENT_SESSION="gamepadui"
 	fi
+
+	if grep "opengamepadui-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+		CURRENT_SESSION="opengamepadui"
+	fi
+
+	if grep "gamescope-ogui-qam-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+		CURRENT_SESSION="gamepadui-with-qam"
+	fi
+
 
 	# print active and available sessions
 	for t in ${SESSION_LIST[@]}; do
@@ -68,6 +77,24 @@ function gamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session
+	sudo systemctl enable --now handycon
+	sudo systemctl enable --now ryzenadj-controller
+}
+
+function opengamepadui() {
+	# switch to Gamepad/Deck UI (Gamescope/Wayland)
+	echo '' > ${SESSION_CONFIG}
+	sudo chimera-session-use-lightdm opengamepadui-session
+	sudo systemctl disable --now handycon
+	sudo systemctl disable --now ryzenadj-controller
+}
+
+function gamepaduiqam() {
+	# switch to OpenGamepadUI (Gamescope/Wayland)
+	echo '' > ${SESSION_CONFIG}
+	sudo chimera-session-use-lightdm gamescope-ogui-qam-session
+	sudo systemctl disable --now handycon
+	sudo systemctl disable --now ryzenadj-controller
 }
 
 function print_invalid_session() {
@@ -104,4 +131,10 @@ elif [ "${SELECTED_SESSION}" = "desktop-xorg" ]; then
 elif [ "${SELECTED_SESSION}" = "gamepadui" ]; then
 	echo "Switching to gamepadui"
 	gamepadui
+elif [ "${SELECTED_SESSION}" = "opengamepadui" ]; then
+	echo "Switching to opengamepadui"
+	opengamepadui
+elif [ "${SELECTED_SESSION}" = "gamepadui-with-qam" ]; then
+	echo "Switching to gamepadui with opengamepadui quick access menu"
+	gamepaduiqam
 fi
