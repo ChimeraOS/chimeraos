@@ -4,10 +4,9 @@
  "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
 <policyconfig>
 
-  <vendor>ChimeraOS Chimera</vendor>
+  <vendor>ChimeraOS</vendor>
   <vendor_url>http://chimeraos.org</vendor_url>
 
-  <action id="org.chimeraos.policykit.steamos.pkexec.run-set-hostname">
   <action id="org.chimeraos.policykit.steamos.pkexec.run-steamos-polkit-helpers-steamos-priv-write">
     <description>Helper to write to a set of device nodes</description>
     <icon_name>package-x-generic</icon_name> 
