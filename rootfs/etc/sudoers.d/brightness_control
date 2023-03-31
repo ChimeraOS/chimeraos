@@ -1,1 +1,0 @@
-ALL ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/class/backlight/*/brightness
