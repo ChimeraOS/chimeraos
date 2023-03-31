@@ -24,7 +24,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          tags: image-builder:latest
+          tags: image-builder:${{ github.sha }}
           outputs: type=docker,dest=/tmp/builder.tar
       - uses: actions/upload-artifact@v3
         with:
@@ -51,7 +51,7 @@ jobs:
       - name: Build package
         run: |
           docker load --input /tmp/builder.tar
-          docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output --entrypoint=/workdir/build-package.sh --privileged=true image-builder:latest ${{ matrix.package }}
+          docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output --entrypoint=/workdir/build-package.sh --privileged=true image-builder:${{ github.sha }} ${{ matrix.package }}
       - run: ls -ahl output/*
       - name: Upload Package Archives
         uses: actions/upload-artifact@v3
@@ -86,7 +86,7 @@ jobs:
       - run: docker load --input /tmp/builder.tar
       - name: Build system image
         id: build_image
-        run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
+        run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:${{ github.sha }} $(echo ${GITHUB_SHA} | cut -c1-7)
 
       - name: Create release
         id: create_release

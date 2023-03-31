@@ -13,17 +13,10 @@ if [ -n "${ARCHIVE_DATE}" ]; then
 	Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch
 	" > /etc/pacman.d/mirrorlist
 fi
-# download package overrides
-mkdir /tmp/extra_pkgs
-if [ -n "${PACKAGE_OVERRIDES}" ]; then
-	wget --directory-prefix=/tmp/extra_pkgs ${PACKAGE_OVERRIDES}
-fi
 
 # Update system and install pikaur and other build dependencies
-echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf
+echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
 	pacman --noconfirm -Syyuu && \
-	# install package overrides for use during build
-	pacman --noconfirm -U --overwrite '*' /tmp/extra_pkgs/* && \
 	pacman --noconfirm -S \
 		arch-install-scripts \
 		btrfs-progs \
@@ -36,7 +29,8 @@ echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf
 		python-build \
 		python-installer \
 		python-setuptools \
-	pacman --noconfirm -S --needed git
+		&& \
+	pacman --noconfirm -S --needed git && \
 	echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 	useradd build -G wheel -m
 	su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur"
@@ -51,4 +45,11 @@ chmod +x /usr/bin/systemd-run
 if [ -z "${ARCHIVE_DATE}" ]; then
     pacman -S --noconfirm reflector
     reflector --verbose --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+fi
+# download package overrides
+mkdir /tmp/extra_pkgs
+if [ -n "${PACKAGE_OVERRIDES}" ]; then
+	wget --directory-prefix=/tmp/extra_pkgs ${PACKAGE_OVERRIDES}
+	# install package overrides for use during build
+	pacman --noconfirm -U --overwrite '*' /tmp/extra_pkgs/*
 fi

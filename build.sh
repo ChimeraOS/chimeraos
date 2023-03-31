@@ -47,14 +47,6 @@ mkfs.btrfs -f ${BUILD_IMG}
 mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
-# build AUR packages to be installed later
-PIKAUR_CMD="PKGDEST=/tmp/temp_repo pikaur --noconfirm -Sw ${AUR_PACKAGES}"
-PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
-if [ -n "${BUILD_USER}" ]; then
-	PIKAUR_RUN=(su "${BUILD_USER}" -c "${PIKAUR_CMD}")
-fi
-"${PIKAUR_RUN[@]}"
-
 # bootstrap using our configuration
 pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
 
@@ -62,9 +54,13 @@ pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
 cp -R manifest rootfs/. ${BUILD_PATH}/
 
 mkdir ${BUILD_PATH}/own_pkgs
+mkdir ${BUILD_PATH}/extra_pkgs
+
 cp -rv aur-pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
 # Own packages already exist in docker container
 cp -rv /pkgs/**/*.pkg.tar* ${BUILD_PATH}/own_pkgs
+cp -rv /tmp/extra_pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
+
 
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
