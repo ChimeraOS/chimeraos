@@ -1,8 +1,8 @@
 diff --git a/src/intel/isl/isl_format.c b/src/intel/isl/isl_format.c
-index 198ecdc196ff1d17175c56ea3e0643788af5f4dc..235d2052df2b906f169eb9cedc1c71dbc4c2cc4f 100644
+index db8d146b4e2fd264b72c42df613cef0107fb163a..52fbdbaf440451996e63fb94a93c5f7029586940 100644
 --- a/src/intel/isl/isl_format.c
 +++ b/src/intel/isl/isl_format.c
-@@ -966,7 +966,10 @@ isl_formats_have_same_bits_per_channel(enum isl_format format1,
+@@ -971,7 +971,10 @@ isl_formats_have_same_bits_per_channel(enum isl_format format1,
     return fmtl1->channels.r.bits == fmtl2->channels.r.bits &&
            fmtl1->channels.g.bits == fmtl2->channels.g.bits &&
            fmtl1->channels.b.bits == fmtl2->channels.b.bits &&
@@ -15,10 +15,10 @@ index 198ecdc196ff1d17175c56ea3e0643788af5f4dc..235d2052df2b906f169eb9cedc1c71db
  
  /**
 diff --git a/src/intel/vulkan/anv_formats.c b/src/intel/vulkan/anv_formats.c
-index e361036367fc4ec6ca96779799d09ffdc9593d67..ebe7dc8d14846b3e18a2e22f19992e11e1097dec 100644
+index 2980f74914e577094e8b6004f6bb92fa08ce1355..82c76b762c058aee34c0099fc5c5f1f737f466d3 100644
 --- a/src/intel/vulkan/anv_formats.c
 +++ b/src/intel/vulkan/anv_formats.c
-@@ -989,6 +989,191 @@ void anv_GetPhysicalDeviceFormatProperties2(
+@@ -984,6 +984,195 @@ void anv_GetPhysicalDeviceFormatProperties2(
     }
  }
  
@@ -193,6 +193,10 @@ index e361036367fc4ec6ca96779799d09ffdc9593d67..ebe7dc8d14846b3e18a2e22f19992e11
 +      /* If we provide the list of possible formats, then check just them. */
 +      for (uint32_t i = 0; i < format_list_info->viewFormatCount; ++i) {
 +         VkFormat vk_view_format = format_list_info->pViewFormats[i];
++
++         if (vk_view_format == VK_FORMAT_UNDEFINED)
++            continue;
++
 +         const struct anv_format *anv_view_format =
 +            anv_get_format(vk_view_format);
 +         VkFormatFeatureFlags2KHR view_format_features =
@@ -210,7 +214,7 @@ index e361036367fc4ec6ca96779799d09ffdc9593d67..ebe7dc8d14846b3e18a2e22f19992e11
  static VkResult
  anv_get_image_format_properties(
     struct anv_physical_device *physical_device,
-@@ -1021,29 +1206,6 @@ anv_get_image_format_properties(
+@@ -1022,29 +1211,6 @@ anv_get_image_format_properties(
     }
  
     assert(format->vk_format == info->format);
@@ -240,28 +244,28 @@ index e361036367fc4ec6ca96779799d09ffdc9593d67..ebe7dc8d14846b3e18a2e22f19992e11
  
     switch (info->type) {
     default:
-@@ -1077,21 +1239,54 @@ anv_get_image_format_properties(
+@@ -1078,21 +1244,54 @@ anv_get_image_format_properties(
        break;
     }
  
 -   /* From the Vulkan 1.2.199 spec:
 +   /* From the Vulkan 1.3.218 spec:
-     *
--    *    "VK_IMAGE_CREATE_EXTENDED_USAGE_BIT specifies that the image can be
--    *    created with usage flags that are not supported for the format the
--    *    image is created with but are supported for at least one format a
--    *    VkImageView created from the image can have."
++    *
 +    *    "For images created without VK_IMAGE_CREATE_EXTENDED_USAGE_BIT a usage
 +    *    bit is valid if it is supported for the format the image is created with.
 +    *    For images created with VK_IMAGE_CREATE_EXTENDED_USAGE_BIT a usage bit
 +    *    is valid if it is supported for at least one of the formats
 +    *    a VkImageView created from the image can have."
      *
--    * If VK_IMAGE_CREATE_EXTENDED_USAGE_BIT is set, views can be created with
--    * different usage than the image so we can't always filter on usage.
+-    *    "VK_IMAGE_CREATE_EXTENDED_USAGE_BIT specifies that the image can be
+-    *    created with usage flags that are not supported for the format the
+-    *    image is created with but are supported for at least one format a
+-    *    VkImageView created from the image can have."
 +    *    "VK_IMAGE_CREATE_MUTABLE_FORMAT_BIT specifies that the image can be
 +    *    used to create a VkImageView with a different format from the image."
-+    *
+     *
+-    * If VK_IMAGE_CREATE_EXTENDED_USAGE_BIT is set, views can be created with
+-    * different usage than the image so we can't always filter on usage.
 +    * So, if both VK_IMAGE_CREATE_EXTENDED_USAGE_BIT and
 +    * VK_IMAGE_CREATE_MUTABLE_FORMAT_BIT are set, views can be created with
 +    * different usage than the image, so we can't always filter on usage.
@@ -306,7 +310,7 @@ index e361036367fc4ec6ca96779799d09ffdc9593d67..ebe7dc8d14846b3e18a2e22f19992e11
  
     if (info->tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT) {
        /* We support modifiers only for "simple" (that is, non-array
-@@ -1110,7 +1305,7 @@ anv_get_image_format_properties(
+@@ -1111,7 +1310,7 @@ anv_get_image_format_properties(
  
        if (isl_mod_info->aux_usage == ISL_AUX_USAGE_CCS_E &&
            !anv_formats_ccs_e_compatible(devinfo, info->flags, info->format,
@@ -315,7 +319,7 @@ index e361036367fc4ec6ca96779799d09ffdc9593d67..ebe7dc8d14846b3e18a2e22f19992e11
                                          format_list_info)) {
           goto unsupported;
        }
-@@ -1132,32 +1327,12 @@ anv_get_image_format_properties(
+@@ -1133,32 +1332,12 @@ anv_get_image_format_properties(
         (format_feature_flags & (VK_FORMAT_FEATURE_2_COLOR_ATTACHMENT_BIT |
                                  VK_FORMAT_FEATURE_2_DEPTH_STENCIL_ATTACHMENT_BIT)) &&
         !(info->flags & VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT) &&
@@ -350,7 +354,7 @@ index e361036367fc4ec6ca96779799d09ffdc9593d67..ebe7dc8d14846b3e18a2e22f19992e11
        /* Non-power-of-two formats can never be used as storage images.  We
         * only check plane 0 because there are no YCbCr formats with
         * non-power-of-two planes.
-@@ -1168,24 +1343,6 @@ anv_get_image_format_properties(
+@@ -1169,24 +1348,6 @@ anv_get_image_format_properties(
           goto unsupported;
     }
  
@@ -375,7 +379,7 @@ index e361036367fc4ec6ca96779799d09ffdc9593d67..ebe7dc8d14846b3e18a2e22f19992e11
     if (info->flags & VK_IMAGE_CREATE_DISJOINT_BIT) {
        /* From the Vulkan 1.2.149 spec, VkImageCreateInfo:
         *
-@@ -1240,16 +1397,6 @@ anv_get_image_format_properties(
+@@ -1241,16 +1402,6 @@ anv_get_image_format_properties(
        }
     }
  
@@ -392,3 +396,37 @@ index e361036367fc4ec6ca96779799d09ffdc9593d67..ebe7dc8d14846b3e18a2e22f19992e11
     /* From the bspec section entitled "Surface Layout and Tiling",
      * Gfx9 has a 256 GB limitation and Gfx11+ has a 16 TB limitation.
      */
+diff --git a/src/intel/vulkan/anv_image.c b/src/intel/vulkan/anv_image.c
+index d66d71ca27b17c7fdd844ec630a71d3544faf13e..d1b86c945b40280b7207cf942917c972f70b8fe7 100644
+--- a/src/intel/vulkan/anv_image.c
++++ b/src/intel/vulkan/anv_image.c
+@@ -364,6 +364,9 @@ can_fast_clear_with_non_zero_color(const struct intel_device_info *devinfo,
+ 
+    /* Check bit compatibility for clear color components */
+    for (uint32_t i = 0; i < fmt_list->viewFormatCount; i++) {
++      if (fmt_list->pViewFormats[i] == VK_FORMAT_UNDEFINED)
++         continue;
++
+       struct anv_format_plane view_format_plane =
+          anv_get_format_plane(devinfo, fmt_list->pViewFormats[i],
+                               plane, image->vk.tiling);
+@@ -401,6 +404,9 @@ storage_image_format_supports_atomic(const struct intel_device_info *devinfo,
+ 
+    if (fmt_list) {
+       for (uint32_t i = 0; i < fmt_list->viewFormatCount; i++) {
++         if (fmt_list->pViewFormats[i] == VK_FORMAT_UNDEFINED)
++            continue;
++
+          enum isl_format view_format =
+             anv_get_isl_format(devinfo, fmt_list->pViewFormats[i],
+                                VK_IMAGE_ASPECT_COLOR_BIT, vk_tiling);
+@@ -469,6 +475,9 @@ formats_ccs_e_compatible(const struct intel_device_info *devinfo,
+       return false;
+ 
+    for (uint32_t i = 0; i < fmt_list->viewFormatCount; i++) {
++      if (fmt_list->pViewFormats[i] == VK_FORMAT_UNDEFINED)
++         continue;
++
+       enum isl_format view_format =
+          anv_get_isl_format_with_usage(devinfo, fmt_list->pViewFormats[i],
+                                        VK_IMAGE_ASPECT_COLOR_BIT, vk_usage,

@@ -11,7 +11,7 @@ pkgname=('lib32-vulkan-mesa-layers-anv-gamescope'
 				 'lib32-mesa-vdpau-anv-gamescope'
 				 'lib32-mesa-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification (32-bit) - ANV patch for gamescope"
-pkgver=22.3.4
+pkgver=23.0.0
 pkgrel=1
 arch=('x86_64')
 makedepends=('python-mako' 'lib32-libxml2' 'lib32-expat' 'lib32-libx11' 'xorgproto' 'lib32-libdrm'
@@ -29,11 +29,11 @@ source=(https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz
         0003-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
         0004-anv-gamescope.patch
         LICENSE)
-sha512sums=('6af340153244d3e95d0e155a45d6db134335654d62590797ae0ef6ba44c2ccfe91ebf95f70ff82c67cee108ac35536767b1f6848d6d1129f52eb9e8414ee321d'
-            '6150324d4e4b974bd2398157decaceef69bb0867d878d60fb9f4d15fa2fc52948edd27b787846cc1e552a331f7e91953bd3c4a4500d5445df1dba1fe3326bcfe'
-            '33067a6fab6c078cb829b6266ab5e328929923ace7c580c3b347f25682b4427a5f7cfd52234311636fc23e03beb021c543020d3deb30bf8515f58bf78173bde8'
-            '94f25da531a1ccbb630f0b1ccd80fe85aae60cba7b6e29b2761d4014b79f611eb4b89b2e29e2501231620ee381bc91e546ad2158cf76ec2d6c678d048553eba0'
-            '8311742ebaf3c16e534083f2cdb19819bd2e70ecfb0de02eb1064678bb21ee8de703927db4bc68d2bbd83908bb4fd3cf018b9189b5fbb645a2139e195c86d3c2'
+sha512sums=('127e2759a2a31cacd65a0891719ab7bb4a9188844022b4bccaebbedce9c550b9ccb160ad519178ea0d851c4bcb8f0f56febda248ed2ba82b5ddf804855e4694b'
+            'fb89a3cc9801f259faa7da81b12b8e003fcef10b64a30abf5592a159859c9f39941c8042f89fa93dee4d4e107c139ccdb48f255f45a72b6f9c7ce0da5bd0bd56'
+            '27018f163dd93e492c5d6080690ee6aae7f63de80c014e941a2e42a5eca87cf14de5ec8a35a51472f9b204839b43b14ac663a6095c1c7ef8dd7f8a3861fb936a'
+            'd7a54efea5a4be9d893c67b97fc846a45ef148c1bc1057ed91c377086d8f18aaa49eab5f9b3f3557e82457f8e23c2b8727b62880003529e1fe364b7ea15daccf'
+            '3e202bf64ff2c82bd272ae0ba0ba77895c0786befd8ea17ea3c70b31fce8a9547345799dc410ce60a0c0cfd5e1a2a4f4975fee51f2f8e4f6cfe23c08cc27a8e5'
             'f9f0d0ccf166fe6cb684478b6f1e1ab1f2850431c06aa041738563eb1808a004e52cdec823c103c9e180f03ffc083e95974d291353f0220fe52ae6d4897fecc7')
 
 prepare() {
