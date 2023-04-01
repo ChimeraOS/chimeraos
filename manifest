@@ -172,7 +172,6 @@ export AUR_PACKAGES="\
 	ryzenadj-controller-git \
 	rz608-fix-git \
 	steam-removable-media-git \
-	steamos-compositor-plus \
 	xone-dkms \
 	xpad-noone-dkms \
 	xpadneo-dkms \

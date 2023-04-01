@@ -4,7 +4,7 @@ DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 SESSION_CONFIG="${CONFIG_HOME}/environment.d/01-chimera-session.conf"
 SESSION_LIGHTDM_CONFIG="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
-SESSION_LIST=('bigpicture' 'desktop' 'desktop-xorg' 'gamepadui' 'opengamepadui' 'gamepadui-with-qam')
+SESSION_LIST=('desktop' 'desktop-xorg' 'gamepadui' 'opengamepadui' 'gamepadui-with-qam')
 SELECTED_SESSION="$1"
 
 
@@ -19,10 +19,6 @@ function print_session_list() {
 
 	if grep "gnome-xorg" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
 		CURRENT_SESSION="desktop-xorg"
-	fi
-
-	if grep "steamos" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
-		CURRENT_SESSION="bigpicture"
 	fi
 
 	if grep "gamescope-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
@@ -51,12 +47,6 @@ function print_session_list() {
 function clean_steam_shortcuts() {
 	# clear steam game desktop shortcut clutter
 	grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/* | tr '\n' '\0' | xargs -0 -I {} rm {}
-}
-
-function bigpicture() {
-	# switch to Big Picture Mode (SteamOS compositor plus/Xorg)
-	echo '' > ${SESSION_CONFIG}
-	sudo chimera-session-use-lightdm steamos
 }
 
 function desktop() {
@@ -119,10 +109,7 @@ if [[ ! "${SESSION_LIST[*]}" =~ "${SELECTED_SESSION}" ]]; then
 fi
 
 # apply the specified session type
-if [ "${SELECTED_SESSION}" = "bigpicture" ]; then
-	echo "Switching to bigpicture"
-	bigpicture
-elif [ "${SELECTED_SESSION}" = "desktop" ]; then
+if [ "${SELECTED_SESSION}" = "desktop" ]; then
 	echo "Switching to desktop"
 	desktop
 elif [ "${SELECTED_SESSION}" = "desktop-xorg" ]; then
