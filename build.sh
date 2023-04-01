@@ -62,7 +62,7 @@ if [ -n "${PACKAGE_OVERRIDES}" ]; then
 fi
 
 # install package overrides for use during build
-pacman --noconfirm -U --overwrite '*' /extra_pkgs/*
+pacman --noconfirm -U --overwrite '*' ${BUILD_PATH}/extra_pkgs/*
 
 export GIT_ALLOW_PROTOCOL=file:https:git
 # build own PKGBUILDs and install them before anything else
