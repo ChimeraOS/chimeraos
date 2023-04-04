@@ -3,16 +3,11 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 # Contributor: Andreas Radke <andyrtr@archlinux.org>
 
-pkgbase=lib32-mesa-anv-gamescope
-pkgname=('lib32-vulkan-mesa-layers-anv-gamescope'
-				 'lib32-vulkan-intel-anv-gamescope'
-				 'lib32-vulkan-radeon-anv-gamescope'
-				 'lib32-libva-mesa-driver-anv-gamescope'
-				 'lib32-mesa-vdpau-anv-gamescope'
-				 'lib32-mesa-anv-gamescope')
-pkgdesc="An open-source implementation of the OpenGL specification (32-bit) - ANV patch for gamescope"
-pkgver=23.0.0
-pkgrel=1
+pkgbase=lib32-mesa
+pkgname=('lib32-vulkan-mesa-layers-anv-gamescope' 'lib32-opencl-mesa-anv-gamescope' 'lib32-vulkan-intel-anv-gamescope' 'lib32-vulkan-radeon-anv-gamescope' 'lib32-vulkan-virtio-anv-gamescope' 'lib32-libva-mesa-driver-anv-gamescope' 'lib32-mesa-vdpau-anv-gamescope' 'lib32-mesa-anv-gamescope')
+pkgdesc="An open-source implementation of the OpenGL specification (32-bit)"
+pkgver=23.0.1
+pkgrel=2
 arch=('x86_64')
 makedepends=('python-mako' 'lib32-libxml2' 'lib32-expat' 'lib32-libx11' 'xorgproto' 'lib32-libdrm'
              'lib32-libxshmfence' 'lib32-libxxf86vm' 'lib32-libxdamage' 'lib32-libvdpau'
@@ -22,33 +17,37 @@ makedepends=('python-mako' 'lib32-libxml2' 'lib32-expat' 'lib32-libx11' 'xorgpro
              'glslang' 'cmake' 'meson')
 url="https://www.mesa3d.org/"
 license=('custom')
-options=('!lto')
 source=(https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz
-        0001-anv-force-MEDIA_INTERFACE_DESCRIPTOR_LOAD-reemit-aft.patch
-        0002-iris-Retry-DRM_IOCTL_I915_GEM_EXECBUFFER2-on-ENOMEM.patch
-        0003-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
+        0001-iris-Retry-DRM_IOCTL_I915_GEM_EXECBUFFER2-on-ENOMEM.patch
+        0002-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
+        0003-intel-fs-fix-scheduling-of-HALT-instructions.patch
         0004-anv-gamescope.patch
         LICENSE)
-sha512sums=('127e2759a2a31cacd65a0891719ab7bb4a9188844022b4bccaebbedce9c550b9ccb160ad519178ea0d851c4bcb8f0f56febda248ed2ba82b5ddf804855e4694b'
-            'fb89a3cc9801f259faa7da81b12b8e003fcef10b64a30abf5592a159859c9f39941c8042f89fa93dee4d4e107c139ccdb48f255f45a72b6f9c7ce0da5bd0bd56'
-            '27018f163dd93e492c5d6080690ee6aae7f63de80c014e941a2e42a5eca87cf14de5ec8a35a51472f9b204839b43b14ac663a6095c1c7ef8dd7f8a3861fb936a'
-            'd7a54efea5a4be9d893c67b97fc846a45ef148c1bc1057ed91c377086d8f18aaa49eab5f9b3f3557e82457f8e23c2b8727b62880003529e1fe364b7ea15daccf'
-            '3e202bf64ff2c82bd272ae0ba0ba77895c0786befd8ea17ea3c70b31fce8a9547345799dc410ce60a0c0cfd5e1a2a4f4975fee51f2f8e4f6cfe23c08cc27a8e5'
-            'f9f0d0ccf166fe6cb684478b6f1e1ab1f2850431c06aa041738563eb1808a004e52cdec823c103c9e180f03ffc083e95974d291353f0220fe52ae6d4897fecc7')
+sha256sums=('SKIP'
+            '99264c77d63d6fa810e295914808cde9f580a64e913e99fa794c1aa25a4f8fb2'
+            'd6ef8fb1809e8aeae0ec32bfe916adb770c64880bfd3d0f4472a616c9f356a9a'
+            'dc6790b5be0e80c23e74ae18ca1a2b40f57f4211cc7b645bf22b63af3b790e40'
+            '12bbd2af9d29f8abb531a735e253a2a92020c37adf8619e06f197f58331b5bba'
+            '7052ba73bb07ea78873a2431ee4e828f4e72bda7d176d07f770fa48373dec537')
+b2sums=('SKIP'
+        'a90bfc47fb3a46eff1ef2455c7aa18c2bb515ec217b423d0a87cc5f3b824a77c0381e1378498464418644108142022dcd3c289e157877c6ae7584beaec1d9987'
+        'bd52994305fc0fa2f12c46ea3208bbb24f97495d9bad73120d83a6cdcf7e48f5ff0d14ac0055765516b70caacdf024fca4159b70b054e85f2783c78c9218aefe'
+        '37d1d070c45c85bce8abe3524a3f8d9ac9ed6326a3eec653cd89fffce3630b08eb9b96b11aeb495488230449c99f9b508f73a15e53265d2b159286b0e2dda7cc'
+        '1e1841e1bbb104a90f23961ae4cce0739d2dc6692f2574c454aaf425e4a89211141b2fc6e5acbbf7bc877e4bf03b8a45cea9df5cf688bfe587e1238148f98555'
+        '1ecf007b82260710a7bf5048f47dd5d600c168824c02c595af654632326536a6527fbe0738670ee7b921dd85a70425108e0f471ba85a8e1ca47d294ad74b4adb')
 
 prepare() {
   cd mesa-$pkgver
 
-  # https://gitlab.freedesktop.org/mesa/mesa/-/issues/7111
-  # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/17247
-  # https://github.com/HansKristian-Work/vkd3d-proton/issues/1200
-  patch -Np1 -i ../0001-anv-force-MEDIA_INTERFACE_DESCRIPTOR_LOAD-reemit-aft.patch
-
   # https://gitlab.freedesktop.org/drm/intel/-/issues/6851
   # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/20449
-  patch -Np1 -i ../0002-iris-Retry-DRM_IOCTL_I915_GEM_EXECBUFFER2-on-ENOMEM.patch
-  patch -Np1 -i ../0003-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
+  patch -Np1 -i ../0001-iris-Retry-DRM_IOCTL_I915_GEM_EXECBUFFER2-on-ENOMEM.patch
+  patch -Np1 -i ../0002-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
 
+  # https://gitlab.freedesktop.org/mesa/mesa/-/issues/7110
+  # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/20765
+  patch -Np1 -i ../0003-intel-fs-fix-scheduling-of-HALT-instructions.patch
+  
   # Patch for Gamescope compatibility
   patch -Np1 -i ../0004-anv-gamescope.patch
 }
@@ -61,28 +60,23 @@ build() {
   export CC="gcc -m32"
   export CXX="g++ -m32"
   export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
-  cat >crossfile.ini <<END
-[binaries]
-llvm-config = '/usr/bin/llvm-config32'
-END
+  export LLVM_CONFIG="llvm-config32"
 
   # swr driver is broken with some cpu see FS#66972
 
   arch-meson mesa-$pkgver build \
-    --native-file crossfile.ini \
     --libdir=/usr/lib32 \
     -D b_ndebug=true \
-    -D b_lto=false \
     -D platforms=x11,wayland \
     -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink \
-    -D vulkan-drivers=amd,intel,intel_hasvk \
+    -D vulkan-drivers=amd,intel,intel_hasvk,virtio-experimental \
     -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D dri3=enabled \
     -D egl=enabled \
     -D gallium-extra-hud=true \
     -D gallium-nine=true \
     -D gallium-omx=disabled \
-    -D gallium-opencl=disabled \
+    -D gallium-opencl=icd \
     -D gallium-va=enabled \
     -D gallium-vdpau=enabled \
     -D gallium-xa=enabled \
@@ -123,10 +117,10 @@ _install() {
 
 package_lib32-vulkan-mesa-layers-anv-gamescope() {
   pkgdesc="Mesa's Vulkan layers (32-bit)"
-  depends=('lib32-libdrm' 'lib32-libxcb' 'lib32-wayland' 'vulkan-mesa-layers')
-  conflicts=('lib32-vulkan-mesa-layers' 'lib32-vulkan-mesa-layer')
+  depends=('lib32-libdrm' 'lib32-libxcb' 'lib32-wayland')
+  depends+=('vulkan-mesa-layers')
+  conflicts=('lib32-vulkan-mesa-layer')
   replaces=('lib32-vulkan-mesa-layer')
-	provides=('lib32-vulkan-mesa-layers')
 
   rm -rv fakeinstall/usr/share/vulkan/explicit_layer.d
   rm -rv fakeinstall/usr/share/vulkan/implicit_layer.d
@@ -137,13 +131,26 @@ package_lib32-vulkan-mesa-layers-anv-gamescope() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
+package_lib32-opencl-mesa-anv-gamescope() {
+  pkgdesc="OpenCL support for AMD/ATI Radeon mesa drivers (32-bit)"
+  depends=('lib32-expat' 'lib32-libdrm' 'lib32-libelf' 'lib32-clang' 'lib32-zstd')
+  depends+=('opencl-mesa')
+  optdepends=('opencl-headers: headers necessary for OpenCL development')
+  provides=('lib32-opencl-driver')
+
+  rm -rv fakeinstall/etc/OpenCL
+  _install fakeinstall/usr/lib32/lib*OpenCL*
+  _install fakeinstall/usr/lib32/gallium-pipe
+
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+}
+
 package_lib32-vulkan-intel-anv-gamescope() {
   pkgdesc="Intel's Vulkan mesa driver (32-bit)"
   depends=('lib32-wayland' 'lib32-libx11' 'lib32-libxshmfence' 'lib32-libdrm' 'lib32-zstd'
            'lib32-systemd')
   optdepends=('lib32-vulkan-mesa-layers: additional vulkan layers')
-  provides=('lib32-vulkan-intel' 'lib32-vulkan-driver')
-  conflicts=('lib32-vulkan-intel')
+  provides=('lib32-vulkan-driver')
 
   _install fakeinstall/usr/share/vulkan/icd.d/intel_*.json
   _install fakeinstall/usr/lib32/libvulkan_intel*.so
@@ -155,12 +162,25 @@ package_lib32-vulkan-radeon-anv-gamescope() {
   pkgdesc="Radeon's Vulkan mesa driver (32-bit)"
   depends=('lib32-wayland' 'lib32-libx11' 'lib32-libxshmfence' 'lib32-libelf' 'lib32-libdrm'
            'lib32-zstd' 'lib32-llvm-libs' 'lib32-systemd')
+  depends+=('vulkan-radeon')
   optdepends=('lib32-vulkan-mesa-layers: additional vulkan layers')
-  provides=('lib32-vulkan-radeon' 'lib32-vulkan-driver')
-  conflicts=('lib32-vulkan-radeon')
+  provides=('lib32-vulkan-driver')
 
   _install fakeinstall/usr/share/vulkan/icd.d/radeon_icd*.json
   _install fakeinstall/usr/lib32/libvulkan_radeon.so
+
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
+}
+
+package_lib32-vulkan-virtio-anv-gamescope() {
+  pkgdesc="Venus Vulkan mesa driver (32-bit)"
+  depends=('lib32-wayland' 'lib32-libx11' 'lib32-libxshmfence' 'lib32-libdrm' 'lib32-zstd'
+           'lib32-systemd')
+  optdepends=('lib32-vulkan-mesa-layers: additional vulkan layers')
+  provides=('lib32-vulkan-driver')
+
+  _install fakeinstall/usr/share/vulkan/icd.d/virtio_icd*.json
+  _install fakeinstall/usr/lib32/libvulkan_virtio.so
 
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
@@ -169,8 +189,8 @@ package_lib32-libva-mesa-driver-anv-gamescope() {
   pkgdesc="VA-API implementation for gallium (32-bit)"
   depends=('lib32-libdrm' 'lib32-libx11' 'lib32-llvm-libs' 'lib32-expat' 'lib32-libelf'
            'lib32-libxshmfence' 'lib32-zstd')
-	provides=('lib32-libva-mesa-driver')
-	conflicts=('lib32-libva-mesa-driver')
+  depends+=('libexpat.so')
+  provides=('lib32-libva-driver')
 
   _install fakeinstall/usr/lib32/dri/*_drv_video.so
 
@@ -181,8 +201,8 @@ package_lib32-mesa-vdpau-anv-gamescope() {
   pkgdesc="Mesa VDPAU drivers (32-bit)"
   depends=('lib32-libdrm' 'lib32-libx11' 'lib32-llvm-libs' 'lib32-expat' 'lib32-libelf'
            'lib32-libxshmfence' 'lib32-zstd')
-	provides=('lib32-mesa-vdpau')
-	conflicts=('lib32-mesa-vdpau')
+  depends+=('libexpat.so')
+  provides=('lib32-vdpau-driver')
 
   _install fakeinstall/usr/lib32/vdpau
 
@@ -192,13 +212,14 @@ package_lib32-mesa-vdpau-anv-gamescope() {
 package_lib32-mesa-anv-gamescope() {
   depends=('lib32-libdrm' 'lib32-wayland' 'lib32-libxxf86vm' 'lib32-libxdamage' 'lib32-libxshmfence'
            'lib32-libelf' 'lib32-libunwind' 'lib32-llvm-libs' 'lib32-lm_sensors' 'lib32-libglvnd'
-           'lib32-zstd' 'lib32-vulkan-icd-loader' 'mesa')
-  depends+=('libsensors.so')
+           'lib32-zstd' 'lib32-vulkan-icd-loader')
+  depends+=('libsensors.so' 'libexpat.so')
+  depends+=('mesa')
   optdepends=('opengl-man-pages: for the OpenGL API man pages'
               'lib32-mesa-vdpau: for accelerated video playback'
               'lib32-libva-mesa-driver: for accelerated video playback')
-  provides=('lib32-mesa' 'lib32-mesa-libgl' 'lib32-opengl-driver')
-  conflicts=('lib32-mesa' 'lib32-mesa-libgl')
+  provides=('lib32-mesa-libgl' 'lib32-opengl-driver')
+  conflicts=('lib32-mesa-libgl')
   replaces=('lib32-mesa-libgl')
 
   rm -rv fakeinstall/usr/share/drirc.d/00-mesa-defaults.conf
