@@ -179,7 +179,6 @@ export AUR_PACKAGES="\
 "
 
 export PACKAGE_OVERRIDES="\
-	https://archive.archlinux.org/packages/v/vulkan-headers/vulkan-headers-1%3A1.3.240-1-any.pkg.tar.zst \
 "
 
 export SERVICES="\
