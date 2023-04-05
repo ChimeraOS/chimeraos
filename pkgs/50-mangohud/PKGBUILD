@@ -1,6 +1,6 @@
 # Maintainer: Simon Hallsten <flightlessmangoyt@gmail.com>
 pkgname=('mangohud' 'lib32-mangohud')
-pkgver=0.6.8.r72.g3190778
+pkgver=0.6.8.r145.g020e848
 pkgrel=1
 pkgdesc="Vulkan and OpenGL overlay to display performance information"
 arch=('x86_64')
@@ -10,25 +10,33 @@ makedepends=('dbus' 'gcc' 'meson' 'python-mako' 'libx11' 'lib32-libx11' 'git' 'p
 depends=('glslang' 'libglvnd' 'lib32-libglvnd' 'glew' 'glfw-x11')
 replaces=('vulkan-mesa-layer-mango')
 license=('MIT')
-source=("mangohud"::"git+https://github.com/flightlessmango/MangoHud.git#commit=319077808668c589523853313d028cf81837ce72"
+source=(
+        "mangohud"::"git+https://github.com/flightlessmango/MangoHud.git#commit=020e8485e20c250c34240f9cca244394e9a3204c"
         "mangohud-minhook"::"git+https://github.com/flightlessmango/minhook.git"
         "imgui-v1.81.tar.gz::https://github.com/ocornut/imgui/archive/v1.81.tar.gz"
         "imgui-1.81-1-wrap.zip::https://wrapdb.mesonbuild.com/v1/projects/imgui/1.81/1/get_zip"
         "spdlog-1.8.5.tar.gz::https://github.com/gabime/spdlog/archive/v1.8.5.tar.gz"
         "spdlog-1.8.5-1-wrap.zip::https://wrapdb.mesonbuild.com/v1/projects/spdlog/1.8.5/1/get_zip"
         "nlohmann_json-3.10.5.zip::https://github.com/nlohmann/json/releases/download/v3.10.5/include.zip"
-        "resolution.patch")
+        "vulkan-headers-1.2.158.tar.gz::https://github.com/KhronosGroup/Vulkan-Headers/archive/v1.2.158.tar.gz"
+        "vulkan-headers-1.2.158-2-wrap.zip::https://wrapdb.mesonbuild.com/v2/vulkan-headers_1.2.158-2/get_patch"
+        "resolution.patch"
+        )
 
-sha256sums=('SKIP'
+sha256sums=(
+            'SKIP'
             'SKIP'
             'f7c619e03a06c0f25e8f47262dbc32d61fd033d2c91796812bf0f8c94fca78fb'
             '6d00b442690b6a5c5d8f898311daafbce16d370cf64f53294c3b8c5c661e435f'
             '944d0bd7c763ac721398dca2bb0f3b5ed16f67cef36810ede5061f35a543b4b8'
             '3c38f275d5792b1286391102594329e98b17737924b344f98312ab09929b74be'
             'b94997df68856753b72f0d7a3703b7d484d4745c567f3584ef97c96c25a5798e'
-            'SKIP')
+            '53361271cfe274df8782e1e47bdc9e61b7af432ba30acbfe31723f9df2c257f3'
+            '860358cf5e73f458cd1e88f8c38116d123ab421d5ce2e4129ec38eaedd820e17'
+            'SKIP'
+            )
 
-_build_args="-Dappend_libdir_mangohud=false -Dwith_xnvctrl=disabled -Duse_system_vulkan=enabled -Dmangoapp_layer=true -Dprepend_libdir_vk=false"
+_build_args="-Dappend_libdir_mangohud=false -Dwith_xnvctrl=disabled -Dmangoapp_layer=true"
 
 pkgver() {
   cd "$srcdir/mangohud"
@@ -49,6 +57,7 @@ prepare() {
   ln -sv "$srcdir/single_include" subprojects/nlohmann_json-3.10.5/
   ln -sv "$srcdir/LICENSE.MIT" subprojects/nlohmann_json-3.10.5/
   ln -sv "$srcdir/meson.build" subprojects/nlohmann_json-3.10.5/
+  ln -sv "$srcdir/Vulkan-Headers-1.2.158" subprojects
   
     patch -Np1 -i ../resolution.patch
 }
@@ -82,4 +91,5 @@ package_lib32-mangohud() {
   DESTDIR="${pkgdir}" ninja -C build32 install
   rm -rf "$pkgdir/usr/bin"
   rm -rf "$pkgdir/usr/share"
+  install -m644 -Dt "$pkgdir/usr/share/vulkan/implicit_layer.d" "$srcdir/build32/src/MangoHud.x86.json"
 }
