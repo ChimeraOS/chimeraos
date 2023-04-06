@@ -49,6 +49,7 @@ export PACKAGES="\
 	haveged \
 	htop \
 	iio-sensor-proxy \
+	intel-gpu-tools \
 	intel-media-driver \
 	intel-ucode \
 	intel-undervolt \
@@ -252,4 +253,7 @@ postinstallhook() {
 
 	# force -steamdeck option in desktop mode to prevent constant steam updates
 	sed -i 's,Exec=/usr/bin/steam-runtime,Exec=/usr/bin/steam-runtime -steamdeck,' /usr/share/applications/steam.desktop
+
+	# set permissions for intel_gpu_top and mangohud
+	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
 }
