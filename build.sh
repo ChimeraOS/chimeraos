@@ -58,11 +58,10 @@ fi
 # download package overrides
 mkdir ${BUILD_PATH}/extra_pkgs
 if [ -n "${PACKAGE_OVERRIDES}" ]; then
+	# download and install package overrides for use during build
 	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
+	pacman --noconfirm -U --overwrite '*' ${BUILD_PATH}/extra_pkgs/*
 fi
-
-# install package overrides for use during build
-pacman --noconfirm -U --overwrite '*' ${BUILD_PATH}/extra_pkgs/*
 
 export GIT_ALLOW_PROTOCOL=file:https:git
 # build own PKGBUILDs and install them before anything else
