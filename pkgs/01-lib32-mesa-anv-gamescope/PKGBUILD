@@ -3,7 +3,7 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 # Contributor: Andreas Radke <andyrtr@archlinux.org>
 
-pkgbase=lib32-mesa
+pkgbase=lib32-mesa-anv-gamescope
 pkgname=('lib32-vulkan-mesa-layers-anv-gamescope' 'lib32-opencl-mesa-anv-gamescope' 'lib32-vulkan-intel-anv-gamescope' 'lib32-vulkan-radeon-anv-gamescope' 'lib32-vulkan-virtio-anv-gamescope' 'lib32-libva-mesa-driver-anv-gamescope' 'lib32-mesa-vdpau-anv-gamescope' 'lib32-mesa-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification (32-bit)"
 pkgver=23.0.1

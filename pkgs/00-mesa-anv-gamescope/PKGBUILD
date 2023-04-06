@@ -3,7 +3,7 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 # Contributor: Andreas Radke <andyrtr@archlinux.org>
 
-pkgbase=mesa
+pkgbase=mesa-anv-gamescope
 pkgname=('vulkan-mesa-layers-anv-gamescope' 'opencl-mesa-anv-gamescope' 'vulkan-intel-anv-gamescope' 'vulkan-radeon-anv-gamescope' 'vulkan-swrast-anv-gamescope' 'vulkan-virtio-anv-gamescope' 'libva-mesa-driver-anv-gamescope' 'mesa-vdpau-anv-gamescope' 'mesa-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification"
 pkgver=23.0.1
