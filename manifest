@@ -178,9 +178,6 @@ export AUR_PACKAGES="\
 	xpadneo-dkms \
 "
 
-export PACKAGE_OVERRIDES="\
-"
-
 export SERVICES="\
 	NetworkManager \
 	avahi-daemon \
