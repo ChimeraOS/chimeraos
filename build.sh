@@ -80,6 +80,8 @@ fi
 "${PIKAUR_RUN[@]}"
 
 # download package overrides
+mkdir ${BUILD_PATH}/extra_pkgs
+
 if [ -n "${PACKAGE_OVERRIDES}" ]; then
 	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
 fi
