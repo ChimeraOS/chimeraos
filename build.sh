@@ -55,14 +55,6 @@ if [ -n "${ARCHIVE_DATE}" ]; then
 	pacman -Syyuu --noconfirm
 fi
 
-# download package overrides
-mkdir ${BUILD_PATH}/extra_pkgs
-if [ -n "${PACKAGE_OVERRIDES}" ]; then
-	# download and install package overrides for use during build
-	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
-	pacman --noconfirm -U --overwrite '*' ${BUILD_PATH}/extra_pkgs/*
-fi
-
 export GIT_ALLOW_PROTOCOL=file:https:git
 # build own PKGBUILDs and install them before anything else
 mkdir -p /tmp/pkgs
@@ -86,6 +78,11 @@ if [ -n "${BUILD_USER}" ]; then
 	PIKAUR_RUN=(su "${BUILD_USER}" -c "${PIKAUR_CMD}")
 fi
 "${PIKAUR_RUN[@]}"
+
+# download package overrides
+if [ -n "${PACKAGE_OVERRIDES}" ]; then
+	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
+fi
 
 # bootstrap using our configuration
 pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
