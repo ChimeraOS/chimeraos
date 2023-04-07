@@ -4,7 +4,65 @@ on:
     branches:
     - 'master'
 jobs:
+  list-pkgbuilds:
+    runs-on: ubuntu-latest
+    outputs:
+      aur-pkgs: ${{ steps.set-aur-pkgs.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: set-aur-pkgs
+        run: source ./manifest ; echo "matrix=$(echo ${AUR_PACKAGES} | jq -R -s -c 'split(" ")[:-1]')" >> $GITHUB_OUTPUT
+        shell: bash
+
+  build-environment:
+    name: Build environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/setup-buildx-action@v2
+      - name: build builder image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          tags: image-builder:${{ github.sha }}
+          outputs: type=docker,dest=/tmp/builder.tar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: image-builder
+          path: /tmp/builder.tar
+
+  aur-pkgbuild:
+    needs:
+     - list-pkgbuilds
+     - build-environment
+    name: Build AUR package
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download builder
+        uses: actions/download-artifact@v3
+        with:
+          name: image-builder
+          path: /tmp
+      - name: Build package
+        run: |
+          docker load --input /tmp/builder.tar
+          docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output --entrypoint=/workdir/build-package.sh --privileged=true image-builder:${{ github.sha }} ${{ matrix.package }}
+      - run: ls -ahl output/*
+      - name: Upload Package Archives
+        uses: actions/upload-artifact@v3
+        with:
+            name: aur-packages
+            path: output/*.pkg.tar*
+
   build:
+    needs: 
+     - build-environment
+     - aur-pkgbuild
     name: System image build
     runs-on: ubuntu-latest
     permissions:
@@ -16,15 +74,19 @@ jobs:
       image_filename: ${{ steps.build_image.outputs.image_filename }}
     steps:
       - uses: actions/checkout@v3
-      - name: Change directory
-        run: cd $GITHUB_WORKSPACE
-      - name: Obtain base docker image
-        run: docker pull archlinux:latest
-      - name: Create docker build image
-        run: docker build --no-cache -t image-builder:latest .
+      - name: Download builder
+        uses: actions/download-artifact@v3
+        with:
+          name: image-builder
+          path: /tmp
+      - uses: actions/download-artifact@v3
+        with:
+            name: aur-packages
+            path: aur-pkgs/
+      - run: docker load --input /tmp/builder.tar
       - name: Build system image
         id: build_image
-        run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
+        run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:${{ github.sha }} $(echo ${GITHUB_SHA} | cut -c1-7)
 
       - name: Create release
         id: create_release

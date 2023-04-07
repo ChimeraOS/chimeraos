@@ -47,45 +47,6 @@ mkfs.btrfs -f ${BUILD_IMG}
 mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
-# set archive date if specified and force update/downgrade builder
-if [ -n "${ARCHIVE_DATE}" ]; then
-	echo "
-	Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch
-	" > /etc/pacman.d/mirrorlist
-	pacman -Syyuu --noconfirm
-fi
-
-export GIT_ALLOW_PROTOCOL=file:https:git
-# build own PKGBUILDs and install them before anything else
-mkdir -p /tmp/pkgs
-cp -rv pkgs/* /tmp/pkgs/.
-for package in /tmp/pkgs/*; do
-	echo "Building ${package}"
-	PIKAUR_CMD="PKGDEST=/tmp/own_pkgbuilds \
-		pikaur --noconfirm -S -P ${package}/PKGBUILD"
-	PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
-	if [ -n "${BUILD_USER}" ]; then
-		chown -R "${BUILD_USER}" "${package}"
-		PIKAUR_RUN=(su "${BUILD_USER}" -c "${PIKAUR_CMD}")
-	fi
-	"${PIKAUR_RUN[@]}"
-done
-
-# build AUR packages to be installed later
-PIKAUR_CMD="PKGDEST=/tmp/temp_repo pikaur --noconfirm -Sw ${AUR_PACKAGES}"
-PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
-if [ -n "${BUILD_USER}" ]; then
-	PIKAUR_RUN=(su "${BUILD_USER}" -c "${PIKAUR_CMD}")
-fi
-"${PIKAUR_RUN[@]}"
-
-# download package overrides
-mkdir ${BUILD_PATH}/extra_pkgs
-
-if [ -n "${PACKAGE_OVERRIDES}" ]; then
-	wget --directory-prefix=${BUILD_PATH}/extra_pkgs ${PACKAGE_OVERRIDES}
-fi
-
 # bootstrap using our configuration
 pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
 
@@ -93,8 +54,13 @@ pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
 cp -R manifest rootfs/. ${BUILD_PATH}/
 
 mkdir ${BUILD_PATH}/own_pkgs
-cp /tmp/temp_repo/* ${BUILD_PATH}/extra_pkgs
-cp /tmp/own_pkgbuilds/* ${BUILD_PATH}/own_pkgs
+mkdir ${BUILD_PATH}/extra_pkgs
+
+cp -rv aur-pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
+# Own packages already exist in docker container
+cp -rv /pkgs/**/*.pkg.tar* ${BUILD_PATH}/own_pkgs
+cp -rv /tmp/extra_pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
+
 
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
