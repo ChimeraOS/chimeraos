@@ -218,8 +218,8 @@ package_lib32-mesa-anv-gamescope() {
   optdepends=('opengl-man-pages: for the OpenGL API man pages'
               'lib32-mesa-vdpau: for accelerated video playback'
               'lib32-libva-mesa-driver: for accelerated video playback')
-  provides=('lib32-mesa-libgl' 'lib32-opengl-driver')
-  conflicts=('lib32-mesa-libgl')
+  provides=('lib32-mesa' 'lib32-mesa-libgl' 'lib32-opengl-driver')
+  conflicts=('lib32-mesa' 'lib32-mesa-libgl')
   replaces=('lib32-mesa-libgl')
 
   rm -rv fakeinstall/usr/share/drirc.d/00-mesa-defaults.conf
