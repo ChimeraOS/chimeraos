@@ -1,0 +1,130 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Mon, 3 Apr 2023 14:52:59 +0300
+Subject: [PATCH] intel/fs: fix scheduling of HALT instructions
+
+With the following test :
+
+dEQP-VK.spirv_assembly.instruction.terminate_invocation.terminate.no_out_of_bounds_load
+
+There is a :
+
+shader_start:
+   ...                                 <- no control flow
+   g0 = some_alu
+   g1 = fbl
+   g2 = broadcast g3, g1
+   g4 = get_buffer_size g2
+   ...                                 <- no control flow
+   halt                                <- on some lanes
+   g5 = send <surface>, g4
+
+eliminate_find_live_channel will remove the fbl/broadcast because it
+assumes lane0 is active at get_buffer_size :
+
+shader_start:
+   ...                                 <- no control flow
+   g0 = some_alu
+   g4 = get_buffer_size g0
+   ...                                 <- no control flow
+   halt                                <- on some lanes
+   g5 = send <surface>, g4
+
+But then the instruction scheduler will move the get_buffer_size after
+the halt :
+
+shader_start:
+   ...                                 <- no control flow
+   halt                                <- on some lanes
+   g0 = some_alu
+   g4 = get_buffer_size g0
+   g5 = send <surface>, g4
+
+get_buffer_size pulls the surface index from lane0 in g0 which could
+have been turned off by the halt and we end up accessing an invalid
+surface handle.
+
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Cc: mesa-stable
+---
+ .../compiler/brw_schedule_instructions.cpp    | 46 +++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+
+diff --git a/src/intel/compiler/brw_schedule_instructions.cpp b/src/intel/compiler/brw_schedule_instructions.cpp
+index 3286e3f83b96..43f63784b2e8 100644
+--- a/src/intel/compiler/brw_schedule_instructions.cpp
++++ b/src/intel/compiler/brw_schedule_instructions.cpp
+@@ -651,6 +651,7 @@ public:
+       ralloc_free(this->mem_ctx);
+    }
+    void add_barrier_deps(schedule_node *n);
++   void add_cross_lane_deps(schedule_node *n);
+    void add_dep(schedule_node *before, schedule_node *after, int latency);
+    void add_dep(schedule_node *before, schedule_node *after);
+ 
+@@ -1098,6 +1099,28 @@ is_scheduling_barrier(const backend_instruction *inst)
+           inst->has_side_effects();
+ }
+ 
++static bool
++has_cross_lane_access(const fs_inst *inst)
++{
++   if (inst->opcode == SHADER_OPCODE_BROADCAST ||
++       inst->opcode == SHADER_OPCODE_READ_SR_REG ||
++       inst->opcode == SHADER_OPCODE_CLUSTER_BROADCAST ||
++       inst->opcode == SHADER_OPCODE_SHUFFLE ||
++       inst->opcode == FS_OPCODE_LOAD_LIVE_CHANNELS ||
++       inst->opcode == SHADER_OPCODE_FIND_LAST_LIVE_CHANNEL ||
++       inst->opcode == SHADER_OPCODE_FIND_LIVE_CHANNEL)
++      return true;
++
++   for (unsigned s = 0; s < inst->sources; s++) {
++      if (inst->src[s].file == VGRF) {
++         if (inst->src[s].stride == 0)
++            return true;
++      }
++   }
++
++   return false;
++}
++
+ /**
+  * Sometimes we really want this node to execute after everything that
+  * was before it and before everything that followed it.  This adds
+@@ -1128,6 +1151,25 @@ instruction_scheduler::add_barrier_deps(schedule_node *n)
+    }
+ }
+ 
++/**
++ * Because some instructions like HALT can disable lanes, scheduling prior to
++ * a cross lane access should not be allowed, otherwise we could end up with
++ * later instructions accessing uninitialized data.
++ */
++void
++instruction_scheduler::add_cross_lane_deps(schedule_node *n)
++{
++   schedule_node *prev = (schedule_node *)n->prev;
++
++   if (prev) {
++      while (!prev->is_head_sentinel()) {
++         if (has_cross_lane_access((fs_inst *)prev->inst))
++            add_dep(prev, n, 0);
++         prev = (schedule_node *)prev->prev;
++      }
++   }
++}
++
+ /* instruction scheduling needs to be aware of when an MRF write
+  * actually writes 2 MRFs.
+  */
+@@ -1165,6 +1207,10 @@ fs_instruction_scheduler::calculate_deps()
+       if (is_scheduling_barrier(inst))
+          add_barrier_deps(n);
+ 
++      if (inst->opcode == BRW_OPCODE_HALT ||
++          inst->opcode == SHADER_OPCODE_HALT_TARGET)
++          add_cross_lane_deps(n);
++
+       /* read-after-write deps. */
+       for (int i = 0; i < inst->sources; i++) {
+          if (inst->src[i].file == VGRF) {

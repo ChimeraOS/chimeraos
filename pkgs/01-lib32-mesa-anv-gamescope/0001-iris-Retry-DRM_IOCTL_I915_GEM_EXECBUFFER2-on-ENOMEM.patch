@@ -2,6 +2,9 @@ From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 Date: Thu, 29 Dec 2022 13:43:27 +0800
 Subject: [PATCH] iris: Retry DRM_IOCTL_I915_GEM_EXECBUFFER2 on ENOMEM
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 We are seeing endless DRM_IOCTL_SYNCOBJ_WAIT ioctl when system memory is
 under pressured.
@@ -17,14 +20,15 @@ ENOMEM, so instead of resetting the batch, be patient and wait until kernel has
 enough memory. Once the batch is submiited and snapshots_landed gets
 flipped, iris_get_query_result() can proceed normally.
 
+Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
 Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6851
-(cherry picked from commit 3b38add239795fa5fe97ae37e6ec62cab4f1f968)
+Part-of: <https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/20449>
 ---
  src/gallium/drivers/iris/iris_batch.c | 11 ++++++++---
  1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/src/gallium/drivers/iris/iris_batch.c b/src/gallium/drivers/iris/iris_batch.c
-index c7a08a0e1f5f..9e7b43f1dc2c 100644
+index c7a08a0e1f5f..deab85ce4aaf 100644
 --- a/src/gallium/drivers/iris/iris_batch.c
 +++ b/src/gallium/drivers/iris/iris_batch.c
 @@ -981,9 +981,14 @@ submit_batch(struct iris_batch *batch)
@@ -40,7 +44,7 @@ index c7a08a0e1f5f..9e7b43f1dc2c 100644
 +      } while (ret && errno == ENOMEM);
 +
 +      if (ret)
-+         ret = -errno;
++	 ret = -errno;
 +   }
  
     simple_mtx_unlock(bo_deps_lock);
