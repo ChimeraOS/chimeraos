@@ -60,8 +60,9 @@ cp -rv aur-pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
 # Own packages already exist in docker container
 cp -rv /pkgs/**/*.pkg.tar* ${BUILD_PATH}/own_pkgs
 
-# TODO(bouhaa): fix package overrides
-# cp -rv /tmp/extra_pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
+if [ -n "${PACKAGE_OVERRIDES}" ]; then
+	cp -rv /tmp/extra_pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
+fi
 
 
 # chroot into target
