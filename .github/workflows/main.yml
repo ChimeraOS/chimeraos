@@ -114,7 +114,7 @@ jobs:
         id: build_image
         run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
 
-      - if: ${{ github.event_name == 'push'}}
+      - if: ${{ github.ref == 'refs/heads/master' }}
         name: Create release
         id: create_release
         uses: softprops/action-gh-release@v1
