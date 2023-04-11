@@ -177,6 +177,7 @@ export AUR_PACKAGES="\
 	xone-dkms \
 	xpad-noone-dkms \
 	xpadneo-dkms \
+	yay \
 "
 
 export SERVICES="\
