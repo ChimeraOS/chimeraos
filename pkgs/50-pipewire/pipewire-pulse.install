@@ -1,0 +1,14 @@
+post_install() {
+  # Enable socket by default
+  systemctl --global enable pipewire-pulse.socket
+}
+
+post_upgrade() {
+  if (( $(vercmp $2 0.3.16-1) < 0)); then
+    systemctl --global enable pipewire-pulse.socket
+  fi
+}
+
+pre_remove() {
+  systemctl --global disable pipewire-pulse.socket
+}
