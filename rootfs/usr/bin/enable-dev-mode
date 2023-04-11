@@ -1,0 +1,43 @@
+#!/bin/bash
+
+if [ $EUID -ne 0 ]; then
+	echo "$(basename $0) must be run as root"
+	exit 1
+fi
+
+# Configuring ChimeraOS for a dev environment
+
+echo "Unlocking the filesystem and installing necessary devel packages"
+
+frzr-unlock
+
+# Residue files from previously deployed systems need to be removed.
+if [ -f /etc/ld.so.conf.d/fakeroot.conf ]; then
+	echo "fakeroot detected, removing conf"
+	rm /etc/ld.so.conf.d/fakeroot.conf
+fi
+
+if [ -f /etc/pacman.d/gnupg ]; then
+	echo "pacman gnupg found, removing"
+	rm -fr /etc/pacman.d/gnupg
+fi
+
+# Setup new keyring
+pacman-key --init
+pacman-key --populate archlinux
+pacman -S --noconfirm archlinux-keyring
+
+pacman -S --needed git base-devel meson ninja cmake
+
+# Install kernel headers
+KERNEL=$(uname -r | sed '0,/-/{s/-/./}')
+pacman -U --noconfirm 'https://archive.archlinux.org/packages/l/linux-headers/linux-headers-'$KERNEL'-x86_64.pkg.tar.zst'
+
+# Install the yay AUR helper
+
+sudo -u gamer git clone https://aur.archlinux.org/yay.git /tmp/yay
+cd /tmp/yay
+sudo -u gamer makepkg -si
+
+
+
