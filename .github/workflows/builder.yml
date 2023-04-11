@@ -1,0 +1,28 @@
+name: Build base environment
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+jobs:
+  build-environment:
+    name: Build environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/setup-buildx-action@v2
+      - name: build builder image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          tags: image-builder:latest
+          outputs: type=docker,dest=/tmp/builder.tar
+      - name: Cache builder image
+        id: builder-cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ hashFiles('pkgs/**/PKGBUILD')}}
+          path: /tmp/builder.tar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: image-builder
+          path: /tmp/builder.tar

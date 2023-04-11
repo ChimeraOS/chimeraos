@@ -3,6 +3,9 @@ on:
   push:
     branches:
     - 'master'
+  pull_request:
+    branches:
+    - 'master'
 jobs:
   list-pkgbuilds:
     runs-on: ubuntu-latest
@@ -19,14 +22,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: docker/setup-buildx-action@v2
-      - name: build builder image
+      - name: Cache builder image
+        id: builder-cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ hashFiles('pkgs/**/PKGBUILD')}}
+          path: /tmp/builder.tar
+      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }}
+        uses: docker/setup-buildx-action@v2
+      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }}
+        name: build builder image
         uses: docker/build-push-action@v3
         with:
           context: .
-          tags: image-builder:${{ github.sha }}
+          tags: image-builder:latest
           outputs: type=docker,dest=/tmp/builder.tar
-      - uses: actions/upload-artifact@v3
+      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }}
+        uses: actions/upload-artifact@v3
         with:
           name: image-builder
           path: /tmp/builder.tar
@@ -43,7 +55,14 @@ jobs:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
     steps:
       - uses: actions/checkout@v3
-      - name: Download builder
+      - name: Use cached builder image
+        id: builder-cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ hashFiles('pkgs/**/PKGBUILD')}}
+          path: /tmp/builder.tar
+      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }} 
+        name: Download builder
         uses: actions/download-artifact@v3
         with:
           name: image-builder
@@ -51,7 +70,7 @@ jobs:
       - name: Build package
         run: |
           docker load --input /tmp/builder.tar
-          docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output --entrypoint=/workdir/build-package.sh --privileged=true image-builder:${{ github.sha }} ${{ matrix.package }}
+          docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output --entrypoint=/workdir/build-package.sh --privileged=true image-builder:latest ${{ matrix.package }}
       - run: ls -ahl output/*
       - name: Upload Package Archives
         uses: actions/upload-artifact@v3
@@ -74,7 +93,14 @@ jobs:
       image_filename: ${{ steps.build_image.outputs.image_filename }}
     steps:
       - uses: actions/checkout@v3
-      - name: Download builder
+      - name: Use cached builder image
+        id: builder-cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ hashFiles('pkgs/**/PKGBUILD')}}
+          path: /tmp/builder.tar
+      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }} 
+        name: Download builder
         uses: actions/download-artifact@v3
         with:
           name: image-builder
@@ -86,9 +112,10 @@ jobs:
       - run: docker load --input /tmp/builder.tar
       - name: Build system image
         id: build_image
-        run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:${{ github.sha }} $(echo ${GITHUB_SHA} | cut -c1-7)
+        run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
 
-      - name: Create release
+      - if: ${{ github.event_name == 'push'}}
+        name: Create release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
