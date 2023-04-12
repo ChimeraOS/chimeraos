@@ -92,7 +92,7 @@ export PACKAGES="\
 	libva-intel-driver \
 	libva-vdpau-driver \
 	libxcrypt-compat \
-	libwebkit2gtk \
+	webkit2gtk \
 	lightdm \
 	linux-firmware \
 	liquidctl \
