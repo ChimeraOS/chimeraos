@@ -161,6 +161,7 @@ export AUR_PACKAGES="\
 	opengamepadui-bin \
 	opengamepadui-session-git \
 	oxp-platform-dkms-git \
+	pikaur \
 	python-vdf \
 	r8152-dkms \
 	retroarch-autoconfig-udev-git \
@@ -177,7 +178,6 @@ export AUR_PACKAGES="\
 	xone-dkms \
 	xpad-noone-dkms \
 	xpadneo-dkms \
-	yay \
 "
 
 export SERVICES="\
