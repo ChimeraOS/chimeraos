@@ -145,6 +145,7 @@ export AUR_PACKAGES="\
 	boxtron \
 	chimera \
 	chimeraos-device-quirks-git \
+	downgrade \
 	frzr \
 	gamescope-plus \
 	gamescope-session-git \
