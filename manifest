@@ -47,6 +47,7 @@ export PACKAGES="\
 	gnome-software \
 	gnome-text-editor \
 	gst-plugin-pipewire \
+	gtk3 \
 	haveged \
 	htop \
 	iio-sensor-proxy \
@@ -92,6 +93,7 @@ export PACKAGES="\
 	libva-intel-driver \
 	libva-vdpau-driver \
 	libxcrypt-compat \
+	libayatana-appindicator\
 	webkit2gtk \
 	lightdm \
 	linux-firmware \
