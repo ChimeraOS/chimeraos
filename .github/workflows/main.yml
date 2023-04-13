@@ -1,13 +1,45 @@
 name: System image build
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 on:
   push:
     branches:
-    - 'master'
+      - master
   pull_request:
     branches:
-    - 'master'
+      - 'master'
+
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    name: Changes check
+    # Required permissions
+    permissions:
+      pull-requests: read
+    outputs:
+      require-rebuild: ${{ steps.filter.outputs.require-rebuild }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            require-rebuild:
+              - 'Dockerfile'
+              - 'manifest'
+              - 'pkgs/**'
+
+  build-docker-image:
+    name: Build and publish docker container
+    needs: changes
+    if: ${{ needs.changes.outputs.require-rebuild == 'true' }}
+    uses: ./.github/workflows/build.yml
+
   list-pkgbuilds:
+    name: List AUR packages
     runs-on: ubuntu-latest
     outputs:
       aur-pkgs: ${{ steps.set-aur-pkgs.outputs.matrix }}
@@ -17,36 +49,11 @@ jobs:
         run: source ./manifest ; echo "matrix=$(echo ${AUR_PACKAGES} | jq -R -s -c 'split(" ")[:-1]')" >> $GITHUB_OUTPUT
         shell: bash
 
-  build-environment:
-    name: Build environment
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Cache builder image
-        id: builder-cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ hashFiles('pkgs/**/PKGBUILD')}}
-          path: /tmp/builder.tar
-      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }}
-        uses: docker/setup-buildx-action@v2
-      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }}
-        name: build builder image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          tags: image-builder:latest
-          outputs: type=docker,dest=/tmp/builder.tar
-      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: image-builder
-          path: /tmp/builder.tar
-
   aur-pkgbuild:
     needs:
+     - build-docker-image
      - list-pkgbuilds
-     - build-environment
+    if: ${{ !cancelled() && (success() || failure() || needs.build-docker-image.result == 'skipped') }}
     name: Build AUR package
     runs-on: ubuntu-latest
     strategy:
@@ -55,34 +62,27 @@ jobs:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
     steps:
       - uses: actions/checkout@v3
-      - name: Use cached builder image
-        id: builder-cache
-        uses: actions/cache@v3
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
         with:
-          key: ${{ hashFiles('pkgs/**/PKGBUILD')}}
-          path: /tmp/builder.tar
-      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }} 
-        name: Download builder
-        uses: actions/download-artifact@v3
-        with:
-          name: image-builder
-          path: /tmp
-      - name: Build package
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Build packages
         run: |
-          docker load --input /tmp/builder.tar
-          docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output --entrypoint=/workdir/build-package.sh --privileged=true image-builder:latest ${{ matrix.package }}
-      - run: ls -ahl output/*
+          docker pull ${{ steps.meta.outputs.tags }}
+          docker run --rm -v $(pwd):/workdir --entrypoint=/workdir/aur-pkgs/build-aur-package.sh ${{ steps.meta.outputs.tags }} ${{ matrix.package }}
       - name: Upload Package Archives
         uses: actions/upload-artifact@v3
         with:
-            name: aur-packages
-            path: output/*.pkg.tar*
+            name: AUR-packages
+            path: aur-pkgs/*.pkg.tar*
 
   build:
-    needs: 
-     - build-environment
+    needs:
+     - build-docker-image
      - aur-pkgbuild
-    name: System image build
+    if: ${{ !cancelled() && (success() || failure() || needs.build-docker-image.result == 'skipped') }}
+    name: Build ChimeraOS image
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -93,27 +93,27 @@ jobs:
       image_filename: ${{ steps.build_image.outputs.image_filename }}
     steps:
       - uses: actions/checkout@v3
-      - name: Use cached builder image
-        id: builder-cache
-        uses: actions/cache@v3
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
         with:
-          key: ${{ hashFiles('pkgs/**/PKGBUILD')}}
-          path: /tmp/builder.tar
-      - if: ${{ steps.builder-cache.outputs.cache-hit != 'true' }} 
-        name: Download builder
-        uses: actions/download-artifact@v3
-        with:
-          name: image-builder
-          path: /tmp
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - uses: actions/download-artifact@v3
         with:
-            name: aur-packages
+            name: AUR-packages
             path: aur-pkgs/
-      - run: docker load --input /tmp/builder.tar
       - name: Build system image
         id: build_image
-        run: docker run --rm -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true image-builder:latest $(echo ${GITHUB_SHA} | cut -c1-7)
-
+        run: |
+          docker pull ${{ steps.meta.outputs.tags }}
+          docker run -u root --rm --entrypoint=/workdir/build-image.sh -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true ${{ steps.meta.outputs.tags }} $(echo ${GITHUB_SHA} | cut -c1-7)
+          echo -e "$(docker inspect --format='{{index .RepoDigests 0}}' ${{ steps.meta.outputs.tags }})" > output/container.txt
+      - if: github.ref != 'refs/heads/master'
+        name: Create artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Output
+          path: output/
       - if: github.ref == 'refs/heads/master'
         name: Create release
         id: create_release
@@ -129,3 +129,4 @@ jobs:
             output/${{ steps.build_image.outputs.image_filename }}
             output/build_info.txt
             output/sha256sum.txt
+            output/container.txt
