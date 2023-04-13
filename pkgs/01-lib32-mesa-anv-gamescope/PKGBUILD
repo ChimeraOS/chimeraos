@@ -6,7 +6,7 @@
 pkgbase=lib32-mesa-anv-gamescope
 pkgname=('lib32-vulkan-mesa-layers-anv-gamescope' 'lib32-opencl-mesa-anv-gamescope' 'lib32-vulkan-intel-anv-gamescope' 'lib32-vulkan-radeon-anv-gamescope' 'lib32-vulkan-virtio-anv-gamescope' 'lib32-libva-mesa-driver-anv-gamescope' 'lib32-mesa-vdpau-anv-gamescope' 'lib32-mesa-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification (32-bit)"
-pkgver=23.0.1
+pkgver=23.0.2
 pkgrel=2
 arch=('x86_64')
 makedepends=('python-mako' 'lib32-libxml2' 'lib32-expat' 'lib32-libx11' 'xorgproto' 'lib32-libdrm'
@@ -18,36 +18,40 @@ makedepends=('python-mako' 'lib32-libxml2' 'lib32-expat' 'lib32-libx11' 'xorgpro
 url="https://www.mesa3d.org/"
 license=('custom')
 source=(https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz
-        0001-iris-Retry-DRM_IOCTL_I915_GEM_EXECBUFFER2-on-ENOMEM.patch
-        0002-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
-        0003-intel-fs-fix-scheduling-of-HALT-instructions.patch
+        0001-intel-fs-fix-scheduling-of-HALT-instructions.patch
+        0002-egl-wayland-Fix-destruction-of-event-queue-with-prox.patch
+        0003-vulkan-wsi-wayland-Fix-destruction-of-event-queue-wi.patch
         0004-anv-gamescope.patch
         LICENSE)
-sha256sums=('SKIP'
-            '99264c77d63d6fa810e295914808cde9f580a64e913e99fa794c1aa25a4f8fb2'
-            'd6ef8fb1809e8aeae0ec32bfe916adb770c64880bfd3d0f4472a616c9f356a9a'
+sha256sums=('1b7d3399fc6f16f030361f925d33ebc7600cbf98094582f54775b6a1180529e7'
             'dc6790b5be0e80c23e74ae18ca1a2b40f57f4211cc7b645bf22b63af3b790e40'
+            'c25493de3e5930702acf833d182aeca0895d6a9d9e830dca15c42d130e25c41c'
+            'db2be7ae0540d65e77449eda1af66200e27af382183fdcd0c87f99db3520b80a'
             '12bbd2af9d29f8abb531a735e253a2a92020c37adf8619e06f197f58331b5bba'
             '7052ba73bb07ea78873a2431ee4e828f4e72bda7d176d07f770fa48373dec537')
-b2sums=('SKIP'
-        'a90bfc47fb3a46eff1ef2455c7aa18c2bb515ec217b423d0a87cc5f3b824a77c0381e1378498464418644108142022dcd3c289e157877c6ae7584beaec1d9987'
-        'bd52994305fc0fa2f12c46ea3208bbb24f97495d9bad73120d83a6cdcf7e48f5ff0d14ac0055765516b70caacdf024fca4159b70b054e85f2783c78c9218aefe'
+b2sums=('5a90fcd8b7096dde1e6c82b9bb5b00622cc1cf35e4308419441d3489d66ed322843db89f2f1162c8c30f6bcddbce867447f83425a29145bd42a742b773ec1258'
         '37d1d070c45c85bce8abe3524a3f8d9ac9ed6326a3eec653cd89fffce3630b08eb9b96b11aeb495488230449c99f9b508f73a15e53265d2b159286b0e2dda7cc'
+        'ae891637318fdbb8dd58285098af7bea709fb032969a5671eb225a4a471bf9422fac2a6cb0fd188aad96ea5a03eb043f646f5d371dd655a100046adb1c91bd7d'
+        'a7312e0931904e659b3d33fcb37b13bcadab943c6040dd2b58ea191db350b50c1ba588e334b7e59b513bd6155797e29dc1bd1a6a35a278b3824d06534f2c9d17'
         '1e1841e1bbb104a90f23961ae4cce0739d2dc6692f2574c454aaf425e4a89211141b2fc6e5acbbf7bc877e4bf03b8a45cea9df5cf688bfe587e1238148f98555'
         '1ecf007b82260710a7bf5048f47dd5d600c168824c02c595af654632326536a6527fbe0738670ee7b921dd85a70425108e0f471ba85a8e1ca47d294ad74b4adb')
 
 prepare() {
   cd mesa-$pkgver
 
-  # https://gitlab.freedesktop.org/drm/intel/-/issues/6851
-  # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/20449
-  patch -Np1 -i ../0001-iris-Retry-DRM_IOCTL_I915_GEM_EXECBUFFER2-on-ENOMEM.patch
-  patch -Np1 -i ../0002-Revert-iris-Avoid-abort-if-kernel-can-t-allocate-mem.patch
-
   # https://gitlab.freedesktop.org/mesa/mesa/-/issues/7110
   # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/20765
-  patch -Np1 -i ../0003-intel-fs-fix-scheduling-of-HALT-instructions.patch
-  
+  patch -Np1 -i ../0001-intel-fs-fix-scheduling-of-HALT-instructions.patch
+
+  # https://bugs.archlinux.org/task/78137
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=1826583
+  # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/21646
+  patch -Np1 -i ../0002-egl-wayland-Fix-destruction-of-event-queue-with-prox.patch
+
+  # https://bugs.archlinux.org/task/78142
+  # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/21647
+  patch -Np1 -i ../0003-vulkan-wsi-wayland-Fix-destruction-of-event-queue-wi.patch
+
   # Patch for Gamescope compatibility
   patch -Np1 -i ../0004-anv-gamescope.patch
 }
@@ -56,14 +60,13 @@ build() {
   # Build only minimal debug info to reduce size
   CFLAGS+=' -g1'
   CXXFLAGS+=' -g1'
-
+  
   export CC="gcc -m32"
   export CXX="g++ -m32"
   export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
   export LLVM_CONFIG="llvm-config32"
 
   # swr driver is broken with some cpu see FS#66972
-
   arch-meson mesa-$pkgver build \
     --libdir=/usr/lib32 \
     -D b_ndebug=true \
