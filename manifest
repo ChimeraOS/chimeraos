@@ -224,6 +224,7 @@ postinstallhook() {
 	" > /etc/sudoers.d/steam
 	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
 	${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
+	${USERNAME} ALL=(ALL) NOPASSWD: /usr/share/chimera/bin/power-tool
 	" > /etc/sudoers.d/chimera
 
 	# disable retroarch menu in joypad configs
