@@ -121,6 +121,7 @@ export PACKAGES="\
 	rsync \
 	smbclient \
 	sof-firmware \
+	sshfs \
 	steam \
 	sudo \
 	ttf-liberation \
