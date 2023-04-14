@@ -4,14 +4,14 @@
 # Contributor: Andreas Radke <andyrtr@archlinux.org>
 
 pkgbase=mesa-anv-gamescope
-pkgname=('vulkan-mesa-layers-anv-gamescope' 'opencl-mesa-anv-gamescope' 'vulkan-intel-anv-gamescope' 'vulkan-radeon-anv-gamescope' 'vulkan-swrast-anv-gamescope' 'vulkan-virtio-anv-gamescope' 'libva-mesa-driver-anv-gamescope' 'mesa-vdpau-anv-gamescope' 'mesa-anv-gamescope')
+pkgname=('vulkan-mesa-layers-anv-gamescope' 'opencl-mesa-anv-gamescope' 'vulkan-intel-anv-gamescope' 'vulkan-radeon-anv-gamescope' 'libva-mesa-driver-anv-gamescope' 'mesa-vdpau-anv-gamescope' 'mesa-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification"
 pkgver=23.0.2
 pkgrel=2
 arch=('x86_64')
 makedepends=('python-mako' 'libxml2' 'libx11' 'xorgproto' 'libdrm' 'libxshmfence' 'libxxf86vm'
              'libxdamage' 'libvdpau' 'libva' 'wayland' 'wayland-protocols' 'zstd' 'elfutils' 'llvm'
-             'libomxil-bellagio' 'libclc' 'clang' 'libglvnd' 'libunwind' 'lm_sensors' 'libxrandr'
+             'libclc' 'clang' 'libglvnd' 'libunwind' 'lm_sensors' 'libxrandr'
              'systemd' 'valgrind' 'glslang' 'vulkan-icd-loader' 'directx-headers' 'cmake' 'meson')
 makedepends+=('rust' 'rust-bindgen' 'spirv-tools' 'spirv-llvm-translator') # rusticl dependencies
 url="https://www.mesa3d.org/"
@@ -69,18 +69,18 @@ build() {
   arch-meson mesa-$pkgver build \
     -D b_ndebug=true \
     -D platforms=x11,wayland \
-    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
-    -D vulkan-drivers=amd,intel,intel_hasvk,swrast,virtio-experimental \
+    -D gallium-drivers=radeonsi,iris,d3d12 \
+    -D vulkan-drivers=amd,intel \
     -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D dri3=enabled \
     -D egl=enabled \
-    -D gallium-extra-hud=true \
-    -D gallium-nine=true \
-    -D gallium-omx=bellagio \
-    -D gallium-opencl=icd \
+    -D gallium-extra-hud=false \
+    -D gallium-nine=false \
+    -D gallium-omx=disabled \
+    -D gallium-opencl=disabled \
     -D gallium-va=enabled \
     -D gallium-vdpau=enabled \
-    -D gallium-xa=enabled \
+    -D gallium-xa=disabled \
     -D gallium-rusticl=true \
     -D rust_std=2021 \
     -D gbm=enabled \
@@ -91,7 +91,7 @@ build() {
     -D libunwind=enabled \
     -D llvm=enabled \
     -D lmsensors=enabled \
-    -D osmesa=true \
+    -D osmesa=false \
     -D shared-glapi=enabled \
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
@@ -140,7 +140,7 @@ package_opencl-mesa-anv-gamescope() {
 
   _install fakeinstall/etc/OpenCL
   _install fakeinstall/usr/lib/lib*OpenCL*
-  _install fakeinstall/usr/lib/gallium-pipe
+  #_install fakeinstall/usr/lib/gallium-pipe
 
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
@@ -170,32 +170,6 @@ package_vulkan-radeon-anv-gamescope() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
-package_vulkan-swrast-anv-gamescope() {
-  pkgdesc="Vulkan software rasteriser driver"
-  depends=('wayland' 'libx11' 'libxshmfence' 'libdrm' 'zstd' 'llvm-libs' 'systemd-libs' 'libunwind')
-  optdepends=('vulkan-mesa-layers: additional vulkan layers')
-  conflicts=('vulkan-mesa')
-  replaces=('vulkan-mesa')
-  provides=('vulkan-driver')
-
-  _install fakeinstall/usr/share/vulkan/icd.d/lvp_icd*.json
-  _install fakeinstall/usr/lib/libvulkan_lvp.so
-
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
-}
-
-package_vulkan-virtio-anv-gamescope() {
-  pkgdesc="Venus Vulkan mesa driver for Virtual Machines"
-  depends=('wayland' 'libx11' 'libxshmfence' 'libdrm' 'zstd' 'systemd-libs')
-  optdepends=('vulkan-mesa-layers: additional vulkan layers')
-  provides=('vulkan-driver')
-
-  _install fakeinstall/usr/share/vulkan/icd.d/virtio_icd*.json
-  _install fakeinstall/usr/lib/libvulkan_virtio.so
-
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
-}
-
 package_libva-mesa-driver-anv-gamescope() {
   pkgdesc="VA-API drivers"
   depends=('libdrm' 'libx11' 'llvm-libs' 'expat' 'libelf' 'libxshmfence')
@@ -220,7 +194,7 @@ package_mesa-vdpau-anv-gamescope() {
 
 package_mesa-anv-gamescope() {
   depends=('libdrm' 'wayland' 'libxxf86vm' 'libxdamage' 'libxshmfence' 'libelf'
-           'libomxil-bellagio' 'libunwind' 'llvm-libs' 'lm_sensors' 'libglvnd'
+           'libunwind' 'llvm-libs' 'lm_sensors' 'libglvnd'
            'zstd' 'vulkan-icd-loader')
   depends+=('libsensors.so' 'libexpat.so')
   optdepends=('opengl-man-pages: for the OpenGL API man pages'
@@ -236,11 +210,11 @@ package_mesa-anv-gamescope() {
   # ati-dri, nouveau-dri, intel-dri, svga-dri, swrast, swr
   _install fakeinstall/usr/lib/dri/*_dri.so
 
-  _install fakeinstall/usr/lib/bellagio
-  _install fakeinstall/usr/lib/d3d
+  #_install fakeinstall/usr/lib/bellagio
+  #_install fakeinstall/usr/lib/d3d
   _install fakeinstall/usr/lib/lib{gbm,glapi}.so*
-  _install fakeinstall/usr/lib/libOSMesa.so*
-  _install fakeinstall/usr/lib/libxatracker.so*
+  #_install fakeinstall/usr/lib/libOSMesa.so*
+  #_install fakeinstall/usr/lib/libxatracker.so*
 
   _install fakeinstall/usr/include
   _install fakeinstall/usr/lib/pkgconfig

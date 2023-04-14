@@ -4,7 +4,7 @@
 # Contributor: Andreas Radke <andyrtr@archlinux.org>
 
 pkgbase=lib32-mesa-anv-gamescope
-pkgname=('lib32-vulkan-mesa-layers-anv-gamescope' 'lib32-opencl-mesa-anv-gamescope' 'lib32-vulkan-intel-anv-gamescope' 'lib32-vulkan-radeon-anv-gamescope' 'lib32-vulkan-virtio-anv-gamescope' 'lib32-libva-mesa-driver-anv-gamescope' 'lib32-mesa-vdpau-anv-gamescope' 'lib32-mesa-anv-gamescope')
+pkgname=('lib32-vulkan-mesa-layers-anv-gamescope' 'lib32-vulkan-intel-anv-gamescope' 'lib32-vulkan-radeon-anv-gamescope' 'lib32-libva-mesa-driver-anv-gamescope' 'lib32-mesa-vdpau-anv-gamescope' 'lib32-mesa-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification (32-bit)"
 pkgver=23.0.2
 pkgrel=2
@@ -77,18 +77,18 @@ build() {
     --libdir=/usr/lib32 \
     -D b_ndebug=true \
     -D platforms=x11,wayland \
-    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink \
-    -D vulkan-drivers=amd,intel,intel_hasvk,virtio-experimental \
+    -D gallium-drivers=radeonsi,iris \
+    -D vulkan-drivers=amd,intel \
     -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D dri3=enabled \
     -D egl=enabled \
-    -D gallium-extra-hud=true \
-    -D gallium-nine=true \
+    -D gallium-extra-hud=false \
+    -D gallium-nine=false \
     -D gallium-omx=disabled \
-    -D gallium-opencl=icd \
+    -D gallium-opencl=disabled \
     -D gallium-va=enabled \
     -D gallium-vdpau=enabled \
-    -D gallium-xa=enabled \
+    -D gallium-xa=disabled \
     -D gbm=enabled \
     -D gles1=disabled \
     -D gles2=enabled \
@@ -97,7 +97,7 @@ build() {
     -D libunwind=enabled \
     -D llvm=enabled \
     -D lmsensors=enabled \
-    -D osmesa=true \
+    -D osmesa=false \
     -D shared-glapi=enabled \
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
@@ -140,20 +140,6 @@ package_lib32-vulkan-mesa-layers-anv-gamescope() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
-package_lib32-opencl-mesa-anv-gamescope() {
-  pkgdesc="OpenCL support for AMD/ATI Radeon mesa drivers (32-bit)"
-  depends=('lib32-expat' 'lib32-libdrm' 'lib32-libelf' 'lib32-clang' 'lib32-zstd')
-  depends+=('opencl-mesa')
-  optdepends=('opencl-headers: headers necessary for OpenCL development')
-  provides=('lib32-opencl-driver')
-
-  rm -rv fakeinstall/etc/OpenCL
-  _install fakeinstall/usr/lib32/lib*OpenCL*
-  _install fakeinstall/usr/lib32/gallium-pipe
-
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
-}
-
 package_lib32-vulkan-intel-anv-gamescope() {
   pkgdesc="Intel's Vulkan mesa driver (32-bit)"
   depends=('lib32-wayland' 'lib32-libx11' 'lib32-libxshmfence' 'lib32-libdrm' 'lib32-zstd'
@@ -181,18 +167,6 @@ package_lib32-vulkan-radeon-anv-gamescope() {
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
 }
 
-package_lib32-vulkan-virtio-anv-gamescope() {
-  pkgdesc="Venus Vulkan mesa driver (32-bit)"
-  depends=('lib32-wayland' 'lib32-libx11' 'lib32-libxshmfence' 'lib32-libdrm' 'lib32-zstd'
-           'lib32-systemd')
-  optdepends=('lib32-vulkan-mesa-layers: additional vulkan layers')
-  provides=('lib32-vulkan-driver')
-
-  _install fakeinstall/usr/share/vulkan/icd.d/virtio_icd*.json
-  _install fakeinstall/usr/lib32/libvulkan_virtio.so
-
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" LICENSE
-}
 
 package_lib32-libva-mesa-driver-anv-gamescope() {
   pkgdesc="VA-API implementation for gallium (32-bit)"
@@ -239,10 +213,10 @@ package_lib32-mesa-anv-gamescope() {
   _install fakeinstall/usr/lib32/dri/*_dri.so
 
   #_install fakeinstall/usr/lib32/bellagio
-  _install fakeinstall/usr/lib32/d3d
+  #_install fakeinstall/usr/lib32/d3d
   _install fakeinstall/usr/lib32/lib{gbm,glapi}.so*
-  _install fakeinstall/usr/lib32/libOSMesa.so*
-  _install fakeinstall/usr/lib32/libxatracker.so*
+  #_install fakeinstall/usr/lib32/libOSMesa.so*
+  #_install fakeinstall/usr/lib32/libxatracker.so*
   #_install fakeinstall/usr/lib32/libswrAVX*.so*
 
   rm -rv fakeinstall/usr/include
