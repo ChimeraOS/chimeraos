@@ -13,3 +13,6 @@ for package in /tmp/pkgs/*/; do
 	PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
 	"${PIKAUR_RUN[@]}"
 done
+
+# cleanup build cache
+sudo rm -rf ~/.cache/pikaur
