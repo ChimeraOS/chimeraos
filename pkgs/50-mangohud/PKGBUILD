@@ -1,6 +1,6 @@
 # Maintainer: Simon Hallsten <flightlessmangoyt@gmail.com>
 pkgname=('mangohud' 'lib32-mangohud')
-pkgver=0.6.8.r148.g070fa1b
+pkgver=0.6.9
 pkgrel=1
 pkgdesc="Vulkan and OpenGL overlay to display performance information"
 arch=('x86_64')
@@ -10,8 +10,9 @@ makedepends=('dbus' 'gcc' 'meson' 'python-mako' 'libx11' 'lib32-libx11' 'git' 'p
 depends=('glslang' 'libglvnd' 'lib32-libglvnd' 'glew' 'glfw-x11')
 replaces=('vulkan-mesa-layer-mango')
 license=('MIT')
+_commit=5fa7087f78e39e92ee4306fdf48fd710960c53dc  # tags/v0.6.9^0
 source=(
-        "mangohud"::"git+https://github.com/flightlessmango/MangoHud.git#commit=070fa1be842479942b55505688bcb06e86875075"
+        "mangohud"::"git+https://github.com/flightlessmango/MangoHud.git#commit=${_commit}"
         "mangohud-minhook"::"git+https://github.com/flightlessmango/minhook.git"
         "imgui-v1.81.tar.gz::https://github.com/ocornut/imgui/archive/v1.81.tar.gz"
         "imgui-1.81-1-wrap.zip::https://wrapdb.mesonbuild.com/v1/projects/imgui/1.81/1/get_zip"
