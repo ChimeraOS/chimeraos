@@ -218,6 +218,14 @@ export FILES_TO_DELETE="\
 "
 
 postinstallhook() {
+	# Add sudo permissions
+	sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^# //g' /etc/sudoers
+	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
+	" > /etc/sudoers.d/steam
+	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
+	${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
+	" > /etc/sudoers.d/chimera
+
 	# disable retroarch menu in joypad configs
 	find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
 

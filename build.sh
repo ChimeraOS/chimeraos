@@ -111,14 +111,6 @@ groupadd -r autologin
 useradd -m ${USERNAME} -G autologin,wheel
 echo "${USERNAME}:${USERNAME}" | chpasswd
 
-# Add sudo permissions
-sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^# //g' /etc/sudoers
-echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
-" > /etc/sudoers.d/steam
-echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
-${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
-" > /etc/sudoers.d/chimera
-
 # set the default editor, so visudo works
 echo "export EDITOR=/usr/bin/vim" >> /etc/bash.bashrc
 
