@@ -176,6 +176,7 @@ export AUR_PACKAGES="\
 	ryzenadj-git \
 	ryzenadj-controller-git \
 	rz608-fix-git \
+	sunshine \
 	steam-removable-media-git \
 	wyvern \
 	xone-dkms \
