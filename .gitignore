@@ -1,5 +1,7 @@
 *.SRCINFO
 *.img.tar.xz
+*.img
+.cache/*
 output/*
 aur-pkgs/*
 !aur-pkgs/build-aur-packages.sh
