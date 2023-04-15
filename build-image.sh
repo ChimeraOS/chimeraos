@@ -225,27 +225,34 @@ rm -rf ${MOUNT_PATH}
 rm -rf ${BUILD_IMG}
 
 IMG_FILENAME="${SYSTEM_NAME}-${VERSION}.img.tar.xz"
+if [ -z "${LOCAL_BUILD}" ]; then
+	tar -c -I'xz -8 -T4' -f ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
+	rm ${SYSTEM_NAME}-${VERSION}.img
 
-tar -c -I'xz -8 -T4' -f ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
-rm ${SYSTEM_NAME}-${VERSION}.img
+	sha256sum ${SYSTEM_NAME}-${VERSION}.img.tar.xz > sha256sum.txt
+	cat sha256sum.txt
 
-sha256sum ${SYSTEM_NAME}-${VERSION}.img.tar.xz > sha256sum.txt
-cat sha256sum.txt
+	# Move the image to the output directory, if one was specified.
+	if [ -n "${OUTPUT_DIR}" ]; then
+		mkdir -p "${OUTPUT_DIR}"
+		mv ${IMG_FILENAME} ${OUTPUT_DIR}
+		mv build_info.txt ${OUTPUT_DIR}
+		mv sha256sum.txt ${OUTPUT_DIR}
+	fi
 
-# Move the image to the output directory, if one was specified.
-if [ -n "${OUTPUT_DIR}" ]; then
-	mkdir -p "${OUTPUT_DIR}"
-	mv ${IMG_FILENAME} ${OUTPUT_DIR}
-	mv build_info.txt ${OUTPUT_DIR}
-	mv sha256sum.txt ${OUTPUT_DIR}
-fi
-
-# set outputs for github actions
-if [ -f "${GITHUB_OUTPUT}" ]; then
-	echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
-	echo "display_version=${DISPLAY_VERSION}" >> "${GITHUB_OUTPUT}"
-	echo "display_name=${SYSTEM_DESC}" >> "${GITHUB_OUTPUT}"
-	echo "image_filename=${IMG_FILENAME}" >> "${GITHUB_OUTPUT}"
+	# set outputs for github actions
+	if [ -f "${GITHUB_OUTPUT}" ]; then
+		echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+		echo "display_version=${DISPLAY_VERSION}" >> "${GITHUB_OUTPUT}"
+		echo "display_name=${SYSTEM_DESC}" >> "${GITHUB_OUTPUT}"
+		echo "image_filename=${IMG_FILENAME}" >> "${GITHUB_OUTPUT}"
+	else
+		echo "No github output file set"
+	fi
 else
-	echo "No github output file set"
+	echo "Local build, output IMG directly"
+	if [ -n "${OUTPUT_DIR}" ]; then
+		mkdir -p "${OUTPUT_DIR}"
+		mv ${SYSTEM_NAME}-${VERSION}.img ${OUTPUT_DIR}
+	fi
 fi
