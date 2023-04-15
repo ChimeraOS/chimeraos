@@ -225,7 +225,7 @@ rm -rf ${MOUNT_PATH}
 rm -rf ${BUILD_IMG}
 
 IMG_FILENAME="${SYSTEM_NAME}-${VERSION}.img.tar.xz"
-if [ -z "${LOCAL_BUILD}" ]; then
+if [ -z "${NO_COMPRESS}" ]; then
 	tar -c -I'xz -8 -T4' -f ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
 	rm ${SYSTEM_NAME}-${VERSION}.img
 
