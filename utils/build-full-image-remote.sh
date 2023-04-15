@@ -4,7 +4,8 @@
 set -e
 # If you have a PR open, you could also use pr-<PR-NUMBER> to use that container if that has build before.
 # Every release also has a container.txt which contains the container it was built on.
-docker pull ghcr.io/chimeraos/chimeraos:master
+CONTAINER="ghcr.io/chimeraos/chimeraos:master"
+docker pull ${CONTAINER}
 # Since reflector is run upon building the container, that means the mirrors could be out of date. 
 # Since reflector still exists in the container. You could update the scripts/entrypoints so that it would update the mirrors.
 
@@ -14,7 +15,7 @@ docker pull ghcr.io/chimeraos/chimeraos:master
 mkdir -p .cache
 chmod 777 .cache
 # Build the AUR packages with the github container
-docker run -it --rm --entrypoint /workdir/aur-pkgs/build-aur-packages.sh -v $(pwd):/workdir:Z -v $(pwd)/.cache:/home/build/.cache:Z ghcr.io/chimeraos/chimeraos:master
+docker run -it --rm --entrypoint /workdir/aur-pkgs/build-aur-packages.sh -v $(pwd):/workdir:Z -v $(pwd)/.cache:/home/build/.cache:Z ${CONTAINER}
 # Build chimera image using the AUR packages found in aur-pkgs.
 # If the -e NO_COMPRESS=1 gets removed, the docker container will tar the ouput image
-docker run -it --rm -u root --privileged=true --entrypoint /workdir/build-image.sh -e NO_COMPRESS=1 -v $(pwd):/workdir:Z -v $(pwd)/output:/output:z ghcr.io/chimeraos/chimeraos:master $(echo local-$(git rev-parse HEAD | cut -c1-7))
+docker run -it --rm -u root --privileged=true --entrypoint /workdir/build-image.sh -e NO_COMPRESS=1 -v $(pwd):/workdir:Z -v $(pwd)/output:/output:z ${CONTAINER} $(echo local-$(git rev-parse HEAD | cut -c1-7))
