@@ -4,7 +4,7 @@
 # Contributor: Andreas Radke <andyrtr@archlinux.org>
 
 pkgbase=lib32-mesa-anv-gamescope
-pkgname=('lib32-vulkan-mesa-layers-anv-gamescope' 'lib32-opencl-mesa-anv-gamescope' 'lib32-vulkan-intel-anv-gamescope' 'lib32-vulkan-radeon-anv-gamescope' 'lib32-vulkan-virtio-anv-gamescope' 'lib32-libva-mesa-driver-anv-gamescope' 'lib32-mesa-vdpau-anv-gamescope' 'lib32-mesa-anv-gamescope')
+pkgname=('lib32-vulkan-intel-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification (32-bit)"
 pkgver=23.0.2
 pkgrel=2
@@ -77,28 +77,20 @@ build() {
     --libdir=/usr/lib32 \
     -D b_ndebug=true \
     -D platforms=x11,wayland \
-    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink \
-    -D vulkan-drivers=amd,intel,intel_hasvk,virtio-experimental \
-    -D vulkan-layers=device-select,intel-nullhw,overlay \
+    -D gallium-drivers= \
+    -D vulkan-drivers=intel\
+    -D vulkan-layers=\
     -D dri3=enabled \
-    -D egl=enabled \
-    -D gallium-extra-hud=true \
-    -D gallium-nine=true \
-    -D gallium-omx=disabled \
-    -D gallium-opencl=icd \
-    -D gallium-va=enabled \
-    -D gallium-vdpau=enabled \
-    -D gallium-xa=enabled \
-    -D gbm=enabled \
+    -D egl=disabled \
+    -D gbm=disabled \
     -D gles1=disabled \
-    -D gles2=enabled \
-    -D glvnd=true \
-    -D glx=dri \
+    -D gles2=disabled \
+    -D glvnd=false \
+    -D glx=disabled \
     -D libunwind=enabled \
     -D llvm=enabled \
-    -D lmsensors=enabled \
-    -D osmesa=true \
-    -D shared-glapi=enabled \
+    -D lmsensors=disabled \
+    -D osmesa=false \
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
     -D valgrind=disabled
@@ -160,6 +152,7 @@ package_lib32-vulkan-intel-anv-gamescope() {
            'lib32-systemd')
   optdepends=('lib32-vulkan-mesa-layers: additional vulkan layers')
   provides=('lib32-vulkan-driver')
+  conflicts=('lib32-vulkan-intel')
 
   _install fakeinstall/usr/share/vulkan/icd.d/intel_*.json
   _install fakeinstall/usr/lib32/libvulkan_intel*.so

@@ -4,7 +4,7 @@
 # Contributor: Andreas Radke <andyrtr@archlinux.org>
 
 pkgbase=mesa-anv-gamescope
-pkgname=('vulkan-mesa-layers-anv-gamescope' 'opencl-mesa-anv-gamescope' 'vulkan-intel-anv-gamescope' 'vulkan-radeon-anv-gamescope' 'vulkan-swrast-anv-gamescope' 'vulkan-virtio-anv-gamescope' 'libva-mesa-driver-anv-gamescope' 'mesa-vdpau-anv-gamescope' 'mesa-anv-gamescope')
+pkgname=('vulkan-intel-anv-gamescope')
 pkgdesc="An open-source implementation of the OpenGL specification"
 pkgver=23.0.2
 pkgrel=2
@@ -69,32 +69,21 @@ build() {
   arch-meson mesa-$pkgver build \
     -D b_ndebug=true \
     -D platforms=x11,wayland \
-    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
-    -D vulkan-drivers=amd,intel,intel_hasvk,swrast,virtio-experimental \
-    -D vulkan-layers=device-select,intel-nullhw,overlay \
+    -D gallium-drivers= \
+    -D vulkan-drivers=intel \
+    -D vulkan-layers= \
     -D dri3=enabled \
-    -D egl=enabled \
-    -D gallium-extra-hud=true \
-    -D gallium-nine=true \
-    -D gallium-omx=bellagio \
-    -D gallium-opencl=icd \
-    -D gallium-va=enabled \
-    -D gallium-vdpau=enabled \
-    -D gallium-xa=enabled \
-    -D gallium-rusticl=true \
-    -D rust_std=2021 \
-    -D gbm=enabled \
+    -D egl=disabled \
+    -D gbm=disabled \
     -D gles1=disabled \
-    -D gles2=enabled \
-    -D glvnd=true \
-    -D glx=dri \
+    -D gles2=disabled \
+    -D glvnd=false \
+    -D glx=disabled \
     -D libunwind=enabled \
     -D llvm=enabled \
-    -D lmsensors=enabled \
-    -D osmesa=true \
-    -D shared-glapi=enabled \
+    -D lmsensors=disabled \
+    -D osmesa=false \
     -D microsoft-clc=disabled \
-    -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
     -D valgrind=enabled
 
   # Print config
@@ -150,6 +139,7 @@ package_vulkan-intel-anv-gamescope() {
   depends=('wayland' 'libx11' 'libxshmfence' 'libdrm' 'zstd' 'systemd-libs')
   optdepends=('vulkan-mesa-layers: additional vulkan layers')
   provides=('vulkan-driver')
+  conflicts=('vulkan-intel')
 
   _install fakeinstall/usr/share/vulkan/icd.d/intel_*.json
   _install fakeinstall/usr/lib/libvulkan_intel*.so
