@@ -123,6 +123,7 @@ export PACKAGES="\
 	python-gobject \
 	python-inotify-simple \
 	retroarch \
+	rclone \
 	rsync \
 	smbclient \
 	sof-firmware \
