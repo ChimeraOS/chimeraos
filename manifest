@@ -150,6 +150,7 @@ export PACKAGES="\
 "
 
 export AUR_PACKAGES="\
+	ayaled \
 	bcm20702a1-firmware \
 	boxtron \
 	chimera \
