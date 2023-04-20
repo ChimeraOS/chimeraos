@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: set-aur-pkgs
-        run: source ./manifest ; echo "matrix=$(echo ${AUR_PACKAGES} | jq -R -s -c 'split(" ")[:-1]')" >> $GITHUB_OUTPUT
+        run: source ./manifest ; echo "matrix=$(echo ${AUR_PACKAGES} | jq -R -s -c 'split(" ")')" >> $GITHUB_OUTPUT
         shell: bash
 
   aur-pkgbuild:
