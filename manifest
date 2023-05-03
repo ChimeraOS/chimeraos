@@ -121,7 +121,6 @@ export PACKAGES="\
 	podman \
 	pulsemixer \
 	python \
-	python-gobject \
 	python-inotify-simple \
 	retroarch \
 	rsync \
