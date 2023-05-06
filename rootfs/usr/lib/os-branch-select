@@ -1,20 +1,17 @@
 #!/bin/bash
 set -e
 
-BRANCH_PATH="/etc/chimeraos/chimeraos-branch"
-DEFAULT_BRANCH_PATH="/etc/chimeraos/default-branch"
-
-if [ ! -d "/etc/chimeraos/" ]; then
-   mkdir -p /etc/chimeraos
-fi
+BRANCH_PATH="/frzr_root/source"
+DEFAULT_BRANCH_PATH="/frzr_root/source"
+REPO="chimeraos/chimeraos"
 
 if [[ $# -eq 1 ]]; then
   case "$1" in
     "-c")
-      branch=$(cat "$BRANCH_PATH" 2> /dev/null || cat "$DEFAULT_BRANCH_PATH" 2>/dev/null || echo "Stable")
+      branch=$(cat "$BRANCH_PATH" 2> /dev/null || cat "$DEFAULT_BRANCH_PATH" 2>/dev/null || echo "stable")
       case "$branch" in
-        "Stable" | "Unstable" | "Testing" | "USB" | "Network")
-          echo "$branch"
+        "stable" | "unstable" | "testing")
+          echo "$REPO:$branch"
           exit 0
           ;;
         *)
@@ -27,18 +24,18 @@ if [[ $# -eq 1 ]]; then
       esac
       ;;
     "-l")
-      echo Stable
-      echo Unstable
-      echo Testing
-      echo USB
-      echo Network
+      echo stable
+      echo unstable
+      echo testing
+    # echo USB
+    # echo Network
       exit 0
       ;;
-    "Stable" | "Unstable" | "Testing" | "USB" | "Network")
-      echo "$1" > "$BRANCH_PATH"
+    "stable" | "unstable" | "testing")
+      echo "$REPO:$1" > "$BRANCH_PATH"
       exit 0
       ;;
-    "Unstable")
+    "unstable")
       echo "The unstable branch has a high risk of breaking."
       echo "Do NOT use it unless you know what you are doing."
       echo "$1" > "$BRANCH_PATH"
@@ -47,4 +44,4 @@ if [[ $# -eq 1 ]]; then
   esac
 fi
 
-echo "Usage: steamos-select-branch <-stable|unstable|testing|usb|network>" 1>&2
+echo "Usage: steamos-select-branch <-stable|unstable|testing>" 1>&2
