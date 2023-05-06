@@ -1,0 +1,50 @@
+#!/bin/bash
+set -e
+
+BRANCH_PATH="/etc/chimeraos/chimeraos-branch"
+DEFAULT_BRANCH_PATH="/etc/chimeraos/default-branch"
+
+if [ ! -d "/etc/chimeraos/" ]; then
+   mkdir -p /etc/chimeraos
+fi
+
+if [[ $# -eq 1 ]]; then
+  case "$1" in
+    "-c")
+      branch=$(cat "$BRANCH_PATH" 2> /dev/null || cat "$DEFAULT_BRANCH_PATH" 2>/dev/null || echo "Stable")
+      case "$branch" in
+        "Stable" | "Unstable" | "Testing" | "USB" | "Network")
+          echo "$branch"
+          exit 0
+          ;;
+        *)
+          # This can happen on CI builds or when downgrading from a newer build that knows of more branches.  The update
+          # path should decide how to handle it.
+          echo >&2 "Warning: Unrecognized currently selected branch name '$branch', updates may not succeed."
+          echo "$branch"
+          exit 0
+          ;;
+      esac
+      ;;
+    "-l")
+      echo Stable
+      echo Unstable
+      echo Testing
+      echo USB
+      echo Network
+      exit 0
+      ;;
+    "Stable" | "Unstable" | "Testing" | "USB" | "Network")
+      echo "$1" > "$BRANCH_PATH"
+      exit 0
+      ;;
+    "Unstable")
+      echo "The unstable branch has a high risk of breaking."
+      echo "Do NOT use it unless you know what you are doing."
+      echo "$1" > "$BRANCH_PATH"
+      exit 0
+      ;;
+  esac
+fi
+
+echo "Usage: steamos-select-branch <-stable|unstable|testing|usb|network>" 1>&2
