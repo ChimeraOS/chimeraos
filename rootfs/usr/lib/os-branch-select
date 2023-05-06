@@ -11,7 +11,7 @@ if [[ $# -eq 1 ]]; then
       branch=$(cat "$BRANCH_PATH" 2> /dev/null || cat "$DEFAULT_BRANCH_PATH" 2>/dev/null || echo "stable")
       case "$branch" in
         "stable" | "unstable" | "testing")
-          echo "$REPO:$branch"
+          echo "$branch"
           exit 0
           ;;
         *)
@@ -38,7 +38,7 @@ if [[ $# -eq 1 ]]; then
     "unstable")
       echo "The unstable branch has a high risk of breaking."
       echo "Do NOT use it unless you know what you are doing."
-      echo "$1" > "$BRANCH_PATH"
+      echo "$REPO:$1" > "$BRANCH_PATH"
       exit 0
       ;;
   esac
