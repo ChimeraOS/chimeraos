@@ -2,13 +2,12 @@
 set -e
 
 BRANCH_PATH="/frzr_root/source"
-DEFAULT_BRANCH_PATH="/frzr_root/source"
 REPO="chimeraos/chimeraos"
 
 if [[ $# -eq 1 ]]; then
   case "$1" in
     "-c")
-      branch=$(cat "$BRANCH_PATH" 2> /dev/null || cat "$DEFAULT_BRANCH_PATH" 2>/dev/null || echo "stable")
+      branch=$(cat "$BRANCH_PATH" 2> /dev/null | sed -n 's/^chimeraos\/chimeraos://; /^stable$\|^unstable$\|^testing$/{p;q};')
       case "$branch" in
         "stable" | "unstable" | "testing")
           echo "$branch"
