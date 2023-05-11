@@ -1,0 +1,46 @@
+#!/bin/bash
+set -e
+
+BRANCH_PATH="/frzr_root/source"
+REPO="chimeraos/chimeraos"
+
+if [[ $# -eq 1 ]]; then
+  case "$1" in
+    "-c")
+      branch=$(cat "$BRANCH_PATH" 2> /dev/null | sed -n 's/^chimeraos\/chimeraos://; /^stable$\|^unstable$\|^testing$/{p;q};')
+      case "$branch" in
+        "stable" | "unstable" | "testing")
+          echo "$branch"
+          exit 0
+          ;;
+        *)
+          # This can happen on CI builds or when downgrading from a newer build that knows of more branches.  The update
+          # path should decide how to handle it.
+          echo >&2 "Warning: Unrecognized currently selected branch name '$branch', updates may not succeed."
+          echo "$branch"
+          exit 0
+          ;;
+      esac
+      ;;
+    "-l")
+      echo stable
+      echo unstable
+      echo testing
+    # echo USB
+    # echo Network
+      exit 0
+      ;;
+    "stable" | "unstable" | "testing")
+      echo "$REPO:$1" > "$BRANCH_PATH"
+      exit 0
+      ;;
+    "unstable")
+      echo "The unstable branch has a high risk of breaking."
+      echo "Do NOT use it unless you know what you are doing."
+      echo "$REPO:$1" > "$BRANCH_PATH"
+      exit 0
+      ;;
+  esac
+fi
+
+echo "Usage: steamos-select-branch <-stable|unstable|testing>" 1>&2
