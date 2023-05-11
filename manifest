@@ -191,7 +191,6 @@ export AUR_PACKAGES="\
 	rz608-fix-git \
 	steam-removable-media-git \
 	wyvern \
-	xone-dkms \
 	xpad-noone-dkms \
 	xpadneo-dkms \
 "
