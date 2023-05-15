@@ -47,6 +47,7 @@ export PACKAGES="\
 	gnome-shell \
 	gnome-software \
 	gnome-text-editor \
+	gnome-tweaks \
 	gst-plugin-pipewire \
 	haveged \
 	htop \
