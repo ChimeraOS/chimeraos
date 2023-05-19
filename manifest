@@ -149,8 +149,6 @@ export PACKAGES="\
 "
 
 export PACKAGE_OVERRIDES="\
-	https://archive.archlinux.org/packages/m/mesa/mesa-23.0.2-2-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-mesa/lib32-mesa-23.0.2-2-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/w/wayland/wayland-1.21.0-2-x86_64.pkg.tar.zst \
 "
 
