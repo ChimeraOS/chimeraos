@@ -67,6 +67,7 @@ export PACKAGES="\
 	lib32-libva-intel-driver \
 	lib32-libva-mesa-driver \
 	lib32-libva-vdpau-driver \
+	lib32-mesa \
 	lib32-mesa-vdpau \
 	lib32-nvidia-utils \
 	lib32-openal \
@@ -103,6 +104,7 @@ export PACKAGES="\
 	liquidctl \
 	logrotate \
 	lshw \
+	mesa \
 	mesa-demos \
 	mesa-vdpau \
 	nano \
