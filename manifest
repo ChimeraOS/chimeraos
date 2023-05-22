@@ -97,6 +97,7 @@ export PACKAGES="\
 	libva-mesa-driver \
 	libva-vdpau-driver \
 	libxcrypt-compat \
+	libxss \
 	lightdm \
 	linux-firmware \
 	liquidctl \
