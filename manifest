@@ -63,13 +63,17 @@ export PACKAGES="\
 	lib32-libnm \
 	lib32-libxinerama \
 	lib32-libxcrypt-compat \
+	lib32-libva \
 	lib32-libva-intel-driver \
+	lib32-libva-mesa-driver \
 	lib32-libva-vdpau-driver \
+	lib32-mesa-vdpau \
 	lib32-nvidia-utils \
 	lib32-openal \
 	lib32-pipewire \
 	lib32-systemd \
 	lib32-vulkan-icd-loader \
+	lib32-vulkan-radeon \
 	libcurl-gnutls \
 	libidn11 \
 	libretro-beetle-pce-fast \
@@ -90,6 +94,7 @@ export PACKAGES="\
 	libretro-ppsspp \
 	libretro-snes9x \
 	libva-intel-driver \
+	libva-mesa-driver \
 	libva-vdpau-driver \
 	libxcrypt-compat \
 	libxss \
@@ -99,6 +104,7 @@ export PACKAGES="\
 	logrotate \
 	lshw \
 	mesa-demos \
+	mesa-vdpau \
 	nano \
 	nautilus \
 	networkmanager \
@@ -130,6 +136,7 @@ export PACKAGES="\
 	usbutils \
 	vim \
 	vulkan-icd-loader \
+	vulkan-radeon \
 	wavpack \
 	which \
 	wireplumber \
@@ -143,24 +150,6 @@ export PACKAGES="\
 "
 
 export PACKAGE_OVERRIDES="\
-	https://archive.archlinux.org/packages/l/libva-mesa-driver/libva-mesa-driver-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-libva-mesa-driver/lib32-libva-mesa-driver-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-mesa/lib32-mesa-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-mesa-vdpau/lib32-mesa-vdpau-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-opencl-mesa/lib32-opencl-mesa-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-vulkan-intel/lib32-vulkan-intel-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-vulkan-mesa-layers/lib32-vulkan-mesa-layers-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-vulkan-radeon/lib32-vulkan-radeon-layers-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-vulkan-swrast/lib32-vulkan-swrast-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-vulkan-virtio/lib32-vulkan-virtio-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/m/mesa/mesa-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/m/mesa-vdpau/mesa-vdpau-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/o/opencl-mesa/opencl-mesa-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/v/vulkan-intel/vulkan-intel-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/v/vulkan-mesa-layers/vulkan-mesa-layers-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/v/vulkan-radeon/vulkan-radeon-layers-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/v/vulkan-swrast/vulkan-swrast-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/v/vulkan-virtio/vulkan-virtio-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/w/wayland/wayland-1.21.0-2-x86_64.pkg.tar.zst \
 "
 
