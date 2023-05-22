@@ -150,7 +150,7 @@ export PACKAGE_OVERRIDES="\
 	https://archive.archlinux.org/packages/l/lib32-opencl-mesa/lib32-opencl-mesa-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/l/lib32-vulkan-intel/lib32-vulkan-intel-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/l/lib32-vulkan-mesa-layers/lib32-vulkan-mesa-layers-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/lib32-vulkan-radeon/lib32-vulkan-radeon-23.1.0-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/packages/l/lib32-vulkan-radeon/lib32-vulkan-radeon-layers-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/l/lib32-vulkan-swrast/lib32-vulkan-swrast-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/l/lib32-vulkan-virtio/lib32-vulkan-virtio-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/m/mesa/mesa-23.1.0-1-x86_64.pkg.tar.zst \
@@ -158,7 +158,7 @@ export PACKAGE_OVERRIDES="\
 	https://archive.archlinux.org/packages/o/opencl-mesa/opencl-mesa-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/v/vulkan-intel/vulkan-intel-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/v/vulkan-mesa-layers/vulkan-mesa-layers-23.1.0-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/v/vulkan-radeon/vulkan-radeon-23.1.0-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/packages/v/vulkan-radeon/vulkan-radeon-layers-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/v/vulkan-swrast/vulkan-swrast-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/v/vulkan-virtio/vulkan-virtio-23.1.0-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/w/wayland/wayland-1.21.0-2-x86_64.pkg.tar.zst \
