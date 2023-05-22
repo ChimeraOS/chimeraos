@@ -31,6 +31,7 @@ jobs:
             require-rebuild:
               - 'Dockerfile'
               - 'manifest'
+              - 'rootfs/etc/pacman.conf'
               - 'pkgs/**'
       - name: Extract metadata (tags, labels) for Docker
         id: meta
