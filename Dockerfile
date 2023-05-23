@@ -1,8 +1,7 @@
 FROM archlinux:base-devel
 LABEL contributor="shadowapex@gmail.com"
-RUN sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf && \
-    echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
-    echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf && \
+COPY rootfs/etc/pacman.conf /etc/pacman.conf
+RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf && \
     pacman --noconfirm -Syyuu && \
     pacman --noconfirm -S \
     arch-install-scripts \
