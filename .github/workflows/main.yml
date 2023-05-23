@@ -13,46 +13,8 @@ on:
       - 'master'
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    name: Changes check
-    # Required permissions
-    permissions:
-      pull-requests: read
-    outputs:
-      require-rebuild: ${{ steps.filter.outputs.require-rebuild }}
-      tag-exist: ${{ steps.tagcheck.outputs.exists }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            require-rebuild:
-              - 'Dockerfile'
-              - 'manifest'
-              - 'rootfs/etc/pacman.conf'
-              - 'pkgs/**'
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      - name: Check if tag exists
-        id: tagcheck
-        run: |
-          if docker manifest inspect ${{ steps.meta.outputs.tags }} >/dev/null; then
-              echo "Tag does exist"
-              echo "exists=true" >> "$GITHUB_OUTPUT"
-          else
-              echo "Tag does not exist"
-              echo "exists=false" >> "$GITHUB_OUTPUT"
-          fi
-
   build-docker-image:
     name: Build and publish docker container
-    needs: changes
-    if: ${{ needs.changes.outputs.require-rebuild == 'true' || needs.changes.outputs.tag-exist == 'false'}}
     uses: ./.github/workflows/build.yml
 
   list-pkgbuilds:
