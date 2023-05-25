@@ -1,8 +1,7 @@
 FROM archlinux:base-devel
 LABEL contributor="shadowapex@gmail.com"
-RUN sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf && \
-    echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist\n" >> /etc/pacman.conf && \
-    echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf && \
+COPY rootfs/etc/pacman.conf /etc/pacman.conf
+RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf && \
     pacman --noconfirm -Syyuu && \
     pacman --noconfirm -S \
     arch-install-scripts \
@@ -32,7 +31,7 @@ RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 
 
 COPY manifest /manifest
 # Freeze packages and overwrite with overrides when needed
-RUN source /manifest; if [ -n "${ARCHIVE_DATE}" ]; then echo "Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist; else reflector --verbose --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist; fi && \
+RUN source /manifest; if [ -n "${ARCHIVE_DATE}" ]; then echo "Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist; else reflector --verbose --age 2 --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist; fi && \
     pacman --noconfirm -Syyuu; if [ -n "${PACKAGE_OVERRIDES}" ]; then wget --directory-prefix=/tmp/extra_pkgs ${PACKAGE_OVERRIDES}; pacman --noconfirm -U --overwrite '*' /tmp/extra_pkgs/*; fi
 
 USER build
