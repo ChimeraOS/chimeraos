@@ -152,7 +152,6 @@ export PACKAGES="\
 "
 
 export PACKAGE_OVERRIDES="\
-	https://archive.archlinux.org/packages/w/wayland/wayland-1.21.0-2-x86_64.pkg.tar.zst \
 "
 
 export AUR_PACKAGES="\
