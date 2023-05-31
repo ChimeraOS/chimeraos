@@ -1,6 +1,6 @@
 # Maintainer: Simon Hallsten <flightlessmangoyt@gmail.com>
 pkgname=('mangohud' 'lib32-mangohud')
-pkgver=0.6.9.1.r56.gea3ba7e
+pkgver=0.6.9.1.r68.g0ae2e42
 pkgrel=1
 pkgdesc="Vulkan and OpenGL overlay to display performance information"
 arch=('x86_64')
@@ -10,7 +10,7 @@ makedepends=('dbus' 'gcc' 'meson' 'python-mako' 'libx11' 'lib32-libx11' 'git' 'p
 depends=('glslang' 'libglvnd' 'lib32-libglvnd' 'glew' 'glfw-x11')
 replaces=('vulkan-mesa-layer-mango')
 license=('MIT')
-_commit=ea3ba7e30d1ee6f742d6fa10506222789f37223a # tag v0.6.9.1 - r56
+_commit=0ae2e42fe74e429f8ae825e0534eed7cc923c948 # tag v0.6.9.1 - r68
 source=(
         "mangohud"::"git+https://github.com/flightlessmango/MangoHud.git#commit=${_commit}"
         "mangohud-minhook"::"git+https://github.com/flightlessmango/minhook.git"
@@ -21,7 +21,6 @@ source=(
         "nlohmann_json-3.10.5.zip::https://github.com/nlohmann/json/releases/download/v3.10.5/include.zip"
         "vulkan-headers-1.2.158.tar.gz::https://github.com/KhronosGroup/Vulkan-Headers/archive/v1.2.158.tar.gz"
         "vulkan-headers-1.2.158-2-wrap.zip::https://wrapdb.mesonbuild.com/v2/vulkan-headers_1.2.158-2/get_patch"
-        "resolution.patch"
         )
 
 sha256sums=(
@@ -34,7 +33,6 @@ sha256sums=(
             'b94997df68856753b72f0d7a3703b7d484d4745c567f3584ef97c96c25a5798e'
             '53361271cfe274df8782e1e47bdc9e61b7af432ba30acbfe31723f9df2c257f3'
             '860358cf5e73f458cd1e88f8c38116d123ab421d5ce2e4129ec38eaedd820e17'
-            'SKIP'
             )
 
 _build_args="-Dappend_libdir_mangohud=false -Dwith_xnvctrl=disabled -Dmangoapp_layer=true"
@@ -59,8 +57,6 @@ prepare() {
   ln -sv "$srcdir/LICENSE.MIT" subprojects/nlohmann_json-3.10.5/
   ln -sv "$srcdir/meson.build" subprojects/nlohmann_json-3.10.5/
   ln -sv "$srcdir/Vulkan-Headers-1.2.158" subprojects
-
-  patch -Np1 -i ../resolution.patch
 }
 
 build() {
