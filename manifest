@@ -142,6 +142,7 @@ export PACKAGES="\
 	vulkan-intel \
 	vulkan-radeon \
 	wavpack \
+	wget \
 	which \
 	wireplumber \
 	wqy-zenhei \
