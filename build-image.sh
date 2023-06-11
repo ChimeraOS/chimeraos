@@ -101,10 +101,6 @@ rm -rf /var/cache/pacman/pkg
 pacman --noconfirm -U --overwrite '*' /extra_pkgs/*
 rm -rf /var/cache/pacman/pkg
 
-# install official arch mirrorlist again to overwrite those from the builder
-pacman --noconfirm -S --overwrite '*' pacman-mirrorlist
-rm -rf /var/cache/pacman/pkg
-
 # enable services
 systemctl enable ${SERVICES}
 
