@@ -50,6 +50,10 @@ btrfs subvolume create ${BUILD_PATH}
 # bootstrap using our configuration
 pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
 
+# copy the builder mirror list into chroot
+mkdir -p rootfs/etc/pacman.d
+cp /etc/pacman.d/mirrorlist rootfs/etc/pacman.d/mirrorlist
+
 # copy files into chroot
 cp -R manifest rootfs/. ${BUILD_PATH}/
 
@@ -95,6 +99,10 @@ rm -rf /var/cache/pacman/pkg
 
 # install AUR packages
 pacman --noconfirm -U --overwrite '*' /extra_pkgs/*
+rm -rf /var/cache/pacman/pkg
+
+# install official arch mirrorlist again to overwrite those from the builder
+pacman --noconfirm -S --overwrite '*' pacman-mirrorlist
 rm -rf /var/cache/pacman/pkg
 
 # enable services
