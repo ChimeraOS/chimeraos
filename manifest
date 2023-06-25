@@ -11,6 +11,7 @@ export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
 export KERNEL_PACKAGE="linux"
+export KERNEL_PACKAGE_ORIGIN="repo"
 
 export PACKAGES="\
 	accountsservice \
