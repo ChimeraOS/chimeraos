@@ -83,8 +83,8 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 locale-gen
 
 
-# update package databases
-pacman --noconfirm -Syy
+# bring system up to date
+pacman --noconfirm -Syyuu
 
 # install kernel package
 if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
@@ -213,14 +213,6 @@ echo "${SYSTEM_NAME}-${VERSION}" > ${BUILD_PATH}/build_info
 echo "" >> ${BUILD_PATH}/build_info
 cat ${BUILD_PATH}/manifest >> ${BUILD_PATH}/build_info
 rm ${BUILD_PATH}/manifest
-
-# freeze archive date of build to avoid package drift on unlock
-# if no archive date is set
-if [ -z "${ARCHIVE_DATE}" ]; then
-	export TODAY_DATE=$(date +%Y/%m/%d)
-	echo "Server=https://archive.archlinux.org/repos/${TODAY_DATE}/\$repo/os/\$arch" > \
-	${BUILD_PATH}/etc/pacman.d/mirrorlist
-fi
 
 btrfs subvolume snapshot -r ${BUILD_PATH} ${SNAP_PATH}
 btrfs send -f ${SYSTEM_NAME}-${VERSION}.img ${SNAP_PATH}

@@ -5,6 +5,7 @@ set -x
 
 source manifest;
 
+sudo pacman --noconfirm -Syu
 sudo mkdir -p /workdir/aur-pkgs
 sudo chown build:build /workdir/aur-pkgs
 
