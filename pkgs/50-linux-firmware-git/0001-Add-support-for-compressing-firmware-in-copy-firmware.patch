@@ -1,0 +1,123 @@
+From 7eec2b56f54c778d5bd6e7aea49ee03e3b76e769 Mon Sep 17 00:00:00 2001
+From: Peter Robinson <pbrobinson@gmail.com>
+Date: Fri, 22 Jan 2021 20:36:23 +0000
+Subject: [PATCH v2] Add support for compressing firmware in copy-firmware.sh
+
+As of kernel 5.3 there's initial support for loading compressed firmware.
+At this stage the only supported compression methis is "xz -C crc32" but
+this option brings significant benefits.
+
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+---
+
+v2: quote filename for xz command
+
+ Makefile         |  4 ++++
+ copy-firmware.sh | 47 +++++++++++++++++++++++++++++++----------------
+ 2 files changed, 35 insertions(+), 16 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index e1c362f..9a48471 100644
+--- a/Makefile
++++ b/Makefile
+@@ -11,3 +11,7 @@ check:
+ install:
+ 	mkdir -p $(DESTDIR)$(FIRMWAREDIR)
+ 	./copy-firmware.sh $(DESTDIR)$(FIRMWAREDIR)
++
++installcompress:
++	mkdir -p $(DESTDIR)$(FIRMWAREDIR)
++	./copy-firmware.sh -C $(DESTDIR)$(FIRMWAREDIR)
+diff --git a/copy-firmware.sh b/copy-firmware.sh
+index 9b46b63..0dd2e5c 100755
+--- a/copy-firmware.sh
++++ b/copy-firmware.sh
+@@ -6,6 +6,7 @@
+ 
+ verbose=:
+ prune=no
++compress=no
+ 
+ while test $# -gt 0; do
+     case $1 in
+@@ -19,6 +20,11 @@ while test $# -gt 0; do
+             shift
+             ;;
+ 
++        -C | --compress)
++            compress=yes
++            shift
++            ;;
++
+         *)
+             if test "x$destdir" != "x"; then
+                 echo "ERROR: unknown command-line options: $@"
+@@ -31,40 +37,49 @@ while test $# -gt 0; do
+     esac
+ done
+ 
++if test "x$compress" = "xyes"; then
++    cmpxtn=.xz
++    grep '^File:' WHENCE | sed -e's/^File: *//g' -e's/"//g' | while read f; do
++       test -f "$f" || continue
++       $verbose "compressing $f"
++       xz -C crc32 "$f"
++    done
++fi
++
+ grep '^File:' WHENCE | sed -e's/^File: *//g' -e's/"//g' | while read f; do
+-    test -f "$f" || continue
+-    $verbose "copying file $f"
+-    mkdir -p $destdir/$(dirname "$f")
+-    cp -d "$f" $destdir/"$f"
++    test -f "$f$cmpxtn" || continue
++    $verbose "copying file $f$cmpxtn"
++    mkdir -p $destdir/$(dirname "$f$cmpxtn")
++    cp -d "$f$cmpxtn" $destdir/"$f$cmpxtn"
+ done
+ 
+ grep -E '^Link:' WHENCE | sed -e's/^Link: *//g' -e's/-> //g' | while read f d; do
+-    if test -L "$f"; then
+-        test -f "$destdir/$f" && continue
+-        $verbose "copying link $f"
+-        mkdir -p $destdir/$(dirname "$f")
++    if test -L "$f$cmpxtn"; then
++        test -f "$destdir/$f$cmpxtn" && continue
++        $verbose "copying link $f$cmpxtn"
++        mkdir -p $destdir/$(dirname "$f$cmpxtn")
+         cp -d "$f" $destdir/"$f"
+ 
+         if test "x$d" != "x"; then
+-            target=`readlink "$f"`
++            target=`readlink "$f$cmpxtn"`
+ 
+             if test "x$target" != "x$d"; then
+                 $verbose "WARNING: inconsistent symlink target: $target != $d"
+             else
+                 if test "x$prune" != "xyes"; then
+-                    $verbose "WARNING: unneeded symlink detected: $f"
++                    $verbose "WARNING: unneeded symlink detected: $f$cmpxtn"
+                 else
+-                    $verbose "WARNING: pruning unneeded symlink $f"
+-                    rm -f "$f"
++                    $verbose "WARNING: pruning unneeded symlink $f$cmpxtn"
++                    rm -f "$f$cmpxtn"
+                 fi
+             fi
+         else
+-            $verbose "WARNING: missing target for symlink $f"
++            $verbose "WARNING: missing target for symlink $f$cmpxtn"
+         fi
+     else
+-        $verbose "creating link $f -> $d"
+-        mkdir -p $destdir/$(dirname "$f")
+-        ln -sf "$d" "$destdir/$f"
++        $verbose "creating link $f$cmpxtn -> $d$cmpxtn"
++        mkdir -p $destdir/$(dirname "$f$cmpxtn")
++        ln -sf "$d$cmpxtn" "$destdir/$f$cmpxtn"
+     fi
+ done
+ 
+-- 
+2.29.2
+

@@ -1,0 +1,12 @@
+Force xz to overwrite existing compressed files.
+--- a/copy-firmware.sh	2022-01-30 18:38:18.701300135 +0300
++++ b/copy-firmware.sh	2022-01-30 18:38:41.371743430 +0300
+@@ -42,7 +42,7 @@
+     grep '^File:' WHENCE | sed -e's/^File: *//g' -e's/"//g' | while read f; do
+        test -f "$f" || continue
+        $verbose "compressing $f"
+-       xz -C crc32 "$f"
++       xz -fC crc32 "$f"
+     done
+ fi
+ 
