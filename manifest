@@ -162,6 +162,7 @@ export PACKAGE_OVERRIDES="\
 
 export AUR_PACKAGES="\
 	ayaled \
+	asus-cirrus-firmware-git \
 	bcm20702a1-firmware \
 	boxtron \
 	chimera \
