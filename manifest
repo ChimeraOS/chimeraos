@@ -31,6 +31,7 @@ export PACKAGES="\
 	eog \
 	epiphany \
 	ethtool \
+	evtest \
 	ffmpeg \
 	file-roller \
 	firejail \
