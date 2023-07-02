@@ -92,7 +92,6 @@ export PACKAGES="\
 	libretro-mgba \
 	libretro-mupen64plus-next \
 	libretro-nestopia \
-	libretro-pcsx2 \
 	libretro-picodrive \
 	libretro-ppsspp \
 	libretro-snes9x \
@@ -158,6 +157,7 @@ export PACKAGES="\
 export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.4.1-chos1/linux-chimeraos-6.4.1.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.4.1-chos1/linux-chimeraos-headers-6.4.1.chos1-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/repos/2023/06/28/extra/os/x86_64/libretro-pcsx2-11900-2-x86_64.pkg.tar.zst \
 "
 
 export AUR_PACKAGES="\
