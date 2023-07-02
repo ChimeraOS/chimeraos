@@ -137,7 +137,6 @@ package_pipewire() {
     'pipewire-jack: JACK support'
     'pipewire-pulse: PulseAudio replacement'
     'pipewire-roc: ROC streaming'
-    'pipewire-session-manager: Session manager'
     'pipewire-v4l2: V4L2 interceptor'
     'pipewire-x11-bell: X11 bell'
     'pipewire-zeroconf: Zeroconf support'
@@ -284,7 +283,6 @@ package_pipewire-alsa() {
   depends=(
     pipewire
     pipewire-audio
-    pipewire-session-manager
   )
   conflicts=(pulseaudio-alsa)
   provides=(pulseaudio-alsa)
@@ -320,7 +318,6 @@ package_pipewire-jack() {
     libpipewire-$_ver.so
     pipewire
     pipewire-audio
-    pipewire-session-manager
     sh
   )
   optdepends=('jack-example-tools: for official JACK example-clients and tools')
@@ -347,7 +344,6 @@ package_pipewire-pulse() {
     libpulse.so
     pipewire
     pipewire-audio
-    pipewire-session-manager
   )
   provides=(pulseaudio pulseaudio-bluetooth)
   conflicts=(pulseaudio pulseaudio-bluetooth)
@@ -384,9 +380,7 @@ package_gst-plugin-pipewire() {
   depends=(
     gst-plugins-base-libs
     libpipewire-$_ver.so
-    pipewire
-    pipewire-session-manager
-  )
+    pipewire  )
 
   mv gst/* "$pkgdir"
 
@@ -413,7 +407,6 @@ package_pipewire-v4l2() {
   depends=(
     libpipewire-$_ver.so
     pipewire
-    pipewire-session-manager
     sh
   )
 
