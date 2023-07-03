@@ -100,7 +100,6 @@ export PACKAGES="\
 	libxcrypt-compat \
 	libxss \
 	lightdm \
-	linux-firmware \
 	liquidctl \
 	logrotate \
 	lshw \
