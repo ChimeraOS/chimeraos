@@ -70,7 +70,6 @@ export PACKAGES="\
 	lib32-libva-vdpau-driver \
 	lib32-mesa \
 	lib32-mesa-vdpau \
-	lib32-nvidia-utils \
 	lib32-openal \
 	lib32-systemd \
 	lib32-vulkan-icd-loader \
@@ -111,9 +110,6 @@ export PACKAGES="\
 	networkmanager \
 	nfs-utils \
 	nss-mdns \
-	nvidia-dkms \
-	nvidia-prime \
-	nvidia-utils \
 	openal \
 	openssh \
 	podman \
@@ -152,6 +148,10 @@ export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.3.9-chos2/linux-chimeraos-6.3.9.chos2-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.3.9-chos2/linux-chimeraos-headers-6.3.9.chos2-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/repos/2023/06/28/extra/os/x86_64/libretro-pcsx2-11900-2-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/repos/2023/06/07/extra/os/x86_64/nvidia-dkms-530.41.03-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/repos/2023/06/07/extra/os/x86_64/nvidia-utils-530.41.03-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/repos/2023/06/07/multilib/os/x86_64/lib32-nvidia-utils-530.41.03-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/repos/2023/06/07/extra/os/x86_64/nvidia-prime-1.0-4-any.pkg.tar.zst \
 "
 
 export AUR_PACKAGES="\
