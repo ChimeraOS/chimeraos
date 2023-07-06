@@ -68,6 +68,7 @@ export PACKAGES="\
 	lib32-libva-intel-driver \
 	lib32-libva-vdpau-driver \
 	lib32-openal \
+	lib32-pipewire \
 	lib32-systemd \
 	lib32-vulkan-icd-loader \
 	libcurl-gnutls \
@@ -104,6 +105,10 @@ export PACKAGES="\
 	nss-mdns \
 	openal \
 	openssh \
+	pipewire \
+	pipewire-alsa \
+	pipewire-jack \
+	pipewire-pulse \
 	podman \
 	pulsemixer \
 	python \
