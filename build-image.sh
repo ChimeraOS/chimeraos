@@ -98,12 +98,12 @@ fi
 pacman --noconfirm -U --overwrite '*' /own_pkgs/*
 rm -rf /var/cache/pacman/pkg
 
-# install packages
-pacman --noconfirm -S --overwrite '*' ${PACKAGES}
-rm -rf /var/cache/pacman/pkg
-
 # install AUR packages
 pacman --noconfirm -U --overwrite '*' /extra_pkgs/*
+rm -rf /var/cache/pacman/pkg
+
+# install packages
+pacman --noconfirm -S --overwrite '*' ${PACKAGES}
 rm -rf /var/cache/pacman/pkg
 
 # enable services
