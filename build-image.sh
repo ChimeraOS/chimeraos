@@ -89,7 +89,7 @@ pacman --noconfirm -Syy
 # install kernel package
 if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
 	pacman --noconfirm -U --overwrite '*' \
-	/extra_pkgs/${KERNEL_PACKAGE}-*.pkg.tar.zst 
+	/own_pkgs/${KERNEL_PACKAGE}-*.pkg.tar.zst 
 else
 	pacman --noconfirm -S "${KERNEL_PACKAGE}" "${KERNEL_PACKAGE}-headers"
 fi
