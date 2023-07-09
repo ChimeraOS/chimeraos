@@ -90,7 +90,7 @@ if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
 	pacman --noconfirm -U --overwrite '*' \
 	/own_pkgs/${KERNEL_PACKAGE}-*.pkg.tar.zst 
 else
-	pacman --noconfirm -S "${KERNEL_PACKAGE}" "${KERNEL_PACKAGE}-headers"
+	pacman --noconfirm -Sy "${KERNEL_PACKAGE}" "${KERNEL_PACKAGE}-headers"
 fi
 
 # install own override packages
@@ -98,7 +98,7 @@ pacman --noconfirm -U --overwrite '*' /own_pkgs/*
 rm -rf /var/cache/pacman/pkg
 
 # install packages
-pacman --noconfirm -S --overwrite '*' ${PACKAGES}
+pacman --noconfirm -Sy --overwrite '*' ${PACKAGES}
 rm -rf /var/cache/pacman/pkg
 
 # install AUR packages
