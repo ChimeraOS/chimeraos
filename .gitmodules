@@ -1,0 +1,123 @@
+[submodule "aur-pkgs/--force"]
+	path = aur-pkgs/--force
+	url = https://aur.archlinux.org/ayaled.git
+[submodule "aur-pkgs/ayaled"]
+	path = aur-pkgs/ayaled
+	url = https://aur.archlinux.org/ayaled.git
+[submodule "aur-pkgs/asus-cirrus-firmware-git"]
+	path = aur-pkgs/asus-cirrus-firmware-git
+	url = https://aur.archlinux.org/asus-cirrus-firmware-git.git
+[submodule "aur-pkgs/bcm20702a1-firmware"]
+	path = aur-pkgs/bcm20702a1-firmware
+	url = https://aur.archlinux.org/bcm20702a1-firmware.git
+[submodule "aur-pkgs/boxtron"]
+	path = aur-pkgs/boxtron
+	url = https://aur.archlinux.org/boxtron.git
+[submodule "aur-pkgs/chimera"]
+	path = aur-pkgs/chimera
+	url = https://aur.archlinux.org/chimera.git
+[submodule "aur-pkgs/chimeraos-device-quirks-git"]
+	path = aur-pkgs/chimeraos-device-quirks-git
+	url = https://aur.archlinux.org/chimeraos-device-quirks-git.git
+[submodule "aur-pkgs/downgrade"]
+	path = aur-pkgs/downgrade
+	url = https://aur.archlinux.org/downgrade.git
+[submodule "aur-pkgs/frzr"]
+	path = aur-pkgs/frzr
+	url = https://aur.archlinux.org/frzr.git
+[submodule "aur-pkgs/gamescope-plus"]
+	path = aur-pkgs/gamescope-plus
+	url = https://aur.archlinux.org/gamescope-plus.git
+[submodule "aur-pkgs/gamescope-session-git"]
+	path = aur-pkgs/gamescope-session-git
+	url = https://aur.archlinux.org/gamescope-session-git.git
+[submodule "aur-pkgs/handygccs-git"]
+	path = aur-pkgs/handygccs-git
+	url = https://aur.archlinux.org/handygccs-git.git
+[submodule "aur-pkgs/hhfc-git"]
+	path = aur-pkgs/hhfc-git
+	url = https://aur.archlinux.org/hhfc-git.git
+[submodule "aur-pkgs/legendary"]
+	path = aur-pkgs/legendary
+	url = https://aur.archlinux.org/legendary.git
+[submodule "aur-pkgs/lib32-gamescope-plus"]
+	path = aur-pkgs/lib32-gamescope-plus
+	url = https://aur.archlinux.org/lib32-gamescope-plus.git
+[submodule "aur-pkgs/libretro-dosbox-pure-git"]
+	path = aur-pkgs/libretro-dosbox-pure-git
+	url = https://aur.archlinux.org/libretro-dosbox-pure-git.git
+[submodule "aur-pkgs/libretro-opera-git"]
+	path = aur-pkgs/libretro-opera-git
+	url = https://aur.archlinux.org/libretro-opera-git.git
+[submodule "aur-pkgs/libretro-prosystem-git"]
+	path = aur-pkgs/libretro-prosystem-git
+	url = https://aur.archlinux.org/libretro-prosystem-git.git
+[submodule "aur-pkgs/libretro-stella2014-git"]
+	path = aur-pkgs/libretro-stella2014-git
+	url = https://aur.archlinux.org/libretro-stella2014-git.git
+[submodule "aur-pkgs/libretro-virtualjaguar-git"]
+	path = aur-pkgs/libretro-virtualjaguar-git
+	url = https://aur.archlinux.org/libretro-virtualjaguar-git.git
+[submodule "aur-pkgs/kanit-font"]
+	path = aur-pkgs/kanit-font
+	url = https://aur.archlinux.org/kanit-font.git
+[submodule "aur-pkgs/nintendo-udev"]
+	path = aur-pkgs/nintendo-udev
+	url = https://aur.archlinux.org/nintendo-udev.git
+[submodule "aur-pkgs/opengamepadui-bin"]
+	path = aur-pkgs/opengamepadui-bin
+	url = https://aur.archlinux.org/opengamepadui-bin.git
+[submodule "aur-pkgs/opengamepadui-session-git"]
+	path = aur-pkgs/opengamepadui-session-git
+	url = https://aur.archlinux.org/opengamepadui-session-git.git
+[submodule "aur-pkgs/oxp-sensors-dkms-git"]
+	path = aur-pkgs/oxp-sensors-dkms-git
+	url = https://aur.archlinux.org/oxp-sensors-dkms-git.git
+[submodule "aur-pkgs/pikaur"]
+	path = aur-pkgs/pikaur
+	url = https://aur.archlinux.org/pikaur.git
+[submodule "aur-pkgs/python-vdf"]
+	path = aur-pkgs/python-vdf
+	url = https://aur.archlinux.org/python-vdf.git
+[submodule "aur-pkgs/r8152-dkms"]
+	path = aur-pkgs/r8152-dkms
+	url = https://aur.archlinux.org/r8152-dkms.git
+[submodule "aur-pkgs/retroarch-autoconfig-udev-git"]
+	path = aur-pkgs/retroarch-autoconfig-udev-git
+	url = https://aur.archlinux.org/retroarch-autoconfig-udev-git.git
+[submodule "aur-pkgs/rtl8812au-dkms-git"]
+	path = aur-pkgs/rtl8812au-dkms-git
+	url = https://aur.archlinux.org/rtl8812au-dkms-git.git
+[submodule "aur-pkgs/rtl8814au-dkms-git"]
+	path = aur-pkgs/rtl8814au-dkms-git
+	url = https://aur.archlinux.org/rtl8814au-dkms-git.git
+[submodule "aur-pkgs/rtl88x2bu-dkms-git"]
+	path = aur-pkgs/rtl88x2bu-dkms-git
+	url = https://aur.archlinux.org/rtl88x2bu-dkms-git.git
+[submodule "aur-pkgs/rtl8821au-dkms-git"]
+	path = aur-pkgs/rtl8821au-dkms-git
+	url = https://aur.archlinux.org/rtl8821au-dkms-git.git
+[submodule "aur-pkgs/rtw89-dkms-git"]
+	path = aur-pkgs/rtw89-dkms-git
+	url = https://aur.archlinux.org/rtw89-dkms-git.git
+[submodule "aur-pkgs/ryzenadj-git"]
+	path = aur-pkgs/ryzenadj-git
+	url = https://aur.archlinux.org/ryzenadj-git.git
+[submodule "aur-pkgs/ryzenadj-controller-git"]
+	path = aur-pkgs/ryzenadj-controller-git
+	url = https://aur.archlinux.org/ryzenadj-controller-git.git
+[submodule "aur-pkgs/rz608-fix-git"]
+	path = aur-pkgs/rz608-fix-git
+	url = https://aur.archlinux.org/rz608-fix-git.git
+[submodule "aur-pkgs/steam-removable-media-git"]
+	path = aur-pkgs/steam-removable-media-git
+	url = https://aur.archlinux.org/steam-removable-media-git.git
+[submodule "aur-pkgs/wyvern"]
+	path = aur-pkgs/wyvern
+	url = https://aur.archlinux.org/wyvern.git
+[submodule "aur-pkgs/xpad-noone-dkms"]
+	path = aur-pkgs/xpad-noone-dkms
+	url = https://aur.archlinux.org/xpad-noone-dkms.git
+[submodule "aur-pkgs/xpadneo-dkms"]
+	path = aur-pkgs/xpadneo-dkms
+	url = https://aur.archlinux.org/xpadneo-dkms.git

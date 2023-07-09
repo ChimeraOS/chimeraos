@@ -32,7 +32,8 @@ RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 
 
 COPY manifest /manifest
 # Freeze packages and overwrite with overrides when needed
-RUN source /manifest; if [ -n "${ARCHIVE_DATE}" ]; then echo "Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist; else reflector --verbose --age 2 --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist; fi && \
+RUN source /manifest && \
+    echo "Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist && \
     pacman --noconfirm -Syyuu; if [ -n "${PACKAGE_OVERRIDES}" ]; then wget --directory-prefix=/tmp/extra_pkgs ${PACKAGE_OVERRIDES}; pacman --noconfirm -U --overwrite '*' /tmp/extra_pkgs/*; fi
 
 USER build
@@ -40,8 +41,5 @@ ENV BUILD_USER "build"
 ENV GNUPGHOME  "/etc/pacman.d/gnupg"
 # Built image will be moved here. This should be a host mount to get the output.
 ENV OUTPUT_DIR /output
-
-COPY pkgs /packages
-RUN /packages/build-packages.sh
 
 WORKDIR /workdir

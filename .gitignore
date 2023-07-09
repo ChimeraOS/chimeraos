@@ -3,6 +3,3 @@
 *.img
 .cache/*
 output/*
-aur-pkgs/*
-!aur-pkgs/build-aur-packages.sh
-!aur-pkgs/build-aur-package.sh
