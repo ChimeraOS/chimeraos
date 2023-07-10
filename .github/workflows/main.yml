@@ -93,7 +93,7 @@ jobs:
         with:
           name: Output
           path: output/
-      - if: github.ref == 'refs/heads/master'
+      - if: github.ref != 'refs/heads/master'
         name: Create release
         id: create_release
         uses: softprops/action-gh-release@v1
