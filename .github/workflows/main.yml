@@ -7,10 +7,10 @@ env:
 on:
   push:
     branches:
-      - master
+      - 43.1
   pull_request:
     branches:
-      - 'master'
+      - '43.1'
 
 jobs:
   build-docker-image:
@@ -100,7 +100,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ steps.build_image.outputs.version }}
-          name: ${{ steps.build_image.outputs.display_name }} ${{ steps.build_image.outputs.display_version }} [UNSTABLE]
+          name: ${{ steps.build_image.outputs.display_name }} ${{ steps.build_image.outputs.display_version }}
           draft: false
           prerelease: true
           fail_on_unmatched_files: true
