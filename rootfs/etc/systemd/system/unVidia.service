@@ -1,11 +1,8 @@
 [Unit]
 Description=Manage Nvidia Vulkan ICD Handler
-Before=systemd-modules-load.service
+WantedBy=multi-user.target
 
 [Service]
 Type=oneshot
 ExecStart=/usr/share/gamescope-session/check-nvidia.sh
-
-[Install]
-WantedBy=default.target
 
