@@ -217,6 +217,7 @@ export SERVICES="\
 	ryzenadj-controller \
 	sshd \
 	systemd-timesyncd \
+	unVidia \
 "
 
 export USER_SERVICES="\
