@@ -7,8 +7,6 @@ env:
 on:
   workflow_dispatch:
   workflow_call:
-  schedule:
-    - cron: '0 1 * * *'
 
 jobs:
   build:
