@@ -82,9 +82,11 @@ pacman-key --populate
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 locale-gen
 
+# Disable parallel downloads
+sed -i '/ParallelDownloads/s/^/#/g' /etc/pacman.conf
 
 # update package databases
-pacman --noconfirm -Syy
+pacman --noconfirm -Syyuu
 
 # install kernel package
 if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
