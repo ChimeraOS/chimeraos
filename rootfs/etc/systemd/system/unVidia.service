@@ -1,8 +1,0 @@
-[Unit]
-Description=Manage Nvidia Vulkan ICD Handler
-WantedBy=multi-user.target
-
-[Service]
-Type=oneshot
-ExecStart=/usr/share/gamescope-session/check-nvidia.sh
-

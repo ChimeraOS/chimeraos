@@ -210,7 +210,6 @@ export SERVICES="\
 	ryzenadj-controller \
 	sshd \
 	systemd-timesyncd \
-	unVidia \
 "
 
 export USER_SERVICES="\
@@ -263,6 +262,9 @@ postinstallhook() {
 	rm /usr/bin/dolphin-emu-nogui
 	rm /usr/bin/dolphin-tool
 	rm /usr/share/applications/dolphin-emu.desktop
+	
+	# Hide the nvidia vulkan json by default and manage this file with a udev for Nvidia users because the Nvidia driver causes issues for non-nvidia hardware otherwise
+	mv /usr/share/vulkan/icd.d/nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json.bak
 
 	# clean up desktop shortcuts
 	sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
