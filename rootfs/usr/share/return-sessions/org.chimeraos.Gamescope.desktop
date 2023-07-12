@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Game Mode
+Exec=gnome-session-quit --no-prompt
+Icon=/usr/share/icons/hicolor/scalable/apps/game_mode.svg
+Terminal=false
+Type=Application
+StartupNotify=false

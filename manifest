@@ -194,7 +194,6 @@ export AUR_PACKAGES="\
 	rtl8821au-dkms-git \
 	rtw89-dkms-git \
 	ryzenadj-git \
-	ryzenadj-controller-git \
 	rz608-fix-git \
 	steam-removable-media-git \
 	ttf-kanit \
@@ -214,7 +213,6 @@ export SERVICES="\
 	handycon \
 	haveged \
 	lightdm \
-	ryzenadj-controller \
 	sshd \
 	systemd-timesyncd \
 "
@@ -222,7 +220,6 @@ export SERVICES="\
 export USER_SERVICES="\
 	chimera.service \
 	gamemoded.service \
-	ryzen-tctl \
 	steam-patch.service \
 "
 
@@ -290,4 +287,7 @@ postinstallhook() {
 
 	# set permissions for intel_gpu_top and mangohud
 	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
+
+	# Add return-session link for default session
+	ln -s /usr/share/return-sessions/org.chimeraos.Gamescope.Desktop /home/${USERNAME}/.local/share/applications/session-return.Desktop
 }

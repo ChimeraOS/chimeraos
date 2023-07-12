@@ -70,30 +70,27 @@ function gamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	clean_steam_shortcuts
-	ln -s /usr/share/gamescope-session/org.chimeraos.Gamescope.desktop ${DATA_HOME}/applications/session-return.desktop
+	ln -s /usr/share/return-sessions/org.chimeraos.Gamescope.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm gamescope-session
 	sudo systemctl enable --now handycon
-	sudo systemctl enable --now ryzenadj-controller
 }
 
 function opengamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	clean_steam_shortcuts
-	ln -s /usr/share/opengamepadui-session/org.shadowblip.opengamepadui.desktop ${DATA_HOME}/applications/session-return.desktop
+	ln -s /usr/share/return-sessions/org.chimeraos.opengamepadui.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm opengamepadui-session
 	sudo systemctl disable --now handycon
-	sudo systemctl disable --now ryzenadj-controller
 }
 
 function gamepaduiqam() {
 	# switch to OpenGamepadUI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	clean_steam_shortcuts
-	ln -s /usr/share/opengamepadui-session/org.shadowblip.gamepadui-with-qam.desktop ${DATA_HOME}/applications/session-return.desktop
+	ln -s /usr/share/return-sessions/org.chimeraos.gamepadui-with-qam.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm gamepadui-with-qam-session
 	sudo systemctl disable --now handycon
-	sudo systemctl disable --now ryzenadj-controller
 }
 
 function print_invalid_session() {
