@@ -47,7 +47,9 @@ function print_session_list() {
 function clean_steam_shortcuts() {
 	# clear steam game desktop shortcut clutter
 	grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/* | tr '\n' '\0' | xargs -0 -I {} rm {}
-	rm ${DATA_HOME}/applications/session-return.desktop
+	if [ -f ${DATA_HOME}/applications/session-return.desktop ]; then
+	  rm ${DATA_HOME}/applications/session-return.desktop
+	fi
 }
 
 function desktop() {
@@ -68,7 +70,7 @@ function gamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	clean_steam_shortcuts
-	ls -s /usr/share/gamescope-session/org.chimeraos.Gamescope.desktop ${DATA_HOME}/applications/session-return.desktop
+	ln -s /usr/share/gamescope-session/org.chimeraos.Gamescope.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm gamescope-session
 	sudo systemctl enable --now handycon
 	sudo systemctl enable --now ryzenadj-controller
@@ -78,7 +80,7 @@ function opengamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	clean_steam_shortcuts
-	ls -s /usr/share/opengamepadui-session/org.shadowblip.opengamepadui.desktop ${DATA_HOME}/applications/session-return.desktop
+	ln -s /usr/share/opengamepadui-session/org.shadowblip.opengamepadui.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm opengamepadui-session
 	sudo systemctl disable --now handycon
 	sudo systemctl disable --now ryzenadj-controller
@@ -88,7 +90,7 @@ function gamepaduiqam() {
 	# switch to OpenGamepadUI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	clean_steam_shortcuts
-	ls -s /usr/share/opengamepadui-session/org.shadowblip.gamepadui-with-qam.desktop ${DATA_HOME}/applications/session-return.desktop
+	ln -s /usr/share/opengamepadui-session/org.shadowblip.gamepadui-with-qam.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm gamepadui-with-qam-session
 	sudo systemctl disable --now handycon
 	sudo systemctl disable --now ryzenadj-controller
