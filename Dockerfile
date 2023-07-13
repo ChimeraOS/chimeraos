@@ -29,6 +29,7 @@ RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.con
 RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 version'; fi\nmkdir -p /var/cache/pikaur\n" >> /usr/bin/systemd-run && \
     chmod +x /usr/bin/systemd-run
 
+COPY rootfs/etc/makepkg.conf /etc/makepkg.conf
 COPY manifest /manifest
 # Freeze packages and overwrite with overrides when needed
 RUN source /manifest && \
