@@ -160,6 +160,9 @@ export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.1.3-chos5/vulkan-radeon-23.1.3.chos5-1-x86_64.pkg.tar.zst \
 "
 
+# Each entry is the clone url (https://aur.archlinux.org/{AUR_PACKAGE}.git)
+# Which is often the same as the package name but it can be different.
+# Check on the AUR webpage if you are unsure
 export AUR_PACKAGES="\
 	ayaled \
 	asus-cirrus-firmware-git \
@@ -180,6 +183,7 @@ export AUR_PACKAGES="\
 	libretro-prosystem-git \
 	libretro-stella2014-git \
 	libretro-virtualjaguar-git \
+	kanit-font \
 	nintendo-udev \
 	opengamepadui-bin \
 	opengamepadui-session-git \
@@ -197,7 +201,6 @@ export AUR_PACKAGES="\
 	ryzenadj-controller-git \
 	rz608-fix-git \
 	steam-removable-media-git \
-	ttf-kanit \
 	wyvern \
 	xpad-noone-dkms \
 	xpadneo-dkms \
