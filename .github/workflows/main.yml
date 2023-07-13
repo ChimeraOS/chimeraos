@@ -18,14 +18,18 @@ jobs:
     uses: ./.github/workflows/build.yml
 
   list-pkgbuilds:
-    name: List AUR packages
+    name: List Packages
     runs-on: ubuntu-latest
     outputs:
       aur-pkgs: ${{ steps.set-aur-pkgs.outputs.matrix }}
+      pkgs: ${{ steps.set-pkgs.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
       - id: set-aur-pkgs
         run: source ./manifest ; echo "matrix=$(echo ${AUR_PACKAGES} | jq -R -s -c 'split(" ")')" >> $GITHUB_OUTPUT
+        shell: bash
+      - id: set-pkgs
+        run: echo "matrix=$(ls -d pkgs/*/ | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
         shell: bash
 
   aur-pkgbuild:
@@ -56,10 +60,38 @@ jobs:
             name: AUR-packages
             path: aur-pkgs/*.pkg.tar*
 
+  pkgbuild:
+    needs:
+     - build-docker-image
+     - list-pkgbuilds
+    name: Build package
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        package: ${{ fromJson(needs.list-pkgbuilds.outputs.pkgs) }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Build packages
+        run: |
+          docker pull ${{ steps.meta.outputs.tags }}
+          docker run --rm -v $(pwd):/workdir --entrypoint=/workdir/pkgs/build-package.sh ${{ steps.meta.outputs.tags }} ${{ matrix.package }}
+      - name: Upload Package Archives
+        uses: actions/upload-artifact@v3
+        with:
+            name: Packages
+            path: pkgs/*.pkg.tar*
+
   build:
     needs:
      - build-docker-image
      - aur-pkgbuild
+     - pkgbuild
     if: ${{ !cancelled() && (success() || failure() || needs.build-docker-image.result == 'skipped')  && (needs.build-docker-image.result != 'failed') }}
     name: Build ChimeraOS image
     runs-on: ubuntu-latest
@@ -81,6 +113,10 @@ jobs:
         with:
             name: AUR-packages
             path: aur-pkgs/
+      - uses: actions/download-artifact@v3
+        with:
+            name: Packages
+            path: pkgs/
       - name: Build system image
         id: build_image
         run: |
