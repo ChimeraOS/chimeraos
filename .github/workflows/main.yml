@@ -36,7 +36,6 @@ jobs:
     needs:
      - build-docker-image
      - list-pkgbuilds
-    if: ${{ !cancelled() && (success() || failure() || needs.build-docker-image.result == 'skipped') && (needs.build-docker-image.result != 'failed') }}
     name: Build AUR package
     runs-on: ubuntu-latest
     strategy:
@@ -92,7 +91,6 @@ jobs:
      - build-docker-image
      - aur-pkgbuild
      - pkgbuild
-    if: ${{ !cancelled() && (success() || failure() || needs.build-docker-image.result == 'skipped')  && (needs.build-docker-image.result != 'failed') }}
     name: Build ChimeraOS image
     runs-on: ubuntu-latest
     permissions:
