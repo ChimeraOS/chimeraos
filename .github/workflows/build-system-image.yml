@@ -1,0 +1,60 @@
+name: Build ChimeraOS image
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+on:
+  workflow_call:
+    inputs:
+      postfix:
+        type: string
+        description: Postfix used in release.
+        default: ''
+
+jobs:
+  build-system-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.build_image.outputs.version }}
+      display_name: ${{ steps.build_image.outputs.display_name }}
+      display_version: ${{ steps.build_image.outputs.display_version }}
+      image_filename: ${{ steps.build_image.outputs.image_filename }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - uses: actions/download-artifact@v3
+        with:
+            name: AUR-packages
+            path: aur-pkgs/
+      - uses: actions/download-artifact@v3
+        with:
+            name: Packages
+            path: pkgs/
+      - name: Build system image
+        id: build_image
+        run: |
+          docker pull ${{ steps.meta.outputs.tags }}
+          docker run -u root --rm --entrypoint=/workdir/build-image.sh -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true ${{ steps.meta.outputs.tags }} $(echo ${GITHUB_SHA} | cut -c1-7)
+          echo -e "$(docker inspect --format='{{index .RepoDigests 0}}' ${{ steps.meta.outputs.tags }})" > output/container.txt
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ steps.build_image.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          name: ${{ steps.build_image.outputs.display_name }} ${{ steps.build_image.outputs.display_version }} ${{ inputs.postfix }}
+          draft: false
+          prerelease: true
+          fail_on_unmatched_files: true
+          files: |
+            output/${{ steps.build_image.outputs.image_filename }}
+            output/build_info.txt
+            output/sha256sum.txt
+            output/container.txt
