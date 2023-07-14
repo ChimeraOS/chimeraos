@@ -12,7 +12,7 @@ on:
 jobs:
   build-docker-image:
     name: Build and publish docker container
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/build-builder.yml
 
   list-pkgbuilds:
     name: List Packages
