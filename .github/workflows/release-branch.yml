@@ -1,0 +1,52 @@
+name: Create Stable Branch
+
+on:
+  workflow_dispatch:
+
+jobs:
+  createstable:
+    name: Create stable branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Read version
+        id: set-version
+        run: |
+          source ./manifest ; echo "version=$(echo ${VERSION})" >> $GITHUB_OUTPUT
+      - name: Create stable branch
+        run: git checkout -b stable-${{ steps.set-version.outputs.version }}
+      - name: Initialize mandatory git config
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email noreply@github.com
+      - name: Fix ARCHIVE_DATE
+        run: |
+          DATE=$(date -d 'yesterday' +%Y/%m/%d)
+          sed -i 's@ARCHIVE_DATE.*@ARCHIVE_DATE=\"'"$DATE"'\"@g' manifest
+          git add manifest
+          git commit --message "Fixate ARCHIVE_DATE"
+      - name: Set AUR-submodules
+        run: |
+          source ./manifest 
+          pushd aur-pkgs
+          for package in ${AUR_PACKAGES}; do
+            git submodule add https://aur.archlinux.org/${package}.git
+          done
+          popd
+          git add .
+          git commit --message "Pin AUR-packages for ${{ steps.set-version.outputs.version }}"
+      - name: Push new branch
+        run: git push origin stable-${{ steps.set-version.outputs.version }}
+      - name: Increment version on master
+        run: |
+          source ./manifest
+          NEXT=$((VERSION + 1))
+          git checkout master
+          sed -i 's@VERSION.*@VERSION=\"'"$NEXT"'\"@g' manifest
+          git add manifest
+          git commit --message "Bump version" --message "[skip ci]"
+          git push
+
+
+
