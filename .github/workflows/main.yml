@@ -8,9 +8,6 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - 'master'
 
 jobs:
   build-docker-image:
@@ -121,14 +118,7 @@ jobs:
           docker pull ${{ steps.meta.outputs.tags }}
           docker run -u root --rm --entrypoint=/workdir/build-image.sh -v $(pwd):/workdir -v $(pwd)/output:/output -v $GITHUB_OUTPUT:$GITHUB_OUTPUT -e "GITHUB_OUTPUT=$GITHUB_OUTPUT" --privileged=true ${{ steps.meta.outputs.tags }} $(echo ${GITHUB_SHA} | cut -c1-7)
           echo -e "$(docker inspect --format='{{index .RepoDigests 0}}' ${{ steps.meta.outputs.tags }})" > output/container.txt
-      - if: github.ref != 'refs/heads/master'
-        name: Create artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Output
-          path: output/
-      - if: github.ref == 'refs/heads/master'
-        name: Create release
+      - name: Create release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
