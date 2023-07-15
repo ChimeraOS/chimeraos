@@ -287,7 +287,4 @@ postinstallhook() {
 
 	# set permissions for intel_gpu_top and mangohud
 	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
-
-	# Add return-session link for default session
-	ln -s /usr/share/return-sessions/org.chimeraos.Gamescope.Desktop /home/${USERNAME}/.local/share/applications/session-return.Desktop
 }

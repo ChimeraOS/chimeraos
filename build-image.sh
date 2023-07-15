@@ -203,6 +203,10 @@ rm -rf ${FILES_TO_DELETE}
 mkdir /home
 mkdir /var
 mkdir /frzr_root
+
+# Add return-session link for default session
+mkdir -p /home/${USERNAME}/.local/share/applications/
+ln -s /usr/share/return-sessions/org.chimeraos.Gamescope.Desktop /home/${USERNAME}/.local/share/applications/session-return.Desktop
 EOF
 
 # copy files into chroot again
