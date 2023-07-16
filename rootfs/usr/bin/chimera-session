@@ -70,7 +70,7 @@ function gamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	clean_steam_shortcuts
-	ln -s /usr/share/return-sessions/org.chimeraos.Gamescope.desktop ${DATA_HOME}/applications/session-return.desktop
+	ln -s /usr/share/return-sessions/org.chimeraos.gamescope.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm gamescope-session
 	sudo systemctl enable --now handycon
 }
