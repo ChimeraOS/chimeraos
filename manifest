@@ -66,11 +66,16 @@ export PACKAGES="\
 	lib32-libxcrypt-compat \
 	lib32-libva \
 	lib32-libva-intel-driver \
+	lib32-libva-mesa-driver \
 	lib32-libva-vdpau-driver \
+	lib32-mesa \
+	lib32-mesa-vdpau \
 	lib32-openal \
 	lib32-pipewire \
 	lib32-systemd \
 	lib32-vulkan-icd-loader \
+	lib32-vulkan-intel \
+	lib32-vulkan-radeon \
 	libcurl-gnutls \
 	libidn11 \
 	libretro-beetle-pce-fast \
@@ -90,6 +95,7 @@ export PACKAGES="\
 	libretro-ppsspp \
 	libretro-snes9x \
 	libva-intel-driver \
+	libva-mesa-driver \
 	libva-vdpau-driver \
 	libxcrypt-compat \
 	libxss \
@@ -98,7 +104,9 @@ export PACKAGES="\
 	liquidctl \
 	logrotate \
 	lshw \
+	mesa \
 	mesa-demos \
+	mesa-vdpau \
 	nano \
 	nautilus \
 	networkmanager \
@@ -127,6 +135,8 @@ export PACKAGES="\
 	usbutils \
 	vim \
 	vulkan-icd-loader \
+	vulkan-intel \
+	vulkan-radeon \
 	wavpack \
 	wget \
 	which \
