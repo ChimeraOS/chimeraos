@@ -1,4 +1,4 @@
-name: System image build
+name: System image build - stable
 
 env:
   REGISTRY: ghcr.io
@@ -7,7 +7,7 @@ env:
 on:
   push:
     branches:
-      - master
+      - 'stable-**'
   workflow_dispatch:
 
 jobs:
@@ -23,8 +23,10 @@ jobs:
       pkgs: ${{ steps.set-pkgs.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive 
       - id: set-aur-pkgs
-        run: source ./manifest ; echo "matrix=$(echo ${AUR_PACKAGES} | jq -R -s -c 'split(" ")')" >> $GITHUB_OUTPUT
+        run: echo "matrix=$(ls -d aur-pkgs/*/ | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
         shell: bash
       - id: set-pkgs
         run: echo "matrix=$(ls -d pkgs/*/ | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
@@ -42,6 +44,8 @@ jobs:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
@@ -50,7 +54,7 @@ jobs:
       - name: Build packages
         run: |
           docker pull ${{ steps.meta.outputs.tags }}
-          docker run --rm -v $(pwd):/workdir --entrypoint=/workdir/aur-pkgs/build-aur-package.sh ${{ steps.meta.outputs.tags }} ${{ matrix.package }}
+          docker run --rm -v $(pwd):/workdir --entrypoint=/workdir/aur-pkgs/build-package.sh ${{ steps.meta.outputs.tags }} ${{ matrix.package }}
       - name: Upload Package Archives
         uses: actions/upload-artifact@v3
         with:
@@ -86,10 +90,8 @@ jobs:
 
   build:
     needs:
-     - build-docker-image
-     - aur-pkgbuild
-     - pkgbuild
-    name: Build ChimeraOS UNSTABLE image
+      - build-docker-image
+      - aur-pkgbuild
+      - pkgbuild
+    name: Build ChimeraOS STABLE image
     uses: ./.github/workflows/build-system-image.yml
-    with:
-      postfix: "[UNSTABLE]"
