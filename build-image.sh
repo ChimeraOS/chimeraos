@@ -48,7 +48,7 @@ mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
 # copy the makepkg.conf into chroot
-cp /etc/pacman.d/mirrorlist rootfs/etc/pacman.d/mirrorlist
+cp /etc/makepkg.conf rootfs/etc/makepkg.conf
 
 # bootstrap using our configuration
 pacstrap -K -C rootfs/etc/pacman.conf ${BUILD_PATH}
