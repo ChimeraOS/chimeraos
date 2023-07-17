@@ -97,9 +97,6 @@
 [submodule "aur-pkgs/ryzenadj-git"]
 	path = aur-pkgs/ryzenadj-git
 	url = https://aur.archlinux.org/ryzenadj-git.git
-[submodule "aur-pkgs/ryzenadj-controller-git"]
-	path = aur-pkgs/ryzenadj-controller-git
-	url = https://aur.archlinux.org/ryzenadj-controller-git.git
 [submodule "aur-pkgs/rz608-fix-git"]
 	path = aur-pkgs/rz608-fix-git
 	url = https://aur.archlinux.org/rz608-fix-git.git
