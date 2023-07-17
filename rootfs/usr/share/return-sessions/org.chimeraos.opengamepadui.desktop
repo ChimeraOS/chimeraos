@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Return to OpenGamepadUI
+GenericName=Game launcher and overlay
+Type=Application
+Comment=Game launcher and overlay
+Icon=/usr/share/icons/hicolor/scalable/apps/opengamepadui.svg
+Exec=chimera-session opengamepadui
+Terminal=false
