@@ -4,3 +4,8 @@
 .cache/*
 output/*
 rootfs/etc/makepkg.conf
+aur-pkgs/*
+!aur-pkgs/build-aur-packages.sh
+!aur-pkgs/build-aur-package.sh
+rootfs/etc/pacman.d/mirrorlist
+build_info.txt
