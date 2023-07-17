@@ -29,6 +29,9 @@ RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.con
 RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 version'; fi\nmkdir -p /var/cache/pikaur\n" >> /usr/bin/systemd-run && \
     chmod +x /usr/bin/systemd-run
 
+# check the makepkg.conf we are going to sombsitute is the one we expect (from upstream)
+COPY makepkg.conf.sha256 /home/build/makepkg.conf.sha256
+RUN echo "$(cat /home/build/makepkg.conf.sha256)" | sha256sum --check
 COPY rootfs/etc/makepkg.conf /etc/makepkg.conf
 COPY manifest /manifest
 # Freeze packages and overwrite with overrides when needed
