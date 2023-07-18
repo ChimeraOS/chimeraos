@@ -1,9 +1,6 @@
 [submodule "aur-pkgs/ayaled"]
 	path = aur-pkgs/ayaled
 	url = https://aur.archlinux.org/ayaled.git
-[submodule "aur-pkgs/asus-cirrus-firmware-git"]
-	path = aur-pkgs/asus-cirrus-firmware-git
-	url = https://aur.archlinux.org/asus-cirrus-firmware-git.git
 [submodule "aur-pkgs/bcm20702a1-firmware"]
 	path = aur-pkgs/bcm20702a1-firmware
 	url = https://aur.archlinux.org/bcm20702a1-firmware.git
