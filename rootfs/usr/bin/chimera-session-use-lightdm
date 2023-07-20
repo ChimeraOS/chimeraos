@@ -2,4 +2,6 @@
 
 sed -i "/autologin-session/c\autologin-session=$1" /etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf
 systemctl enable lightdm
-systemctl restart lightdm
+systemctl stop lightdm
+sleep 1
+systemctl start lightdm
