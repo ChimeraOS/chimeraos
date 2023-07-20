@@ -39,6 +39,7 @@ export PACKAGES="\
 	fmt \
 	fuse-zip \
 	fuse2 \
+	fwupd \
 	gamemode \
 	git \
 	gnome-console \
