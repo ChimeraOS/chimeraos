@@ -99,6 +99,7 @@ export PACKAGES="\
 	logrotate \
 	lshw \
 	mesa-demos \
+	modemmanager \
 	nano \
 	nautilus \
 	networkmanager \
