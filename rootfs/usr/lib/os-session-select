@@ -68,7 +68,7 @@ case "$session" in
     create_sentinel=1
   ;;
   gamepadui-with-qam)
-    session_launcher="gamescope-ogui-qam-session"
+    session_launcher="gamepadui-with-qam-session"
     create_sentinel=1
   ;;
   gamescope)
