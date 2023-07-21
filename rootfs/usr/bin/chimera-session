@@ -46,10 +46,7 @@ function print_session_list() {
 
 function clean_steam_shortcuts() {
 	# clear steam game desktop shortcut clutter
-	grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/* | tr '\n' '\0' | xargs -0 -I {} rm {}
-	if [ -f ${DATA_HOME}/applications/session-return.desktop ]; then
-	  rm ${DATA_HOME}/applications/session-return.desktop
-	fi
+	grep -r --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/ | tr '\n' '\0' | xargs -0 -I {} rm {}
 }
 
 function desktop() {
@@ -69,8 +66,6 @@ function desktop_xorg() {
 function gamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
-	clean_steam_shortcuts
-	ln -s /usr/share/return-sessions/org.chimeraos.gamescope.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm gamescope-session
 	sudo systemctl enable --now handycon
 }
@@ -78,8 +73,6 @@ function gamepadui() {
 function opengamepadui() {
 	# switch to Gamepad/Deck UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
-	clean_steam_shortcuts
-	ln -s /usr/share/return-sessions/org.chimeraos.opengamepadui.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm opengamepadui-session
 	sudo systemctl disable --now handycon
 }
@@ -87,7 +80,7 @@ function opengamepadui() {
 function gamepaduiqam() {
 	# switch to OpenGamepadUI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
-	sudo chimera-session-use-lightdm gamescope-ogui-qam-session
+	sudo chimera-session-use-lightdm gamepadui-with-qam-session
 	sudo systemctl disable --now handycon
 }
 
