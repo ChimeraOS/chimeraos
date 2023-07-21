@@ -46,7 +46,7 @@ function print_session_list() {
 
 function clean_steam_shortcuts() {
 	# clear steam game desktop shortcut clutter
-	grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/* | tr '\n' '\0' | xargs -0 -I {} rm {}
+	grep -r --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/ | tr '\n' '\0' | xargs -0 -I {} rm {}
 }
 
 function desktop() {
