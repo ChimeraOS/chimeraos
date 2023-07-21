@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Game Mode
-Exec=chimera-session gamepadui > /dev/tty3
+Exec=gnome-session-quit --no-prompt
 Icon=/usr/share/icons/hicolor/scalable/apps/game_mode.svg
 Terminal=false
 Type=Application
