@@ -41,12 +41,13 @@ if [[ -z $SENTINEL_CREATED ]]; then
   )
 
   return_session=$(grep autologin-session $CONF_FILE | cut -d = -f 2)
-  {
+  return_session=$(
     cd "$HOME"
     mkdir -p "$config_dir"
     cd "$config_dir"
     echo "$return_session" > "$RETURN_SESSION_FILE"
-  }
+    cat "$RETURN_SESSION_FILE"
+  )
 
   # clear steam game desktop shortcut clutter
   DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
@@ -76,7 +77,7 @@ case "$session" in
     session_launcher="gamepadui-with-qam-session"
     create_sentinel=1
   ;;
-  gamescope)
+  gamescope|gamescope-session)
     session_launcher="gamescope-session"
     create_sentinel=1
   ;;
