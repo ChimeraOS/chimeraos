@@ -73,7 +73,6 @@ function gamepadui() {
 	ln -s /usr/share/return-sessions/org.chimeraos.gamescope.desktop ${DATA_HOME}/applications/session-return.desktop
 	sudo chimera-session-use-lightdm gamescope-session
 	sudo systemctl enable --now handycon
-	sudo systemctl enable --now ryzenadj-controller
 }
 
 function opengamepadui() {
