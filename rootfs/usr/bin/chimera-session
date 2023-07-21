@@ -29,7 +29,7 @@ function print_session_list() {
 		CURRENT_SESSION="opengamepadui"
 	fi
 
-	if grep "gamescope-ogui-qam-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+	if grep "gamepadui-with-qam-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
 		CURRENT_SESSION="gamepadui-with-qam"
 	fi
 
@@ -88,9 +88,7 @@ function opengamepadui() {
 function gamepaduiqam() {
 	# switch to OpenGamepadUI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
-	clean_steam_shortcuts
-	ln -s /usr/share/return-sessions/org.chimeraos.gamepadui-with-qam.desktop ${DATA_HOME}/applications/session-return.desktop
-	sudo chimera-session-use-lightdm gamepadui-with-qam-session
+	sudo chimera-session-use-lightdm gamescope-ogui-qam-session
 	sudo systemctl disable --now handycon
 }
 
