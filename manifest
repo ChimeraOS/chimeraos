@@ -206,6 +206,7 @@ export AUR_PACKAGES="\
 	wyvern \
 	xpad-noone-dkms \
 	xpadneo-dkms \
+	zenpower3-dkms \
 "
 
 export SERVICES="\
