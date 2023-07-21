@@ -29,7 +29,7 @@ function print_session_list() {
 		CURRENT_SESSION="opengamepadui"
 	fi
 
-	if grep "gamepadui-with-qam-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+	if grep "gamescope-ogui-qam-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
 		CURRENT_SESSION="gamepadui-with-qam"
 	fi
 
