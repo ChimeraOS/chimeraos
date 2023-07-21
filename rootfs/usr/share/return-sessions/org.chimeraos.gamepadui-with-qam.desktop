@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name=Return to GamepadUI with OpenGamepadUI QAM Overlay
-GenericName=Game launcher and overlay
-Type=Application
-Comment=Game launcher and overlay
-Icon=/usr/share/icons/hicolor/scalable/apps/opengamepadui.svg
-Exec=chimera-session gamepadui-with-qam
-Terminal=false
