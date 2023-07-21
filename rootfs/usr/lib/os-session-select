@@ -41,7 +41,12 @@ if [[ -z $SENTINEL_CREATED ]]; then
   )
 
   return_session=$(grep autologin-session $CONF_FILE | cut -d = -f 2)
-  echo "$return_session" > "$RETURN_SESSION_FILE"
+  {
+    cd "$HOME"
+    mkdir -p "$config_dir"
+    cd "$config_dir"
+    echo "$return_session" > "$RETURN_SESSION_FILE"
+  }
 
   # clear steam game desktop shortcut clutter
   DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
