@@ -2,7 +2,7 @@
 
 pkgbase=linux-firmware
 pkgname=(linux-firmware-whence linux-firmware amd-ucode
-         linux-firmware-{nfp,mellanox,marvell,qcom,liquidio,qlogic,bnx2x}
+         #linux-firmware-{nfp,mellanox,marvell,qcom,liquidio,qlogic,bnx2x}
 )
 _tag=20230625
 pkgver=20230625.ee91452d
