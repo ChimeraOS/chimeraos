@@ -6,6 +6,7 @@ die() { echo >&2 "!! $*"; exit 1; }
 
 CONF_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
 SENTINEL_FILE="steamos-session-select"
+RETURN_SESSION_FILE="chimeraos-session-return"
 
 # For sanity this shipped file must be present, to ensure we're still on a normal-looking Chimeraos setup.
 CHECK_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
@@ -39,6 +40,9 @@ if [[ -z $SENTINEL_CREATED ]]; then
     cat "$SENTINEL_FILE"
   )
 
+  return_session=$(grep autologin-session $CONF_FILE | cut -d = -f 2)
+  echo "$return_session" > "$RETURN_SESSION_FILE"
+
   # clear steam game desktop shortcut clutter
   DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
   grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/* | tr '\n' '\0' | xargs -0 -I {} rm {} || true
@@ -57,6 +61,14 @@ case "$session" in
   ;;
   desktop|plasma)
     session_launcher="gnome-session-oneshot"
+    create_sentinel=1
+  ;;
+  opengamepadui-session)
+    session_launcher="opengamepadui-session"
+    create_sentinel=1
+  ;;
+  gamepadui-with-qam)
+    session_launcher="gamescope-ogui-qam-session"
     create_sentinel=1
   ;;
   gamescope)
