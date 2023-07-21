@@ -26,7 +26,7 @@ function check_return()
     cd "$config_dir"
     revert_value="$(cat "$RETURN_SESSION_FILE")"
     case "$revert_value" in
-      opengamepadui-session|gamepadui-with-qam|gamescope)
+      opengamepadui-session|gamepadui-with-qam-session|gamescope-session)
         echo "$revert_value"
         ;;
       *)
@@ -73,7 +73,7 @@ if CONFIGURED_CHAINED_SESSION=$(check_sentinel); then
   exec "$CONFIGURED_CHAINED_SESSION"
 else
   if CONFIGURED_RETURN_SESSION=$(check_return); then
-    /usr/bin/os-session-select "$CONFIGURED_RETURN_SESSION"
+    /usr/lib/os-session-select "$CONFIGURED_RETURN_SESSION"
   fi
   # Session restore should've stopped us, if it is broken at least let plasma continue to open
 
