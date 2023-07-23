@@ -3,3 +3,4 @@
 *.img
 .cache/*
 output/*
+rootfs/etc/makepkg.conf
