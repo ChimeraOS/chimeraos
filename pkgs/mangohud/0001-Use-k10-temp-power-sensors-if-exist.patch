@@ -1,0 +1,65 @@
+From 20033beb012ad2e6d342c1e412afc426f2b32bd1 Mon Sep 17 00:00:00 2001
+From: Bouke Haarsma <boukehaarsma23@gmail.com>
+Date: Sun, 23 Jul 2023 21:54:26 +0200
+Subject: [PATCH] Use k10-temp power sensors if exist
+
+---
+ src/cpu.cpp | 17 ++++++++++++++++-
+ src/cpu.h   |  6 ++++++
+ 2 files changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/src/cpu.cpp b/src/cpu.cpp
+index a33873987c..ee92b7bb9e 100644
+--- a/src/cpu.cpp
++++ b/src/cpu.cpp
+@@ -296,9 +296,24 @@ bool CPUStats::UpdateCpuTemp() {
+ static bool get_cpu_power_k10temp(CPUPowerData* cpuPowerData, float& power) {
+     CPUPowerData_k10temp* powerData_k10temp = (CPUPowerData_k10temp*)cpuPowerData;
+ 
+-    if (!powerData_k10temp->coreVoltageFile || !powerData_k10temp->coreCurrentFile || !powerData_k10temp->socVoltageFile || !powerData_k10temp->socCurrentFile)
++    if (!powerData_k10temp->coreVoltageFile || !powerData_k10temp->coreCurrentFile || !powerData_k10temp->socVoltageFile || !powerData_k10temp->socCurrentFile || !powerData_k10temp->corePowerFile || !powerData_k10temp->socPowerFile)
+         return false;
+ 
++    if(powerData_k10temp->corePowerFile || powerData_k10temp->socPowerFile)
++    {
++        rewind(powerData_k10temp->corePowerFile);
++        rewind(powerData_k10temp->socPowerFile);
++        fflush(powerData_k10temp->corePowerFile);
++        fflush(powerData_k10temp->socPowerFile);
++        int corePower, socPower;
++        if (fscanf(powerData_k10temp->corePowerFile, "%d", &corePower) != 1)
++            goto voltagebased;
++        if (fscanf(powerData_k10temp->socPowerFile, "%d", &socPower) != 1)
++            goto voltagebased;
++        power = (corePower + socPower) / 1000000;
++        return true;
++    }
++    voltagebased:
+     rewind(powerData_k10temp->coreVoltageFile);
+     rewind(powerData_k10temp->coreCurrentFile);
+     rewind(powerData_k10temp->socVoltageFile);
+diff --git a/src/cpu.h b/src/cpu.h
+index ed91d98f0d..ef31735e69 100644
+--- a/src/cpu.h
++++ b/src/cpu.h
+@@ -72,12 +72,18 @@ struct CPUPowerData_k10temp : public CPUPowerData {
+          fclose(this->socVoltageFile);
+       if(this->socCurrentFile)
+          fclose(this->socCurrentFile);
++      if(this->corePowerFile)
++         fclose(this->corePowerFile);
++      if(this->socPowerFile)
++         fclose(this->socPowerFile);
+    };
+ 
+    FILE* coreVoltageFile {nullptr};
+    FILE* coreCurrentFile {nullptr};
+    FILE* socVoltageFile {nullptr};
+    FILE* socCurrentFile {nullptr};
++   FILE* corePowerFile {nullptr};
++   FILE* socPowerFile {nullptr};
+ };
+ 
+ struct CPUPowerData_zenpower : public CPUPowerData {
+-- 
+2.41.0
