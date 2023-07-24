@@ -21,6 +21,7 @@ source=(
         "nlohmann_json-3.10.5.zip::https://github.com/nlohmann/json/releases/download/v3.10.5/include.zip"
         "vulkan-headers-1.2.158.tar.gz::https://github.com/KhronosGroup/Vulkan-Headers/archive/v1.2.158.tar.gz"
         "vulkan-headers-1.2.158-2-wrap.zip::https://wrapdb.mesonbuild.com/v2/vulkan-headers_1.2.158-2/get_patch"
+        "0001-Use-k10-temp-power-sensors-if-exist.patch"
         )
 
 sha256sums=(
@@ -33,6 +34,7 @@ sha256sums=(
             'b94997df68856753b72f0d7a3703b7d484d4745c567f3584ef97c96c25a5798e'
             '53361271cfe274df8782e1e47bdc9e61b7af432ba30acbfe31723f9df2c257f3'
             '860358cf5e73f458cd1e88f8c38116d123ab421d5ce2e4129ec38eaedd820e17'
+            'b5980e5c708d54f406b13dd3fa116406469fa57dc207eb11f5e9404d24950995'
             )
 
 _build_args="-Dappend_libdir_mangohud=false -Dwith_xnvctrl=disabled -Dmangoapp_layer=true"
@@ -47,6 +49,15 @@ prepare() {
   git submodule init
   git config submodule.modules/minhook.url "$srcdir/mangohud-minhook"
   git -c protocol.file.allow=always submodule update
+
+  local src
+  for src in "${source[@]}"; do
+    src="${src%%::*}"
+    src="${src##*/}"
+    [[ $src = *.patch ]] || continue
+    echo "Applying patch $src..."
+    patch -Np1 < "../$src"
+  done
 
   # meson subprojects
   ln -sv "$srcdir/imgui-1.81" subprojects

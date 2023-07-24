@@ -68,7 +68,6 @@ function gamepadui() {
 	echo '' > ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session
 	sudo systemctl enable --now handycon
-	sudo systemctl enable --now ryzenadj-controller
 }
 
 function opengamepadui() {
@@ -76,7 +75,6 @@ function opengamepadui() {
 	echo '' > ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm opengamepadui-session
 	sudo systemctl disable --now handycon
-	sudo systemctl disable --now ryzenadj-controller
 }
 
 function gamepaduiqam() {
@@ -84,7 +82,6 @@ function gamepaduiqam() {
 	echo '' > ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamepadui-with-qam-session
 	sudo systemctl disable --now handycon
-	sudo systemctl disable --now ryzenadj-controller
 }
 
 function print_invalid_session() {
