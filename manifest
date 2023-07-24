@@ -189,7 +189,6 @@ export AUR_PACKAGES="\
 	nintendo-udev \
 	opengamepadui-bin \
 	opengamepadui-session-git \
-	oxp-sensors-dkms-git \
 	pikaur \
 	python-vdf \
 	r8152-dkms \
