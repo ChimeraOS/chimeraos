@@ -96,7 +96,6 @@ export PACKAGES="\
 	libxcrypt-compat \
 	libxss \
 	lightdm \
-	linux-firmware \
 	liquidctl \
 	logrotate \
 	lshw \
@@ -185,6 +184,7 @@ export AUR_PACKAGES="\
 	libretro-prosystem-git \
 	libretro-stella2014-git \
 	libretro-virtualjaguar-git \
+	linux-firmware-git \
 	kanit-font \
 	nintendo-udev \
 	opengamepadui-bin \
