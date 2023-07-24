@@ -17,7 +17,6 @@ export PACKAGES="\
 	accountsservice \
 	alsa-firmware \
 	alsa-utils \
-	amd-ucode \
 	bluez \
 	bluez-hid2hci \
 	bluez-plugins \
@@ -184,7 +183,6 @@ export AUR_PACKAGES="\
 	libretro-prosystem-git \
 	libretro-stella2014-git \
 	libretro-virtualjaguar-git \
-	linux-firmware-git \
 	kanit-font \
 	nintendo-udev \
 	opengamepadui-bin \
