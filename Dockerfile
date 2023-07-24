@@ -2,6 +2,8 @@ FROM archlinux:base-devel
 LABEL contributor="shadowapex@gmail.com"
 COPY rootfs/etc/pacman.conf /etc/pacman.conf
 RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf && \
+    pacman-key --init && \
+    pacman-key --recv-keys  A31B6BD72486CFD6 && \
     pacman --noconfirm -Syyuu && \
     pacman --noconfirm -S \
     arch-install-scripts \
