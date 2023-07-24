@@ -1,24 +1,20 @@
-From 20033beb012ad2e6d342c1e412afc426f2b32bd1 Mon Sep 17 00:00:00 2001
+From 1053a6988291f79d7ce6143f57e7add1098fc6e0 Mon Sep 17 00:00:00 2001
 From: Bouke Haarsma <boukehaarsma23@gmail.com>
 Date: Sun, 23 Jul 2023 21:54:26 +0200
 Subject: [PATCH] Use k10-temp power sensors if exist
 
 ---
- src/cpu.cpp | 17 ++++++++++++++++-
+ src/cpu.cpp | 22 ++++++++++++++++++++++
  src/cpu.h   |  6 ++++++
- 2 files changed, 22 insertions(+), 1 deletion(-)
+ 2 files changed, 28 insertions(+)
 
 diff --git a/src/cpu.cpp b/src/cpu.cpp
-index a33873987c..ee92b7bb9e 100644
+index a338739..1619c65 100644
 --- a/src/cpu.cpp
 +++ b/src/cpu.cpp
-@@ -296,9 +296,24 @@ bool CPUStats::UpdateCpuTemp() {
+@@ -296,6 +296,21 @@ bool CPUStats::UpdateCpuTemp() {
  static bool get_cpu_power_k10temp(CPUPowerData* cpuPowerData, float& power) {
      CPUPowerData_k10temp* powerData_k10temp = (CPUPowerData_k10temp*)cpuPowerData;
- 
--    if (!powerData_k10temp->coreVoltageFile || !powerData_k10temp->coreCurrentFile || !powerData_k10temp->socVoltageFile || !powerData_k10temp->socCurrentFile)
-+    if (!powerData_k10temp->coreVoltageFile || !powerData_k10temp->coreCurrentFile || !powerData_k10temp->socVoltageFile || !powerData_k10temp->socCurrentFile || !powerData_k10temp->corePowerFile || !powerData_k10temp->socPowerFile)
-         return false;
  
 +    if(powerData_k10temp->corePowerFile || powerData_k10temp->socPowerFile)
 +    {
@@ -35,11 +31,40 @@ index a33873987c..ee92b7bb9e 100644
 +        return true;
 +    }
 +    voltagebased:
-     rewind(powerData_k10temp->coreVoltageFile);
-     rewind(powerData_k10temp->coreCurrentFile);
-     rewind(powerData_k10temp->socVoltageFile);
+     if (!powerData_k10temp->coreVoltageFile || !powerData_k10temp->coreCurrentFile || !powerData_k10temp->socVoltageFile || !powerData_k10temp->socCurrentFile)
+         return false;
+ 
+@@ -494,21 +509,28 @@ static CPUPowerData_k10temp* init_cpu_power_data_k10temp(const std::string path)
+ 
+     std::string coreVoltageInput, coreCurrentInput;
+     std::string socVoltageInput, socCurrentInput;
++    std::string socPowerInput, corePowerInput;
+ 
+     if(!find_input(path, "in", coreVoltageInput, "Vcore")) return nullptr;
+     if(!find_input(path, "curr", coreCurrentInput, "Icore")) return nullptr;
+     if(!find_input(path, "in", socVoltageInput, "Vsoc")) return nullptr;
+     if(!find_input(path, "curr", socCurrentInput, "Isoc")) return nullptr;
++    if(!find_input(path, "power", corePowerInput, "Pcore")) return nullptr;
++    if(!find_input(path, "power", socPowerInput, "Psoc")) return nullptr;
+ 
+     SPDLOG_DEBUG("hwmon: using input: {}", coreVoltageInput);
+     SPDLOG_DEBUG("hwmon: using input: {}", coreCurrentInput);
+     SPDLOG_DEBUG("hwmon: using input: {}", socVoltageInput);
+     SPDLOG_DEBUG("hwmon: using input: {}", socCurrentInput);
++    SPDLOG_DEBUG("hwmon: using input: {}", corePowerInput);
++    SPDLOG_DEBUG("hwmon: using input: {}", socPowerInput);
+ 
+     powerData->coreVoltageFile = fopen(coreVoltageInput.c_str(), "r");
+     powerData->coreCurrentFile = fopen(coreCurrentInput.c_str(), "r");
+     powerData->socVoltageFile = fopen(socVoltageInput.c_str(), "r");
+     powerData->socCurrentFile = fopen(socCurrentInput.c_str(), "r");
++    powerData->socPowerFile = fopen(socPowerInput.c_str(), "r");
++    powerData->corePowerFile = fopen(corePowerInput.c_str(), "r");
+ 
+     return powerData.release();
+ }
 diff --git a/src/cpu.h b/src/cpu.h
-index ed91d98f0d..ef31735e69 100644
+index ed91d98..ef31735 100644
 --- a/src/cpu.h
 +++ b/src/cpu.h
 @@ -72,12 +72,18 @@ struct CPUPowerData_k10temp : public CPUPowerData {
@@ -63,3 +88,4 @@ index ed91d98f0d..ef31735e69 100644
  struct CPUPowerData_zenpower : public CPUPowerData {
 -- 
 2.41.0
+
