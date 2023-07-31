@@ -1,3 +1,5 @@
-DO NOT DOWNLOAD DIRECTLY FROM THE RELEASES PAGE. THIS IS NOT INSTALLATION MEDIA. FOLLOW THE LINK BELOW FOR DOWNLOAD AND INSTALLATION INSTRUCTIONS.
+Currently Project Amalgama, or AmalgamOS, is for my own personal use only.
 
-[ChimeraOS website](https://chimeraos.org)
+In case you were curious about the name:
+
+All of my projects have a "Project [Latin] name scheme. In this case, a chimera is also known as an amalgamation, derived from "amalgam," which is, in turn, derived from the Latin word "amalgama." Thus, Project Amalgama, or AmalgamOS, for short.
