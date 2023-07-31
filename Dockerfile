@@ -3,7 +3,7 @@ LABEL contributor="shadowapex@gmail.com"
 COPY rootfs/etc/pacman.conf /etc/pacman.conf
 RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf && \
     pacman-key --init && \
-    pacman-key --recv-keys  A31B6BD72486CFD6 && \
+    pacman-key --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 4CDE8575E547BF835FE15807A31B6BD72486CFD6 && \
     pacman --noconfirm -Syyuu && \
     pacman --noconfirm -S \
     arch-install-scripts \
