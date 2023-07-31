@@ -203,6 +203,7 @@ export AUR_PACKAGES="\
 	wyvern \
 	xpad-noone-dkms \
 	xpadneo-dkms \
+	zenergy-dkms-git \
 "
 
 export SERVICES="\
