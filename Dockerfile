@@ -3,7 +3,6 @@ LABEL contributor="shadowapex@gmail.com"
 COPY rootfs/etc/pacman.conf /etc/pacman.conf
 RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf && \
     pacman-key --init && \
-    pacman-key --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 4CDE8575E547BF835FE15807A31B6BD72486CFD6 && \
     pacman --noconfirm -Syyuu && \
     pacman --noconfirm -S \
     arch-install-scripts \
@@ -26,6 +25,9 @@ RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.con
     su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur" && \
     su - build -c "cd /tmp/pikaur && makepkg -f" && \
     pacman --noconfirm -U /tmp/pikaur/pikaur-*.pkg.tar.zst
+
+# Auto add PGP keys for users
+RUN mkdir -p /etc/gnupg/ && echo -e "keyserver-options auto-key-retrieve" >> /etc/gnupg/gpg.conf
 
 # Add a fake systemd-run script to workaround pikaur requirement.
 RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 version'; fi\nmkdir -p /var/cache/pikaur\n" >> /usr/bin/systemd-run && \
