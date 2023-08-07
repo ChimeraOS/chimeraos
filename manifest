@@ -202,7 +202,6 @@ export AUR_PACKAGES="\
 	steam-removable-media-git \
 	wyvern \
 	xpad-noone-dkms \
-	xpadneo-dkms \
 	zenergy-dkms-git \
 "
 
