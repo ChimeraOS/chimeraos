@@ -19,15 +19,18 @@ conflicts=("${_pkgbase}")
 provides=("${_pkgbase}")
 source=("r8168-dkms::git+https://github.com/mtorromeo/r8168.git"
         "${pkgname}-6.1.patch::https://github.com/mtorromeo/r8168/pull/47.patch"
-        "dkms.conf")
+        "dkms.conf"
+        "6.4.10-compatibility.patch")
 sha256sums=('SKIP'
             'b7ef09e7496715b7576b7a3bff5a96e0e07c0bb02cd5bb5805415be20b883f60'
-            'd37b8acbd4fe06f81538581712a04751a96fc37bad3a4bd3ae8329f8744c49b3')
+            'd37b8acbd4fe06f81538581712a04751a96fc37bad3a4bd3ae8329f8744c49b3'
+            '93bcfaed982a90bdf6b00c0baa84d47768bff5c9abfd37279e95a41135dd2dcc')
 install=r8168-dkms.install
 
 prepare() {
 	cd "${pkgname}"
 	patch -p1 -i "$srcdir/${pkgname}-6.1.patch"
+	patch -p1 -i "$srcdir/6.4.10-compatibility.patch"
 }
 
 package() {
