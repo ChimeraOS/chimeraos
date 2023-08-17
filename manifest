@@ -159,6 +159,7 @@ export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.1.6-chos1-1/mesa-vdpau-23.1.6.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.1.6-chos1-1/vulkan-intel-23.1.6.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.1.6-chos1-1/vulkan-radeon-23.1.6.chos1-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/repos/2023/08/17/extra/os/x86_64/python-markdown-it-py-3.0.0-1-any.pkg.tar.zst \
 "
 
 # Each entry is the clone url (https://aur.archlinux.org/{AUR_PACKAGE}.git)
