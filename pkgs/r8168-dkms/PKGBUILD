@@ -24,7 +24,7 @@ source=("r8168-dkms::git+https://github.com/mtorromeo/r8168.git"
 sha256sums=('SKIP'
             'b7ef09e7496715b7576b7a3bff5a96e0e07c0bb02cd5bb5805415be20b883f60'
             'd37b8acbd4fe06f81538581712a04751a96fc37bad3a4bd3ae8329f8744c49b3'
-            '93bcfaed982a90bdf6b00c0baa84d47768bff5c9abfd37279e95a41135dd2dcc')
+            '422a7345af3c3d422f27d98cf01e42aab465270e5df8ffe43d2a496888fabe5b')
 install=r8168-dkms.install
 
 prepare() {
