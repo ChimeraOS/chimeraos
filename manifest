@@ -126,6 +126,7 @@ export PACKAGES="\
 	sshfs \
 	steam \
 	sudo \
+	systemd-swap \
 	ttf-liberation \
 	unzip \
 	usb_modeswitch \
@@ -216,10 +217,12 @@ export SERVICES="\
 	fstrim.timer \
 	handycon \
 	haveged \
+	home-swapfile.swap \
 	lightdm \
 	ryzenadj-controller \
 	sshd \
 	systemd-timesyncd \
+	swapfile \
 "
 
 export USER_SERVICES="\

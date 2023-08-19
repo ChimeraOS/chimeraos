@@ -1,0 +1,32 @@
+#!/bin/bash
+# -*- mode: sh; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
+# vim: et sts=4 sw=4
+
+#  SPDX-License-Identifier: LGPL-2.1+
+#
+#  Copyright © 2019-2021 Collabora Ltd.
+#  Copyright © 2019-2021  Valve Corporation.
+#
+#  This file is part of steamos-customizations.
+#
+#  steamos-customizations is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU Lesser General Public License as
+#  published by the Free Software Foundation; either version 2.1 of the License,
+#  or (at your option) any later version.
+
+set -euo pipefail
+
+SWAPFILE=${1:-}
+SWAPSIZE=${2:-}
+
+fail()  { echo >&2 "$@"; exit 1; }
+usage() { echo >&2 "Usage: $(basename $0) FILE SIZE"; exit 1; }
+
+[ "$SWAPFILE" ] || usage
+[ "$SWAPSIZE" ] || usage
+
+[ -e "$SWAPFILE" ] && fail "File '$SWAPFILE' already exists"
+
+dd if=/dev/zero of="$SWAPFILE" bs=1M count="$SWAPSIZE"
+chmod 600 "$SWAPFILE"
+mkswap "$SWAPFILE"
