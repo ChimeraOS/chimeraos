@@ -126,6 +126,7 @@ export PACKAGES="\
 	sshfs \
 	steam \
 	sudo \
+	systemd-swap \
 	ttf-liberation \
 	unzip \
 	usb_modeswitch \
