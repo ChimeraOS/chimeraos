@@ -6,7 +6,7 @@ pkgbase=linux-firmware-git
 pkgname=(linux-firmware-whence-git linux-firmware-git amd-ucode-git
          #linux-firmware-{nfp,mellanox,marvell,qcom,liquidio,qlogic,bnx2x}-git
 )
-pkgver=20230724.59fbffa9
+pkgver=20230814.0e048b06
 pkgrel=1
 pkgdesc="Firmware files for Linux"
 url="https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
@@ -66,23 +66,14 @@ package_linux-firmware-git() {
 
   cd ${pkgbase}
 
-  # reverted to xz compression (https://bugs.archlinux.org/task/78892)
-  #ZSTD_CLEVEL=19 make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-zst
-  make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-xz
-
-  # useless without CONFIG_MICROCODE_LATE_LOADING
-  # https://bugs.archlinux.org/task/46591
-  #
-  # # Trigger a microcode reload for configurations not using early updates
-  # echo 'w /sys/devices/system/cpu/microcode/reload - - - - 1' |
-  #   install -Dm644 /dev/stdin "${pkgdir}/usr/lib/tmpfiles.d/${pkgname%-git}.conf"
+  ZSTD_CLEVEL=19 make DESTDIR="${pkgdir}" FIRMWAREDIR=/usr/lib/firmware install-zst
 
   install -Dt "${pkgdir}/usr/share/licenses/${pkgname%-git}" -m644 LICEN*
 
   cd "${pkgdir}"
 
   # remove arm64 firmware https://bugs.archlinux.org/task/76583
-  rm usr/lib/firmware/mrvl/prestera/mvsw_prestera_fw_arm64-v4.1.img.xz
+  rm usr/lib/firmware/mrvl/prestera/mvsw_prestera_fw_arm64-v4.1.img.zst
 
   # split
   _pick linux-firmware-nfp usr/lib/firmware/netronome
