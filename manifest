@@ -89,6 +89,7 @@ export PACKAGES="\
 	libretro-nestopia \
 	libretro-picodrive \
 	libretro-ppsspp \
+	libretro-shaders-slang \
 	libretro-snes9x \
 	libva-intel-driver \
 	libva-vdpau-driver \
