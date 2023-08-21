@@ -88,6 +88,7 @@ export PACKAGES="\
 	libretro-mupen64plus-next \
 	libretro-nestopia \
 	libretro-picodrive \
+	libretro-pcsx2 \
 	libretro-ppsspp \
 	libretro-shaders-slang \
 	libretro-snes9x \
@@ -150,7 +151,6 @@ export PACKAGES="\
 export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.4.11-chos1-1/linux-chimeraos-6.4.11.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.4.11-chos1-1/linux-chimeraos-headers-6.4.11.chos1-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/repos/2023/06/28/extra/os/x86_64/libretro-pcsx2-11900-2-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.1.6-chos1-1/lib32-libva-mesa-driver-23.1.6.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.1.6-chos1-1/lib32-mesa-23.1.6.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.1.6-chos1-1/lib32-mesa-vdpau-23.1.6.chos1-1-x86_64.pkg.tar.zst \
