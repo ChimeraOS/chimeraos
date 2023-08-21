@@ -167,7 +167,6 @@ export PACKAGE_OVERRIDES="\
 # Which is often the same as the package name but it can be different.
 # Check on the AUR webpage if you are unsure
 export AUR_PACKAGES="\
-	asus-cirrus-firmware-git \
 	ayaled \
 	ayn-platform-dkms-git \
 	bcm20702a1-firmware \
