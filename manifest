@@ -67,7 +67,6 @@ export PACKAGES="\
 	lib32-libva \
 	lib32-libva-intel-driver \
 	lib32-libva-vdpau-driver \
-	lib32-nvidia-utils \
 	lib32-openal \
 	lib32-pipewire \
 	lib32-systemd \
@@ -108,9 +107,6 @@ export PACKAGES="\
 	nfs-utils \
 	noto-fonts-emoji \
 	nss-mdns \
-	nvidia-dkms \
-	nvidia-prime \
-	nvidia-utils \
 	openal \
 	openssh \
 	pipewire \
@@ -294,7 +290,4 @@ postinstallhook() {
 
 	# set permissions for intel_gpu_top and mangohud
 	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
-
-	# work around Nvidia causing delays in game startup on AMD
-	mv /usr/share/vulkan/icd.d/nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json.disabled
 }
