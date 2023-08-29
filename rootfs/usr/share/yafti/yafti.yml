@@ -1,0 +1,125 @@
+title: Chimera Portal
+properties:
+  mode: "run-once"
+  save_state: "always"
+screens:
+  first-screen:
+    source: yafti.screen.title
+    values:
+      title: "Welcome to ChimeraOS Desktop Mode"
+      icon: "/usr/share/chimeraos/logo.svg"
+      description: |
+        Give me all the goodies!
+  one-shot-applications:
+    source: yafti.screen.package
+    values:
+      title: Setting up one shot applications
+      show_terminal: true
+      package_manager: yafti.plugin.run
+      groups:
+        Install EMU Deck:
+          description: Install emudeck
+          default: false
+          packages:
+          - Install emudeck: sh -c 'curl -L https://raw.githubusercontent.com/dragoonDorise/EmuDeck/main/install.sh | bash'
+        
+  applications:
+    source: yafti.screen.package
+    values:
+      title: Application Installation
+      show_terminal: true
+      package_manager: yafti.plugin.flatpak
+      package_manager_defaults:
+        user: true
+        system: false
+      groups:
+        Web Browsers:
+          default: false
+          description: Browsers
+          packages:
+            - Brave: com.brave.Browser
+            - Google Chrome: com.google.Chrome
+            - LibreWolf: io.gitlab.librewolf-community
+            - Microsoft Edge: com.microsoft.Edge
+            - Opera: com.opera.Opera
+        Gaming:
+          description: "Get your game on!"
+          default: false
+          packages:
+            - Bottles: com.usebottles.bottles
+            - Chiaki4Deck (PlayStation Remote Play): io.github.streetpea.Chiaki4deck
+            - Discord: com.discordapp.Discord
+            - DOSBox Staging: io.github.dosbox-staging
+            - GeForce NOW Electron: io.github.hmlendea.geforcenow-electron
+            - Heroic Games Launcher (GOG &amp; Epic): com.heroicgameslauncher.hgl
+            - itch: io.itch.itch
+            - ludusavi (Game Save Backup): com.github.mtkennerly.ludusavi
+            - Minecraft (Prism Launcher): org.prismlauncher.PrismLauncher
+            - Minecraft Bedrock Launcher: io.mrarm.mcpelauncher
+            - Moonlight: com.moonlight_stream.Moonlight
+            - Mumble: info.mumble.Mumble
+            - OpenMW: org.openmw.OpenMW
+            - osu: sh.ppy.osu
+            - Parsec: com.parsecgaming.parsec
+            - Space Cadet Pinball: com.github.k4zmu2a.spacecadetpinball
+            - Sonic Robo Blast 2: org.srb2.SRB2
+            - Steam Link: com.valvesoftware.SteamLink
+            - Sunshine: dev.lizardbyte.app.Sunshine
+            - SuperTux: org.supertuxproject.SuperTux
+            - SuperTuxKart: net.supertuxkart.SuperTuxKart
+            - TeamSpeak: com.teamspeak.TeamSpeak
+        Emulation:
+          description: Emulators
+          default: false
+          packages:
+            - Cemu: info.cemu.Cemu
+            - Citra: org.citra_emu.citra
+            - Dolphin: org.DolphinEmu.dolphin-emu
+            - DuckStation: org.duckstation.DuckStation
+            - MAME: org.mamedev.MAME
+            - melonDS: net.kuribo64.melonDS
+            - mGBA: io.mgba.mGBA
+            - PCSX2: net.pcsx2.PCSX2
+            - Pegasus: org.pegasus_frontend.Pegasus
+            - PPSSPP: org.ppsspp.PPSSPP
+            - RetroArch: org.libretro.RetroArch
+            - RetroDECK: net.retrodeck.retrodeck
+            - Rosalie's Mupen GUI: com.github.Rosalie241.RMG
+            - RPCS3: net.rpcs3.RPCS3
+            - Ryujinx: org.ryujinx.Ryujinx
+            - ScummVM: org.scummvm.ScummVM
+            - Snes9x: com.snes9x.Snes9x
+            - Stella: io.github.stella_emu.Stella
+            - xemu: app.xemu.xemu
+            - yuzu: org.yuzu_emu.yuzu
+        Streaming:
+          description: Stream to the Internet
+          default: false
+          packages:
+            - OBS Studio: com.obsproject.Studio
+            - Boatswain for Streamdeck: com.feaneron.Boatswain
+        Music:
+          description: Tunes
+          default: false
+          packages:
+            - Cider (Apple Music Client): sh.cider.Cider
+            - Spotify: com.spotify.Client
+            - Strawberry Music Player: org.strawberrymusicplayer.strawberry
+            - Tidal-hifi: com.mastermindzh.tidal-hifi
+
+  final-screen:
+    source: yafti.screen.title
+    values:
+      title: "All done!"
+      icon: "/usr/share/chimeraos/logo.svg"
+      links:
+        - "Install More Applications":
+            run: /usr/bin/gnome-software
+        - "Website":
+            run: /usr/bin/xdg-open https://chimeraos.org
+        - "Join the Discord Community":
+            run: /usr/bin/xdg-open https://discord.gg/fKsUbrt
+        - "Reboot now":
+            run: systemctl reboot
+      description: |
+        Thank you for trying ChimeraOS.

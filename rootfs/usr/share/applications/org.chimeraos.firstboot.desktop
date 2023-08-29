@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=ChimeraOS First Boot Setup
+Comment=ChimeraOS first setup utility
+Exec=/usr/bin/yafti /usr/share/yafti/yafti.yml --force
+Icon=org.gnome.Terminal
+Type=Application
+Categories=Utility;System;
+Name[en_US]=startup
