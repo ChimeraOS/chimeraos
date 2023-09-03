@@ -198,6 +198,7 @@ export AUR_PACKAGES="\
 	ryzenadj-git \
 	ryzenadj-controller-git \
 	rz608-fix-git \
+	steam_notif_daemon \
 	steam-removable-media-git \
 	wyvern \
 	xpad-noone-dkms \
