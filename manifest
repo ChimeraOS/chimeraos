@@ -177,6 +177,7 @@ export AUR_PACKAGES="\
 	hhfc-git \
 	legendary \
 	lib32-gamescope-plus \
+	lib32-gperftools \
 	libretro-dosbox-pure-git \
 	libretro-opera-git \
 	libretro-prosystem-git \
