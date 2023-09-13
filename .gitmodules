@@ -112,3 +112,6 @@
 [submodule "aur-pkgs/zenergy-dkms-git"]
 	path = aur-pkgs/zenergy-dkms-git
 	url = https://aur.archlinux.org/zenergy-dkms-git.git
+[submodule "aur-pkgs/lib32-gperftools"]
+	path = aur-pkgs/lib32-gperftools
+	url = https://aur.archlinux.org/lib32-gperftools.git
