@@ -17,10 +17,6 @@ export PACKAGES="\
 	accountsservice \
 	alsa-firmware \
 	alsa-utils \
-	bluez \
-	bluez-hid2hci \
-	bluez-plugins \
-	bluez-utils \
 	broadcom-wl-dkms \
 	cifs-utils \
 	diffutils \
