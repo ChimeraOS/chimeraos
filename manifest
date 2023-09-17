@@ -160,7 +160,7 @@ export PACKAGE_OVERRIDES="\
 # Check on the AUR webpage if you are unsure
 export AUR_PACKAGES="\
 	ayaled \
-	ayn-platform-dkms-git \
+	ayn-sensors-dkms-git \
 	bcm20702a1-firmware \
 	boxtron \
 	chimera \
