@@ -1,0 +1,25 @@
+From 1a37c512feaf72a9431215e890d30b16a4af55de Mon Sep 17 00:00:00 2001
+From: Andres Rodriguez <andresx7@gmail.com>
+Date: Thu, 19 May 2022 16:53:35 -0400
+Subject: [PATCH] Valve bluetooth config
+
+---
+ src/main.conf | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main.conf b/src/main.conf
+index 198899541..6b9961d3f 100644
+--- a/src/main.conf
++++ b/src/main.conf
+@@ -60,7 +60,7 @@
+ # or both Multiple Profiles Single Device (MPSD) and Multiple Profiles Multiple
+ # Devices (MPMD) configurations.
+ # Possible values: "off", "single", "multiple"
+-#MultiProfile = off
++MultiProfile = multiple
+ 
+ # Permanently enables the Fast Connectable setting for adapters that
+ # support it. When enabled other devices can connect faster to us,
+-- 
+2.36.1
+
