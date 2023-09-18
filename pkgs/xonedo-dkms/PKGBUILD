@@ -1,21 +1,21 @@
 # Maintainer: Michał Kopeć <michal@nozomi.space>
 # Contributor: Michał Kopeć <michal@nozomi.space>
 
-_pkgname=xone
-pkgname=xone-dkms-git
-pkgver=0.3.r1.g2467407
+_pkgname=xonedo
+pkgname=xonedo-dkms
+pkgver=0.1.r0.g87d1863
 pkgrel=1
-pkgdesc='Modern Linux driver for Xbox One and Xbox Series X|S controllers'
+pkgdesc='Modern Linux driver for Xbox One and Xbox Series X|S controllers via the official dongle only'
 arch=('x86_64')
-url='https://github.com/medusalix/xone'
+url='https://github.com/boukehaarsma23/xone.git'
 license=('GPL2')
-depends=('dkms'
-                 'xone-dongle-firmware')
+depends=('dkms')
+#optdepends=('xonedo-dongle-firmware')
 makedepends=('git')
 conflicts=('xone-dkms'
-                   'xow')
+		   'xow')
 provides=('xone-dkms')
-source=("git+https://github.com/medusalix/xone.git")
+source=("git+https://github.com/boukehaarsma23/xonedo.git")
 sha256sums=('SKIP')
 
 pkgver() {
@@ -26,8 +26,6 @@ pkgver() {
 package() {
   cd "${srcdir}/${_pkgname}"
 
-  git cherry-pick -n 6b745b72e4259b19d7548a2ce440bcfddbf6f506
-
   find . -type f \( -name 'dkms.conf' -o -name '*.c' \) -exec sed -i "s/#VERSION#/$pkgver/" {} +
   echo 'ccflags-y += -DDEBUG' >> "Kbuild"
 
@@ -35,6 +33,7 @@ package() {
   install -dm755 "${pkgdir}/usr/src/${_pkgname}-${pkgver}"
   cp -r ${srcdir}/$_pkgname/* "${pkgdir}/usr/src/${_pkgname}-${pkgver}"
 
-  echo "* Blacklisting xpad module..."
-  install -D -m 644 install/modprobe.conf "${pkgdir}/etc/modprobe.d/xone-blacklist.conf"
+  echo "* Blacklisting required wireless module..."
+  install -D -m 644 install/modprobe.conf "${pkgdir}/usr/lib/modprobe.d/xonedo-blacklist.conf"
 }
+
