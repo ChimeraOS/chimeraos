@@ -17,6 +17,7 @@ export PACKAGES="\
 	accountsservice \
 	alsa-firmware \
 	alsa-utils \
+	amd-ucode \
 	broadcom-wl-dkms \
 	cifs-utils \
 	diffutils \
