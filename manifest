@@ -17,6 +17,7 @@ export PACKAGES="\
 	accountsservice \
 	alsa-firmware \
 	alsa-utils \
+	amd-ucode \
 	bluez \
 	bluez-hid2hci \
 	bluez-plugins \
