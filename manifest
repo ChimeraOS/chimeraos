@@ -18,10 +18,6 @@ export PACKAGES="\
 	alsa-firmware \
 	alsa-utils \
 	amd-ucode \
-	bluez \
-	bluez-hid2hci \
-	bluez-plugins \
-	bluez-utils \
 	broadcom-wl-dkms \
 	cifs-utils \
 	diffutils \
@@ -158,6 +154,10 @@ export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.1.7-chos1-1/vulkan-radeon-23.1.7.chos1-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/repos/2023/06/28/extra/os/x86_64/libretro-pcsx2-11900-2-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/l/libretro-mame/libretro-mame-85763-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/packages/b/bluez/bluez-5.68-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/packages/b/bluez-hid2hci/bluez-hid2hci-5.68-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/packages/b/bluez-plugins/bluez-plugins-5.68-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/packages/b/bluez-utils/bluez-utils-5.68-1-x86_64.pkg.tar.zst \
 "
 
 # Each entry is the clone url (https://aur.archlinux.org/{AUR_PACKAGE}.git)
