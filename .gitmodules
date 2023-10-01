@@ -115,3 +115,6 @@
 [submodule "aur-pkgs/lib32-gperftools"]
 	path = aur-pkgs/lib32-gperftools
 	url = https://aur.archlinux.org/lib32-gperftools.git
+[submodule "aur-pkgs/r8168-dkms"]
+	path = aur-pkgs/r8168-dkms
+	url = https://aur.archlinux.org/r8168-dkms.git
