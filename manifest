@@ -198,7 +198,6 @@ export AUR_PACKAGES="\
 	rtw89-dkms-git \
 	ryzenadj-git \
 	ryzenadj-controller-git \
-	rz608-fix-git \
 	steam-removable-media-git \
 	wyvern \
 	xpad-noone-dkms \
