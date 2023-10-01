@@ -197,7 +197,6 @@ export AUR_PACKAGES="\
 	rz608-fix-git \
 	steam-removable-media-git \
 	wyvern \
-	xpad-noone-dkms \
 	zenergy-dkms-git \
 "
 
