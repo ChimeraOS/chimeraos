@@ -22,6 +22,7 @@ export PACKAGES="\
 	cifs-utils \
 	diffutils \
 	dkms \
+	distrobox \
 	dmidecode \
 	dosbox \
 	eog \
