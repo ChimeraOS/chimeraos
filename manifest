@@ -105,6 +105,7 @@ export PACKAGES="\
 	nss-mdns \
 	openal \
 	openssh \
+	p7zip \
 	pipewire \
 	pipewire-alsa \
 	pipewire-jack \
@@ -121,6 +122,7 @@ export PACKAGES="\
 	steam \
 	sudo \
 	ttf-liberation \
+	unrar \
 	unzip \
 	usb_modeswitch \
 	usbutils \
