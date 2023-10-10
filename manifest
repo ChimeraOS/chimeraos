@@ -30,7 +30,6 @@ export PACKAGES="\
 	ethtool \
 	evtest \
 	ffmpeg \
-	file-roller \
 	firejail \
 	flatpak \
 	fmt \
