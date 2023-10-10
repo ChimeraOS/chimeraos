@@ -46,6 +46,7 @@ export PACKAGES="\
 	gnome-session \
 	gnome-shell \
 	gnome-software \
+	gnome-system-monitor \
 	gnome-text-editor \
 	gst-plugin-pipewire \
 	haveged \
