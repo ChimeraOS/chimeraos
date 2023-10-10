@@ -216,12 +216,12 @@ export SERVICES="\
 	sshd \
 	systemd-timesyncd \
 	swapfile \
-	pipewire \
 "
 
 export USER_SERVICES="\
 	chimera.service \
 	gamemoded.service \
+	pipewire \
 	ryzen-tctl \
 	steam-patch.service \
 "
