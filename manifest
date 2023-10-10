@@ -18,6 +18,7 @@ export PACKAGES="\
 	alsa-firmware \
 	alsa-utils \
 	amd-ucode \
+	bash-completion \
 	broadcom-wl-dkms \
 	cifs-utils \
 	diffutils \
