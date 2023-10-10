@@ -216,6 +216,7 @@ export SERVICES="\
 	sshd \
 	systemd-timesyncd \
 	swapfile \
+	pipewire \
 "
 
 export USER_SERVICES="\
