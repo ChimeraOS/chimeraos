@@ -19,6 +19,7 @@ export PACKAGES="\
 	alsa-utils \
 	amd-ucode \
 	broadcom-wl-dkms \
+	bzip2 \
 	cifs-utils \
 	diffutils \
 	dkms \
@@ -30,6 +31,7 @@ export PACKAGES="\
 	ethtool \
 	evtest \
 	ffmpeg \
+	file \
 	firejail \
 	flatpak \
 	fmt \
@@ -47,6 +49,7 @@ export PACKAGES="\
 	gnome-software \
 	gnome-text-editor \
 	gst-plugin-pipewire \
+	gzip \
 	haveged \
 	htop \
 	intel-gpu-tools \
@@ -94,6 +97,7 @@ export PACKAGES="\
 	linux-firmware \
 	liquidctl \
 	logrotate \
+	lrzip \
 	lshw \
 	mesa-demos \
 	modemmanager \
@@ -121,7 +125,9 @@ export PACKAGES="\
 	sshfs \
 	steam \
 	sudo \
+	tar \
 	ttf-liberation \
+	unace \
 	unrar \
 	unzip \
 	usb_modeswitch \
@@ -139,6 +145,8 @@ export PACKAGES="\
 	xdg-user-dirs-gtk \
 	xf86-video-amdgpu \
 	xorg-server \
+	xz \
+	zip \
 "
 
 export PACKAGE_OVERRIDES="\
