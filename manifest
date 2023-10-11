@@ -223,6 +223,7 @@ export SERVICES="\
 export USER_SERVICES="\
 	chimera.service \
 	gamemoded.service \
+	pipewire \
 	ryzen-tctl \
 	steam-patch.service \
 "
