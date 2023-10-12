@@ -25,7 +25,6 @@ export PACKAGES="\
 	distrobox \
 	dmidecode \
 	dosbox \
-	eog \
 	epiphany \
 	ethtool \
 	evtest \
@@ -95,6 +94,7 @@ export PACKAGES="\
 	linux-firmware \
 	liquidctl \
 	logrotate \
+	loupe \
 	lshw \
 	mesa-demos \
 	modemmanager \
