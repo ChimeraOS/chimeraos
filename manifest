@@ -18,6 +18,7 @@ export PACKAGES="\
 	alsa-firmware \
 	alsa-utils \
 	amd-ucode \
+	bash-completion \
 	broadcom-wl-dkms \
 	bzip2 \
 	cifs-utils \
@@ -26,12 +27,12 @@ export PACKAGES="\
 	distrobox \
 	dmidecode \
 	dosbox \
-	eog \
 	epiphany \
 	ethtool \
 	evtest \
 	ffmpeg \
 	file \
+	ffmpegthumbnailer \
 	firejail \
 	flatpak \
 	fmt \
@@ -98,6 +99,7 @@ export PACKAGES="\
 	liquidctl \
 	logrotate \
 	lrzip \
+	loupe \
 	lshw \
 	mesa-demos \
 	modemmanager \
@@ -150,8 +152,8 @@ export PACKAGES="\
 "
 
 export PACKAGE_OVERRIDES="\
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.0.rc4-chos1-1/linux-chimeraos-6.6.0.rc4.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.0.rc4-chos1-1/linux-chimeraos-headers-6.6.0.rc4.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.0.rc5-chos1-1/linux-chimeraos-6.6.0.rc5.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.0.rc5-chos1-1/linux-chimeraos-headers-6.6.0.rc5.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.2.1-chos1-2/lib32-libva-mesa-driver-23.2.1.chos1-2-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.2.1-chos1-2/lib32-mesa-23.2.1.chos1-2-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.2.1-chos1-2/lib32-mesa-vdpau-23.2.1.chos1-2-x86_64.pkg.tar.zst \
@@ -206,6 +208,7 @@ export AUR_PACKAGES="\
 	ryzenadj-git \
 	ryzenadj-controller-git \
 	rz608-fix-git \
+	steam_notif_daemon \
 	steam-removable-media-git \
 	wyvern \
 	zenergy-dkms-git \
@@ -230,6 +233,7 @@ export SERVICES="\
 export USER_SERVICES="\
 	chimera.service \
 	gamemoded.service \
+	pipewire \
 	ryzen-tctl \
 	steam-patch.service \
 "
