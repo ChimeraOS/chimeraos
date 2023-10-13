@@ -20,6 +20,7 @@ export PACKAGES="\
 	amd-ucode \
 	bash-completion \
 	broadcom-wl-dkms \
+	bzip2 \
 	cifs-utils \
 	diffutils \
 	dkms \
@@ -30,8 +31,8 @@ export PACKAGES="\
 	ethtool \
 	evtest \
 	ffmpeg \
+	file \
 	ffmpegthumbnailer \
-	file-roller \
 	firejail \
 	flatpak \
 	fmt \
@@ -49,6 +50,7 @@ export PACKAGES="\
 	gnome-software \
 	gnome-text-editor \
 	gst-plugin-pipewire \
+	gzip \
 	haveged \
 	htop \
 	intel-gpu-tools \
@@ -96,6 +98,7 @@ export PACKAGES="\
 	linux-firmware \
 	liquidctl \
 	logrotate \
+	lrzip \
 	loupe \
 	lshw \
 	mesa-demos \
@@ -108,6 +111,7 @@ export PACKAGES="\
 	nss-mdns \
 	openal \
 	openssh \
+	p7zip \
 	pipewire \
 	pipewire-alsa \
 	pipewire-jack \
@@ -123,7 +127,10 @@ export PACKAGES="\
 	sshfs \
 	steam \
 	sudo \
+	tar \
 	ttf-liberation \
+	unace \
+	unrar \
 	unzip \
 	usb_modeswitch \
 	usbutils \
@@ -140,6 +147,8 @@ export PACKAGES="\
 	xdg-user-dirs-gtk \
 	xf86-video-amdgpu \
 	xorg-server \
+	xz \
+	zip \
 "
 
 export PACKAGE_OVERRIDES="\
