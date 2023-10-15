@@ -183,7 +183,7 @@ export AUR_PACKAGES="\
 	downgrade \
 	frzr \
 	gamescope-plus \
-	gamescope-session-git \
+	gamescope-session-steam-git \
 	handygccs-git \
 	hhfc-git \
 	legendary \
