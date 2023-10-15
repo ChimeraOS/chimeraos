@@ -41,6 +41,7 @@ export PACKAGES="\
 	fwupd \
 	gamemode \
 	git \
+	gnome-browser-connector \
 	gnome-console \
 	gnome-control-center \
 	gnome-disk-utility \
