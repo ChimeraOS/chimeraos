@@ -208,8 +208,6 @@ export AUR_PACKAGES="\
 	rtl8821au-dkms-git \
 	rtw89-dkms-git \
 	ryzenadj-git \
-	ryzenadj-controller-git \
-	rz608-fix-git \
 	steam_notif_daemon \
 	steam-removable-media-git \
 	wyvern \
@@ -226,7 +224,6 @@ export SERVICES="\
 	haveged \
 	home-swapfile.swap \
 	lightdm \
-	ryzenadj-controller \
 	sshd \
 	systemd-timesyncd \
 	swapfile \
