@@ -184,6 +184,7 @@ export AUR_PACKAGES="\
 	frzr \
 	gamescope-plus \
 	gamescope-session-steam-git \
+	gamescope-session-steam-plus-git \
 	handygccs-git \
 	hhfc-git \
 	legendary \
