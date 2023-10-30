@@ -59,6 +59,7 @@ export PACKAGES="\
 	intel-media-driver \
 	intel-ucode \
 	intel-undervolt \
+	less \
 	lib32-curl \
 	lib32-fontconfig \
 	lib32-freetype2 \
@@ -130,6 +131,7 @@ export PACKAGES="\
 	steam \
 	sudo \
 	tar \
+	tree \
 	ttf-liberation \
 	unace \
 	unrar \
