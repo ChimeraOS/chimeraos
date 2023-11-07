@@ -180,9 +180,11 @@ export AUR_PACKAGES="\
 	ayn-platform-dkms-git \
 	bcm20702a1-firmware \
 	boxtron \
+	calf \
 	chimera \
 	chimeraos-device-quirks-git \
 	downgrade \
+	easyeffects \
 	frzr \
 	gamescope-plus \
 	gamescope-session-steam-git \
@@ -197,6 +199,7 @@ export AUR_PACKAGES="\
 	libretro-prosystem-git \
 	libretro-stella2014-git \
 	libretro-virtualjaguar-git \
+	lsp-plugins-lv2
 	kanit-font \
 	nintendo-udev \
 	opengamepadui-bin \
@@ -215,6 +218,8 @@ export AUR_PACKAGES="\
 	steam_notif_daemon \
 	steam-removable-media-git \
 	wyvern \
+	xorg-server-xvfb \
+	zam-plugins-lv2 \
 	zenergy-dkms-git \
 "
 
