@@ -241,6 +241,8 @@ export SERVICES="\
 
 export USER_SERVICES="\
 	chimera.service \
+	device-quirks-audio-setup.service \
+	easyeffects-xvfb.service \
 	gamemoded.service \
 	pipewire \
 	steam-patch.service \
@@ -310,4 +312,80 @@ postinstallhook() {
 
 	# set permissions for intel_gpu_top and mangohud
 	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
+
+	
+	# Create easyeffects-xvfb service file in /usr/local/share/easyeffects-xvfb/
+	mkdir -p /usr/local/share/easyeffects-xvfb/
+	cat <<'EOF' > /usr/local/share/easyeffects-xvfb/easyeffects-xvfb.service
+[Unit]
+Description=EasyEffects inside Xvfb
+
+[Service]
+Environment="DISPLAY=:43"
+Type=simple
+ExecStart=/usr/local/bin/easyeffects-xvfb start
+ExecStop=/usr/local/bin/easyeffects-xvfb stop
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+EOF
+
+	# Create easyeffects-xvfb script
+	cat <<'EOF' > /usr/local/bin/easyeffects-xvfb
+#!/bin/bash
+
+if [[ "$1" = "start" ]]; then
+    pkill Xvfb
+    sleep 1
+    Xvfb :43 -screen 0 1024x768x16 &
+    Xvfb_PID=$!
+    sleep 3
+    if kill -0 $Xvfb_PID 2>/dev/null; then
+        export DISPLAY=:43
+        easyeffects --gapplication-service
+    else
+        echo "Xvfb failed to start"
+        exit 1
+    fi
+fi
+if [[ "$1" = "stop" ]]; then
+    easyeffects --quit
+    pkill Xvfb
+fi
+EOF
+	chmod +x /usr/local/bin/easyeffects-xvfb
+
+	# Create a script that sets up the user service on first login
+	cat <<'EOF' > /usr/local/bin/setup-easyeffects-xvfb
+#!/bin/bash
+# This script is triggered by device-quirks-audio-setup.service on the gamer user's first login.
+
+gamer_home="/home/gamer"
+mkdir -p "\${gamer_home}/.config/systemd/user/default.target.wants"
+ln -sf /usr/local/share/easyeffects-xvfb/easyeffects-xvfb.service "\${gamer_home}/.config/systemd/user/default.target.wants/"
+chown -R gamer:gamer "\${gamer_home}/.config"
+EOF
+	chmod +x /usr/local/bin/setup-easyeffects-xvfb
+
+	# Create a user service that calls the setup script on first login
+	cat <<'EOF' > /usr/local/share/easyeffects-xvfb/device-quirks-audio-setup.service
+[Unit]
+Description=Set up device quirks audio configuration
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/setup-easyeffects-xvfb
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
+EOF
+
+	# Link the new user service into place for the gamer user
+	local default_target_dir="/usr/local/share/easyeffects-xvfb/default.target.wants/"
+	mkdir -p "${default_target_dir}"
+	ln -sf /usr/local/share/easyeffects-xvfb/device-quirks-audio-setup.service "${default_target_dir}"
+
 }
