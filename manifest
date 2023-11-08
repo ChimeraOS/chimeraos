@@ -204,6 +204,7 @@ export AUR_PACKAGES="\
 	pikaur \
 	powerstation-bin \
 	python-vdf \
+	r8152-dkms \
 	r8168-dkms \
 	retroarch-autoconfig-udev-git \
 	rtl8812au-dkms-git \
