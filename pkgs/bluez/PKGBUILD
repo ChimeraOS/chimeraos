@@ -23,7 +23,7 @@ source=(https://www.kernel.org/pub/linux/bluetooth/${pkgname}-${pkgver}.tar.xz
 sha256sums=('37e372e916955e144cb882f888e4be40898f10ae3b7c213ddcdd55ee9c009278'
             '46c021be659c9a1c4e55afd04df0c059af1f3d98a96338236412e449bf7477b4'
             'd863bd52917e4f5819b23ae5e64a34c5b02a0cfdf3969290bfce0d26dfe137b4'
-            'ebd6fe4a00f3bc81442885d43c12101a672fccdaf4379a1c4ebdc5e80282b18d'
+            '54f7fc21fe0b7caf8018e12c8ca368bb308aeb757acf8b6038a6cbecad735ac3'
             '5d291d833c234a14b6162e3cb14eeff41505f5c3bb7c74528b65cb10597f39cb'
             '2393d8caf3c4999c48ad167845221c8740b10514cbe7383e44a557431fd71b70')
 
