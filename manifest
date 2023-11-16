@@ -208,7 +208,7 @@ export AUR_PACKAGES="\
 	r8168-dkms \
 	retroarch-autoconfig-udev-git \
 	rtl8812au-dkms-git \
-	rtl8814au-dkms-git \https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.0.rc4-chos1-1/lib32-libva-mesa-driver-23.3.0.rc4.chos1-1-x86_64.pkg.tar.zst
+	rtl8814au-dkms-git \
 	rtl88x2bu-dkms-git \
 	rtl8821au-dkms-git \
 	rtw89-dkms-git \
