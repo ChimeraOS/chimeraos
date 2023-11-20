@@ -4,7 +4,7 @@ DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 SESSION_CONFIG="${CONFIG_HOME}/environment.d/01-chimera-session.conf"
 SESSION_LIGHTDM_CONFIG="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
-SESSION_LIST=('desktop' 'desktop-xorg' 'gamepadui' 'opengamepadui' 'gamepadui-with-qam')
+SESSION_LIST=('desktop' 'desktop-xorg' 'steam' 'steam-plus' 'opengamepadui')
 SELECTED_SESSION="$1"
 
 
@@ -21,16 +21,16 @@ function print_session_list() {
 		CURRENT_SESSION="desktop-xorg"
 	fi
 
-	if grep "gamescope-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
-		CURRENT_SESSION="gamepadui"
+	if grep "gamescope-session-steam" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+		CURRENT_SESSION="steam"
 	fi
 
-	if grep "opengamepadui-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+	if grep "gamescope-session-steam-plus" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+		CURRENT_SESSION="steam-plus"
+	fi
+
+	if grep "gamescope-session-opengamepadui" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
 		CURRENT_SESSION="opengamepadui"
-	fi
-
-	if grep "gamepadui-with-qam-session" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
-		CURRENT_SESSION="gamepadui-with-qam"
 	fi
 
 
@@ -63,24 +63,24 @@ function desktop_xorg() {
 	sudo chimera-session-use-lightdm gnome-xorg
 }
 
-function gamepadui() {
-	# switch to Gamepad/Deck UI (Gamescope/Wayland)
+function gamescope_steam() {
+	# switch to Steam Big Picture UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
-	sudo chimera-session-use-lightdm gamescope-session
+	sudo chimera-session-use-lightdm gamescope-session-steam
 	sudo systemctl enable --now handycon
 }
 
-function opengamepadui() {
-	# switch to Gamepad/Deck UI (Gamescope/Wayland)
+function gamescope_opengamepadui() {
+	# switch to OpengamepadUI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
-	sudo chimera-session-use-lightdm opengamepadui-session
+	sudo chimera-session-use-lightdm gamescope-session-opengamepadui
 	sudo systemctl disable --now handycon
 }
 
-function gamepaduiqam() {
-	# switch to OpenGamepadUI (Gamescope/Wayland)
+function gamescope_steam_plus() {
+	# switch to Steam plus OpengamepadUI overlay (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
-	sudo chimera-session-use-lightdm gamepadui-with-qam-session
+	sudo chimera-session-use-lightdm gamescope-session-steam-plus
 	sudo systemctl disable --now handycon
 }
 
@@ -107,18 +107,18 @@ fi
 
 # apply the specified session type
 if [ "${SELECTED_SESSION}" = "desktop" ]; then
-	echo "Switching to desktop"
+	echo "Switching to desktop session"
 	desktop
 elif [ "${SELECTED_SESSION}" = "desktop-xorg" ]; then
-	echo "Switching to desktop-xorg"
+	echo "Switching to desktop-xorg session"
 	desktop_xorg
-elif [ "${SELECTED_SESSION}" = "gamepadui" ]; then
-	echo "Switching to gamepadui"
-	gamepadui
+elif [ "${SELECTED_SESSION}" = "steam" ]; then
+	echo "Switching to steam session"
+	gamescope_steam
 elif [ "${SELECTED_SESSION}" = "opengamepadui" ]; then
-	echo "Switching to opengamepadui"
-	opengamepadui
-elif [ "${SELECTED_SESSION}" = "gamepadui-with-qam" ]; then
-	echo "Switching to gamepadui with opengamepadui quick access menu"
-	gamepaduiqam
+	echo "Switching to opengamepadui session"
+	gamescope_opengamepadui
+elif [ "${SELECTED_SESSION}" = "steam-plus" ]; then
+	echo "Switching to steam-plus session"
+	gamescope_steam_plus
 fi
