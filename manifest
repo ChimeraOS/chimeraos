@@ -283,7 +283,8 @@ postinstallhook() {
 	# remove dolphin standalone emulator files (only need /usr/share/dolphin-emu/sys)
 	rm /usr/bin/dolphin-emu
 	rm /usr/bin/dolphin-emu-nogui
-	rm /usr/bin/dolphin-tool
+	# dolphin-tool is no longer created in new builds?
+	#rm /usr/bin/dolphin-tool
 	rm /usr/share/applications/dolphin-emu.desktop
 
 	# clean up desktop shortcuts
