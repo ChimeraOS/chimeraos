@@ -27,6 +27,7 @@ export PACKAGES="\
 	distrobox \
 	dmidecode \
 	dosbox \
+	efibootmgr \
 	epiphany \
 	ethtool \
 	evtest \
