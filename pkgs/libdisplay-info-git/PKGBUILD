@@ -12,7 +12,7 @@ source=("git+$url")
 sha1sums=('SKIP')
 makedepends=(git hwdata meson ninja python)
 conflicts=(libdisplay-info)
-provides=(libdisplay-info.so)
+provides=(libdisplay-info)
 
 pkgver() {
   cd libdisplay-info
