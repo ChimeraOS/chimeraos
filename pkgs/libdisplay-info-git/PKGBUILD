@@ -1,0 +1,34 @@
+# Maintainer: Eric Engestrom <aur [at] engestrom [dot] ch>
+BUILDENV+=(!check)
+
+pkgname=libdisplay-info-git
+pkgver=0.1.1.23.gae6cb52
+pkgrel=1
+pkgdesc='EDID and DisplayID library'
+url='https://gitlab.freedesktop.org/emersion/libdisplay-info'
+arch=('x86_64')
+license=('MIT')
+source=("git+$url")
+sha1sums=('SKIP')
+makedepends=(git hwdata meson ninja python)
+conflicts=(libdisplay-info)
+provides=(libdisplay-info.so)
+
+pkgver() {
+  cd libdisplay-info
+  git describe --tags | sed 's/\-/\./g'
+}
+
+build() {
+  arch-meson libdisplay-info build
+  ninja -C build
+}
+
+check() {
+  ninja -C build test
+}
+
+package() {
+  DESTDIR="$pkgdir" ninja -C build install
+  install -Dm0644 -t "$pkgdir/usr/share/licenses/$pkgname/" "libdisplay-info/LICENSE"
+}
