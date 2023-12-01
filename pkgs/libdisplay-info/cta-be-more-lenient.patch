@@ -1,0 +1,38 @@
+From 5142866ee76445375767057d88bb8204410d3638 Mon Sep 17 00:00:00 2001
+From: Sebastian Wick <sebastian.wick@redhat.com>
+Date: Mon, 26 Jun 2023 16:07:17 +0200
+Subject: [PATCH] cta: be more lenient about data block parsing
+
+If the data block sizes start overlapping the DTD we cannot continue
+parsing this or further data blocks but the ones we parsed already
+should be valid.
+
+Similarily if we fail parsing a specific data block the previous ones
+should still be valid and the next ones might be as well.
+
+Closes: https://gitlab.freedesktop.org/emersion/libdisplay-info/-/issues/36
+Closes: https://gitlab.freedesktop.org/emersion/libdisplay-info/-/issues/37
+Signed-off-by: Sebastian Wick <sebastian.wick@redhat.com>
+---
+ cta.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/cta.c b/cta.c
+index 68258ff..3f99328 100644
+--- a/cta.c
++++ b/cta.c
+@@ -1464,9 +1464,9 @@ _di_edid_cta_parse(struct di_edid_cta *cta, const uint8_t *data, size_t size,
+ 		data_block_size = get_bit_range(data_block_header, 4, 0);
+ 
+ 		if (i + 1 + data_block_size > dtd_start) {
+-			_di_edid_cta_finish(cta);
+-			errno = EINVAL;
+-			return false;
++			add_failure(cta, "Data Block at offset %zu overlaps Detailed Timing "
++					 "Definitions. Skipping all further Data Blocks.", i);
++			break;
+ 		}
+ 
+ 		if (!parse_data_block(cta, data_block_tag,
+-- 
+GitLab
