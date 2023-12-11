@@ -131,6 +131,7 @@ export PACKAGES="\
 	sshfs \
 	steam \
 	sudo \
+	tailscale \
 	tar \
 	tree \
 	ttf-liberation \
