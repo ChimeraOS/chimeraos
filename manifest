@@ -22,6 +22,7 @@ export PACKAGES="\
 	broadcom-wl-dkms \
 	bzip2 \
 	cifs-utils \
+	cpupower \
 	diffutils \
 	dkms \
 	distrobox \
@@ -40,7 +41,6 @@ export PACKAGES="\
 	fuse-zip \
 	fuse2 \
 	fwupd \
-	gamemode \
 	git \
 	gnome-browser-connector \
 	gnome-console \
@@ -64,7 +64,6 @@ export PACKAGES="\
 	lib32-curl \
 	lib32-fontconfig \
 	lib32-freetype2 \
-	lib32-gamemode \
 	lib32-libgpg-error \
 	lib32-libnm \
 	lib32-libxinerama \
@@ -238,7 +237,6 @@ export SERVICES="\
 
 export USER_SERVICES="\
 	chimera.service \
-	gamemoded.service \
 	pipewire \
 	steam-patch.service \
 "
