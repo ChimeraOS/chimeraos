@@ -179,7 +179,7 @@ export AUR_PACKAGES="\
 	ayaled \
 	ayn-platform-dkms-git \
 	bcm20702a1-firmware \
-  bmi260-dkms \
+  	bmi260-dkms \
 	boxtron \
 	chimera \
 	chimeraos-device-quirks-git \
@@ -258,11 +258,11 @@ postinstallhook() {
 	# Add sudo permissions
 	sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^# //g' /etc/sudoers
 	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
-	" >/etc/sudoers.d/steam
+	" > /etc/sudoers.d/steam
 	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
 	${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
 	${USERNAME} ALL=(ALL) NOPASSWD: /usr/share/chimera/bin/power-tool
-	" >/etc/sudoers.d/chimera
+	" > /etc/sudoers.d/chimera
 
 	# disable retroarch menu in joypad configs
 	find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
@@ -289,18 +289,18 @@ postinstallhook() {
 
 	# clean up desktop shortcuts
 	sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
-	find /usr/share/applications/* |
-		grep -v org.chimeraos.Gamescope.desktop |
-		grep -v org.chimeraos.app.desktop |
-		grep -v org.gnome.Console.desktop |
-		grep -v org.gnome.DiskUtility.desktop |
-		grep -v org.gnome.FileRoller.desktop |
-		grep -v org.gnome.Nautilus.desktop |
-		grep -v org.gnome.Settings.desktop |
-		grep -v org.gnome.Software.desktop |
-		grep -v org.gnome.TextEditor.desktop |
-		grep -v steam.desktop |
-		xargs -I {} sh -c "echo NoDisplay=true >> {}"
+	find /usr/share/applications/* | \
+	grep -v org.chimeraos.Gamescope.desktop | \
+	grep -v org.chimeraos.app.desktop | \
+	grep -v org.gnome.Console.desktop | \
+	grep -v org.gnome.DiskUtility.desktop | \
+	grep -v org.gnome.FileRoller.desktop | \
+	grep -v org.gnome.Nautilus.desktop | \
+	grep -v org.gnome.Settings.desktop | \
+	grep -v org.gnome.Software.desktop | \
+	grep -v org.gnome.TextEditor.desktop | \
+	grep -v steam.desktop | \
+	xargs -I {} sh -c "echo NoDisplay=true >> {}"
 
 	# force -steamdeck option in desktop mode to prevent constant steam updates
 	sed -i 's,Exec=/usr/bin/steam-runtime,Exec=/usr/bin/steam-runtime -steamdeck,' /usr/share/applications/steam.desktop
