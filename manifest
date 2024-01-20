@@ -53,6 +53,7 @@ export PACKAGES="\
 	gnome-system-monitor \
 	gnome-text-editor \
 	gst-plugin-pipewire \
+	gvfs-smb \
 	gzip \
 	haveged \
 	htop \
