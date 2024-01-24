@@ -201,6 +201,7 @@ export AUR_PACKAGES="\
 	legendary \
 	lib32-gamescope-plus \
 	lib32-gperftools \
+	lib32-vulkan-nouveau-git \
 	libretro-dosbox-pure-git \
 	libretro-opera-git \
 	libretro-prosystem-git \
@@ -224,6 +225,7 @@ export AUR_PACKAGES="\
 	ryzenadj-git \
 	steam_notif_daemon \
 	steam-removable-media-git \
+	vulkan-nouveau-git \
 	wyvern \
 	zenergy-dkms-git \
 "
