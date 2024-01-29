@@ -216,7 +216,6 @@ export AUR_PACKAGES="\
 	powerstation-bin \
 	python-vdf \
 	r8152-dkms \
-	r8168-dkms \
 	retroarch-autoconfig-udev-git \
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
@@ -317,7 +316,4 @@ postinstallhook() {
 
 	# set permissions for intel_gpu_top and mangohud
 	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
-
-	# remove r8169 blacklist in /usr, leave it up to the user
-	rm /usr/lib/modprobe.d/r8168-dkms.conf
 }
