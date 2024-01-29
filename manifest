@@ -212,7 +212,6 @@ export AUR_PACKAGES="\
 	rtl8814au-dkms-git \
 	rtl88x2bu-dkms-git \
 	rtl8821au-dkms-git \
-	rtw89-dkms-git \
 	ryzenadj-git \
 	steam_notif_daemon \
 	steam-removable-media-git \
