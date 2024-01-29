@@ -1,6 +1,6 @@
 # Maintainer: Simon Hallsten <flightlessmangoyt@gmail.com>
 pkgname=('mangohud' 'lib32-mangohud')
-pkgver=0.7.1.rc1.r15.g3cee6f1
+pkgver=0.7.1.rc2.r4.gdc60dc7
 pkgrel=1
 pkgdesc="Vulkan and OpenGL overlay to display performance information"
 arch=('x86_64')
@@ -10,15 +10,15 @@ makedepends=('dbus' 'gcc' 'meson' 'python-mako' 'libx11' 'lib32-libx11' 'git' 'p
 depends=('glslang' 'libglvnd' 'lib32-libglvnd' 'glew' 'glfw-x11')
 replaces=('vulkan-mesa-layer-mango')
 license=('MIT')
-_commit=3cee6f15ded1b086333738e2388eb1d10dce9ba6 # 0.7.1.rc1
+_commit=dc60dc71ec3e7b87fdab3c8bacfd794404e24ab5 # 0.7.1.rc2
 
 source=(
     "mangohud"::"git+https://github.com/flightlessmango/MangoHud.git#commit=${_commit}"
     "mangohud-minhook"::"git+https://github.com/flightlessmango/minhook.git"
     "imgui-v1.89.9.tar.gz::https://github.com/ocornut/imgui/archive/refs/tags/v1.89.9.tar.gz"
-    "imgui-1.89-9-wrap.zip::https://wrapdb.mesonbuild.com/v2/imgui_1.89.9-1/get_patch"
-    "spdlog-1.12.0.tar.gz::https://github.com/gabime/spdlog/archive/refs/tags/v1.12.0.tar.gz"
-    "spdlog-1.12.0-1-wrap.zip::https://wrapdb.mesonbuild.com/v2/spdlog_1.12.0-1/get_patch"
+    "imgui_1.89.9-1_patch.zip::https://wrapdb.mesonbuild.com/v2/imgui_1.89.9-1/get_patch"
+    "spdlog-1.13.0.tar.gz::https://github.com/gabime/spdlog/archive/refs/tags/v1.13.0.tar.gz"
+    "spdlog_1.13.0-1_patch.zip::https://wrapdb.mesonbuild.com/v2/spdlog_1.13.0-1/get_patch"
     "nlohmann_json-3.10.5.zip::https://github.com/nlohmann/json/releases/download/v3.10.5/include.zip"
     "vulkan-headers-1.2.158.tar.gz::https://github.com/KhronosGroup/Vulkan-Headers/archive/v1.2.158.tar.gz"
     "vulkan-headers-1.2.158-2-wrap.zip::https://wrapdb.mesonbuild.com/v2/vulkan-headers_1.2.158-2/get_patch"
@@ -30,8 +30,8 @@ sha256sums=('SKIP'
             'SKIP'
             '1acc27a778b71d859878121a3f7b287cd81c29d720893d2b2bf74455bf9d52d6'
             '9b21290c597d76bf8d4eeb3f9ffa024b11d9ea6c61e91d648ccc90b42843d584'
-            '4dccf2d10f410c1e2feaff89966bfc49a1abb29ef6f08246335b110e001e09a9'
-            '0515906db7324df0e439bdd018bf019a60304430f6af8f1725910652e30ebe69'
+            '534f2ee1a4dcbeb22249856edfb2be76a1cf4f708a20b0ac2ed090ee24cfdbc9'
+            '556b539cf582a46673ede4202ac037b891328dd5ea76862ffe05b060fc4f4775'
             'b94997df68856753b72f0d7a3703b7d484d4745c567f3584ef97c96c25a5798e'
             '53361271cfe274df8782e1e47bdc9e61b7af432ba30acbfe31723f9df2c257f3'
             '860358cf5e73f458cd1e88f8c38116d123ab421d5ce2e4129ec38eaedd820e17'
@@ -62,7 +62,7 @@ prepare() {
 
   # meson subprojects
   ln -sv "$srcdir/imgui-1.89.9" subprojects
-  ln -sv "$srcdir/spdlog-1.12.0" subprojects
+  ln -sv "$srcdir/spdlog-1.13.0" subprojects
   ln -sv "$srcdir/implot-0.16" subprojects
   mkdir  subprojects/nlohmann_json-3.10.5
   ln -sv "$srcdir/include" subprojects/nlohmann_json-3.10.5/
