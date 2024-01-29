@@ -168,7 +168,7 @@ export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-vulkan-mesa-layers-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-vulkan-radeon-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-vulkan-swrast-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/libva-mesa-driver-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \d
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/libva-mesa-driver-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/mesa-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/mesa-vdpau-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/opencl-rusticl-mesa-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
