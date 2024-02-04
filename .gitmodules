@@ -118,3 +118,6 @@
 [submodule "aur-pkgs/zenergy-dkms-git"]
 	path = aur-pkgs/zenergy-dkms-git
 	url = https://aur.archlinux.org/zenergy-dkms-git.git
+[submodule "aur-pkgs/ayaneo-platform-dkms-git"]
+	path = aur-pkgs/ayaneo-platform-dkms-git
+	url = https://aur.archlinux.org/ayaneo-platform-dkms-git.git
