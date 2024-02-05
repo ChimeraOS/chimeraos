@@ -121,3 +121,6 @@
 [submodule "aur-pkgs/ayaneo-platform-dkms-git"]
 	path = aur-pkgs/ayaneo-platform-dkms-git
 	url = https://aur.archlinux.org/ayaneo-platform-dkms-git.git
+[submodule "aur-pkgs/bmi260-dkms"]
+	path = aur-pkgs/bmi260-dkms
+	url = https://aur.archlinux.org/bmi260-dkms.git
