@@ -15,6 +15,7 @@ export KERNEL_PACKAGE_ORIGIN="local"
 
 export PACKAGES="\
 	accountsservice \
+	acpi_call-dkms \
 	alsa-firmware \
 	alsa-utils \
 	amd-ucode \
@@ -22,6 +23,7 @@ export PACKAGES="\
 	broadcom-wl-dkms \
 	bzip2 \
 	cifs-utils \
+	cpupower \
 	diffutils \
 	dkms \
 	distrobox \
@@ -40,7 +42,6 @@ export PACKAGES="\
 	fuse-zip \
 	fuse2 \
 	fwupd \
-	gamemode \
 	git \
 	gnome-browser-connector \
 	gnome-console \
@@ -53,6 +54,7 @@ export PACKAGES="\
 	gnome-system-monitor \
 	gnome-text-editor \
 	gst-plugin-pipewire \
+	gvfs-smb \
 	gzip \
 	haveged \
 	htop \
@@ -64,7 +66,6 @@ export PACKAGES="\
 	lib32-curl \
 	lib32-fontconfig \
 	lib32-freetype2 \
-	lib32-gamemode \
 	lib32-libgpg-error \
 	lib32-libnm \
 	lib32-libxinerama \
@@ -157,18 +158,24 @@ export PACKAGES="\
 "
 
 export PACKAGE_OVERRIDES="\
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.7-chos5-1/linux-chimeraos-6.6.7.chos5-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.7-chos5-1/linux-chimeraos-headers-6.6.7.chos5-1-x86_64.pkg.tar.zst\
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-libva-mesa-driver-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-mesa-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-mesa-vdpau-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-vulkan-intel-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-vulkan-radeon-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/libva-mesa-driver-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/mesa-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/mesa-vdpau-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/vulkan-intel-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/vulkan-radeon-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.8-rc2-chos1-1/linux-chimeraos-6.8.rc2.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.8-rc2-chos1-1/linux-chimeraos-headers-6.8.rc2.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-libva-mesa-driver-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-mesa-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-mesa-vdpau-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-opencl-rusticl-mesa-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-vulkan-intel-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-vulkan-mesa-layers-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-vulkan-radeon-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/lib32-vulkan-swrast-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/libva-mesa-driver-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/mesa-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/mesa-vdpau-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/opencl-rusticl-mesa-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/vulkan-intel-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/vulkan-mesa-layers-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/vulkan-radeon-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.0.rc3-chos1-1/vulkan-swrast-1--24.0.0.rc3.chos1-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/repos/2023/06/28/extra/os/x86_64/libretro-pcsx2-11900-2-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/l/libretro-mame/libretro-mame-85763-1-x86_64.pkg.tar.zst \
 "
@@ -177,15 +184,17 @@ export PACKAGE_OVERRIDES="\
 # Which is often the same as the package name but it can be different.
 # Check on the AUR webpage if you are unsure
 export AUR_PACKAGES="\
+	asusctl \
+	antimicrox \
 	ayaled \
 	ayn-platform-dkms-git \
 	bcm20702a1-firmware \
+  	bmi260-dkms \
 	boxtron \
 	chimera \
 	chimeraos-device-quirks-git \
 	downgrade \
 	frzr \
-	gamescope-plus \
 	gamescope-session-steam-git \
 	gamescope-session-steam-plus-git \
 	handygccs-git \
@@ -193,6 +202,7 @@ export AUR_PACKAGES="\
 	legendary \
 	lib32-gamescope-plus \
 	lib32-gperftools \
+	lib32-vulkan-nouveau-git \
 	libretro-dosbox-pure-git \
 	libretro-opera-git \
 	libretro-prosystem-git \
@@ -206,16 +216,15 @@ export AUR_PACKAGES="\
 	powerstation-bin \
 	python-vdf \
 	r8152-dkms \
-	r8168-dkms \
 	retroarch-autoconfig-udev-git \
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
 	rtl88x2bu-dkms-git \
 	rtl8821au-dkms-git \
-	rtw89-dkms-git \
 	ryzenadj-git \
 	steam_notif_daemon \
 	steam-removable-media-git \
+	vulkan-nouveau-git \
 	wyvern \
 	zenergy-dkms-git \
 "
@@ -238,7 +247,6 @@ export SERVICES="\
 
 export USER_SERVICES="\
 	chimera.service \
-	gamemoded.service \
 	pipewire \
 	steam-patch.service \
 "
@@ -308,7 +316,4 @@ postinstallhook() {
 
 	# set permissions for intel_gpu_top and mangohud
 	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
-
-	# remove r8169 blacklist in /usr, leave it up to the user
-	rm /usr/lib/modprobe.d/r8168-dkms.conf
 }
