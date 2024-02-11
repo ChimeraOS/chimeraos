@@ -36,7 +36,9 @@ RUN echo -e "#!/bin/bash\nif [[ \"$1\" == \"--version\" ]]; then echo 'fake 244 
     chmod +x /usr/bin/systemd-run
 
 # substitute check with !check to avoid running software from AUR in the build machine
-RUN sed -i -e 's/BUILDENV=(!distcc color !ccache check !sign)/BUILDENV=(!distcc color !ccache !check !sign)/g' /etc/makepkg.conf
+# also remove creation of debug packages.
+RUN sed -i '/BUILDENV/s/check/!check/g' /etc/makepkg.conf && \
+    sed -i '/OPTIONS/s/debug/!debug/g' /etc/makepkg.conf
 
 COPY manifest /manifest
 # Freeze packages and overwrite with overrides when needed
