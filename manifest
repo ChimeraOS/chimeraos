@@ -186,7 +186,7 @@ export PACKAGE_OVERRIDES="\
 export AUR_PACKAGES="\
 	asusctl \
 	antimicrox \
-	ayaled \
+	ayaneo-platform-dkms-git \
 	ayn-platform-dkms-git \
 	bcm20702a1-firmware \
   	bmi260-dkms \
