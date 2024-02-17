@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Game Mode
-Exec=gnome-session-quit --no-prompt
+Exec=qdbus org.kde.Shutdown /Shutdown org.kde.Shutdown.logout
 Icon=/usr/share/icons/chimeraos/scalable/actions/return-to-game-mode.svg
 Terminal=false
 Type=Application

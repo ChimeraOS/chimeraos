@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Plasma on Wayland (single time session)
+Comment=This session logs you into Plasma one time
+Exec=/usr/bin/plasma-session-oneshot
+TryExec=/usr/bin/plasma-session-oneshot
+Type=Application
+DesktopNames=Plasma
+X-GDM-SessionRegisters=true

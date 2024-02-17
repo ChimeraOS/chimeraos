@@ -35,7 +35,6 @@ export PACKAGES="\
 	dolphin \
 	dolphin-plugins \
 	efibootmgr \
-	epiphany \
 	ethtool \
 	evtest \
 	expect \
@@ -121,8 +120,8 @@ export PACKAGES="\
 	liquidctl \
 	logrotate \
 	lrzip \
-	loupe \
 	lshw \
+	maliit-keyboard \
 	mesa-demos \
 	modemmanager \
 	nano \
