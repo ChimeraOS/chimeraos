@@ -2,7 +2,7 @@
 set -e
 
 BRANCH_PATH="/frzr_root/source"
-REPO="chimeraos/chimeraos"
+REPO="chenx-dust/chimeraos"
 
 if [[ $# -eq 1 ]]; then
   case "$1" in
