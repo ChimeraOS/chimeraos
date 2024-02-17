@@ -20,39 +20,41 @@ export PACKAGES="\
 	alsa-utils \
 	amd-ucode \
 	bash-completion \
+	bluedevil \
+	breeze-gtk \
 	broadcom-wl-dkms \
 	bzip2 \
 	cifs-utils \
 	cpupower \
 	diffutils \
 	dkms \
+	discover \
 	distrobox \
 	dmidecode \
 	dosbox \
+	dolphin \
+	dolphin-plugins \
 	efibootmgr \
 	epiphany \
 	ethtool \
 	evtest \
+	expect \
+	exfatprogs \
+	falkon \
+	fcitx5-im \
+	fcitx5-chinese-addons \
 	ffmpeg \
 	file \
 	ffmpegthumbnailer \
 	firejail \
 	flatpak \
+	flatpak-kcm \
 	fmt \
 	fuse-zip \
 	fuse2 \
 	fwupd \
 	git \
-	gnome-browser-connector \
-	gnome-console \
-	gnome-control-center \
-	gnome-disk-utility \
-	gnome-keyring \
-	gnome-session \
-	gnome-shell \
-	gnome-software \
-	gnome-system-monitor \
-	gnome-text-editor \
+	grml-zsh-config \
 	gst-plugin-pipewire \
 	gvfs-smb \
 	gvfs-nfs \
@@ -63,6 +65,19 @@ export PACKAGES="\
 	intel-media-driver \
 	intel-ucode \
 	intel-undervolt \
+	jq \
+	kate \
+	kde-gtk-config \
+	kdeconnect \
+	kdeplasma-addons \
+	kfind \
+	kgamma \
+	kinfocenter \
+	konsole \
+	kpipewire \
+	kscreen \
+	ksshaskpass \
+	kwallet-pam \
 	less \
 	lib32-curl \
 	lib32-fontconfig \
@@ -107,6 +122,7 @@ export PACKAGES="\
 	lrzip \
 	loupe \
 	lshw \
+	lzip \
 	mesa-demos \
 	modemmanager \
 	nano \
@@ -115,6 +131,7 @@ export PACKAGES="\
 	nfs-utils \
 	noto-fonts-emoji \
 	nss-mdns \
+	onboard \
 	openal \
 	openssh \
 	p7zip \
@@ -122,6 +139,14 @@ export PACKAGES="\
 	pipewire-alsa \
 	pipewire-jack \
 	pipewire-pulse \
+	plasma-browser-integration \
+	plasma-desktop \
+	plasma-disks \
+	plasma-nm \
+	plasma-pa \
+	plasma-thunderbolt \
+	plasma-vault \
+	plasma-wayland-session \
 	podman \
 	pulsemixer \
 	python \
@@ -148,15 +173,23 @@ export PACKAGES="\
 	wget \
 	which \
 	wireplumber \
-	wqy-zenhei \
+	wqy-microhei \
 	xdg-desktop-portal \
-	xdg-desktop-portal-gnome \
+	xdg-desktop-portal-gtk \
+	xdg-desktop-portal-kde \
 	xdg-desktop-portal-wlr \
 	xdg-user-dirs-gtk \
 	xf86-video-amdgpu \
 	xorg-server \
+	xorg-server-xvfb \
+	xorg-xinit \
+	xsettingsd \
 	xz \
 	zip \
+	zsh \
+	zsh-autosuggestions \
+	zsh-completions \
+	zsh-syntax-highlighting \
 "
 
 export PACKAGE_OVERRIDES="\
@@ -180,6 +213,7 @@ export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.4-chos1-1/vulkan-swrast-1--24.0.4.chos1-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/repos/2023/06/28/extra/os/x86_64/libretro-pcsx2-11900-2-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/l/libretro-mame/libretro-mame-85763-1-x86_64.pkg.tar.zst \
+	https://steamdeck-packages.steamos.cloud/archlinux-mirror/jupiter-main/os/x86_64/steamdeck-kde-presets-0.21-1-any.pkg.tar.zst \
 "
 
 # Each entry is the clone url (https://aur.archlinux.org/{AUR_PACKAGE}.git)
@@ -200,7 +234,8 @@ export AUR_PACKAGES="\
 	frzr \
 	gamescope-session-steam-git \
 	gamescope-session-steam-plus-git \
-	handygccs-git \
+	hhd \
+	hhd-user \
 	hhfc-git \
 	legendary \
 	lib32-gamescope-plus \
@@ -214,8 +249,8 @@ export AUR_PACKAGES="\
 	nintendo-udev \
 	opengamepadui-bin \
 	opengamepadui-session-git \
-	pikaur \
 	powerstation-bin \
+	protonup-qt-bin \
 	python-vdf \
 	r8152-dkms \
 	retroarch-autoconfig-udev-git \
@@ -227,6 +262,9 @@ export AUR_PACKAGES="\
 	steam_notif_daemon \
 	steam-removable-media-git \
 	wyvern \
+	waydroid \
+	waydroid-script-git \
+	yay-bin \
 	zenergy-dkms-git \
 "
 
@@ -236,7 +274,7 @@ export SERVICES="\
 	bluetooth \
 	bluetooth-workaround \
 	fstrim.timer \
-	handycon \
+	hhd@gamer \
 	haveged \
 	home-swapfile.swap \
 	lightdm \
@@ -244,6 +282,7 @@ export SERVICES="\
 	sshd \
 	systemd-timesyncd \
 	swapfile \
+	waydroid-container \
 "
 
 export USER_SERVICES="\
@@ -299,18 +338,6 @@ postinstallhook() {
 
 	# clean up desktop shortcuts
 	sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
-	find /usr/share/applications/* |
-		grep -v org.chimeraos.Gamescope.desktop |
-		grep -v org.chimeraos.app.desktop |
-		grep -v org.gnome.Console.desktop |
-		grep -v org.gnome.DiskUtility.desktop |
-		grep -v org.gnome.FileRoller.desktop |
-		grep -v org.gnome.Nautilus.desktop |
-		grep -v org.gnome.Settings.desktop |
-		grep -v org.gnome.Software.desktop |
-		grep -v org.gnome.TextEditor.desktop |
-		grep -v steam.desktop |
-		xargs -I {} sh -c "echo NoDisplay=true >> {}"
 
 	# force -steamdeck option in desktop mode to prevent constant steam updates
 	sed -i 's,Exec=/usr/bin/steam-runtime,Exec=/usr/bin/steam-runtime -steamdeck,' /usr/share/applications/steam.desktop

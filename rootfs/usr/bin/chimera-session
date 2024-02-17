@@ -53,14 +53,14 @@ function desktop() {
 	clean_steam_shortcuts
 
 	# switch to Desktop
-	sudo chimera-session-use-lightdm gnome-wayland
+	sudo chimera-session-use-lightdm plasmawayland
 }
 
 function desktop_xorg() {
 	clean_steam_shortcuts
 
 	# switch to Desktop (Xorg)
-	sudo chimera-session-use-lightdm gnome-xorg
+	sudo chimera-session-use-lightdm plasma
 }
 
 function gamescope_steam() {
