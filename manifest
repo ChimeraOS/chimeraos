@@ -273,7 +273,6 @@ export SERVICES="\
 	bluetooth \
 	bluetooth-workaround \
 	fstrim.timer \
-	hhd@gamer \
 	haveged \
 	home-swapfile.swap \
 	lightdm \
