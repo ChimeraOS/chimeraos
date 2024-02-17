@@ -43,6 +43,7 @@ export PACKAGES="\
 	falkon \
 	fcitx5-im \
 	fcitx5-chinese-addons \
+	fcitx5-pinyin-zhwiki \
 	ffmpeg \
 	file \
 	ffmpegthumbnailer \
@@ -122,11 +123,9 @@ export PACKAGES="\
 	lrzip \
 	loupe \
 	lshw \
-	lzip \
 	mesa-demos \
 	modemmanager \
 	nano \
-	nautilus \
 	networkmanager \
 	nfs-utils \
 	noto-fonts-emoji \
