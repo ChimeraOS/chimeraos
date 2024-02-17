@@ -4,6 +4,8 @@ set -e
 
 die() { echo >&2 "!! $*"; exit 1; }
 
+SESSION_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
+
 SENTINEL_FILE="steamos-session-select"
 RETURN_SESSION_FILE="chimeraos-session-return"
 
@@ -11,6 +13,8 @@ RETURN_SESSION_FILE="chimeraos-session-return"
 CHAINED_SESSION="/usr/bin/startplasma-wayland"
 # If we decide the sentinel is consumed, execute this command instead and fail
 RESTORE_SESSION=(/usr/lib/os-session-select) # No arguments restores the session
+
+STEAM_SESSION="gamescope-session-steam-plus"
 
 # Find or check config return session
 function check_return()
@@ -30,7 +34,7 @@ function check_return()
         echo "$revert_value"
         ;;
       *)
-        echo "gamescope-session-steam-plus"
+        echo "$STEAM_SESSION"
         ;;
     esac
     rm "$RETURN_SESSION_FILE"
@@ -70,7 +74,10 @@ function check_sentinel()
 if CONFIGURED_CHAINED_SESSION=$(check_sentinel); then
   # We found and consumed the oneshot sentinel, proceed to launch plasma
   echo >&2 "$0: Found and removed sentinel file for one-shot desktop, proceeding to launch"
-  exec "$CONFIGURED_CHAINED_SESSION"
+  # exec "$CONFIGURED_CHAINED_SESSION"
+  sudo chimera-session-use-lightdm plasma &
+  sleep 1
+  echo -e "[Seat:*]\nautologin-session=$STEAM_SESSION" | sudo tee "$SESSION_FILE"
 else
   if CONFIGURED_RETURN_SESSION=$(check_return); then
     /usr/lib/os-session-select "$CONFIGURED_RETURN_SESSION"
