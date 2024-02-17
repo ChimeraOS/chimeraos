@@ -31,9 +31,6 @@
 [submodule "aur-pkgs/gamescope-session-steam-plus-git"]
 	path = aur-pkgs/gamescope-session-steam-plus-git
 	url = https://aur.archlinux.org/gamescope-session-steam-plus-git.git
-[submodule "aur-pkgs/handygccs-git"]
-	path = aur-pkgs/handygccs-git
-	url = https://aur.archlinux.org/handygccs-git.git
 [submodule "aur-pkgs/hhfc-git"]
 	path = aur-pkgs/hhfc-git
 	url = https://aur.archlinux.org/hhfc-git.git
@@ -73,9 +70,6 @@
 [submodule "aur-pkgs/opengamepadui-session-git"]
 	path = aur-pkgs/opengamepadui-session-git
 	url = https://aur.archlinux.org/opengamepadui-session-git.git
-[submodule "aur-pkgs/pikaur"]
-	path = aur-pkgs/pikaur
-	url = https://aur.archlinux.org/pikaur.git
 [submodule "aur-pkgs/powerstation-bin"]
 	path = aur-pkgs/powerstation-bin
 	url = https://aur.archlinux.org/powerstation-bin.git
@@ -124,3 +118,21 @@
 [submodule "aur-pkgs/bmi260-dkms"]
 	path = aur-pkgs/bmi260-dkms
 	url = https://aur.archlinux.org/bmi260-dkms.git
+[submodule "aur-pkgs/waydroid"]
+	path = aur-pkgs/waydroid
+	url = https://aur.archlinux.org/waydroid.git
+[submodule "aur-pkgs/hhd"]
+	path = aur-pkgs/hhd
+	url = https://aur.archlinux.org/hhd.git
+[submodule "aur-pkgs/hhd-user"]
+	path = aur-pkgs/hhd-user
+	url = https://aur.archlinux.org/hhd-user.git
+[submodule "aur-pkgs/protonup-qt-bin"]
+	path = aur-pkgs/protonup-qt-bin
+	url = https://aur.archlinux.org/protonup-qt-bin.git
+[submodule "aur-pkgs/waydroid-script-git"]
+	path = aur-pkgs/waydroid-script-git
+	url = https://aur.archlinux.org/waydroid-script-git.git
+[submodule "aur-pkgs/yay-bin"]
+	path = aur-pkgs/yay-bin
+	url = https://aur.archlinux.org/yay-bin.git

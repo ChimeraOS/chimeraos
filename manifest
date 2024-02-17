@@ -274,6 +274,7 @@ export SERVICES="\
 	bluetooth-workaround \
 	fstrim.timer \
 	haveged \
+	hhd@gamer
 	home-swapfile.swap \
 	lightdm \
 	powerstation \
