@@ -315,7 +315,7 @@ ${USERNAME} ALL=(ALL) NOPASSWD: /usr/share/chimera/bin/power-tool
 
 	echo "source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-" >/etc/zsh/zshrc
+" >>/etc/zsh/zshrc
 
 	# disable retroarch menu in joypad configs
 	find /usr/share/libretro/autoconfig -type f -name '*.cfg' | xargs -d '\n' sed -i '/input_menu_toggle_btn/d'
