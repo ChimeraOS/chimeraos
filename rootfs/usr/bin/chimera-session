@@ -67,21 +67,21 @@ function gamescope_steam() {
 	# switch to Steam Big Picture UI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session-steam
-	sudo systemctl enable --now handycon
+	# sudo systemctl enable --now handycon
 }
 
 function gamescope_opengamepadui() {
 	# switch to OpengamepadUI (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session-opengamepadui
-	sudo systemctl disable --now handycon
+	# sudo systemctl disable --now handycon
 }
 
 function gamescope_steam_plus() {
 	# switch to Steam plus OpengamepadUI overlay (Gamescope/Wayland)
 	echo '' > ${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session-steam-plus
-	sudo systemctl disable --now handycon
+	# sudo systemctl disable --now handycon
 }
 
 function print_invalid_session() {
