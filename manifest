@@ -24,6 +24,7 @@ export PACKAGES="\
 	breeze-gtk \
 	broadcom-wl-dkms \
 	bzip2 \
+	cage \
 	cifs-utils \
 	cpupower \
 	diffutils \
@@ -263,6 +264,7 @@ export AUR_PACKAGES="\
 	wyvern \
 	waydroid \
 	waydroid-script-git \
+	wlr-randr \
 	yay-bin \
 	zenergy-dkms-git \
 "

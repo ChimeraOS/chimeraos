@@ -139,3 +139,6 @@
 [submodule "aur-pkgs/antimicrox"]
 	path = aur-pkgs/antimicrox
 	url = https://aur.archlinux.org/antimicrox.git
+[submodule "aur-pkgs/wlr-randr"]
+	path = aur-pkgs/wlr-randr
+	url = https://aur.archlinux.org/wlr-randr.git
