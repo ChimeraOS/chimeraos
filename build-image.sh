@@ -207,9 +207,11 @@ rm -rf \
 
 rm -rf ${FILES_TO_DELETE}
 
+# move back installed package database
+mv /usr/var/ /
+
 # create necessary directories
 mkdir /home
-mkdir /var
 mkdir /frzr_root
 EOF
 
