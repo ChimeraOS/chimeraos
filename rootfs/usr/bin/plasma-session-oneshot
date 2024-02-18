@@ -14,7 +14,7 @@ CHAINED_SESSION="/usr/bin/startplasma-wayland"
 # If we decide the sentinel is consumed, execute this command instead and fail
 RESTORE_SESSION=(/usr/lib/os-session-select) # No arguments restores the session
 
-STEAM_SESSION="gamescope-session-steam-plus"
+STEAM_SESSION="gamescope-session-steam"
 
 # Find or check config return session
 function check_return()
