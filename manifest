@@ -19,7 +19,6 @@ export PACKAGES="\
 	alsa-firmware \
 	alsa-utils \
 	amd-ucode \
-	antimicrox \
 	bash-completion \
 	bluedevil \
 	breeze-gtk \
