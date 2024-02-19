@@ -43,21 +43,6 @@
 [submodule "aur-pkgs/lib32-gperftools"]
 	path = aur-pkgs/lib32-gperftools
 	url = https://aur.archlinux.org/lib32-gperftools.git
-[submodule "aur-pkgs/libretro-dosbox-pure-git"]
-	path = aur-pkgs/libretro-dosbox-pure-git
-	url = https://aur.archlinux.org/libretro-dosbox-pure-git.git
-[submodule "aur-pkgs/libretro-opera-git"]
-	path = aur-pkgs/libretro-opera-git
-	url = https://aur.archlinux.org/libretro-opera-git.git
-[submodule "aur-pkgs/libretro-prosystem-git"]
-	path = aur-pkgs/libretro-prosystem-git
-	url = https://aur.archlinux.org/libretro-prosystem-git.git
-[submodule "aur-pkgs/libretro-stella2014-git"]
-	path = aur-pkgs/libretro-stella2014-git
-	url = https://aur.archlinux.org/libretro-stella2014-git.git
-[submodule "aur-pkgs/libretro-virtualjaguar-git"]
-	path = aur-pkgs/libretro-virtualjaguar-git
-	url = https://aur.archlinux.org/libretro-virtualjaguar-git.git
 [submodule "aur-pkgs/kanit-font"]
 	path = aur-pkgs/kanit-font
 	url = https://aur.archlinux.org/kanit-font.git
@@ -82,9 +67,6 @@
 [submodule "aur-pkgs/r8168-dkms"]
 	path = aur-pkgs/r8168-dkms
 	url = https://aur.archlinux.org/r8168-dkms.git
-[submodule "aur-pkgs/retroarch-autoconfig-udev-git"]
-	path = aur-pkgs/retroarch-autoconfig-udev-git
-	url = https://aur.archlinux.org/retroarch-autoconfig-udev-git.git
 [submodule "aur-pkgs/rtl8812au-dkms-git"]
 	path = aur-pkgs/rtl8812au-dkms-git
 	url = https://aur.archlinux.org/rtl8812au-dkms-git.git
