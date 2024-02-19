@@ -210,7 +210,6 @@ export AUR_PACKAGES="\
 	bcm20702a1-firmware \
 	bmi260-dkms \
 	boxtron \
-	chimera \
 	chimeraos-device-quirks-git \
 	downgrade \
 	evdev-keepalive \
@@ -264,7 +263,6 @@ export SERVICES="\
 "
 
 export USER_SERVICES="\
-	chimera.service \
 	pipewire \
 	steam-patch.service \
 "
