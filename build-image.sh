@@ -209,6 +209,7 @@ rm -rf ${FILES_TO_DELETE}
 
 # create necessary directories
 mkdir /home
+mkdir /var
 mkdir /frzr_root
 EOF
 
