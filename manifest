@@ -211,6 +211,7 @@ export AUR_PACKAGES="\
 	ayaneo-platform-dkms-git \
 	ayn-platform-dkms-git \
 	bcm20702a1-firmware \
+	bmi160-aya-neo-dkms-git \
 	bmi260-dkms \
 	boxtron \
 	chimeraos-device-quirks-git \

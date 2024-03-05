@@ -121,3 +121,6 @@
 [submodule "aur-pkgs/wlr-randr"]
 	path = aur-pkgs/wlr-randr
 	url = https://aur.archlinux.org/wlr-randr.git
+[submodule "aur-pkgs/bmi160-aya-neo-dkms-git"]
+	path = aur-pkgs/bmi160-aya-neo-dkms-git
+	url = https://aur.archlinux.org/bmi160-aya-neo-dkms-git
