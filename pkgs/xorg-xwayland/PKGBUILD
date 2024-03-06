@@ -13,7 +13,7 @@ depends=('nettle' 'libepoxy' 'systemd-libs' 'libxfont2'
          'libglvnd' 'libxau' 'wayland' 'libdrm' 'libtirpc'
          'libxshmfence' 'glibc')
 makedepends=('meson' 'xorgproto' 'xtrans' 'libxkbfile' 'dbus'
-             'xorg-font-util' 'wayland-protocols' 'mesa-libgl'
+             'xorg-font-util' 'wayland-protocols' 'mesa'
              'systemd' 'egl-wayland')
 source=(https://xorg.freedesktop.org/archive/individual/xserver/xwayland-$pkgver.tar.xz
         0001-xwayland-Implement-tearing-protocol.patch)
