@@ -21,6 +21,7 @@ depends=(
   glm
   libavif
   libcap.so
+  libdecor
   libdisplay-info.so
   libdrm
   libliftoff.so
