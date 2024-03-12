@@ -105,7 +105,7 @@ build() {
   ninja -C build
 }
 
-package() {-Denable_openvr_support=false
+package() {
   install -d "$pkgdir"/usr/share/gamescope/reshade
   cp -r "$srcdir"/GamescopeShaders/* "$pkgdir"/usr/share/gamescope/reshade/
   chmod -R 655 "$pkgdir"/usr/share/gamescope
