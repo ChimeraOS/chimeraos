@@ -99,12 +99,13 @@ build() {
   arch-meson gamescope build \
     -Dforce_fallback_for=stb,libliftoff,wlroots \
     -Dpipewire=enabled \
+    -Denable_openvr_support=false \
     -Dwlroots:backends=drm,libinput,x11 \
     -Dwlroots:renderers=gles2,vulkan
   ninja -C build
 }
 
-package() {
+package() {-Denable_openvr_support=false
   install -d "$pkgdir"/usr/share/gamescope/reshade
   cp -r "$srcdir"/GamescopeShaders/* "$pkgdir"/usr/share/gamescope/reshade/
   chmod -R 655 "$pkgdir"/usr/share/gamescope
