@@ -155,9 +155,9 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 
 #generate the UKI
 pacman -S --noconfirm systemd-ukify
-mkdir /usr/lib/kernel
-mv /usr/lib/modules/* /usr/lib/kernel
-ukify --cmdline=@/etc/cmdline --linux=/boot/vmlinuz-${KERNEL_PACKAGE} --initrd=/boot/initramfs-${KERNEL_PACKAGE}.img --output=/usr/lib/kernel/${KERNEL_PACKAGE}.unsigned.efi
+mkdir -p /usr/lib/kernel_deploy
+mv /usr/lib/modules/* /usr/lib/kernel_deploy
+ukify --cmdline=@/etc/cmdline --linux=/boot/vmlinuz-${KERNEL_PACKAGE} --initrd=/boot/initramfs-${KERNEL_PACKAGE}.img --output=/usr/lib/kernel_deploy/${KERNEL_PACKAGE}.unsigned.efi
 pacman -Rs --noconfirm mkinitcpio ${KERNEL_PACKAGE} ${KERNEL_PACKAGE}-headers systemd-ukify
 
 echo "
