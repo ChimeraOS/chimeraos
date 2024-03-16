@@ -1,16 +1,16 @@
 # Maintainer: Simon Hallsten <flightlessmangoyt@gmail.com>
 pkgname=('mangohud' 'lib32-mangohud')
-pkgver=0.7.1.rc2.r4.gdc60dc7
+pkgver=0.7.1
 pkgrel=1
 pkgdesc="Vulkan and OpenGL overlay to display performance information"
 arch=('x86_64')
 makedepends=('dbus' 'gcc' 'meson' 'python-mako' 'libx11' 'lib32-libx11' 'git' 'pkgconf' 'vulkan-headers' 'appstream'
-             'libxnvctrl'
+             'libxnvctrl' 'libxrandr'
 )
 depends=('glslang' 'libglvnd' 'lib32-libglvnd' 'glew' 'glfw-x11')
 replaces=('vulkan-mesa-layer-mango')
 license=('MIT')
-_commit=dc60dc71ec3e7b87fdab3c8bacfd794404e24ab5 # 0.7.1.rc2
+_commit=48d84262cd21ae3916e2d9713b9f1a223190b1a6 # 0.7.1
 
 source=(
     "mangohud"::"git+https://github.com/flightlessmango/MangoHud.git#commit=${_commit}"
