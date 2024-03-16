@@ -150,12 +150,17 @@ PrintMotd no # pam does that
 Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
+#generate the UKI
+pacman -S --noconfirm mkinitcpio
+mkinitcpio --cmdline=/etc/cmdline --config=/etc/mkinitcpio.conf --uki /kernel.unsigned.efi
+pacman -Rs --noconfirm mkinitcpio ${KERNEL_PACKAGE} ${KERNEL_PACKAGE}-headers
+
 echo "
-LABEL=frzr_root /          btrfs subvol=deployments/${SYSTEM_NAME}-${VERSION},ro,noatime,nodatacow 0 0
-LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
-LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
-LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
-LABEL=frzr_efi  /boot      vfat  rw,noatime,nofail  0 0
+LABEL=frzr_root /var				btrfs rw,subvolid=262,noatime 0 0
+LABEL=frzr_root /home				btrfs rw,subvolid=258,noatime,nodatacow 0 0
+LABEL=frzr_root /frzr_root 			btrfs rw,subvolid=5,noatime 0 0
+LABEL=frzr_root /usr/lib/modules	btrfs ro,noatime,space_cache=v2,subvolid=257 0 0
+LABEL=frzr_efi  /boot				vfat  rw,noatime,nofail  0 0
 " > /etc/fstab
 
 echo "
