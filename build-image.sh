@@ -151,9 +151,11 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
 #generate the UKI
-pacman -S --noconfirm mkinitcpio
-mkinitcpio -k $(ls /usr/lib/modules) --cmdline=/etc/cmdline --config=/etc/mkinitcpio.conf --uki /etc/${KERNEL_PACKAGE}.unsigned.efi
-pacman -Rs --noconfirm mkinitcpio ${KERNEL_PACKAGE} ${KERNEL_PACKAGE}-headers
+pacman -S systemd-ukify
+mkdir /usr/lib/kernel
+mv /usr/lib/modules/* /usr/lib/kernel
+ukify --cmdline=@/etc/cmdline --linux=/boot/vmlinuz-${KERNEL_PACKAGE} --initrd=/boot/initramfs-${KERNEL_PACKAGE}.img --output=/usr/lib/kernel/${KERNEL_PACKAGE}.unsigned.efi
+pacman -Rs --noconfirm mkinitcpio ${KERNEL_PACKAGE} ${KERNEL_PACKAGE}-headers systemd-ukify
 
 echo "
 LABEL=frzr_root /var				btrfs rw,subvolid=262,noatime 0 0
@@ -209,6 +211,7 @@ rm -rf \
 /extra_certs \
 /home \
 /var \
+/boot \
 
 rm -rf ${FILES_TO_DELETE}
 
@@ -216,6 +219,7 @@ rm -rf ${FILES_TO_DELETE}
 mkdir /home
 mkdir /var
 mkdir /frzr_root
+mkdir /boot
 EOF
 
 # copy files into chroot again
