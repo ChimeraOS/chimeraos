@@ -152,7 +152,7 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 
 #generate the UKI
 pacman -S --noconfirm mkinitcpio
-mkinitcpio --cmdline=/etc/cmdline --config=/etc/mkinitcpio.conf --uki /etc/${KERNEL_PACKAGE}.unsigned.efi
+mkinitcpio -k $(ls /usr/lib/modules) --cmdline=/etc/cmdline --config=/etc/mkinitcpio.conf --uki /etc/${KERNEL_PACKAGE}.unsigned.efi
 pacman -Rs --noconfirm mkinitcpio ${KERNEL_PACKAGE} ${KERNEL_PACKAGE}-headers
 
 echo "
