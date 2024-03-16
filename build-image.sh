@@ -94,6 +94,9 @@ sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf
 # update package databases
 pacman --noconfirm -Syy
 
+# Install mkinitcpio (important later on)
+pacman -S --noconfirm mkinitcpio
+
 # install kernel package
 if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
 	pacman --noconfirm -U --overwrite '*' \
@@ -151,7 +154,7 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
 #generate the UKI
-pacman -S systemd-ukify
+pacman -S --noconfirm systemd-ukify
 mkdir /usr/lib/kernel
 mv /usr/lib/modules/* /usr/lib/kernel
 ukify --cmdline=@/etc/cmdline --linux=/boot/vmlinuz-${KERNEL_PACKAGE} --initrd=/boot/initramfs-${KERNEL_PACKAGE}.img --output=/usr/lib/kernel/${KERNEL_PACKAGE}.unsigned.efi
