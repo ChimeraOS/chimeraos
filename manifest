@@ -126,6 +126,7 @@ export PACKAGES="\
 	python \
 	python-inotify-simple \
 	retroarch \
+	rclone \
 	rsync \
 	smbclient \
 	sof-firmware \
