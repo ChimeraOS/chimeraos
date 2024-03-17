@@ -157,7 +157,7 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 pacman -S --noconfirm systemd-ukify
 mkdir -p /usr/lib/kernel_deploy
 mv /usr/lib/modules/* /usr/lib/kernel_deploy
-ukify build --cmdline=@/etc/cmdline --linux=/boot/vmlinuz-${KERNEL_PACKAGE} --initrd=/boot/initramfs-${KERNEL_PACKAGE}.img --os-release=@/etc/os-release --splash=/etc/chimeraos_logo.png --output=/usr/lib/kernel_deploy/${KERNEL_PACKAGE}.unsigned.efi
+ukify build --cmdline=@/etc/cmdline --linux=/boot/vmlinuz-${KERNEL_PACKAGE} --initrd=/boot/initramfs-${KERNEL_PACKAGE}.img --os-release=@/etc/os-release --output=/usr/lib/kernel_deploy/${KERNEL_PACKAGE}.unsigned.efi
 rm /etc/chimeraos_logo.png
 pacman -Rs --noconfirm mkinitcpio ${KERNEL_PACKAGE} ${KERNEL_PACKAGE}-headers systemd-ukify
 
