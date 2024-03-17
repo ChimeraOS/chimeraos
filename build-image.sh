@@ -154,19 +154,19 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
 #generate the UKI
-pacman -S --noconfirm systemd-ukify
-mkdir -p /usr/lib/kernel_deploy
-mv /usr/lib/modules/* /usr/lib/kernel_deploy
-ukify build --cmdline=@/etc/cmdline --linux=/boot/vmlinuz-${KERNEL_PACKAGE} --initrd=/boot/initramfs-${KERNEL_PACKAGE}.img --os-release=@/etc/os-release --output=/usr/lib/kernel_deploy/${KERNEL_PACKAGE}.unsigned.efi
+#pacman -S --noconfirm systemd-ukify
+#mkdir -p /usr/lib/kernel_deploy
+#mv /usr/lib/modules/* /usr/lib/kernel_deploy
+#ukify build --cmdline=@/etc/cmdline --linux=/boot/vmlinuz-${KERNEL_PACKAGE} --initrd=/boot/initramfs-${KERNEL_PACKAGE}.img --os-release=@/etc/os-release --output=/usr/lib/kernel_deploy/${KERNEL_PACKAGE}.unsigned.efi
 rm /etc/chimeraos_logo.png
-pacman -Rs --noconfirm mkinitcpio ${KERNEL_PACKAGE} ${KERNEL_PACKAGE}-headers systemd-ukify
+#pacman -Rs --noconfirm systemd-ukify
+#pacman -Rs --noconfirm mkinitcpio ${KERNEL_PACKAGE} ${KERNEL_PACKAGE}-headers systemd-ukify
 
 echo "
-LABEL=frzr_root /var				btrfs rw,subvolid=262,noatime 0 0
-LABEL=frzr_root /home				btrfs rw,subvolid=258,noatime,nodatacow 0 0
-LABEL=frzr_root /frzr_root 			btrfs rw,subvolid=5,noatime 0 0
-LABEL=frzr_root /usr/lib/modules	btrfs ro,noatime,space_cache=v2,subvolid=257 0 0
-LABEL=frzr_efi  /boot				vfat  rw,noatime,nofail  0 0
+LABEL=frzr_root /var				btrfs	rw,subvolid=256,noatime 0 0
+LABEL=frzr_root /home				btrfs	rw,subvolid=257,noatime,nodatacow 0 0
+LABEL=frzr_root /frzr_root 			btrfs	rw,subvolid=5,noatime 0 0
+overlay 		/etc	 			overlay	noauto,x-systemd.automount,lowerdir=/etc,upperdir=/frzr_root/etc,workdir=/frzr_root/.etc 0 0
 " > /etc/fstab
 
 echo "
@@ -202,11 +202,11 @@ mkdir -p /usr/var/lib/pacman
 cp -r /var/lib/pacman/local /usr/var/lib/pacman/
 
 # move kernel image and initrd to a defualt location if "linux" is not used
-if [ ${KERNEL_PACKAGE} != 'linux' ] ; then
-	mv /boot/vmlinuz-${KERNEL_PACKAGE} /boot/vmlinuz-linux
-	mv /boot/initramfs-${KERNEL_PACKAGE}.img /boot/initramfs-linux.img
-	mv /boot/initramfs-${KERNEL_PACKAGE}-fallback.img /boot/initramfs-linux-fallback.img
-fi
+#if [ ${KERNEL_PACKAGE} != 'linux' ] ; then
+#	mv /boot/vmlinuz-${KERNEL_PACKAGE} /boot/vmlinuz-linux
+#	mv /boot/initramfs-${KERNEL_PACKAGE}.img /boot/initramfs-linux.img
+#	mv /boot/initramfs-${KERNEL_PACKAGE}-fallback.img /boot/initramfs-linux-fallback.img
+#fi
 
 # clean up/remove unnecessary files
 rm -rf \
@@ -215,7 +215,6 @@ rm -rf \
 /extra_certs \
 /home \
 /var \
-/boot \
 
 rm -rf ${FILES_TO_DELETE}
 
@@ -223,7 +222,7 @@ rm -rf ${FILES_TO_DELETE}
 mkdir /home
 mkdir /var
 mkdir /frzr_root
-mkdir /boot
+mkdir /efi
 EOF
 
 # copy files into chroot again
