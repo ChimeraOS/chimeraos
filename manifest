@@ -229,7 +229,7 @@ export AUR_PACKAGES="\
 "
 
 export SERVICES="\
-	systemctl enable kexec-load@${KERNEL_PACKAGE}.service \
+	kexec-load@${KERNEL_PACKAGE}.service \
 	NetworkManager \
 	avahi-daemon \
 	bluetooth \
