@@ -151,7 +151,7 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
 echo "
-LABEL=frzr_root /          btrfs subvol=deployments/${SYSTEM_NAME}-${VERSION},ro,noatime,nodatacow 0 0
+LABEL=frzr_root /          btrfs subvol=deployments/${SYSTEM_NAME}-${VERSION},rw,noatime,nodatacow 0 0
 LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
 LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
@@ -216,6 +216,9 @@ EOF
 # copy files into chroot again
 cp -R rootfs/. ${BUILD_PATH}/
 rm -rf ${BUILD_PATH}/extra_certs
+
+# finally move /etc to /usr/etc so that frzr will use it to deploy a clean /etc subvolume on the final install
+mv ${BUILD_PATH}/etc ${BUILD_PATH}/usr/etc
 
 echo "${SYSTEM_NAME}-${VERSION}" > ${BUILD_PATH}/build_info
 echo "" >> ${BUILD_PATH}/build_info
