@@ -32,6 +32,7 @@ export PACKAGES="\
 	efibootmgr \
 	epiphany \
 	ethtool \
+        evdev-keepalive \
 	evtest \
 	ffmpeg \
 	file \
