@@ -32,7 +32,6 @@ export PACKAGES="\
 	efibootmgr \
 	epiphany \
 	ethtool \
-        evdev-keepalive \
 	evtest \
 	ffmpeg \
 	file \
@@ -196,6 +195,7 @@ export AUR_PACKAGES="\
 	chimera \
 	chimeraos-device-quirks-git \
 	downgrade \
+	evdev-keepalive \
 	frzr \
 	gamescope-session-steam-git \
 	gamescope-session-steam-plus-git \
