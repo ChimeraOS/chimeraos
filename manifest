@@ -55,6 +55,7 @@ export PACKAGES="\
 	gnome-text-editor \
 	gst-plugin-pipewire \
 	gvfs-smb \
+	gvfs-nfs \
 	gzip \
 	haveged \
 	htop \
