@@ -44,7 +44,7 @@ mkdir -p ${MOUNT_PATH}
 
 fallocate -l ${SIZE} ${BUILD_IMG}
 mkfs.btrfs -f ${BUILD_IMG}
-mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
+mount -t btrfs -o loop,compress-force=zstd:15 ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
 # copy the makepkg.conf into chroot
@@ -152,9 +152,9 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 
 echo "
 LABEL=frzr_root /          btrfs subvol=deployments/${SYSTEM_NAME}-${VERSION},ro,noatime,nodatacow 0 0
-LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow 0 0
-LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow 0 0
-LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow 0 0
+LABEL=frzr_root /var       btrfs subvol=var,rw,noatime,nodatacow,compress=zstd:3 0 0
+LABEL=frzr_root /home      btrfs subvol=home,rw,noatime,nodatacow,compress=zstd:3 0 0
+LABEL=frzr_root /frzr_root btrfs subvol=/,rw,noatime,nodatacow,compress=zstd:3 0 0
 LABEL=frzr_efi  /boot      vfat  rw,noatime,nofail  0 0
 " > /etc/fstab
 
@@ -212,6 +212,9 @@ mkdir /home
 mkdir /var
 mkdir /frzr_root
 EOF
+
+#defrag the image
+btrfs filesystem defragment -r ${BUILD_PATH}
 
 # copy files into chroot again
 cp -R rootfs/. ${BUILD_PATH}/
