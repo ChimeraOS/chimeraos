@@ -10,9 +10,6 @@
 [submodule "aur-pkgs/boxtron"]
 	path = aur-pkgs/boxtron
 	url = https://aur.archlinux.org/boxtron.git
-[submodule "aur-pkgs/chimeraos-device-quirks-git"]
-	path = aur-pkgs/chimeraos-device-quirks-git
-	url = https://aur.archlinux.org/chimeraos-device-quirks-git.git
 [submodule "aur-pkgs/downgrade"]
 	path = aur-pkgs/downgrade
 	url = https://aur.archlinux.org/downgrade.git

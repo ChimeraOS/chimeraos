@@ -197,8 +197,7 @@ export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.4-chos1-1/vulkan-mesa-layers-1--24.0.4.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.4-chos1-1/vulkan-radeon-1--24.0.4.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.4-chos1-1/vulkan-swrast-1--24.0.4.chos1-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/repos/2023/06/28/extra/os/x86_64/libretro-pcsx2-11900-2-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/libretro-mame/libretro-mame-85763-1-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/repos/2023/12/17/extra/os/x86_64/pipewire-jack-1%3A1.0.0-2-x86_64.pkg.tar.zst \
 	https://steamdeck-packages.steamos.cloud/archlinux-mirror/jupiter-main/os/x86_64/steamdeck-kde-presets-0.21-1-any.pkg.tar.zst \
 "
 
@@ -214,7 +213,6 @@ export AUR_PACKAGES="\
 	bmi160-aya-neo-dkms-git \
 	bmi260-dkms \
 	boxtron \
-	chimeraos-device-quirks-git \
 	downgrade \
 	evdev-keepalive \
 	frzr \
