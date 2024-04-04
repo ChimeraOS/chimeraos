@@ -116,6 +116,7 @@ export PACKAGES="\
 	noto-fonts-emoji \
 	nss-mdns \
 	openal \
+	openrazer-daemon \
 	openssh \
 	p7zip \
 	pipewire \
@@ -126,6 +127,7 @@ export PACKAGES="\
 	pulsemixer \
 	python \
 	python-inotify-simple \
+	python-notify2 \
 	qtractor \
 	retroarch \
 	rsync \
