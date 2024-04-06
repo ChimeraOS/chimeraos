@@ -154,7 +154,7 @@ echo "
 LABEL=frzr_root /var       btrfs     defaults,subvolid=256,rw,noatime,nodatacow,nofail                                                                                  0   0
 LABEL=frzr_root /home      btrfs     defaults,subvolid=257,rw,noatime,nodatacow,nofail                                                                                  0   0
 LABEL=frzr_root /frzr_root btrfs     defaults,subvolid=5,rw,noatime,nodatacow,x-initrd                                                                                  0   2
-overlay       /etc       overlay noauto,x-depends-on=/frzr_root,x-systemd.automount,lowerdir=/etc,upperdir=/frzr_root/etc,workdir=/frzr_root/.etc,comment=etcoverlay    0   0
+overlay       /etc       overlay noauto,x-depends-on=/frzr_root, x-systemd.after=/frzr_root,x-systemd.mount-timeout=5,lowerdir=/etc,upperdir=/frzr_root/etc,workdir=/frzr_root/.etc,comment=etcoverlay    0   0
 " > /etc/fstab
 
 echo "
