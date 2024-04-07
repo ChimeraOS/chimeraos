@@ -162,8 +162,8 @@ export PACKAGES="\
 "
 
 export PACKAGE_OVERRIDES="\
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.8-chos1-1/linux-chimeraos-6.8.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.8-chos1-1/linux-chimeraos-headers-6.8.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.8.2-chos1-1/linux-chimeraos-6.8.2.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.8.2-chos1-1/linux-chimeraos-headers-6.8.2.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.4-chos1-1/lib32-libva-mesa-driver-1--24.0.4.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.4-chos1-1/lib32-mesa-1--24.0.4.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.0.4-chos1-1/lib32-mesa-vdpau-1--24.0.4.chos1-1-x86_64.pkg.tar.zst \
