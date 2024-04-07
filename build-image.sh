@@ -44,7 +44,7 @@ mkdir -p ${MOUNT_PATH}
 
 fallocate -l ${SIZE} ${BUILD_IMG}
 mkfs.btrfs -f ${BUILD_IMG}
-mount -t btrfs -o loop,nodatacow ${BUILD_IMG} ${MOUNT_PATH}
+mount -t btrfs -o loop,compress-force=zstd:15 ${BUILD_IMG} ${MOUNT_PATH}
 btrfs subvolume create ${BUILD_PATH}
 
 # copy the makepkg.conf into chroot
