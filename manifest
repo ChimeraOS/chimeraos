@@ -115,6 +115,7 @@ export PACKAGES="\
 	nfs-utils \
 	noto-fonts-emoji \
 	nss-mdns \
+        ntfs-3g \
 	openal \
 	openrazer-daemon \
 	openssh \
