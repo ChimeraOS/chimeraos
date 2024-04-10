@@ -44,7 +44,7 @@ COPY manifest /manifest
 # Freeze packages and overwrite with overrides when needed
 RUN source /manifest && \
     echo "Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist && \
-    pacman --noconfirm -Syyuu; if [ -n "${PACKAGE_OVERRIDES}" ]; then wget --directory-prefix=/tmp/extra_pkgs ${PACKAGE_OVERRIDES}; pacman --noconfirm -U --overwrite '*' /tmp/extra_pkgs/*; rm -rf /tmp/extra_pkgs; fi
+    pacman --noconfirm -Syyuu; if [ -n "${PACKAGE_OVERRIDES}" ]; then pacman --noconfirm -U --overwrite '*' ${PACKAGE_OVERRIDES}; fi
 
 USER build
 ENV BUILD_USER "build"
