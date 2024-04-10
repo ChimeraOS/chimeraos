@@ -48,6 +48,7 @@ export PACKAGES="\
 	gnome-control-center \
 	gnome-disk-utility \
 	gnome-keyring \
+	gnome-menus \
 	gnome-session \
 	gnome-shell \
 	gnome-software \
