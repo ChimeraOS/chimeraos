@@ -202,8 +202,8 @@ export AUR_PACKAGES="\
 	frzr \
 	gamescope-session-steam-git \
 	gamescope-session-steam-plus-git \
-	handygccs-git \
 	hhfc-git \
+	inputplumber-bin \
 	legendary \
 	lib32-gamescope-plus \
 	lib32-gperftools \
@@ -238,9 +238,9 @@ export SERVICES="\
 	bluetooth \
 	bluetooth-workaround \
 	fstrim.timer \
-	handycon \
 	haveged \
 	home-swapfile.swap \
+	inputplumber \
 	lightdm \
 	powerstation \
 	sshd \

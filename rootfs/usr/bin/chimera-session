@@ -7,32 +7,30 @@ SESSION_LIGHTDM_CONFIG="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
 SESSION_LIST=('desktop' 'desktop-xorg' 'steam' 'steam-plus' 'opengamepadui')
 SELECTED_SESSION="$1"
 
-
 mkdir -p "${CONFIG_HOME}/environment.d"
 
 function print_session_list() {
 	# detect active session
 	CURRENT_SESSION="unknown"
-	if grep "gnome" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+	if grep "gnome" ${SESSION_LIGHTDM_CONFIG} &>/dev/null; then
 		CURRENT_SESSION="desktop"
 	fi
 
-	if grep "gnome-xorg" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+	if grep "gnome-xorg" ${SESSION_LIGHTDM_CONFIG} &>/dev/null; then
 		CURRENT_SESSION="desktop-xorg"
 	fi
 
-	if grep "gamescope-session-steam" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+	if grep "gamescope-session-steam" ${SESSION_LIGHTDM_CONFIG} &>/dev/null; then
 		CURRENT_SESSION="steam"
 	fi
 
-	if grep "gamescope-session-steam-plus" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+	if grep "gamescope-session-steam-plus" ${SESSION_LIGHTDM_CONFIG} &>/dev/null; then
 		CURRENT_SESSION="steam-plus"
 	fi
 
-	if grep "gamescope-session-opengamepadui" ${SESSION_LIGHTDM_CONFIG} &> /dev/null; then
+	if grep "gamescope-session-opengamepadui" ${SESSION_LIGHTDM_CONFIG} &>/dev/null; then
 		CURRENT_SESSION="opengamepadui"
 	fi
-
 
 	# print active and available sessions
 	for t in ${SESSION_LIST[@]}; do
@@ -65,23 +63,23 @@ function desktop_xorg() {
 
 function gamescope_steam() {
 	# switch to Steam Big Picture UI (Gamescope/Wayland)
-	echo '' > ${SESSION_CONFIG}
+	echo '' >${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session-steam
-	sudo systemctl enable --now handycon
+	sudo systemctl enable --now inputplumber # remove when fully integrated into opengamepadui
 }
 
 function gamescope_opengamepadui() {
 	# switch to OpengamepadUI (Gamescope/Wayland)
-	echo '' > ${SESSION_CONFIG}
+	echo '' >${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session-opengamepadui
-	sudo systemctl disable --now handycon
+	sudo systemctl disable --now inputplumber
 }
 
 function gamescope_steam_plus() {
 	# switch to Steam plus OpengamepadUI overlay (Gamescope/Wayland)
-	echo '' > ${SESSION_CONFIG}
+	echo '' >${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session-steam-plus
-	sudo systemctl disable --now handycon
+	sudo systemctl disable --now inputplumber
 }
 
 function print_invalid_session() {
@@ -90,8 +88,6 @@ function print_invalid_session() {
 	echo "Available session types:"
 	print_session_list
 }
-
-
 
 # print current and available sessions when no argument specified
 if [ -z "${SELECTED_SESSION}" ]; then
