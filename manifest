@@ -230,6 +230,7 @@ export AUR_PACKAGES="\
 	rtl8821au-dkms-git \
 	ryzenadj-git \
 	steam_notif_daemon \
+        steam-powerbuttond-git \
 	steam-removable-media-git \
 	wyvern \
 	zenergy-dkms-git \
@@ -246,6 +247,7 @@ export SERVICES="\
 	inputplumber \
 	lightdm \
 	powerstation \
+        steam-powerbuttond \
 	sshd \
 	systemd-timesyncd \
 	swapfile \
