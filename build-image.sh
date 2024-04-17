@@ -151,10 +151,10 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
 echo "
-LABEL=frzr_root /var       btrfs     defaults,subvolid=256,rw,noatime,nodatacow,nofail                                                                                                                                           0   0
-LABEL=frzr_root /home      btrfs     defaults,subvolid=257,rw,noatime,nodatacow,nofail                                                                                                                                           0   0
-LABEL=frzr_root /frzr_root btrfs     defaults,subvolid=5,rw,noatime,nodatacow,x-initrd                                                                                                                                           0   2
-overlay         /etc       overlay   defaults,x-systemd.requires=/frzr_root,x-systemd.rw-only,lowerdir=/sysroot/etc,upperdir=/sysroot/frzr_root/etc,workdir=/sysroot/frzr_root/.etc,index=off,metacopy=off,comment=etcoverlay    0   0
+LABEL=frzr_root /var       btrfs     defaults,subvolid=256,rw,noatime,nodatacow,nofail                                                                                                                                                                                                                      0   0
+LABEL=frzr_root /home      btrfs     defaults,subvolid=257,rw,noatime,nodatacow,nofail                                                                                                                                                                                                                      0   0
+LABEL=frzr_root /frzr_root btrfs     defaults,subvolid=5,rw,noatime,nodatacow,x-initrd.mount                                                                                                                                                                                                                0   2
+overlay         /etc       overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-systemd.rw-only,lowerdir=/sysroot/etc,upperdir=/sysroot/frzr_root/etc,workdir=/sysroot/frzr_root/.etc,index=off,metacopy=off,comment=etcoverlay,x-initrd.mount    0   0
 " > /etc/fstab
 
 echo "
