@@ -221,6 +221,7 @@ export AUR_PACKAGES="\
 	opengamepadui-session-git \
 	pikaur \
 	powerstation-bin \
+	python-gbopyrator \
 	python-vdf \
 	r8152-dkms \
 	retroarch-autoconfig-udev-git \
