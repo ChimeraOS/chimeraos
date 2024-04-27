@@ -13,6 +13,7 @@ RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.con
     xcb-util-wm \
     wget \
     pyalpm \
+    python \
     python-build \
     python-installer \
     python-hatchling \
