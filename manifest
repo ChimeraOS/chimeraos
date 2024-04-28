@@ -220,7 +220,7 @@ export AUR_PACKAGES="\
 	nintendo-udev \
 	opengamepadui-bin \
 	opengamepadui-session-git \
-	pikaur-git \
+	pikaur \
 	powerstation-bin \
 	python-gbopyrator \
 	python-vdf \
