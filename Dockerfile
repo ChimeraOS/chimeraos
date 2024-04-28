@@ -18,6 +18,7 @@ RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.con
     python-installer \
     python-hatchling \
     python-markdown-it-py \
+    python-nose \
     python-setuptools \
     python-wheel \
     sudo \
@@ -27,7 +28,10 @@ RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.con
     useradd build -G wheel -m && \
     su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur" && \
     su - build -c "cd /tmp/pikaur && makepkg -f" && \
-    pacman --noconfirm -U /tmp/pikaur/pikaur-*.pkg.tar.zst
+    su - build -c "git clone -b patch-1 https://github.com/ruineka/py-leveldb.git /tmp/py-leveldb" && \
+    su - build -c "cd /tmp/py-leveldb && makepkg -f" && \
+    pacman --noconfirm -U /tmp/pikaur/pikaur-*.pkg.tar.zst && \
+    pacman --noconfirm -U /tmp/py-leveldb/python-leveldb*.pkg.tar.zst
 
 # Auto add PGP keys for users
 RUN mkdir -p /etc/gnupg/ && echo -e "keyserver-options auto-key-retrieve" >> /etc/gnupg/gpg.conf
