@@ -209,9 +209,9 @@ export AUR_PACKAGES="\
 	hhfc-git \
 	inputplumber-bin \
 	legendary \
+	lib32-extest \
 	lib32-gamescope-plus \
 	lib32-gperftools \
-	lib32-extest \
 	libretro-dosbox-pure-git \
 	libretro-opera-git \
 	libretro-prosystem-git \
@@ -322,7 +322,7 @@ postinstallhook() {
 		grep -v steam.desktop |
 		xargs -I {} sh -c "echo NoDisplay=true >> {}"
 
-	# force -steamdeck option in desktop mode to prevent constant steam updates
+	# use script to fix steam input in wayland mode
 	sed -i 's,Exec=/usr/bin/steam-runtime,Exec=/usr/bin/steam-desktop-mode,' /usr/share/applications/steam.desktop
 
 	# set permissions for intel_gpu_top and mangohud
