@@ -211,6 +211,7 @@ export AUR_PACKAGES="\
 	legendary \
 	lib32-gamescope-plus \
 	lib32-gperftools \
+	lib32-extest \
 	libretro-dosbox-pure-git \
 	libretro-opera-git \
 	libretro-prosystem-git \
