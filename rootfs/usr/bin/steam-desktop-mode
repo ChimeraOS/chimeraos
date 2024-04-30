@@ -1,0 +1,22 @@
+#!/usr/bin/bash
+
+# Reference: <https://github.com/ublue-os/bazzite/blob/main/system_files/desktop/shared/usr/bin/bazzite-steam>
+
+DECK_OPTION="-steamdeck"
+# If Steam has been launched before we can safely launch with -steamdeck
+# to maintain the gamemode update branch
+if [ -f $HOME/.local/share/Steam/ubuntu12_32/steamui.so ]; then
+  DECK_OPTION="-steamdeck"
+fi
+
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+  # https://github.com/Supreeeme/extest
+  # Extest is a drop in replacement for the X11 XTEST extension.
+  # It creates a virtual device with the uinput kernel module.
+  # It's been primarily developed for allowing the desktop functionality
+  # on the Steam Controller to work while Steam is open on Wayland.
+  # Also supports Steam Input as a whole.
+  exec env LD_PRELOAD=/usr/lib32/libextest.so /usr/bin/steam "$DECK_OPTION" "$@"
+else
+  exec /usr/bin/steam "$DECK_OPTION" "$@"
+fi
