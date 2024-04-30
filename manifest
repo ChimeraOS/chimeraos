@@ -324,6 +324,7 @@ postinstallhook() {
 
 	# use script to fix steam input in wayland mode
 	sed -i 's,Exec=/usr/bin/steam-runtime,Exec=/usr/bin/steam-desktop-mode,' /usr/share/applications/steam.desktop
+	sed -i 's,Exec=/usr/bin/steam,Exec=/usr/bin/steam-desktop-mode,' /etc/xdg/autostart/steam.desktop
 
 	# set permissions for intel_gpu_top and mangohud
 	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
