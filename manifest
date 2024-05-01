@@ -243,6 +243,7 @@ export SERVICES="\
 	avahi-daemon \
 	bluetooth \
 	bluetooth-workaround \
+	device-quirks-updater \
 	fstrim.timer \
 	haveged \
 	home-swapfile.swap \

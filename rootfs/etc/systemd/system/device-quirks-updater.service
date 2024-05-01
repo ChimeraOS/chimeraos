@@ -1,0 +1,12 @@
+[Unit]
+Description=Gamescope Device Quirks Updater
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=device-quirks-updater.sh
+RemainAfterExit=false
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
