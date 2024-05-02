@@ -196,7 +196,6 @@ export AUR_PACKAGES="\
 	antimicrox \
 	ayaneo-platform-dkms-git \
 	ayn-platform-dkms-git \
-	aw87559-firmware.git \
 	bcm20702a1-firmware \
 	boxtron \
 	chimera \
