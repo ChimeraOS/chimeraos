@@ -1,0 +1,15 @@
+post_install() {
+  [ ! -f /proc/kallsyms ] && exit 1
+
+  grep -q "nouveau" /proc/modules || exit 0
+
+  if ! grep -q "nouveau_exec_job_submit" /proc/kallsyms; then
+    echo -e "\033[1;33mYour currently running kernel isn't compatible with NVK!"
+    echo -e "Please switch to a kernel with the new uAPI patches applied or a 6.6+ kernel"
+    echo -e "\033[1;34mA known working kernel package is included in the optional dependencies\033[0m"
+  fi
+}
+
+post_upgrade() {
+  post_install
+}

@@ -1,0 +1,1880 @@
+From aab6047cc4725c08d060072bd8b03434f5a43c98 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Fri, 3 May 2024 15:35:36 -0500
+Subject: [PATCH 01/18] nil: Use the right PTE kind for Z32 pre-Turing
+
+This got lost in the Rust rewrite.
+
+Fixes: 426553d61d16 ("nil: Re-implement nil_image in Rust")
+---
+ src/nouveau/nil/image.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/nouveau/nil/image.rs b/src/nouveau/nil/image.rs
+index f5e3364e101ae..1b37fe4197c34 100644
+--- a/src/nouveau/nil/image.rs
++++ b/src/nouveau/nil/image.rs
+@@ -578,6 +578,13 @@ impl Image {
+                     NV_MMU_PTE_KIND_S8Z24
+                 }
+             }
++            PIPE_FORMAT_Z32_FLOAT => {
++                if compressed {
++                    NV_MMU_PTE_KIND_ZF32_2CZ + ms
++                } else {
++                    NV_MMU_PTE_KIND_ZF32
++                }
++            }
+             PIPE_FORMAT_X32_S8X24_UINT | PIPE_FORMAT_Z32_FLOAT_S8X24_UINT => {
+                 if compressed {
+                     NV_MMU_PTE_KIND_ZF32_X24S8_2CSZV + ms
+-- 
+GitLab
+
+
+From 9d94e40237adfc33629cbc8615fff5a06ee92db8 Mon Sep 17 00:00:00 2001
+From: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
+Date: Fri, 12 Apr 2024 21:42:50 +0200
+Subject: [PATCH 02/18] nil: Add a nil_image::compressed bit
+
+---
+ src/nouveau/nil/image.rs | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/src/nouveau/nil/image.rs b/src/nouveau/nil/image.rs
+index 1b37fe4197c34..ebcc3bf13f502 100644
+--- a/src/nouveau/nil/image.rs
++++ b/src/nouveau/nil/image.rs
+@@ -104,6 +104,7 @@ pub struct Image {
+     pub array_stride_B: u64,
+     pub align_B: u32,
+     pub size_B: u64,
++    pub compressed: bool,
+     pub tile_mode: u16,
+     pub pte_kind: u8,
+ }
+@@ -159,6 +160,7 @@ impl Image {
+             array_stride_B: 0,
+             align_B: 0,
+             size_B: 0,
++            compressed: false,
+             tile_mode: 0,
+             pte_kind: 0,
+             mip_tail_first_lod: 0,
+@@ -235,9 +237,12 @@ impl Image {
+             image.tile_mode = u16::from(image.levels[0].tiling.y_log2) << 4
+                 | u16::from(image.levels[0].tiling.z_log2) << 8;
+ 
+-            // TODO: compressed
+-            image.pte_kind =
+-                Self::choose_pte_kind(dev, info.format, info.samples, false);
++            image.pte_kind = Self::choose_pte_kind(
++                dev,
++                info.format,
++                info.samples,
++                image.compressed,
++            );
+ 
+             image.align_B = std::cmp::max(image.align_B, 4096);
+             if image.pte_kind >= 0xb && image.pte_kind <= 0xe {
+-- 
+GitLab
+
+
+From b9798c8ad0764eba587105126e1a426c3734c2a2 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Tue, 13 Feb 2024 15:04:53 -0600
+Subject: [PATCH 03/18] nvk: Set color/Z compression based on
+ nil_image::compressed
+
+---
+ src/nouveau/vulkan/nvk_cmd_draw.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/nouveau/vulkan/nvk_cmd_draw.c b/src/nouveau/vulkan/nvk_cmd_draw.c
+index d59bed25b2806..0bdcdaac83afc 100644
+--- a/src/nouveau/vulkan/nvk_cmd_draw.c
++++ b/src/nouveau/vulkan/nvk_cmd_draw.c
+@@ -641,7 +641,7 @@ nvk_CmdBeginRendering(VkCommandBuffer commandBuffer,
+ 
+    /* Always emit at least one color attachment, even if it's just a dummy. */
+    uint32_t color_att_count = MAX2(1, render->color_att_count);
+-   struct nv_push *p = nvk_cmd_buffer_push(cmd, color_att_count * 10 + 27);
++   struct nv_push *p = nvk_cmd_buffer_push(cmd, color_att_count * 12 + 29);
+ 
+    P_IMMD(p, NV9097, SET_MME_SHADOW_SCRATCH(NVK_MME_SCRATCH_VIEW_MASK),
+           render->view_mask);
+@@ -752,6 +752,8 @@ nvk_CmdBeginRendering(VkCommandBuffer commandBuffer,
+             P_NV9097_SET_COLOR_TARGET_ARRAY_PITCH(p, i, 0);
+             P_NV9097_SET_COLOR_TARGET_LAYER(p, i, 0);
+          }
++
++         P_IMMD(p, NV9097, SET_COLOR_COMPRESSION(i), nil_image->compressed);
+       } else {
+          P_MTHD(p, NV9097, SET_COLOR_TARGET_A(i));
+          P_NV9097_SET_COLOR_TARGET_A(p, i, 0);
+@@ -765,6 +767,8 @@ nvk_CmdBeginRendering(VkCommandBuffer commandBuffer,
+          P_NV9097_SET_COLOR_TARGET_THIRD_DIMENSION(p, i, layer_count);
+          P_NV9097_SET_COLOR_TARGET_ARRAY_PITCH(p, i, 0);
+          P_NV9097_SET_COLOR_TARGET_LAYER(p, i, 0);
++
++         P_IMMD(p, NV9097, SET_COLOR_COMPRESSION(i), ENABLE_TRUE);
+       }
+    }
+ 
+@@ -850,6 +854,8 @@ nvk_CmdBeginRendering(VkCommandBuffer commandBuffer,
+ 
+       P_IMMD(p, NV9097, SET_ZT_LAYER, base_array_layer);
+ 
++      P_IMMD(p, NV9097, SET_Z_COMPRESSION, nil_image.compressed);
++
+       if (nvk_cmd_buffer_3d_cls(cmd) >= MAXWELL_B) {
+          P_IMMD(p, NVC597, SET_ZT_SPARSE, {
+             .enable = ENABLE_FALSE,
+-- 
+GitLab
+
+
+From f68050a7fcb7ddc016b709d50904c2e3b97c3f3d Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Fri, 3 May 2024 13:00:18 -0500
+Subject: [PATCH 04/18] nil: Default to NV_MMU_PTE_KIND_GENERIC_MEMORY on
+ Turing+
+
+---
+ src/nouveau/nil/image.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nouveau/nil/image.rs b/src/nouveau/nil/image.rs
+index ebcc3bf13f502..be9fcdd28a05b 100644
+--- a/src/nouveau/nil/image.rs
++++ b/src/nouveau/nil/image.rs
+@@ -544,7 +544,7 @@ impl Image {
+                     NV_MMU_PTE_KIND_S8
+                 }
+             }
+-            _ => NV_MMU_PTE_KIND_PITCH,
++            _ => NV_MMU_PTE_KIND_GENERIC_MEMORY,
+         }
+         .try_into()
+         .unwrap()
+-- 
+GitLab
+
+
+From d6b8dd01ec0255f766006bcf8a63346a2108f41b Mon Sep 17 00:00:00 2001
+From: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
+Date: Sun, 21 Apr 2024 16:58:35 +0200
+Subject: [PATCH 05/18] nil: Add some helpers for DRM format modifiers
+
+---
+ src/nouveau/nil/cbindgen.toml |   3 +-
+ src/nouveau/nil/format.rs     |  14 ++
+ src/nouveau/nil/image.rs      |   2 +-
+ src/nouveau/nil/lib.rs        |   1 +
+ src/nouveau/nil/meson.build   |   4 +
+ src/nouveau/nil/modifiers.rs  | 323 ++++++++++++++++++++++++++++++++++
+ 6 files changed, 345 insertions(+), 2 deletions(-)
+ create mode 100644 src/nouveau/nil/modifiers.rs
+
+diff --git a/src/nouveau/nil/cbindgen.toml b/src/nouveau/nil/cbindgen.toml
+index 26c9a402bc9e1..3556bb872edf0 100644
+--- a/src/nouveau/nil/cbindgen.toml
++++ b/src/nouveau/nil/cbindgen.toml
+@@ -1,6 +1,6 @@
+ language = "C"
+ 
+-includes = ["nouveau/headers/nv_device_info.h", "util/format/u_format.h"]
++includes = ["nouveau/headers/nv_device_info.h", "util/format/u_format.h", "drm-uapi/drm_fourcc.h"]
+ autogen_warning = "/* Warning, this file is autogenerated by cbindgen. Don't modify this manually. */"
+ include_guard = "NIL_H"
+ usize_is_size_t = true
+@@ -19,6 +19,7 @@ renaming_overrides_prefixing = true
+ "GOB_DEPTH" = "NIL_GOB_DEPTH"
+ "GOB_WIDTH_B" = "NIL_GOB_WIDTH_B"
+ "MAX_LEVELS" = "NIL_MAX_LEVELS"
++"MAX_DRM_FORMAT_MODS" = "NIL_MAX_DRM_FORMAT_MODS"
+ 
+ # This is annoying. rename_types doesn't seem to work
+ "Format" = "nil_format"
+diff --git a/src/nouveau/nil/format.rs b/src/nouveau/nil/format.rs
+index 4a7765473354c..5dbd03a3cded0 100644
+--- a/src/nouveau/nil/format.rs
++++ b/src/nouveau/nil/format.rs
+@@ -58,6 +58,20 @@ impl Format {
+         unsafe { util_format_is_pure_integer((*self).into()) }
+     }
+ 
++    pub(crate) fn has_depth(&self) -> bool {
++        self.description().colorspace == UTIL_FORMAT_COLORSPACE_ZS
++            && u32::from(self.description().swizzle[0]) != PIPE_SWIZZLE_NONE
++    }
++
++    pub(crate) fn has_stencil(&self) -> bool {
++        self.description().colorspace == UTIL_FORMAT_COLORSPACE_ZS
++            && u32::from(self.description().swizzle[1]) != PIPE_SWIZZLE_NONE
++    }
++
++    pub(crate) fn is_depth_or_stencil(&self) -> bool {
++        self.has_depth() || self.has_stencil()
++    }
++
+     pub(crate) fn is_srgb(&self) -> bool {
+         self.description().colorspace == UTIL_FORMAT_COLORSPACE_SRGB
+     }
+diff --git a/src/nouveau/nil/image.rs b/src/nouveau/nil/image.rs
+index be9fcdd28a05b..c3f2417f4ba46 100644
+--- a/src/nouveau/nil/image.rs
++++ b/src/nouveau/nil/image.rs
+@@ -486,7 +486,7 @@ impl Image {
+         image_2d_out
+     }
+ 
+-    fn choose_pte_kind(
++    pub fn choose_pte_kind(
+         dev: &nil_rs_bindings::nv_device_info,
+         format: Format,
+         samples: u32,
+diff --git a/src/nouveau/nil/lib.rs b/src/nouveau/nil/lib.rs
+index a94465d8805a4..cd62f79e9a6e0 100644
+--- a/src/nouveau/nil/lib.rs
++++ b/src/nouveau/nil/lib.rs
+@@ -7,6 +7,7 @@ extern crate nvidia_headers;
+ mod extent;
+ mod format;
+ mod image;
++mod modifiers;
+ mod tic;
+ mod tiling;
+ 
+diff --git a/src/nouveau/nil/meson.build b/src/nouveau/nil/meson.build
+index 962674378d559..88251342fc63a 100644
+--- a/src/nouveau/nil/meson.build
++++ b/src/nouveau/nil/meson.build
+@@ -78,12 +78,16 @@ _nil_bindings_rs = rust.bindgen(
+     '--allowlist-function', 'util_format_is_compressed',
+     '--allowlist-function', 'util_format_is_pure_integer',
+     '--allowlist-function', 'util_format_is_srgb',
++    '--allowlist-function', 'drm_format_mod_block_linear_2D',
++    '--allowlist-function', 'drm_mod_is_nvidia',
+     '--allowlist-type', 'nil_format_support_flags',
+     '--allowlist-type', 'nv_device_info',
+     '--allowlist-type', 'nv_device_type',
+     '--allowlist-type', 'pipe_format',
+     '--allowlist-type', 'pipe_swizzle',
+     '--allowlist-var', 'nil_format_table',
++    '--allowlist-var', 'drm_format_mod_invalid',
++    '--allowlist-var', 'drm_format_mod_linear',
+     '--no-prepend-enum-name',
+   ],
+   dependencies: _libnil_deps,
+diff --git a/src/nouveau/nil/modifiers.rs b/src/nouveau/nil/modifiers.rs
+new file mode 100644
+index 0000000000000..017931ac4e007
+--- /dev/null
++++ b/src/nouveau/nil/modifiers.rs
+@@ -0,0 +1,323 @@
++// Copyright Â© 2024 Valve Corporation
++// SPDX-License-Identifier: MIT
++
++use crate::format::Format;
++use crate::image::Image;
++use crate::tiling::Tiling;
++
++use bitview::*;
++use nvidia_headers::classes::{cl9097, clc597};
++
++pub const MAX_DRM_FORMAT_MODS: usize = 7;
++
++#[repr(u8)]
++#[derive(Clone, Copy, Eq, PartialEq)]
++pub enum GOBKindVersion {
++    Fermi = 0,
++    G80 = 1,
++    Turing = 2,
++}
++
++impl TryFrom<u64> for GOBKindVersion {
++    type Error = &'static str;
++
++    fn try_from(gob_kind_version: u64) -> Result<Self, Self::Error> {
++        match gob_kind_version {
++            0 => Ok(GOBKindVersion::Fermi),
++            1 => Ok(GOBKindVersion::G80),
++            2 => Ok(GOBKindVersion::Turing),
++            _ => Err("Invalid gob/kind version"),
++        }
++    }
++}
++
++impl GOBKindVersion {
++    pub fn for_dev(dev: &nil_rs_bindings::nv_device_info) -> GOBKindVersion {
++        if dev.cls_eng3d >= clc597::TURING_A {
++            GOBKindVersion::Turing
++        } else if dev.cls_eng3d >= cl9097::FERMI_A {
++            GOBKindVersion::Fermi
++        } else {
++            GOBKindVersion::G80
++        }
++    }
++}
++
++#[repr(u8)]
++#[derive(Clone, Copy, Eq, PartialEq)]
++pub enum SectorLayout {
++    TegraK1 = 0,
++    Desktop = 1,
++}
++
++impl TryFrom<u64> for SectorLayout {
++    type Error = &'static str;
++
++    fn try_from(sector_layout: u64) -> Result<Self, Self::Error> {
++        match sector_layout {
++            0 => Ok(SectorLayout::TegraK1),
++            1 => Ok(SectorLayout::Desktop),
++            _ => Err("Invalid gob/kind version"),
++        }
++    }
++}
++
++impl SectorLayout {
++    // For now, this always returns desktop, but will be different for Tegra
++    pub fn for_dev(_dev: &nil_rs_bindings::nv_device_info) -> SectorLayout {
++        SectorLayout::Desktop
++    }
++}
++
++#[repr(u8)]
++#[allow(dead_code)]
++#[derive(Clone, Copy, Eq, PartialEq)]
++pub enum CompressionType {
++    None = 0,
++    ROP3DOne = 1,
++    ROP3DTwo = 2,
++    CDEHorizontal = 3,
++    CDEVertical = 4,
++}
++
++impl TryFrom<u64> for CompressionType {
++    type Error = &'static str;
++
++    fn try_from(compression_type: u64) -> Result<Self, Self::Error> {
++        match compression_type {
++            0 => Ok(CompressionType::None),
++            1 => Ok(CompressionType::ROP3DOne),
++            2 => Ok(CompressionType::ROP3DTwo),
++            3 => Ok(CompressionType::CDEHorizontal),
++            4 => Ok(CompressionType::CDEVertical),
++            _ => Err("Invalid gob/kind version"),
++        }
++    }
++}
++
++pub const DRM_FORMAT_MOD_LINEAR: u64 = 0;
++pub const DRM_FORMAT_MOD_INVALID: u64 = 0x00ffffff_ffffffff;
++
++const DRM_FORMAT_MOD_VENDOR_NVIDIA: u8 = 0x03;
++
++pub struct BlockLinearModifier {
++    drm_modifier: u64,
++}
++
++impl TryFrom<u64> for BlockLinearModifier {
++    type Error = &'static str;
++
++    fn try_from(drm_modifier: u64) -> Result<Self, Self::Error> {
++        let bv = BitView::new(&drm_modifier);
++        let vendor: u8 = bv.get_bit_range_u64(56..64).try_into().unwrap();
++        if vendor != DRM_FORMAT_MOD_VENDOR_NVIDIA {
++            Err("modifier does not have DRM_FORMAT_MOD_VENDOR_NVIDIA")
++        } else if !bv.get_bit(4) {
++            Err("modifier is not block linear")
++        } else if bv.get_bit_range_u64(5..12) != 0
++            || bv.get_bit_range_u64(26..56) != 0
++        {
++            Err("unknown reserved bits")
++        } else {
++            Ok(BlockLinearModifier { drm_modifier })
++        }
++    }
++}
++
++impl BlockLinearModifier {
++    pub fn block_linear_2d(
++        compression_type: CompressionType,
++        sector_layout: SectorLayout,
++        gob_kind_version: GOBKindVersion,
++        pte_kind: u8,
++        height_log2: u8,
++    ) -> BlockLinearModifier {
++        let mut drm_modifier = 0_u64;
++        let mut bv = BitMutView::new(&mut drm_modifier);
++        bv.set_field(0..4, height_log2);
++        bv.set_bit(4, true); // Must be 1, to indicate block-linear layout.
++        bv.set_field(12..20, pte_kind);
++        bv.set_field(20..22, gob_kind_version as u8);
++        bv.set_field(22..23, sector_layout as u8);
++        bv.set_field(23..26, compression_type as u8);
++        bv.set_field(56..64, DRM_FORMAT_MOD_VENDOR_NVIDIA);
++        BlockLinearModifier { drm_modifier }
++    }
++
++    pub fn height_log2(&self) -> u8 {
++        let bv = BitView::new(&self.drm_modifier);
++        bv.get_bit_range_u64(0..4).try_into().unwrap()
++    }
++
++    pub fn pte_kind(&self) -> u8 {
++        let bv = BitView::new(&self.drm_modifier);
++        bv.get_bit_range_u64(12..20).try_into().unwrap()
++    }
++
++    pub fn gob_kind_version(&self) -> GOBKindVersion {
++        let bv = BitView::new(&self.drm_modifier);
++        bv.get_bit_range_u64(20..22).try_into().unwrap()
++    }
++
++    pub fn sector_layout(&self) -> SectorLayout {
++        let bv = BitView::new(&self.drm_modifier);
++        bv.get_bit_range_u64(22..23).try_into().unwrap()
++    }
++
++    pub fn compression_type(&self) -> CompressionType {
++        let bv = BitView::new(&self.drm_modifier);
++        bv.get_bit_range_u64(23..26).try_into().unwrap()
++    }
++
++    pub fn tiling(&self) -> Tiling {
++        Tiling {
++            is_tiled: true,
++            gob_height_is_8: self.gob_kind_version() != GOBKindVersion::G80,
++            x_log2: 0,
++            y_log2: self.height_log2(),
++            z_log2: 0,
++        }
++    }
++}
++
++#[no_mangle]
++pub extern "C" fn nil_drm_format_mods_for_format(
++    dev: &nil_rs_bindings::nv_device_info,
++    format: Format,
++    mod_count: &mut usize,
++    mods: &mut [u64; MAX_DRM_FORMAT_MODS],
++) {
++    drm_format_mods_for_format(dev, format, mod_count, mods)
++}
++
++pub fn drm_format_mods_for_format(
++    dev: &nil_rs_bindings::nv_device_info,
++    format: Format,
++    mod_count: &mut usize,
++    mods: &mut [u64; MAX_DRM_FORMAT_MODS],
++) {
++    let max_mod_count = *mod_count;
++    *mod_count = 0;
++
++    if format.is_depth_or_stencil() {
++        return;
++    }
++
++    if !format.supports_color_targets(dev) {
++        return;
++    }
++
++    let compression_type = CompressionType::None;
++    let sector_layout = SectorLayout::for_dev(dev);
++    let gob_kind_version = GOBKindVersion::for_dev(dev);
++    let pte_kind = Image::choose_pte_kind(dev, format, 1, false);
++
++    // We assume bigger tiling is better
++    for i in 0..6 {
++        let height_log2 = 5 - i;
++
++        let bl_mod = BlockLinearModifier::block_linear_2d(
++            compression_type,
++            sector_layout,
++            gob_kind_version,
++            pte_kind,
++            height_log2,
++        );
++
++        assert!(*mod_count < max_mod_count);
++        mods[*mod_count] = bl_mod.drm_modifier;
++        *mod_count += 1;
++    }
++
++    assert!(*mod_count < max_mod_count);
++    mods[*mod_count] = DRM_FORMAT_MOD_LINEAR;
++    *mod_count += 1;
++}
++
++pub fn drm_format_mod_is_supported(
++    dev: &nil_rs_bindings::nv_device_info,
++    format: Format,
++    modifier: u64,
++) -> bool {
++    if modifier == DRM_FORMAT_MOD_LINEAR {
++        return true;
++    }
++
++    let Ok(bl_mod) = BlockLinearModifier::try_from(modifier) else {
++        return false;
++    };
++
++    if bl_mod.height_log2() > 5 {
++        return false;
++    }
++
++    if bl_mod.gob_kind_version() != GOBKindVersion::for_dev(dev) {
++        return false;
++    }
++
++    if bl_mod.sector_layout() != SectorLayout::for_dev(dev) {
++        return false;
++    }
++
++    if bl_mod.compression_type() != CompressionType::None {
++        return false;
++    }
++
++    let pte_kind = Image::choose_pte_kind(dev, format, 1, false);
++    if bl_mod.pte_kind() != pte_kind {
++        return false;
++    }
++
++    return true;
++}
++
++fn score_drm_format_mod(modifier: u64) -> u32 {
++    if modifier == DRM_FORMAT_MOD_LINEAR {
++        return 1;
++    }
++
++    let bl_mod = BlockLinearModifier::try_from(modifier).unwrap();
++
++    // Assume bigger Y-tiling is better
++    let mut score = 10 + u32::from(bl_mod.height_log2());
++
++    if bl_mod.compression_type() != CompressionType::None {
++        score += 10;
++    }
++
++    score
++}
++
++pub fn select_best_drm_format_mod(
++    dev: &nil_rs_bindings::nv_device_info,
++    format: Format,
++    mod_count: usize,
++    mods: &mut [u64; MAX_DRM_FORMAT_MODS],
++) -> u64 {
++    let mut best = DRM_FORMAT_MOD_INVALID;
++    let mut best_score = 0;
++
++    for i in 0..mod_count {
++        if !drm_format_mod_is_supported(dev, format, mods[i]) {
++            continue;
++        }
++
++        let score = score_drm_format_mod(mods[i]);
++        if score > best_score {
++            best = mods[i];
++            best_score = score;
++        }
++    }
++
++    return best;
++}
++
++#[no_mangle]
++pub extern "C" fn nil_select_best_drm_format_mod(
++    dev: &nil_rs_bindings::nv_device_info,
++    format: Format,
++    mod_count: usize,
++    mods: &mut [u64; MAX_DRM_FORMAT_MODS],
++) -> u64 {
++    select_best_drm_format_mod(dev, format, mod_count, mods)
++}
+-- 
+GitLab
+
+
+From a2c49d6ef1a8dab4a589d2b47967c91196a8d953 Mon Sep 17 00:00:00 2001
+From: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
+Date: Sun, 21 Apr 2024 17:00:45 +0200
+Subject: [PATCH 06/18] nil: Support creating images with DRM modifiers
+
+---
+ src/nouveau/nil/image.rs       | 35 ++++++++++++++++++++++++++++++----
+ src/nouveau/vulkan/nvk_image.c |  2 ++
+ 2 files changed, 33 insertions(+), 4 deletions(-)
+
+diff --git a/src/nouveau/nil/image.rs b/src/nouveau/nil/image.rs
+index c3f2417f4ba46..2bf4f8db65edd 100644
+--- a/src/nouveau/nil/image.rs
++++ b/src/nouveau/nil/image.rs
+@@ -3,6 +3,7 @@
+ 
+ use crate::extent::{units, Extent4D};
+ use crate::format::Format;
++use crate::modifiers::*;
+ use crate::tiling::Tiling;
+ use crate::Minify;
+ 
+@@ -80,6 +81,7 @@ pub struct ImageInitInfo {
+     pub levels: u32,
+     pub samples: u32,
+     pub usage: ImageUsageFlags,
++    pub modifier: u64,
+ }
+ 
+ /// Represents the data layout of a single slice (level + lod) of an image.
+@@ -139,7 +141,24 @@ impl Image {
+ 
+         let sample_layout = SampleLayout::choose_sample_layout(info.samples);
+ 
+-        let tiling = if (info.usage & IMAGE_USAGE_SPARSE_RESIDENCY_BIT) != 0 {
++        let tiling = if info.modifier != DRM_FORMAT_MOD_INVALID {
++            assert!((info.usage & IMAGE_USAGE_SPARSE_RESIDENCY_BIT) == 0);
++            assert!(info.dim == ImageDim::_2D);
++            assert!(sample_layout == SampleLayout::_1x1);
++            if info.modifier == DRM_FORMAT_MOD_LINEAR {
++                Tiling::default()
++            } else {
++                let bl_mod =
++                    BlockLinearModifier::try_from(info.modifier).unwrap();
++
++                // We don't support compression yet
++                assert!(bl_mod.compression_type() == CompressionType::None);
++
++                bl_mod
++                    .tiling()
++                    .clamp(info.extent_px.to_B(info.format, sample_layout))
++            }
++        } else if (info.usage & IMAGE_USAGE_SPARSE_RESIDENCY_BIT) != 0 {
+             Tiling::sparse(info.format, info.dim)
+         } else {
+             Tiling::choose(
+@@ -234,9 +253,6 @@ impl Image {
+         }
+ 
+         if image.levels[0].tiling.is_tiled {
+-            image.tile_mode = u16::from(image.levels[0].tiling.y_log2) << 4
+-                | u16::from(image.levels[0].tiling.z_log2) << 8;
+-
+             image.pte_kind = Self::choose_pte_kind(
+                 dev,
+                 info.format,
+@@ -244,6 +260,17 @@ impl Image {
+                 image.compressed,
+             );
+ 
++            if info.modifier != DRM_FORMAT_MOD_INVALID {
++                let bl_mod =
++                    BlockLinearModifier::try_from(info.modifier).unwrap();
++                assert!(bl_mod.pte_kind() == image.pte_kind);
++            }
++        }
++
++        if image.levels[0].tiling.is_tiled {
++            image.tile_mode = u16::from(image.levels[0].tiling.y_log2) << 4
++                | u16::from(image.levels[0].tiling.z_log2) << 8;
++
+             image.align_B = std::cmp::max(image.align_B, 4096);
+             if image.pte_kind >= 0xb && image.pte_kind <= 0xe {
+                 image.align_B = std::cmp::max(image.align_B, 1 << 16);
+diff --git a/src/nouveau/vulkan/nvk_image.c b/src/nouveau/vulkan/nvk_image.c
+index 77eb955263fd7..59e8d26125d2e 100644
+--- a/src/nouveau/vulkan/nvk_image.c
++++ b/src/nouveau/vulkan/nvk_image.c
+@@ -600,6 +600,7 @@ nvk_image_init(struct nvk_device *dev,
+       struct nil_image_init_info nil_info = {
+          .dim = vk_image_type_to_nil_dim(pCreateInfo->imageType),
+          .format = nil_format(vk_format_to_pipe_format(format)),
++         .modifier = DRM_FORMAT_MOD_INVALID,
+          .extent_px = {
+             .width = pCreateInfo->extent.width / width_scale,
+             .height = pCreateInfo->extent.height / height_scale,
+@@ -618,6 +619,7 @@ nvk_image_init(struct nvk_device *dev,
+       struct nil_image_init_info stencil_nil_info = {
+          .dim = vk_image_type_to_nil_dim(pCreateInfo->imageType),
+          .format = nil_format(PIPE_FORMAT_R32_UINT),
++         .modifier = DRM_FORMAT_MOD_INVALID,
+          .extent_px = {
+             .width = pCreateInfo->extent.width,
+             .height = pCreateInfo->extent.height,
+-- 
+GitLab
+
+
+From bffe0a97b2b6eeec07eeeaf2c2df08cac4a37445 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Fri, 9 Feb 2024 15:55:35 -0600
+Subject: [PATCH 07/18] nvk: Add back nouveau_ws_bo_new_tiled()
+
+This reverts commit ce1cccea98d6257f2015b32b92d826e4ebc0a7f9.  In this
+new version, we also add a query for whether or not tiled BOs are
+supported by nouveau.ko.
+---
+ src/nouveau/winsys/nouveau_bo.c | 56 ++++++++++++++++++++++++++++-----
+ src/nouveau/winsys/nouveau_bo.h |  6 ++++
+ 2 files changed, 55 insertions(+), 7 deletions(-)
+
+diff --git a/src/nouveau/winsys/nouveau_bo.c b/src/nouveau/winsys/nouveau_bo.c
+index e8240f9a27131..9936863b31d7b 100644
+--- a/src/nouveau/winsys/nouveau_bo.c
++++ b/src/nouveau/winsys/nouveau_bo.c
+@@ -10,6 +10,9 @@
+ #include <sys/mman.h>
+ #include <xf86drm.h>
+ 
++#include "nvidia/classes/cl9097.h"
++#include "nvidia/classes/clc597.h"
++
+ static void
+ bo_bind(struct nouveau_ws_device *dev,
+         uint32_t handle, uint64_t addr,
+@@ -174,9 +177,10 @@ nouveau_ws_bo_new_mapped(struct nouveau_ws_device *dev,
+ }
+ 
+ static struct nouveau_ws_bo *
+-nouveau_ws_bo_new_locked(struct nouveau_ws_device *dev,
+-                         uint64_t size, uint64_t align,
+-                         enum nouveau_ws_bo_flags flags)
++nouveau_ws_bo_new_tiled_locked(struct nouveau_ws_device *dev,
++                               uint64_t size, uint64_t align,
++                               uint8_t pte_kind, uint16_t tile_mode,
++                               enum nouveau_ws_bo_flags flags)
+ {
+    struct drm_nouveau_gem_new req = {};
+ 
+@@ -209,6 +213,11 @@ nouveau_ws_bo_new_locked(struct nouveau_ws_device *dev,
+    if (flags & NOUVEAU_WS_BO_NO_SHARE)
+       req.info.domain |= NOUVEAU_GEM_DOMAIN_NO_SHARE;
+ 
++   assert(pte_kind == 0 || !(flags & NOUVEAU_WS_BO_GART));
++   assert(tile_mode == 0 || !(flags & NOUVEAU_WS_BO_GART));
++   req.info.tile_flags = (uint32_t)pte_kind << 8;
++   req.info.tile_mode = tile_mode;
++
+    req.info.size = size;
+    req.align = align;
+ 
+@@ -245,20 +254,53 @@ fail_gem_new:
+    return NULL;
+ }
+ 
++bool
++nouveau_ws_has_tiled_bo(struct nouveau_ws_device *dev)
++{
++   uint8_t pte_kind = 0;
++   if (dev->info.cls_eng3d >= TURING_A) {
++      pte_kind = 0x6; /* NV_MMU_PTE_KIND_GENERIC_MEMORY */
++   } else if (dev->info.cls_eng3d >= FERMI_A) {
++      pte_kind = 0xfe; /* NV_MMU_PTE_KIND_GENERIC_16BX2 */
++   } else {
++      unreachable("Unknown GPU generation");
++   }
++
++   struct nouveau_ws_bo *bo =
++      nouveau_ws_bo_new_tiled(dev, 0x1000, 0, pte_kind, 0,
++                              NOUVEAU_WS_BO_LOCAL);
++   if (bo == NULL)
++      return false;
++
++   nouveau_ws_bo_destroy(bo);
++
++   return true;
++}
++
+ struct nouveau_ws_bo *
+-nouveau_ws_bo_new(struct nouveau_ws_device *dev,
+-                  uint64_t size, uint64_t align,
+-                  enum nouveau_ws_bo_flags flags)
++nouveau_ws_bo_new_tiled(struct nouveau_ws_device *dev,
++                        uint64_t size, uint64_t align,
++                        uint8_t pte_kind, uint16_t tile_mode,
++                        enum nouveau_ws_bo_flags flags)
+ {
+    struct nouveau_ws_bo *bo;
+ 
+    simple_mtx_lock(&dev->bos_lock);
+-   bo = nouveau_ws_bo_new_locked(dev, size, align, flags);
++   bo = nouveau_ws_bo_new_tiled_locked(dev, size, align,
++                                       pte_kind, tile_mode, flags);
+    simple_mtx_unlock(&dev->bos_lock);
+ 
+    return bo;
+ }
+ 
++struct nouveau_ws_bo *
++nouveau_ws_bo_new(struct nouveau_ws_device *dev,
++                  uint64_t size, uint64_t align,
++                  enum nouveau_ws_bo_flags flags)
++{
++   return nouveau_ws_bo_new_tiled(dev, size, align, 0, 0, flags);
++}
++
+ static struct nouveau_ws_bo *
+ nouveau_ws_bo_from_dma_buf_locked(struct nouveau_ws_device *dev, int fd)
+ {
+diff --git a/src/nouveau/winsys/nouveau_bo.h b/src/nouveau/winsys/nouveau_bo.h
+index 27a2c5ebf5770..7f05114f21edd 100644
+--- a/src/nouveau/winsys/nouveau_bo.h
++++ b/src/nouveau/winsys/nouveau_bo.h
+@@ -68,6 +68,12 @@ struct nouveau_ws_bo *nouveau_ws_bo_new_mapped(struct nouveau_ws_device *,
+                                                enum nouveau_ws_bo_flags,
+                                                enum nouveau_ws_bo_map_flags map_flags,
+                                                void **map_out);
++bool nouveau_ws_has_tiled_bo(struct nouveau_ws_device *dev);
++struct nouveau_ws_bo *nouveau_ws_bo_new_tiled(struct nouveau_ws_device *,
++                                              uint64_t size, uint64_t align,
++                                              uint8_t pte_kind,
++                                              uint16_t tile_mode,
++                                              enum nouveau_ws_bo_flags);
+ struct nouveau_ws_bo *nouveau_ws_bo_from_dma_buf(struct nouveau_ws_device *,
+                                                  int fd);
+ void nouveau_ws_bo_destroy(struct nouveau_ws_bo *);
+-- 
+GitLab
+
+
+From 5a90690c4dec48b87044df737ee544c7ca361ad2 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Tue, 13 Feb 2024 15:04:53 -0600
+Subject: [PATCH 08/18] nvk: Support image creation with modifiers
+
+---
+ src/nouveau/vulkan/nvk_image.c | 38 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 36 insertions(+), 2 deletions(-)
+
+diff --git a/src/nouveau/vulkan/nvk_image.c b/src/nouveau/vulkan/nvk_image.c
+index 59e8d26125d2e..60fc72a24e569 100644
+--- a/src/nouveau/vulkan/nvk_image.c
++++ b/src/nouveau/vulkan/nvk_image.c
+@@ -588,6 +588,38 @@ nvk_image_init(struct nvk_device *dev,
+       usage |= NIL_IMAGE_USAGE_SPARSE_RESIDENCY_BIT;
+    }
+ 
++   if (image->vk.tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT) {
++      /* Modifiers are not supported with YCbCr */
++      assert(image->plane_count == 1);
++
++      const struct VkImageDrmFormatModifierExplicitCreateInfoEXT *mod_explicit_info =
++         vk_find_struct_const(pCreateInfo->pNext,
++                              IMAGE_DRM_FORMAT_MODIFIER_EXPLICIT_CREATE_INFO_EXT);
++      if (mod_explicit_info) {
++         image->vk.drm_format_mod = mod_explicit_info->drmFormatModifier;
++      } else {
++         const struct VkImageDrmFormatModifierListCreateInfoEXT *mod_list_info =
++            vk_find_struct_const(pCreateInfo->pNext,
++                                 IMAGE_DRM_FORMAT_MODIFIER_LIST_CREATE_INFO_EXT);
++
++         /* We can't pass the raw pointer to NIL here, so copy over the values
++          * to an array first, then get the best modifier.
++          */
++         uint64_t mods[NIL_MAX_DRM_FORMAT_MODS];
++         const uint32_t mod_count = mod_list_info->drmFormatModifierCount;
++         for (uint32_t i = 0; i < mod_count; i++) {
++            mods[i] = *(mod_list_info->pDrmFormatModifiers + i);
++         }
++
++         enum pipe_format p_format =
++            vk_format_to_pipe_format(pCreateInfo->format);
++         image->vk.drm_format_mod =
++            nil_select_best_drm_format_mod(&pdev->info, nil_format(p_format),
++                                           mod_count, &mods);
++         assert(image->vk.drm_format_mod != DRM_FORMAT_MOD_INVALID);
++      }
++   }
++
+    const struct vk_format_ycbcr_info *ycbcr_info =
+       vk_format_get_ycbcr_info(pCreateInfo->format);
+    for (uint8_t plane = 0; plane < image->plane_count; plane++) {
+@@ -818,8 +850,10 @@ nvk_get_image_memory_requirements(struct nvk_device *dev,
+       switch (ext->sType) {
+       case VK_STRUCTURE_TYPE_MEMORY_DEDICATED_REQUIREMENTS: {
+          VkMemoryDedicatedRequirements *dedicated = (void *)ext;
+-         dedicated->prefersDedicatedAllocation = false;
+-         dedicated->requiresDedicatedAllocation = false;
++         dedicated->prefersDedicatedAllocation =
++            image->vk.tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT;
++         dedicated->requiresDedicatedAllocation =
++            image->vk.tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT;
+          break;
+       }
+       default:
+-- 
+GitLab
+
+
+From 609c9024165ccc5555ede1302ede966b3d99cbf1 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Tue, 13 Feb 2024 22:56:52 -0600
+Subject: [PATCH 09/18] nvk: Set tile mode and PTE kind on dedicated dma-buf
+ BOs
+
+This is our compromise to make NVK and nouveau GL play nice when it
+comes to modifiers.  The old GL driver depends heavily on the PTE kind
+and tile mode, even for images with modifiers.  While it correctly
+encodes the PTE kind and tile mode in the modifiers it advertises, it
+may ignore the modifier and just trust what's set on the BO when it
+imports a dma-buf image.  This is partly because it doesn't support
+VM_BIND and partly because of preexisting bugs in the modifiers
+implementation.  In either case, we can't fix it retroactively.
+
+To work around this, NVK also sets the PTE kind and tile mode on the BO
+when it's a dedicated allocation created for a DRM format modifiers
+image.  If DRM format modifiers are used without dedicated allocations,
+things may still break but that's getting into vanishingly unlikely
+scenarios.
+---
+ src/nouveau/vulkan/nvk_device_memory.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/src/nouveau/vulkan/nvk_device_memory.c b/src/nouveau/vulkan/nvk_device_memory.c
+index 8bca7d6b7485c..f746126944213 100644
+--- a/src/nouveau/vulkan/nvk_device_memory.c
++++ b/src/nouveau/vulkan/nvk_device_memory.c
+@@ -159,6 +159,8 @@ nvk_AllocateMemory(VkDevice device,
+       vk_find_struct_const(pAllocateInfo->pNext, IMPORT_MEMORY_FD_INFO_KHR);
+    const VkExportMemoryAllocateInfo *export_info =
+       vk_find_struct_const(pAllocateInfo->pNext, EXPORT_MEMORY_ALLOCATE_INFO);
++   const VkMemoryDedicatedAllocateInfo *dedicated_info =
++      vk_find_struct_const(pAllocateInfo->pNext, MEMORY_DEDICATED_ALLOCATE_INFO);
+    const VkMemoryType *type =
+       &pdev->mem_types[pAllocateInfo->memoryTypeIndex];
+ 
+@@ -175,6 +177,21 @@ nvk_AllocateMemory(VkDevice device,
+    if (!(flags & NOUVEAU_WS_BO_GART))
+       alignment = (1ULL << 16);
+ 
++   uint8_t pte_kind = 0, tile_mode = 0;
++   if (dedicated_info != NULL) {
++      VK_FROM_HANDLE(nvk_image, image, dedicated_info->image);
++      if (image != NULL &&
++          image->vk.tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT) {
++         /* This image might be shared with GL so we need to set the BO flags
++          * such that GL can bind and use it.
++          */
++         assert(image->plane_count == 1);
++         alignment = MAX2(alignment, image->planes[0].nil.align_B);
++         pte_kind = image->planes[0].nil.pte_kind;
++         tile_mode = image->planes[0].nil.tile_mode;
++      }
++   }
++
+    const uint64_t aligned_size =
+       align64(pAllocateInfo->allocationSize, alignment);
+ 
+@@ -197,6 +214,13 @@ nvk_AllocateMemory(VkDevice device,
+          goto fail_alloc;
+       }
+       assert(!(flags & ~mem->bo->flags));
++   } else if (pte_kind != 0 || tile_mode != 0) {
++      mem->bo = nouveau_ws_bo_new_tiled(dev->ws_dev, aligned_size, alignment,
++                                        pte_kind, tile_mode, flags);
++      if (!mem->bo) {
++         result = vk_errorf(dev, VK_ERROR_OUT_OF_DEVICE_MEMORY, "%m");
++         goto fail_alloc;
++      }
+    } else {
+       mem->bo = nouveau_ws_bo_new(dev->ws_dev, aligned_size, alignment, flags);
+       if (!mem->bo) {
+-- 
+GitLab
+
+
+From 2ba49e82ed84d9e0df9636ce3671e0bcadc379c9 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Tue, 13 Feb 2024 15:04:53 -0600
+Subject: [PATCH 10/18] nvk: Implement DRM format modifier queries
+
+---
+ src/nouveau/vulkan/nvk_format.c |   9 ++-
+ src/nouveau/vulkan/nvk_image.c  | 136 ++++++++++++++++++++++++++++++--
+ src/nouveau/vulkan/nvk_image.h  |  12 +--
+ 3 files changed, 142 insertions(+), 15 deletions(-)
+
+diff --git a/src/nouveau/vulkan/nvk_format.c b/src/nouveau/vulkan/nvk_format.c
+index 6b7a93719b52b..b5ebf287dd4af 100644
+--- a/src/nouveau/vulkan/nvk_format.c
++++ b/src/nouveau/vulkan/nvk_format.c
+@@ -161,9 +161,9 @@ nvk_GetPhysicalDeviceFormatProperties2(VkPhysicalDevice physicalDevice,
+ 
+    VkFormatFeatureFlags2 linear2, optimal2, buffer2;
+    linear2 = nvk_get_image_format_features(pdevice, format,
+-                                           VK_IMAGE_TILING_LINEAR);
++                                           VK_IMAGE_TILING_LINEAR, 0);
+    optimal2 = nvk_get_image_format_features(pdevice, format,
+-                                            VK_IMAGE_TILING_OPTIMAL);
++                                            VK_IMAGE_TILING_OPTIMAL, 0);
+    buffer2 = nvk_get_buffer_format_features(pdevice, format);
+ 
+    pFormatProperties->formatProperties = (VkFormatProperties) {
+@@ -182,6 +182,11 @@ nvk_GetPhysicalDeviceFormatProperties2(VkPhysicalDevice physicalDevice,
+          break;
+       }
+ 
++      case VK_STRUCTURE_TYPE_DRM_FORMAT_MODIFIER_PROPERTIES_LIST_EXT:
++      case VK_STRUCTURE_TYPE_DRM_FORMAT_MODIFIER_PROPERTIES_LIST_2_EXT:
++         nvk_get_drm_format_modifier_properties_list(pdevice, format, ext);
++         break;
++
+       default:
+          nvk_debug_ignored_stype(ext->sType);
+          break;
+diff --git a/src/nouveau/vulkan/nvk_image.c b/src/nouveau/vulkan/nvk_image.c
+index 60fc72a24e569..3065187d56c0b 100644
+--- a/src/nouveau/vulkan/nvk_image.c
++++ b/src/nouveau/vulkan/nvk_image.c
+@@ -12,6 +12,9 @@
+ 
+ #include "vk_enum_to_str.h"
+ #include "vk_format.h"
++#include "nil.h"
++#include "vk_enum_defines.h"
++#include "vk_format.h"
+ 
+ #include "clb097.h"
+ #include "clb197.h"
+@@ -19,10 +22,16 @@
+ 
+ static VkFormatFeatureFlags2
+ nvk_get_image_plane_format_features(struct nvk_physical_device *pdev,
+-                                    VkFormat vk_format, VkImageTiling tiling)
++                                    VkFormat vk_format, VkImageTiling tiling,
++                                    uint64_t drm_format_mod)
+ {
+    VkFormatFeatureFlags2 features = 0;
+ 
++   if (tiling == VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT &&
++       drm_format_mod != DRM_FORMAT_MOD_LINEAR &&
++       !fourcc_mod_is_vendor(drm_format_mod, NVIDIA))
++      return 0;
++
+    enum pipe_format p_format = vk_format_to_pipe_format(vk_format);
+    if (p_format == PIPE_FORMAT_NONE)
+       return 0;
+@@ -84,12 +93,15 @@ nvk_get_image_plane_format_features(struct nvk_physical_device *pdev,
+ 
+ VkFormatFeatureFlags2
+ nvk_get_image_format_features(struct nvk_physical_device *pdev,
+-                              VkFormat vk_format, VkImageTiling tiling)
++                              VkFormat vk_format, VkImageTiling tiling,
++                              uint64_t drm_format_mod)
+ {
+    const struct vk_format_ycbcr_info *ycbcr_info =
+          vk_format_get_ycbcr_info(vk_format);
+-   if (ycbcr_info == NULL)
+-      return nvk_get_image_plane_format_features(pdev, vk_format, tiling);
++   if (ycbcr_info == NULL) {
++      return nvk_get_image_plane_format_features(pdev, vk_format, tiling,
++                                                 drm_format_mod);
++   }
+ 
+    /* For multi-plane, we get the feature flags of each plane separately,
+     * then take their intersection as the overall format feature flags
+@@ -99,7 +111,7 @@ nvk_get_image_format_features(struct nvk_physical_device *pdev,
+    for (uint8_t plane = 0; plane < ycbcr_info->n_planes; plane++) {
+       const struct vk_format_ycbcr_plane *plane_info = &ycbcr_info->planes[plane];
+       features &= nvk_get_image_plane_format_features(pdev, plane_info->format,
+-                                                      tiling);
++                                                      tiling, drm_format_mod);
+       if (plane_info->denominator_scales[0] > 1 ||
+           plane_info->denominator_scales[1] > 1)
+          cosited_chroma = true;
+@@ -143,6 +155,98 @@ nvk_get_image_format_features(struct nvk_physical_device *pdev,
+    return features;
+ }
+ 
++void
++nvk_get_drm_format_modifier_properties_list(struct nvk_physical_device *pdev,
++                                            VkFormat vk_format,
++                                            VkBaseOutStructure *ext)
++{
++   assert(ext->sType == VK_STRUCTURE_TYPE_DRM_FORMAT_MODIFIER_PROPERTIES_LIST_EXT ||
++          ext->sType == VK_STRUCTURE_TYPE_DRM_FORMAT_MODIFIER_PROPERTIES_LIST_2_EXT);
++
++   /* The two top-level data structures are the same.  It's only when
++    * you get to walking the actual list of modifier properties that
++    * they differ.
++    */
++   VkDrmFormatModifierPropertiesListEXT *p = (void *)ext;
++
++   /* We don't support modifiers for YCbCr images */
++   if (vk_format_get_ycbcr_info(vk_format) != NULL) {
++      p->drmFormatModifierCount = 0;
++      return;
++   }
++
++   /* Check that we actually support the format so we don't try to query
++    * modifiers for formats NIL doesn't support.
++    */
++   const VkFormatFeatureFlags2 tiled_features =
++      nvk_get_image_plane_format_features(pdev, vk_format,
++                                          VK_IMAGE_TILING_OPTIMAL,
++                                          DRM_FORMAT_MOD_INVALID);
++   if (tiled_features == 0) {
++      p->drmFormatModifierCount = 0;
++      return;
++   }
++
++   uint64_t mods[NIL_MAX_DRM_FORMAT_MODS];
++   size_t mod_count = NIL_MAX_DRM_FORMAT_MODS;
++   enum pipe_format p_format = vk_format_to_pipe_format(vk_format);
++   nil_drm_format_mods_for_format(&pdev->info, nil_format(p_format),
++                                  &mod_count, &mods);
++   if (mod_count == 0) {
++      p->drmFormatModifierCount = 0;
++      return;
++   }
++
++   switch (ext->sType) {
++   case VK_STRUCTURE_TYPE_DRM_FORMAT_MODIFIER_PROPERTIES_LIST_EXT: {
++      VK_OUTARRAY_MAKE_TYPED(VkDrmFormatModifierPropertiesEXT, out,
++                             p->pDrmFormatModifierProperties,
++                             &p->drmFormatModifierCount);
++
++      for (uint32_t i = 0; i < mod_count; i++) {
++         const VkFormatFeatureFlags2 features2 =
++            nvk_get_image_format_features(pdev, vk_format,
++                                          VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT,
++                                          mods[i]);
++         if (features2 != 0) {
++            vk_outarray_append_typed(VkDrmFormatModifierPropertiesEXT, &out, mp) {
++               mp->drmFormatModifier = mods[i];
++               mp->drmFormatModifierPlaneCount = 1;
++               mp->drmFormatModifierTilingFeatures =
++                  vk_format_features2_to_features(features2);
++            }
++         }
++      }
++      break;
++   }
++
++   case VK_STRUCTURE_TYPE_DRM_FORMAT_MODIFIER_PROPERTIES_LIST_2_EXT: {
++      VkDrmFormatModifierPropertiesList2EXT *p2 = (void *)p;
++      VK_OUTARRAY_MAKE_TYPED(VkDrmFormatModifierProperties2EXT, out,
++                             p2->pDrmFormatModifierProperties,
++                             &p2->drmFormatModifierCount);
++
++      for (uint32_t i = 0; i < mod_count; i++) {
++         const VkFormatFeatureFlags2 features2 =
++            nvk_get_image_format_features(pdev, vk_format,
++                                          VK_IMAGE_TILING_DRM_FORMAT_MODIFIER_EXT,
++                                          mods[i]);
++         if (features2 != 0) {
++            vk_outarray_append_typed(VkDrmFormatModifierProperties2EXT, &out, mp) {
++               mp->drmFormatModifier = mods[i];
++               mp->drmFormatModifierPlaneCount = 1;
++               mp->drmFormatModifierTilingFeatures = features2;
++            }
++         }
++      }
++      break;
++   }
++
++   default:
++      unreachable("Invalid structure type");
++   }
++}
++
+ static VkFormatFeatureFlags2
+ vk_image_usage_to_format_features(VkImageUsageFlagBits usage_flag)
+ {
+@@ -182,6 +286,18 @@ nvk_image_max_dimension(const struct nv_device_info *info,
+    }
+ }
+ 
++static uint64_t
++get_explicit_drm_format_mod(const void *pNext)
++{
++   const VkPhysicalDeviceImageDrmFormatModifierInfoEXT *drm_format_mod_info =
++      vk_find_struct_const(pNext,
++                           PHYSICAL_DEVICE_IMAGE_DRM_FORMAT_MODIFIER_INFO_EXT);
++   if (drm_format_mod_info)
++      return drm_format_mod_info->drmFormatModifier;
++   else
++      return DRM_FORMAT_MOD_INVALID;
++}
++
+ VKAPI_ATTR VkResult VKAPI_CALL
+ nvk_GetPhysicalDeviceImageFormatProperties2(
+    VkPhysicalDevice physicalDevice,
+@@ -198,6 +314,8 @@ nvk_GetPhysicalDeviceImageFormatProperties2(
+    memset(&pImageFormatProperties->imageFormatProperties, 0,
+           sizeof(pImageFormatProperties->imageFormatProperties));
+ 
++   uint64_t drm_format_mod =
++      get_explicit_drm_format_mod(pImageFormatInfo->pNext);
+    const struct vk_format_ycbcr_info *ycbcr_info =
+       vk_format_get_ycbcr_info(pImageFormatInfo->format);
+ 
+@@ -208,16 +326,18 @@ nvk_GetPhysicalDeviceImageFormatProperties2(
+    VkFormatFeatureFlags2 features;
+    if (ycbcr_info == NULL) {
+       features = nvk_get_image_plane_format_features(
+-         pdev, pImageFormatInfo->format, pImageFormatInfo->tiling);
++         pdev, pImageFormatInfo->format, pImageFormatInfo->tiling,
++         drm_format_mod);
+    } else {
+       features = ~0ull;
+       assert(ycbcr_info->n_planes > 0);
+       for (uint8_t plane = 0; plane < ycbcr_info->n_planes; plane++) {
+          const VkFormat plane_format = ycbcr_info->planes[plane].format;
+          features &= nvk_get_image_plane_format_features(
+-            pdev, plane_format, pImageFormatInfo->tiling);
++            pdev, plane_format, pImageFormatInfo->tiling, drm_format_mod);
+       }
+    }
++
+    if (features == 0)
+       return VK_ERROR_FORMAT_NOT_SUPPORTED;
+ 
+@@ -632,7 +752,7 @@ nvk_image_init(struct nvk_device *dev,
+       struct nil_image_init_info nil_info = {
+          .dim = vk_image_type_to_nil_dim(pCreateInfo->imageType),
+          .format = nil_format(vk_format_to_pipe_format(format)),
+-         .modifier = DRM_FORMAT_MOD_INVALID,
++         .modifier = image->vk.drm_format_mod,
+          .extent_px = {
+             .width = pCreateInfo->extent.width / width_scale,
+             .height = pCreateInfo->extent.height / height_scale,
+diff --git a/src/nouveau/vulkan/nvk_image.h b/src/nouveau/vulkan/nvk_image.h
+index 296d9096073c5..e2afe3c46b982 100644
+--- a/src/nouveau/vulkan/nvk_image.h
++++ b/src/nouveau/vulkan/nvk_image.h
+@@ -37,13 +37,15 @@
+ struct nvk_device_memory;
+ struct nvk_physical_device;
+ 
+-static VkFormatFeatureFlags2
+-nvk_get_image_plane_format_features(struct nvk_physical_device *pdev,
+-                                    VkFormat vk_format, VkImageTiling tiling);
+-
+ VkFormatFeatureFlags2
+ nvk_get_image_format_features(struct nvk_physical_device *pdevice,
+-                              VkFormat format, VkImageTiling tiling);
++                              VkFormat format, VkImageTiling tiling,
++                              uint64_t drm_format_mod);
++
++void
++nvk_get_drm_format_modifier_properties_list(struct nvk_physical_device *pdev,
++                                            VkFormat vk_format,
++                                            VkBaseOutStructure *ext);
+ 
+ uint32_t
+ nvk_image_max_dimension(const struct nv_device_info *info,
+-- 
+GitLab
+
+
+From f2ffbef39d8b8e05e5fe10a7568c202382f86f2e Mon Sep 17 00:00:00 2001
+From: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
+Date: Tue, 2 Apr 2024 04:05:29 +0200
+Subject: [PATCH 11/18] nvk: enable rendering to DRM_FORMAT_MOD_LINEAR images
+
+---
+ src/nouveau/vulkan/nvk_cmd_buffer.h    | 10 +++++
+ src/nouveau/vulkan/nvk_cmd_copy.c      | 53 ++++++++++++++++++++++-
+ src/nouveau/vulkan/nvk_cmd_draw.c      | 58 +++++++++++++++++++++++++-
+ src/nouveau/vulkan/nvk_device_memory.c |  1 -
+ src/nouveau/vulkan/nvk_image.c         | 43 +++++++++++++++++++
+ src/nouveau/vulkan/nvk_image.h         |  9 ++++
+ 6 files changed, 169 insertions(+), 5 deletions(-)
+ mode change 100644 => 100755 src/nouveau/vulkan/nvk_image.c
+ mode change 100644 => 100755 src/nouveau/vulkan/nvk_image.h
+
+diff --git a/src/nouveau/vulkan/nvk_cmd_buffer.h b/src/nouveau/vulkan/nvk_cmd_buffer.h
+index a087272cd9fe2..5626e64540cec 100644
+--- a/src/nouveau/vulkan/nvk_cmd_buffer.h
++++ b/src/nouveau/vulkan/nvk_cmd_buffer.h
+@@ -10,6 +10,7 @@
+ #include "nv_push.h"
+ #include "nvk_cmd_pool.h"
+ #include "nvk_descriptor_set.h"
++#include "nvk_image.h"
+ 
+ #include "util/u_dynarray.h"
+ 
+@@ -85,6 +86,10 @@ struct nvk_attachment {
+ 
+    VkResolveModeFlagBits resolve_mode;
+    struct nvk_image_view *resolve_iview;
++
++   /* Needed to track the value of storeOp in case we need to copy images for
++    * the DRM_FORMAT_MOD_LINEAR case */
++   VkAttachmentStoreOp store_op;
+ };
+ 
+ struct nvk_rendering_state {
+@@ -280,4 +285,9 @@ void nvk_meta_resolve_rendering(struct nvk_cmd_buffer *cmd,
+ 
+ void nvk_cmd_buffer_dump(struct nvk_cmd_buffer *cmd, FILE *fp);
+ 
++void nvk_linear_render_copy(struct nvk_cmd_buffer *cmd,
++                            const struct nvk_image_view *iview,
++                            VkRect2D copy_rect,
++                            bool copy_to_tiled_shadow);
++
+ #endif
+diff --git a/src/nouveau/vulkan/nvk_cmd_copy.c b/src/nouveau/vulkan/nvk_cmd_copy.c
+index 04dc90a93becd..4cd1c322b0ac2 100644
+--- a/src/nouveau/vulkan/nvk_cmd_copy.c
++++ b/src/nouveau/vulkan/nvk_cmd_copy.c
+@@ -10,6 +10,7 @@
+ #include "nvk_entrypoints.h"
+ #include "nvk_format.h"
+ #include "nvk_image.h"
++#include "nvk_image_view.h"
+ #include "nvk_physical_device.h"
+ 
+ #include "vk_format.h"
+@@ -88,8 +89,8 @@ vk_to_nil_extent(VkExtent3D extent, uint32_t array_layers)
+ }
+ 
+ static struct nouveau_copy_buffer
+-nouveau_copy_rect_image(struct nvk_image *img,
+-                        struct nvk_image_plane *plane,
++nouveau_copy_rect_image(const struct nvk_image *img,
++                        const struct nvk_image_plane *plane,
+                         VkOffset3D offset_px,
+                         const VkImageSubresourceLayers *sub_res)
+ {
+@@ -593,6 +594,54 @@ nvk_CmdCopyImageToBuffer2(VkCommandBuffer commandBuffer,
+    }
+ }
+ 
++void
++nvk_linear_render_copy(struct nvk_cmd_buffer *cmd,
++                       const struct nvk_image_view *iview,
++                       VkRect2D copy_rect,
++                       bool copy_to_tiled_shadow)
++{
++   const struct nvk_image *image = (struct nvk_image *)iview->vk.image;
++
++   const uint8_t ip = iview->planes[0].image_plane;
++   const struct nvk_image_plane *src_plane = NULL, *dst_plane = NULL;
++   if (copy_to_tiled_shadow) {
++      src_plane = &image->planes[ip];
++      dst_plane = &image->linear_tiled_shadow;
++   } else {
++      src_plane = &image->linear_tiled_shadow;
++      dst_plane = &image->planes[ip];
++   }
++
++   const struct VkImageSubresourceLayers subres = {
++      .aspectMask = iview->vk.aspects,
++      .baseArrayLayer = iview->vk.base_array_layer,
++      .layerCount = iview->vk.layer_count,
++      .mipLevel = iview->vk.base_mip_level,
++   };
++
++   const VkOffset3D offset_px = {
++      .x = copy_rect.offset.x,
++      .y = copy_rect.offset.y,
++      .z = 0,
++   };
++   const struct nil_Extent4D_Pixels extent4d_px = {
++      .width = copy_rect.extent.width,
++      .height = copy_rect.extent.height,
++      .depth = 1,
++      .array_len = 1,
++   };
++
++   struct nouveau_copy copy = {
++      .src = nouveau_copy_rect_image(image, src_plane, offset_px, &subres),
++      .dst = nouveau_copy_rect_image(image, dst_plane, offset_px, &subres),
++      .extent_el = nil_extent4d_px_to_el(extent4d_px, src_plane->nil.format,
++                                         src_plane->nil.sample_layout),
++   };
++
++   copy.remap = nouveau_copy_remap_format(image->vk.format);
++   nouveau_copy_rect(cmd, &copy);
++}
++
+ VKAPI_ATTR void VKAPI_CALL
+ nvk_CmdCopyImage2(VkCommandBuffer commandBuffer,
+                   const VkCopyImageInfo2 *pCopyImageInfo)
+diff --git a/src/nouveau/vulkan/nvk_cmd_draw.c b/src/nouveau/vulkan/nvk_cmd_draw.c
+index 0bdcdaac83afc..6e2cbd119684d 100644
+--- a/src/nouveau/vulkan/nvk_cmd_draw.c
++++ b/src/nouveau/vulkan/nvk_cmd_draw.c
+@@ -579,6 +579,8 @@ nvk_attachment_init(struct nvk_attachment *att,
+       att->resolve_mode = info->resolveMode;
+       att->resolve_iview = res_iview;
+    }
++
++   att->store_op = info->storeOp;
+ }
+ 
+ static uint32_t
+@@ -607,6 +609,30 @@ nvk_GetRenderingAreaGranularityKHR(
+    *pGranularity = (VkExtent2D) { .width = 1, .height = 1 };
+ }
+ 
++static bool
++nvk_rendering_all_linear(const struct nvk_rendering_state *render)
++{
++   /* Depth and stencil are never linear */
++   if (render->depth_att.iview || render->stencil_att.iview)
++      return false;
++
++   for (uint32_t i = 0; i < render->color_att_count; i++) {
++      const struct nvk_image_view *iview = render->color_att[i].iview;
++      if (iview == NULL)
++         continue;
++
++      const struct nvk_image *image = (struct nvk_image *)iview->vk.image;
++      const uint8_t ip = iview->planes[0].image_plane;
++      const struct nil_image_level *level =
++         &image->planes[ip].nil.levels[iview->vk.base_mip_level];
++
++      if (level->tiling.is_tiled)
++         return false;
++   }
++
++   return true;
++}
++
+ VKAPI_ATTR void VKAPI_CALL
+ nvk_CmdBeginRendering(VkCommandBuffer commandBuffer,
+                       const VkRenderingInfo *pRenderingInfo)
+@@ -656,6 +682,8 @@ nvk_CmdBeginRendering(VkCommandBuffer commandBuffer,
+       .height  = render->area.extent.height,
+    });
+ 
++   const bool all_linear = nvk_rendering_all_linear(render);
++
+    enum nil_sample_layout sample_layout = NIL_SAMPLE_LAYOUT_INVALID;
+    for (uint32_t i = 0; i < color_att_count; i++) {
+       if (render->color_att[i].iview) {
+@@ -667,7 +695,18 @@ nvk_CmdBeginRendering(VkCommandBuffer commandBuffer,
+           */
+          assert(iview->plane_count == 1);
+          const uint8_t ip = iview->planes[0].image_plane;
+-         const struct nil_image *nil_image = &image->planes[ip].nil;
++         const struct nvk_image_plane *plane = &image->planes[ip];
++
++         const VkAttachmentLoadOp load_op =
++            pRenderingInfo->pColorAttachments[i].loadOp;
++         if (!all_linear && !plane->nil.levels[0].tiling.is_tiled) {
++            if (load_op == VK_ATTACHMENT_LOAD_OP_LOAD)
++               nvk_linear_render_copy(cmd, iview, render->area, true);
++
++            plane = &image->linear_tiled_shadow;
++         }
++
++         const struct nil_image *nil_image = &plane->nil;
+          const struct nil_image_level *level =
+             &nil_image->levels[iview->vk.base_mip_level];
+          struct nil_Extent4D_Samples level_extent_sa =
+@@ -678,7 +717,7 @@ nvk_CmdBeginRendering(VkCommandBuffer commandBuffer,
+          sample_layout = nil_image->sample_layout;
+          render->samples = image->vk.samples;
+ 
+-         uint64_t addr = nvk_image_base_address(image, ip) + level->offset_B;
++         uint64_t addr = nvk_image_plane_base_address(plane) + level->offset_B;
+ 
+          if (nil_image->dim == NIL_IMAGE_DIM_3D) {
+             addr += nil_image_level_z_offset_B(nil_image,
+@@ -824,6 +863,7 @@ nvk_CmdBeginRendering(VkCommandBuffer commandBuffer,
+          vk_format_to_pipe_format(iview->vk.format);
+       const uint8_t zs_format = nil_format_to_depth_stencil(p_format);
+       P_NV9097_SET_ZT_FORMAT(p, zs_format);
++      assert(level->tiling.is_tiled);
+       assert(level->tiling.z_log2 == 0);
+       P_NV9097_SET_ZT_BLOCK_SIZE(p, {
+          .width = WIDTH_ONE_GOB,
+@@ -951,6 +991,20 @@ nvk_CmdEndRendering(VkCommandBuffer commandBuffer)
+    VK_FROM_HANDLE(nvk_cmd_buffer, cmd, commandBuffer);
+    struct nvk_rendering_state *render = &cmd->state.gfx.render;
+ 
++   const bool all_linear = nvk_rendering_all_linear(render);
++   for (uint32_t i = 0; i < render->color_att_count; i++) {
++      struct nvk_image_view *iview = render->color_att[i].iview;
++      if (iview == NULL)
++         continue;
++
++      struct nvk_image *image = (struct nvk_image *)iview->vk.image;
++      const uint8_t ip = iview->planes[0].image_plane;
++      const struct nvk_image_plane *plane = &image->planes[ip];
++      if (!all_linear && !plane->nil.levels[0].tiling.is_tiled &&
++          render->color_att[i].store_op == VK_ATTACHMENT_STORE_OP_STORE)
++         nvk_linear_render_copy(cmd, iview, render->area, false);
++   }
++
+    bool need_resolve = false;
+ 
+    /* Translate render state back to VK for meta */
+diff --git a/src/nouveau/vulkan/nvk_device_memory.c b/src/nouveau/vulkan/nvk_device_memory.c
+index f746126944213..77954fe741e11 100644
+--- a/src/nouveau/vulkan/nvk_device_memory.c
++++ b/src/nouveau/vulkan/nvk_device_memory.c
+@@ -200,7 +200,6 @@ nvk_AllocateMemory(VkDevice device,
+    if (!mem)
+       return vk_error(dev, VK_ERROR_OUT_OF_HOST_MEMORY);
+ 
+-
+    mem->map = NULL;
+    if (fd_info && fd_info->handleType) {
+       assert(fd_info->handleType ==
+diff --git a/src/nouveau/vulkan/nvk_image.c b/src/nouveau/vulkan/nvk_image.c
+old mode 100644
+new mode 100755
+index 3065187d56c0b..7e66cfc42475c
+--- a/src/nouveau/vulkan/nvk_image.c
++++ b/src/nouveau/vulkan/nvk_image.c
+@@ -738,6 +738,28 @@ nvk_image_init(struct nvk_device *dev,
+                                            mod_count, &mods);
+          assert(image->vk.drm_format_mod != DRM_FORMAT_MOD_INVALID);
+       }
++
++      if (image->vk.drm_format_mod == DRM_FORMAT_MOD_LINEAR) {
++         /* We only have one shadow plane per nvk_image */
++         assert(image->plane_count == 1);
++
++         struct nil_image_init_info tiled_shadow_nil_info = {
++            .dim = vk_image_type_to_nil_dim(pCreateInfo->imageType),
++            .format = nil_format(vk_format_to_pipe_format(image->vk.format)),
++            .modifier = DRM_FORMAT_MOD_INVALID,
++            .extent_px = {
++               .width = pCreateInfo->extent.width,
++               .height = pCreateInfo->extent.height,
++               .depth = pCreateInfo->extent.depth,
++               .array_len = pCreateInfo->arrayLayers,
++            },
++            .levels = pCreateInfo->mipLevels,
++            .samples = pCreateInfo->samples,
++            .usage = usage & ~NIL_IMAGE_USAGE_LINEAR_BIT,
++         };
++         image->linear_tiled_shadow.nil =
++            nil_image_new(&pdev->info, &tiled_shadow_nil_info);
++      }
+    }
+ 
+    const struct vk_format_ycbcr_info *ycbcr_info =
+@@ -846,6 +868,11 @@ nvk_image_finish(struct nvk_device *dev, struct nvk_image *image,
+                              image->vk.create_flags, pAllocator);
+    }
+ 
++   if (image->linear_tiled_shadow.nil.size_B > 0) {
++      assert(image->linear_tiled_shadow.vma_size_B == 0);
++      nouveau_ws_bo_destroy(image->linear_tiled_shadow_bo);
++   }
++
+    vk_image_finish(&image->vk);
+ }
+ 
+@@ -906,6 +933,22 @@ nvk_CreateImage(VkDevice _device,
+       }
+    }
+ 
++   if (image->linear_tiled_shadow.nil.size_B > 0) {
++      struct nvk_image_plane *shadow = &image->linear_tiled_shadow;
++      image->linear_tiled_shadow_bo =
++         nouveau_ws_bo_new_tiled(dev->ws_dev,
++                                 shadow->nil.size_B, shadow->nil.align_B,
++                                 shadow->nil.pte_kind, shadow->nil.tile_mode,
++                                 NOUVEAU_WS_BO_LOCAL);
++      if (image->linear_tiled_shadow_bo == NULL) {
++         nvk_image_finish(dev, image, pAllocator);
++         vk_free2(&dev->vk.alloc, pAllocator, image);
++         return vk_errorf(pdev, VK_ERROR_OUT_OF_DEVICE_MEMORY,
++                          "Failed to allocate tiled shadow image");
++      }
++      shadow->addr = image->linear_tiled_shadow_bo->offset;
++   }
++
+    *pImage = nvk_image_to_handle(image);
+ 
+    return VK_SUCCESS;
+diff --git a/src/nouveau/vulkan/nvk_image.h b/src/nouveau/vulkan/nvk_image.h
+old mode 100644
+new mode 100755
+index e2afe3c46b982..2a678151269e6
+--- a/src/nouveau/vulkan/nvk_image.h
++++ b/src/nouveau/vulkan/nvk_image.h
+@@ -6,6 +6,7 @@
+ #define NVK_IMAGE_H 1
+ 
+ #include "nvk_private.h"
++#include "nvk_device_memory.h"
+ 
+ #include "vk_image.h"
+ 
+@@ -78,6 +79,14 @@ struct nvk_image {
+     * copied again down to the 8-bit result.
+     */
+    struct nvk_image_plane stencil_copy_temp;
++
++   /* The hardware doesn't support rendering to linear images except
++    * under certain conditions, so to support DRM_FORMAT_MOD_LINEAR
++    * rendering in the general case, we need to keep a tiled copy, which would
++    * be used to fake support if the conditions aren't satisfied.
++    */
++   struct nvk_image_plane linear_tiled_shadow;
++   struct nouveau_ws_bo *linear_tiled_shadow_bo;
+ };
+ 
+ VK_DEFINE_NONDISP_HANDLE_CASTS(nvk_image, vk.base, VkImage, VK_OBJECT_TYPE_IMAGE)
+-- 
+GitLab
+
+
+From c56ceaceec672f9fdc4679305e108c333d830d65 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Tue, 13 Feb 2024 22:35:50 -0600
+Subject: [PATCH 12/18] vulkan/wsi: Bind memory planes, not YCbCr planes.
+
+---
+ src/vulkan/wsi/wsi_common_drm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/vulkan/wsi/wsi_common_drm.c b/src/vulkan/wsi/wsi_common_drm.c
+index 474e59f88bd93..b80c1ba4f91bd 100644
+--- a/src/vulkan/wsi/wsi_common_drm.c
++++ b/src/vulkan/wsi/wsi_common_drm.c
+@@ -718,7 +718,7 @@ wsi_create_native_image_mem(const struct wsi_swapchain *chain,
+ 
+       for (uint32_t p = 0; p < image->num_planes; p++) {
+          const VkImageSubresource image_subresource = {
+-            .aspectMask = VK_IMAGE_ASPECT_PLANE_0_BIT << p,
++            .aspectMask = VK_IMAGE_ASPECT_MEMORY_PLANE_0_BIT_EXT << p,
+             .mipLevel = 0,
+             .arrayLayer = 0,
+          };
+-- 
+GitLab
+
+
+From 6030e96d3232dc2a446e2d9ae5b3e6a192ee77c2 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Tue, 13 Feb 2024 15:04:53 -0600
+Subject: [PATCH 13/18] nvk/wsi: Advertise modifier support
+
+---
+ src/nouveau/vulkan/nvk_wsi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/nouveau/vulkan/nvk_wsi.c b/src/nouveau/vulkan/nvk_wsi.c
+index 91efd72c84d81..6c9c459ad368d 100644
+--- a/src/nouveau/vulkan/nvk_wsi.c
++++ b/src/nouveau/vulkan/nvk_wsi.c
+@@ -29,6 +29,7 @@ nvk_init_wsi(struct nvk_physical_device *pdev)
+       return result;
+ 
+    pdev->wsi_device.supports_scanout = false;
++   pdev->wsi_device.supports_modifiers = true;
+ 
+    pdev->vk.wsi_device = &pdev->wsi_device;
+ 
+-- 
+GitLab
+
+
+From 77f73d0274dc90c422cfe9f950faebbea3e587f2 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Tue, 13 Feb 2024 22:39:35 -0600
+Subject: [PATCH 14/18] HACK: Allow other VK_IMAGE_ASPECT_MEMORY_PLANE_0_BIT
+
+This needs to be done better but removing the assert works.
+---
+ src/nouveau/vulkan/nvk_image.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nouveau/vulkan/nvk_image.h b/src/nouveau/vulkan/nvk_image.h
+index 2a678151269e6..6cabec7bdcaf0 100755
+--- a/src/nouveau/vulkan/nvk_image.h
++++ b/src/nouveau/vulkan/nvk_image.h
+@@ -108,7 +108,7 @@ nvk_image_aspects_to_plane(ASSERTED const struct nvk_image *image,
+                            VkImageAspectFlags aspectMask)
+ {
+    /* Verify that the aspects are actually in the image */
+-   assert(!(aspectMask & ~image->vk.aspects));
++//   assert(!(aspectMask & ~image->vk.aspects));
+ 
+    /* Must only be one aspect unless it's depth/stencil */
+    assert(aspectMask == (VK_IMAGE_ASPECT_DEPTH_BIT |
+-- 
+GitLab
+
+
+From 8dad83d5c5585bf665144e73f0c9a7b85d5b200a Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Thu, 2 May 2024 20:45:38 -0500
+Subject: [PATCH 15/18] nvk: Advertise VK_EXT_queue_family_foreign
+
+---
+ docs/features.txt                        | 2 +-
+ docs/relnotes/new_features.txt           | 1 +
+ src/nouveau/vulkan/nvk_physical_device.c | 1 +
+ 3 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/docs/features.txt b/docs/features.txt
+index 37cade2858d9f..06cf003b20662 100644
+--- a/docs/features.txt
++++ b/docs/features.txt
+@@ -612,7 +612,7 @@ Khronos extensions that are not part of any Vulkan version:
+   VK_EXT_primitive_topology_list_restart                DONE (anv, hasvk, lvp, nvk, radv, tu, v3dv, vn)
+   VK_EXT_primitives_generated_query                     DONE (anv, hasvk, lvp, nvk, radv, tu, vn)
+   VK_EXT_provoking_vertex                               DONE (anv, hasvk, lvp, nvk, radv, tu, v3dv, vn)
+-  VK_EXT_queue_family_foreign                           DONE (anv, hasvk, lvp, radv, tu, vn)
++  VK_EXT_queue_family_foreign                           DONE (anv, hasvk, nvk, lvp, radv, tu, vn)
+   VK_EXT_rasterization_order_attachment_access          DONE (lvp, tu, vn)
+   VK_EXT_robustness2                                    DONE (anv, hasvk, lvp, nvk, radv, tu, vn)
+   VK_EXT_sample_locations                               DONE (anv, hasvk, nvk, radv/gfx9-, tu/a650+)
+diff --git a/docs/relnotes/new_features.txt b/docs/relnotes/new_features.txt
+index e69de29bb2d1d..2c69408e67886 100644
+--- a/docs/relnotes/new_features.txt
++++ b/docs/relnotes/new_features.txt
+@@ -0,0 +1 @@
++VK_EXT_queue_family_foreign on NVK
+diff --git a/src/nouveau/vulkan/nvk_physical_device.c b/src/nouveau/vulkan/nvk_physical_device.c
+index 338fa7e5de805..111fa3623dff5 100644
+--- a/src/nouveau/vulkan/nvk_physical_device.c
++++ b/src/nouveau/vulkan/nvk_physical_device.c
+@@ -212,6 +212,7 @@ nvk_get_device_extensions(const struct nvk_instance *instance,
+       .EXT_private_data = true,
+       .EXT_primitives_generated_query = true,
+       .EXT_provoking_vertex = true,
++      .EXT_queue_family_foreign = true,
+       .EXT_robustness2 = true,
+       .EXT_sample_locations = info->cls_eng3d >= MAXWELL_B,
+       .EXT_sampler_filter_minmax = info->cls_eng3d >= MAXWELL_B,
+-- 
+GitLab
+
+
+From d9416f744bc7bd196893a3b67595dd8ec8ce3fbb Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Thu, 2 May 2024 20:46:02 -0500
+Subject: [PATCH 16/18] nvk: Advertise VK_EXT_image_drm_format_modifier
+
+---
+ docs/features.txt                        | 2 +-
+ docs/relnotes/new_features.txt           | 1 +
+ src/nouveau/vulkan/nvk_physical_device.c | 6 +++++-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/docs/features.txt b/docs/features.txt
+index 06cf003b20662..699dbe1dfa763 100644
+--- a/docs/features.txt
++++ b/docs/features.txt
+@@ -590,7 +590,7 @@ Khronos extensions that are not part of any Vulkan version:
+   VK_EXT_headless_surface                               DONE (anv, dzn, hasvk, lvp, nvk, panvk, pvr, radv, tu, v3dv, vn)
+   VK_EXT_image_2d_view_of_3d                            DONE (anv, hasvk, lvp, nvk, radv, tu, vn)
+   VK_EXT_image_compression_control                      DONE (radv)
+-  VK_EXT_image_drm_format_modifier                      DONE (anv, hasvk, radv/gfx9+, tu, v3dv, vn)
++  VK_EXT_image_drm_format_modifier                      DONE (anv, hasvk, nvk, radv/gfx9+, tu, v3dv, vn)
+   VK_EXT_image_sliced_view_of_3d                        DONE (anv, nvk, radv/gfx10+)
+   VK_EXT_image_view_min_lod                             DONE (anv, hasvk, nvk, radv, tu, vn)
+   VK_EXT_index_type_uint8                               DONE (anv, hasvk, nvk, lvp, panvk, pvr, radv/gfx8+, tu, v3dv, vn)
+diff --git a/docs/relnotes/new_features.txt b/docs/relnotes/new_features.txt
+index 2c69408e67886..74e71e0a6083c 100644
+--- a/docs/relnotes/new_features.txt
++++ b/docs/relnotes/new_features.txt
+@@ -1 +1,2 @@
+ VK_EXT_queue_family_foreign on NVK
++VK_EXT_image_drm_format_modifier on NVK
+diff --git a/src/nouveau/vulkan/nvk_physical_device.c b/src/nouveau/vulkan/nvk_physical_device.c
+index 111fa3623dff5..65fa0069107e0 100644
+--- a/src/nouveau/vulkan/nvk_physical_device.c
++++ b/src/nouveau/vulkan/nvk_physical_device.c
+@@ -76,6 +76,7 @@ nvk_get_vk_version(const struct nv_device_info *info)
+ static void
+ nvk_get_device_extensions(const struct nvk_instance *instance,
+                           const struct nv_device_info *info,
++                          bool has_tiled_bos,
+                           struct vk_device_extension_table *ext)
+ {
+    *ext = (struct vk_device_extension_table) {
+@@ -183,6 +184,7 @@ nvk_get_device_extensions(const struct nvk_instance *instance,
+ #ifdef VK_USE_PLATFORM_DISPLAY_KHR
+       .EXT_display_control = true,
+ #endif
++      .EXT_image_drm_format_modifier = has_tiled_bos,
+       .EXT_dynamic_rendering_unused_attachments = true,
+       .EXT_extended_dynamic_state = true,
+       .EXT_extended_dynamic_state2 = true,
+@@ -1167,8 +1169,10 @@ nvk_create_drm_physical_device(struct vk_instance *_instance,
+    vk_physical_device_dispatch_table_from_entrypoints(
+       &dispatch_table, &wsi_physical_device_entrypoints, false);
+ 
++   const bool has_tiled_bos = nouveau_ws_has_tiled_bo(ws_dev);
+    struct vk_device_extension_table supported_extensions;
+-   nvk_get_device_extensions(instance, &info, &supported_extensions);
++   nvk_get_device_extensions(instance, &info, has_tiled_bos,
++                             &supported_extensions);
+ 
+    struct vk_features supported_features;
+    nvk_get_device_features(&info, &supported_extensions, &supported_features);
+-- 
+GitLab
+
+
+From 99b9e0b787e4a22d65057af073c775b8853094ba Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Fri, 3 May 2024 10:49:41 -0500
+Subject: [PATCH 17/18] HACK: disable explicit sync
+
+---
+ src/vulkan/wsi/wsi_common_wayland.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/vulkan/wsi/wsi_common_wayland.c b/src/vulkan/wsi/wsi_common_wayland.c
+index ebfc80a84a547..0ed1af8271d2e 100644
+--- a/src/vulkan/wsi/wsi_common_wayland.c
++++ b/src/vulkan/wsi/wsi_common_wayland.c
+@@ -208,6 +208,7 @@ VK_DEFINE_NONDISP_HANDLE_CASTS(wsi_wl_swapchain, base.base, VkSwapchainKHR,
+ static bool
+ wsi_wl_use_explicit_sync(struct wsi_wl_display *display, struct wsi_device *device)
+ {
++   return false;
+    return wsi_device_supports_explicit_sync(device) &&
+           display->wl_syncobj != NULL;
+ }
+-- 
+GitLab
+
+
+From f21b8ae6c79a2386869a9bb8efb289953f0985b9 Mon Sep 17 00:00:00 2001
+From: Faith Ekstrand <faith.ekstrand@collabora.com>
+Date: Fri, 3 May 2024 17:43:17 -0500
+Subject: [PATCH 18/18] HACK: vulkan/wsi: Use modifiers even on different GPUs
+
+---
+ src/vulkan/wsi/wsi_common_wayland.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/vulkan/wsi/wsi_common_wayland.c b/src/vulkan/wsi/wsi_common_wayland.c
+index 0ed1af8271d2e..4db46682848ab 100644
+--- a/src/vulkan/wsi/wsi_common_wayland.c
++++ b/src/vulkan/wsi/wsi_common_wayland.c
+@@ -934,13 +934,13 @@ wsi_wl_display_init(struct wsi_wayland *wsi_wl,
+             /* Apparently some wayland compositor do not send the render
+              * device node but the primary, so test against both.
+              */
+-            display->same_gpu =
+-               (wsi_wl->wsi->drm_info.hasRender &&
+-                major(display->main_device) == wsi_wl->wsi->drm_info.renderMajor &&
+-                minor(display->main_device) == wsi_wl->wsi->drm_info.renderMinor) ||
+-               (wsi_wl->wsi->drm_info.hasPrimary &&
+-                major(display->main_device) == wsi_wl->wsi->drm_info.primaryMajor &&
+-                minor(display->main_device) == wsi_wl->wsi->drm_info.primaryMinor);
++//            display->same_gpu =
++//               (wsi_wl->wsi->drm_info.hasRender &&
++//                major(display->main_device) == wsi_wl->wsi->drm_info.renderMajor &&
++//                minor(display->main_device) == wsi_wl->wsi->drm_info.renderMinor) ||
++//               (wsi_wl->wsi->drm_info.hasPrimary &&
++//                major(display->main_device) == wsi_wl->wsi->drm_info.primaryMajor &&
++//                minor(display->main_device) == wsi_wl->wsi->drm_info.primaryMinor);
+          }
+    }
+ 
+-- 
+GitLab
+
