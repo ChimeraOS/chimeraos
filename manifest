@@ -128,7 +128,6 @@ export PACKAGES="\
 	podman \
 	pulsemixer \
 	python \
-	python-inotify-simple \
 	python-notify2 \
 	qtractor \
 	retroarch \
