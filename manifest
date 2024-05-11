@@ -259,6 +259,7 @@ export USER_SERVICES="\
 	chimera.service \
 	pipewire \
 	steam-patch.service \
+	chimera-cart-monitor.service \
 "
 
 export FILES_TO_DELETE="\
