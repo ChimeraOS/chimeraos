@@ -54,6 +54,7 @@ export PACKAGES="\
 	gnome-software \
 	gnome-system-monitor \
 	gnome-text-editor \
+	gnome-tweaks \
 	gst-plugin-pipewire \
 	gvfs-smb \
 	gvfs-nfs \
