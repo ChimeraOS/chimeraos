@@ -1,0 +1,15 @@
+# Install device quirks inside the deployment overlay
+
+post_install() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+
+    DEPLOYMENT_QUIRKS="${MOUNT_PATH}/device_quirks"
+    SUBVOL_QUIRKS="${DEPLOYMENT_QUIRKS}/${NAME}"
+
+    DEVICE_QUIRKS_LOCATION="${SUBVOL_QUIRKS}"
+
+    # TODO: call id-device if specification is wanted also providing DEVICE_QUIRKS_LOCATION
+    echo "OK"
+}

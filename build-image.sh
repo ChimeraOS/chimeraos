@@ -151,10 +151,12 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
 echo "
-LABEL=frzr_root /var       btrfs     defaults,subvolid=256,rw,noatime,nodatacow,nofail                                                                                                                                                                                                                      0   0
-LABEL=frzr_root /home      btrfs     defaults,subvolid=257,rw,noatime,nodatacow,nofail                                                                                                                                                                                                                      0   0
-LABEL=frzr_root /frzr_root btrfs     defaults,subvolid=5,rw,noatime,nodatacow,x-initrd.mount                                                                                                                                                                                                                0   2
-overlay         /etc       overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-systemd.rw-only,lowerdir=/sysroot/etc,upperdir=/sysroot/frzr_root/etc,workdir=/sysroot/frzr_root/.etc,index=off,metacopy=off,comment=etcoverlay,x-initrd.mount    0   0
+LABEL=frzr_root /frzr_root btrfs     defaults,x-initrd.mount,subvolid=5,rw,noatime,nodatacow                                                                                                                                                                                                                                                                                                                                                                                                                                 0   2
+LABEL=frzr_root /home      btrfs     defaults,x-systemd.rw-only,subvolid=257,rw,noatime,nodatacow,nofail                                                                                                                                                                                                                                                                                                                                                                                                                     0   0
+overlay         /boot      overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-initrd.mount,lowerdir=/sysroot/frzr_root/kernels/boot:/sysroot/frzr_root/device_quirks/${SYSTEM_NAME}-${VERSION}/boot:/sysroot/boot,upperdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/boot_overlay/upperdir,workdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/boot_overlay/workdir,comment=bootoverlay                                    0   0
+overlay         /usr       overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-initrd.mount,lowerdir=/sysroot/frzr_root/kernels/usr:/sysroot/frzr_root/device_quirks/${SYSTEM_NAME}-${VERSION}/usr:/sysroot/usr,upperdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/usr_overlay/upperdir,workdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/usr_overlay/workdir,comment=usroverlay                                          0   0
+overlay         /etc       overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-initrd.mount,x-systemd.rw-only,lowerdir=/sysroot/frzr_root/kernels/etc:/sysroot/frzr_root/device_quirks/${SYSTEM_NAME}-${VERSION}/etc:/sysroot/etc,upperdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/etc_overlay/upperdir,workdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/etc_overlay/workdir,index=off,metacopy=off,comment=etcoverlay 0   0
+overlay         /var       overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-initrd.mount,x-systemd.rw-only,lowerdir=/sysroot/frzr_root/kernels/var:/sysroot/frzr_root/device_quirks/${SYSTEM_NAME}-${VERSION}/var:/sysroot/var,upperdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/var_overlay/upperdir,workdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/var_overlay/workdir,index=off,metacopy=off,comment=varoverlay 0   0
 " > /etc/fstab
 
 echo "
@@ -202,13 +204,13 @@ rm -rf \
 /extra_pkgs \
 /extra_certs \
 /home \
-/var \
+/var/log \
 
 rm -rf ${FILES_TO_DELETE}
 
 # create necessary directories
 mkdir -p /home
-mkdir -p /var
+mkdir -p /var/log
 mkdir -p /frzr_root
 mkdir -p /efi
 EOF

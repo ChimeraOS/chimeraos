@@ -1,4 +1,7 @@
 # Migrate to systemd-boot
+
+frzr_migration_version=0
+
 post_install() {
 	local MOUNT_PATH=$1
 

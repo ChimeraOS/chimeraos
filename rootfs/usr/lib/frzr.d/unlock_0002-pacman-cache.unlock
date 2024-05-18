@@ -1,0 +1,15 @@
+# Unlock overlays
+
+frzr_migration_version=1
+
+post_unlock() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+
+    # check install_0004-deployment-overlays.migration
+    DEPLOYMENT_DATA="${MOUNT_PATH}/deployments_data"
+    SUBVOL_DATA="${DEPLOYMENT_DATA}/${NAME}"
+
+    # TODO: copy the pacman cache to the var overlay
+}

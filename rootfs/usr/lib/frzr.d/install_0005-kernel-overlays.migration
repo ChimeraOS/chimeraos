@@ -1,0 +1,33 @@
+# Create the /etc and /var overlay
+
+frzr_migration_version=1
+
+post_install() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+
+    KERNEL_OVERLAYS_PATH="${MOUNT_PATH}/kernels"
+
+    if [ ! -d "${KERNEL_OVERLAYS_PATH}" ]; then
+        btrfs subvolume create "${KERNEL_OVERLAYS_PATH}"
+    fi
+    
+    if mkdir -p "${KERNEL_OVERLAYS_PATH}/usr"; then
+        if mkdir -p "${KERNEL_OVERLAYS_PATH}/boot"; then
+            if mkdir -p "${KERNEL_OVERLAYS_PATH}/etc"; then
+                if mkdir -p "${KERNEL_OVERLAYS_PATH}/var"; then
+                    echo "OK"
+                else
+                    echo "ERROR: Cannot create '${KERNEL_OVERLAYS_PATH}/var'"
+                fi
+            else
+                echo "ERROR: Cannot create '${KERNEL_OVERLAYS_PATH}/etc'"
+            fi
+        else
+                echo "ERROR: Cannot create '${KERNEL_OVERLAYS_PATH}/boot'"
+        fi
+    else
+        echo "ERROR: Cannot create '${KERNEL_OVERLAYS_PATH}/usr'"
+    fi
+}
