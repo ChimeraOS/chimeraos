@@ -1,3 +1,0 @@
-# use "reset=1" as default, since it should be safe for recent devices and
-# solves all kind of problems.
-options btusb reset=1
