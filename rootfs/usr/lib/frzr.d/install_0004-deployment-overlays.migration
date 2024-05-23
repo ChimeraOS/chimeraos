@@ -89,4 +89,11 @@ post_install() {
         echo "Clearing up pacman old database overlay in '${SUBVOL_DATA}/var_overlay/upperdir/lib/pacman'..."
         rm -rf "${SUBVOL_DATA}/var_overlay/upperdir/lib/pacman"
     fi
+
+    # Remove everything from an old pacman overlay
+    if [ -d "${SUBVOL_DATA}/etc_overlay/upperdir/pacman.d/gnupg" ]; then
+        echo "Clearing up pacman old pacman gnupg overlay in '${SUBVOL_DATA}/etc_overlay/upperdir/pacman.d/gnupg'..."
+        rm -rf "${SUBVOL_DATA}/etc_overlay/upperdir/pacman.d/gnupg"
+    fi
+
 }
