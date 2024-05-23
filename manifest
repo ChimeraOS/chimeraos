@@ -33,6 +33,7 @@ export PACKAGES="\
 	epiphany \
 	ethtool \
 	evtest \
+	fakeroot \
 	ffmpeg \
 	file \
 	ffmpegthumbnailer \
