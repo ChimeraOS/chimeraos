@@ -1,13 +1,13 @@
 # Remove extraneous wireplumber configuration made by quirks that
 # interferes with first boot
 post_install() {
-	local MOUNT_PATH=$1
+  local MOUNT_PATH=$1
 
-	if [ -e ${MOUNT_PATH}/etc/wireplumber ]; then
-		# We have a wireplumber setup should delete it,
+  if [ -e ${MOUNT_PATH}/etc/wireplumber ]; then
+    # We have a wireplumber setup should delete it,
     # device quirks would recreate it anyways
 
     rm -rf ${MOUNT_PATH}/etc/wireplumber
-	  echo "Wireplumber setup is reset"
-	fi
+    echo "Wireplumber setup is reset"
+  fi
 }
