@@ -7,7 +7,7 @@
 
 _pkgname=gamescope
 pkgname=gamescope-plus-git
-pkgver=3.14.3.84.gdfe2857
+pkgver=3.14.18.19.gbc4fa10
 pkgrel=1
 pkgdesc='SteamOS session compositing window manager with added patches'
 arch=(x86_64)
@@ -24,10 +24,8 @@ depends=(
   libdecor
   libdisplay-info.so
   libdrm
-  libliftoff.so
+  libinput
   libpipewire-0.3.so
-  libvulkan.so
-  libwlroots.so
   libx11
   libxcb
   libxcomposite
@@ -42,8 +40,11 @@ depends=(
   libxxf86vm
   openvr
   sdl2
+  seatd
   vulkan-icd-loader
   wayland
+  xcb-util-errors
+  xcb-util-wm
   xorg-server-xwayland
 )
 
@@ -57,8 +58,10 @@ makedepends=(
   wayland-protocols
 )
 
-source=("git+https://github.com/ChimeraOS/gamescope.git#branch=ruineka/gamescope-rebase"
+source=("git+https://github.com/ChimeraOS/gamescope.git#branch=gamescope-plus"
         "git+https://github.com/nothings/stb.git#commit=af1a5bc352164740c1cc1354942b1c6b72eacb8a"
+        "git+https://github.com/Joshua-Ashton/wlroots.git"
+        "git+https://gitlab.freedesktop.org/emersion/libliftoff.git"
         "git+https://github.com/Joshua-Ashton/GamescopeShaders.git#tag=v0.1"
         "git+https://github.com/Joshua-Ashton/reshade.git"
         "git+https://github.com/KhronosGroup/SPIRV-Headers.git"
@@ -66,6 +69,8 @@ source=("git+https://github.com/ChimeraOS/gamescope.git#branch=ruineka/gamescope
 
 b2sums=('SKIP'
         'db31478999287cc5b08cc7d98d1daa43a27b339b3ad975269710bd719d30e9f1cf5ee240ee7e2a8d8551f20fa46da14acd669cb207b26a18d79b360e718ff55b'
+        'SKIP'
+        'SKIP'
         'ca268553bc3dacb5bd19553702cd454ea78ed97ab39d4397c5abf9a27d32633b63e0f7f7bf567b56066e6ecd979275330e629ba202a6d7721f0cd8166cd110dd'
         'SKIP'
         'SKIP')
@@ -79,6 +84,8 @@ prepare() {
   cd "$srcdir/$_pkgname"
   meson subprojects download
   git submodule init src/reshade
+  git config submodule.subprojects/wlroots.url "$srcdir/wlroots"
+  git config submodule.subprojects/libliftoff.url "$srcdir/libliftoff"
   git config submodule.src/reshade.url "$srcdir/reshade"
   git submodule init thirdparty/SPIRV-Headers
   git config submodule.thirdparty/SPIRV-Headers.url ../SPIRV-Headers
