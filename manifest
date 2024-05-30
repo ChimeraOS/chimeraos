@@ -164,6 +164,7 @@ export PACKAGES="\
 	xorg-server \
 	xz \
 	zip \
+	zerotier-one \
 "
 
 export PACKAGE_OVERRIDES="\
@@ -253,6 +254,7 @@ export SERVICES="\
 	sshd \
 	systemd-timesyncd \
 	swapfile \
+	zerotier-one \
 "
 
 export USER_SERVICES="\
