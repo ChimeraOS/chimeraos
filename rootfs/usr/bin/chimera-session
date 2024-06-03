@@ -65,21 +65,18 @@ function gamescope_steam() {
 	# switch to Steam Big Picture UI (Gamescope/Wayland)
 	echo '' >${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session-steam
-	sudo systemctl enable --now inputplumber # remove when fully integrated into opengamepadui
 }
 
 function gamescope_opengamepadui() {
 	# switch to OpengamepadUI (Gamescope/Wayland)
 	echo '' >${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session-opengamepadui
-	sudo systemctl disable --now inputplumber
 }
 
 function gamescope_steam_plus() {
 	# switch to Steam plus OpengamepadUI overlay (Gamescope/Wayland)
 	echo '' >${SESSION_CONFIG}
 	sudo chimera-session-use-lightdm gamescope-session-steam-plus
-	sudo systemctl disable --now inputplumber
 }
 
 function print_invalid_session() {
