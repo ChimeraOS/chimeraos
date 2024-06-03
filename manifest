@@ -247,6 +247,7 @@ export SERVICES="\
 	haveged \
 	home-swapfile.swap \
 	inputplumber \
+	inputplumber-resume \
 	lightdm \
 	powerstation \
 	steam-powerbuttond \
