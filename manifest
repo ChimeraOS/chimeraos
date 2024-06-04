@@ -167,9 +167,9 @@ export PACKAGES="\
 "
 
 export PACKAGE_OVERRIDES="\
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.9.2-chos2-1/linux-chimeraos-6.9.2.chos2-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.9.2-chos2-1/linux-chimeraos-headers-6.9.2.chos2-1-x86_64.pkg.tar.zst\
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.1.0-chos1-1/lib32-libva-mesa-driver-1--24.1.0.chos1-1-x86_64.pkg.tar.zst\
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.9.3-chos1-1/linux-chimeraos-6.9.3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.9.3-chos1-1/linux-chimeraos-headers-6.9.3.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.1.0-chos1-1/lib32-libva-mesa-driver-1--24.1.0.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.1.0-chos1-1/lib32-mesa-1--24.1.0.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.1.0-chos1-1/lib32-mesa-vdpau-1--24.1.0.chos1-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/24.1.0-chos1-1/lib32-opencl-rusticl-mesa-1--24.1.0.chos1-1-x86_64.pkg.tar.zst \
