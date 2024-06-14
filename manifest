@@ -226,6 +226,7 @@ export AUR_PACKAGES="\
 	powerstation-bin \
 	python-gbopyrator \
 	python-vdf \
+	refind-git \
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
 	rtl88x2bu-dkms-git \
