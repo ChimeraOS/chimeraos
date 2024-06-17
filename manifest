@@ -267,9 +267,6 @@ export FILES_TO_DELETE="\
 "
 
 postinstallhook() {
-	# use nftables instead of the deprecated iptables
-	yes | pacman -S iptables-nft
-
 	# Add sudo permissions
 	sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^# //g' /etc/sudoers
 	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
