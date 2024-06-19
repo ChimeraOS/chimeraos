@@ -1,0 +1,18 @@
+pkgname=chimeraos-fake-mkinitcpio
+pkgver=39.2
+pkgrel=2
+pkgdesc="A stub implementation of mkinitcpio that does nothing except providing the executable that does nothing"
+arch=('any')
+url='https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio'
+license=('GPL-2.0-only')
+depends=()
+provides=('initramfs')
+conflicts=('mkinitcpio')
+source=('mkinitcpio')
+b2sums=('4b40ab2908ab1ad57e72e22f6f74f4d22d3bb09a42d64956a64c48cf0dadb645da4c4e3edb31fa3068c909a1f03c0fa9fd534cb7159d6d56526d5dbb3104b9b0')
+
+package() {
+    mkdir -p "$pkgdir/usr/bin"
+    install -m 755 "$srcdir/mkinitcpio" "$pkgdir/usr/bin"
+}
+
