@@ -1,6 +1,14 @@
+#! /bin/bash
+
 # Migrate to systemd-boot
+
+frzr_migration_version=0
+
 post_install() {
 	local MOUNT_PATH=$1
+	local SUBVOL=$2
+    local NAME=$3
+	local FRZR_VER=$4
 
 	if [ -e ${MOUNT_PATH}/boot/loader/random-seed ]; then
 		# migration has already completed, exit silently

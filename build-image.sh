@@ -78,6 +78,10 @@ arch-chroot ${BUILD_PATH} /bin/bash <<EOF
 set -e
 set -x
 
+# This will prevent frzr bootloader from erroring when installing kernels
+# due to the pacman hook being executed at kernel-install time
+export FRZR_IMAGE_GENERATION=1
+
 source /manifest
 
 pacman-key --populate
@@ -123,9 +127,12 @@ systemctl --global enable ${USER_SERVICES}
 # disable root login
 passwd --lock root
 
+# add root to the frzr group
+sudo usermod -a -G frzr root
+
 # create user
 groupadd -r autologin
-useradd -m ${USERNAME} -G autologin,wheel,plugdev
+useradd -m ${USERNAME} -G autologin,wheel,plugdev,frzr
 echo "${USERNAME}:${USERNAME}" | chpasswd
 
 # set the default editor, so visudo works
@@ -150,11 +157,15 @@ PrintMotd no # pam does that
 Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
+# Write the fstab file
+# WARNING: mounting partitions using LABEL exposes us to a bug where multiple disks cannot have frzr systems and how to solve this still is an open question
 echo "
-LABEL=frzr_root /var       btrfs     defaults,subvolid=256,rw,noatime,nodatacow,nofail                                                                                                                                                                                                                      0   0
-LABEL=frzr_root /home      btrfs     defaults,subvolid=257,rw,noatime,nodatacow,nofail                                                                                                                                                                                                                      0   0
-LABEL=frzr_root /frzr_root btrfs     defaults,subvolid=5,rw,noatime,nodatacow,x-initrd.mount                                                                                                                                                                                                                0   2
-overlay         /etc       overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-systemd.rw-only,lowerdir=/sysroot/etc,upperdir=/sysroot/frzr_root/etc,workdir=/sysroot/frzr_root/.etc,index=off,metacopy=off,comment=etcoverlay,x-initrd.mount    0   0
+LABEL=frzr_root /frzr_root btrfs     defaults,x-initrd.mount,subvolid=5,rw,noatime,nodatacow                                                                                                                                                                                                                                                                                                                                                                                                                                                           0   2
+LABEL=frzr_root /home      btrfs     defaults,x-systemd.rw-only,subvol=/home,rw,noatime,nodatacow,nofail                                                                                                                                                                                                                                                                                                                                                                                                                                               0   0
+overlay         /boot      overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-initrd.mount,lowerdir=/sysroot/frzr_root/kernels/boot:/sysroot/frzr_root/device_quirks/${SYSTEM_NAME}-${VERSION}/boot:/sysroot/boot,upperdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/boot_overlay/upperdir,workdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/boot_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off,comment=bootoverlay             0   0
+overlay         /usr       overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-initrd.mount,lowerdir=/sysroot/frzr_root/kernels/usr:/sysroot/frzr_root/device_quirks/${SYSTEM_NAME}-${VERSION}/usr:/sysroot/usr,upperdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/usr_overlay/upperdir,workdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/usr_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off,comment=usroverlay                   0   0
+overlay         /etc       overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-initrd.mount,x-systemd.rw-only,lowerdir=/sysroot/frzr_root/kernels/etc:/sysroot/frzr_root/device_quirks/${SYSTEM_NAME}-${VERSION}/etc:/sysroot/etc,upperdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/etc_overlay/upperdir,workdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/etc_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off,comment=etcoverlay 0   0
+overlay         /var       overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-initrd.mount,x-systemd.rw-only,lowerdir=/sysroot/frzr_root/kernels/var:/sysroot/frzr_root/device_quirks/${SYSTEM_NAME}-${VERSION}/var:/sysroot/var,upperdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/var_overlay/upperdir,workdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/var_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off,comment=varoverlay 0   0
 " > /etc/fstab
 
 echo "
@@ -187,30 +198,45 @@ pacman -Q > /manifest
 
 # preserve installed package database
 mkdir -p /usr/var/lib/pacman
-cp -r /var/lib/pacman/local /usr/var/lib/pacman/
+cp -a /var/lib/pacman/local /usr/var/lib/pacman/
 
-# move kernel image and initrd to a defualt location if "linux" is not used
-if [ ${KERNEL_PACKAGE} != 'linux' ] ; then
-	mv /boot/vmlinuz-${KERNEL_PACKAGE} /boot/vmlinuz-linux
-	mv /boot/initramfs-${KERNEL_PACKAGE}.img /boot/initramfs-linux.img
-	mv /boot/initramfs-${KERNEL_PACKAGE}-fallback.img /boot/initramfs-linux-fallback.img
+# Remove the fallback: it is never used and takes up space
+if [ -e "/boot/initramfs-${KERNEL_PACKAGE}-fallback.img" ]; then
+	rm "/boot/initramfs-${KERNEL_PACKAGE}-fallback.img"
+fi
+
+# Since frzr pre-v1.0.0 has an hardcoded cp of /boot/vmlinuz-linux and /boot/initramfs-linux.img
+# create two empty files so that the cp command won't file: these will be  replaced by a migration hook.
+#
+# Note: The following is kept for compatibility with older frzr
+# 		This can safely be removed when the compatibility with
+# 		frzr pre-v1.0.0 will be dropped
+if [ "${KERNEL_PACKAGE}" = "linux" ]; then
+	echo "Kernel is named 'linux' nothing to do."
+else
+	touch /boot/vmlinuz-linux
+	touch /boot/initramfs-linux.img
 fi
 
 # clean up/remove unnecessary files
+# Keep every file in /var except for logs (populated by GitHub CI)
+# the pacman database: it was backed up to another location and
+# will be restored by an unlock hook
 rm -rf \
 /own_pkgs \
 /extra_pkgs \
 /extra_certs \
 /home \
-/var \
+/var/log \
+/var/lib/pacman/local \
 
 rm -rf ${FILES_TO_DELETE}
 
 # create necessary directories
 mkdir -p /home
-mkdir -p /var
 mkdir -p /frzr_root
 mkdir -p /efi
+mkdir -p /var/log
 EOF
 
 #defrag the image
