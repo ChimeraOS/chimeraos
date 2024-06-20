@@ -68,6 +68,9 @@ case "$session" in
   desktop|plasma)
     session_launcher="gnome-session-oneshot"
     create_sentinel=1
+      if (systemctl -q is-active inputplumber.service); then
+        busctl set-property org.shadowblip.InputPlumber /org/shadowblip/InputPlumber/CompositeDevice0 org.shadowblip.Input.CompositeDevice InterceptMode u 0
+      fi
   ;;
   opengamepadui|gamescope-session-opengamepadui)
     session_launcher="gamescope-session-opengamepadui"

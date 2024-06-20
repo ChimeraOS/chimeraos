@@ -52,6 +52,9 @@ function desktop() {
 
 	# switch to Desktop
 	sudo chimera-session-use-lightdm gnome-wayland
+	if (systemctl -q is-active inputplumber.service); then
+		busctl set-property org.shadowblip.InputPlumber /org/shadowblip/InputPlumber/CompositeDevice0 org.shadowblip.Input.CompositeDevice InterceptMode u 0
+	fi
 }
 
 function desktop_xorg() {
