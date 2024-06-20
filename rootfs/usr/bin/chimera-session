@@ -52,6 +52,9 @@ function desktop() {
 
 	# switch to Desktop
 	sudo chimera-session-use-lightdm gnome-wayland
+	if (systemctl -q is-active inputplumber.service); then
+		sudo systemctl restart inputplumber || true
+	fi
 }
 
 function desktop_xorg() {
@@ -59,6 +62,9 @@ function desktop_xorg() {
 
 	# switch to Desktop (Xorg)
 	sudo chimera-session-use-lightdm gnome-xorg
+	if (systemctl -q is-active inputplumber.service); then
+		sudo systemctl restart inputplumber || true
+	fi
 }
 
 function gamescope_steam() {
