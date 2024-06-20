@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# Create the /etc and /var overlay
+# Install device-quirks
 
 frzr_migration_version=1
 
@@ -18,7 +18,7 @@ post_install() {
     #if [ -z "${FRZR_VER}" ]; then
     #    echo "OK"
     #else
-        if [ -n "${FIRMWARE_OVERRIDE}" ];then
+        if [ -n "${FIRMWARE_OVERRIDE}" ]; then
             if [ -d "${DEPLOYMENT_QUIRKS}" ]; then
                 if [ -d "${SUBVOL_QUIRKS}/usr" ]; then
                     if [ -d "${SUBVOL_QUIRKS}/etc" ]; then
@@ -46,9 +46,8 @@ post_install() {
                                                                 if mount -t overlay -o lowerdir=${SUBVOL}/var,upperdir=${SUBVOL_QUIRKS}/var,workdir=${SUBVOL_QUIRKS_WORKDIR}/var,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/var"; then
                                                                     # Run the following in chroot
                                                                     chroot ${SUBVOL} /bin/bash <<EOF
-export DEVICE_QUIRKS_LOCATION=\"/mnt\"
-/usr/share/device-quirks/id-device
-DESTDIR="/mnt" mkinitcpio -P all
+frzr-tweak
+frzr-initramfs
 EOF
 
                                                                     # umount mounted devices
@@ -57,7 +56,9 @@ EOF
                                                                     umount -l "${SUBVOL}/sys"
                                                                     mount --make-rslave "${SUBVOL}/dev"
                                                                     umount -l "${SUBVOL}/dev"
-                                                                    umount -l -R "${SUBVOL}"
+                                                                    
+                                                                    # Do not umount the subvol as the following steps will copy SUBVOL/boot/initramfs-* to efi
+                                                                    #umount -l -R "${SUBVOL}"
 
                                                                     echo "OK"
                                                                 else
