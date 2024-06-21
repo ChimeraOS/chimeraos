@@ -114,6 +114,14 @@ rm -rf /var/cache/pacman/pkg
 pacman --noconfirm -U --overwrite '*' /extra_pkgs/*
 rm -rf /var/cache/pacman/pkg
 
+# Install the new iptables
+# See https://gitlab.archlinux.org/archlinux/packaging/packages/iptables/-/issues/1
+# Since base package group adds iptables by default
+# pacman will ask for confirmation to replace that package
+# but the default answer is no.
+# doing yes | pacman omitting --noconfirm is a necessity 
+yes | pacman -S iptables-nft
+
 # enable services
 systemctl enable ${SERVICES}
 
