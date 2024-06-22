@@ -1,14 +1,14 @@
 #! /bin/bash
 
-# Install device-quirks
+# Install device-quirks (filling previously build overlays)
 
 frzr_migration_version=1
 
 post_install() {
     local MOUNT_PATH=$1
-	local SUBVOL=$2
+    local SUBVOL=$2
     local NAME=$3
-	local FRZR_VER=$4
+    local FRZR_VER=$4
 
     local DEPLOYMENT_QUIRKS="${MOUNT_PATH}/device_quirks"
     local SUBVOL_QUIRKS="${DEPLOYMENT_QUIRKS}/${NAME}"

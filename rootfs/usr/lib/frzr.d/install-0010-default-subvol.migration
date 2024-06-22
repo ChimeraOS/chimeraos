@@ -5,10 +5,10 @@
 frzr_migration_version=0
 
 post_install() {
-	local MOUNT_PATH=$1
-	local SUBVOL=$2
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
     local NAME=$3
-	local FRZR_VER=$4
+    local FRZR_VER=$4
 
     local subvolid=$(btrfs subvolume show "${SUBVOL}" | grep "Subvolume ID:" | cut -d ':' -f 2 | tr -d '[:space:]')
 

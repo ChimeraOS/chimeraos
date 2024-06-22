@@ -6,9 +6,9 @@ frzr_migration_version=1
 
 post_install() {
     local MOUNT_PATH=$1
-	local SUBVOL=$2
+    local SUBVOL=$2
     local NAME=$3
-	local FRZR_VER=$4
+    local FRZR_VER=$4
 
     # check unlock-0001-overlays.migration
     DEPLOYMENT_DATA="${MOUNT_PATH}/deployments_data"
@@ -24,7 +24,7 @@ post_install() {
 
     if [ -d "${OLD_SUBVOL_DATA}" ]; then
         local sysroot_snapshot="y"
-        
+
         echo "Import current /etc and /var overlays to the new deployment..."
         btrfs subvol snapshot "${OLD_SUBVOL_DATA}" "${SUBVOL_DATA}"
 

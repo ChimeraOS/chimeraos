@@ -1,14 +1,15 @@
 #! /bin/bash
 
-# Create the /etc and /var overlay
+# Create overlays for /usr, /boot, /etc, /var for devices-quirks
+# These overlays will be populates in the device-quirks-apply migration
 
 frzr_migration_version=1
 
 post_install() {
     local MOUNT_PATH=$1
-	local SUBVOL=$2
+    local SUBVOL=$2
     local NAME=$3
-	local FRZR_VER=$4
+    local FRZR_VER=$4
 
     DEPLOYMENT_QUIRKS="${MOUNT_PATH}/device_quirks"
     SUBVOL_QUIRKS="${DEPLOYMENT_QUIRKS}/${NAME}"

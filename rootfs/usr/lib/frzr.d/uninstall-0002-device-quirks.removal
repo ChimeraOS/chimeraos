@@ -20,9 +20,9 @@ check_subvol() {
 
 pre_removal() {
     local MOUNT_PATH=$1
-	local SUBVOL=$2
+    local SUBVOL=$2
     local NAME=$3
-	local FRZR_VER=$4
+    local FRZR_VER=$4
 
     DEPLOYMENT_QUIRKS="${MOUNT_PATH}/device_quirks"
     SUBVOL_QUIRKS="${DEPLOYMENT_QUIRKS}/${NAME}"

@@ -6,9 +6,9 @@ frzr_migration_version=1
 
 post_install() {
     local MOUNT_PATH=$1
-	local SUBVOL=$2
+    local SUBVOL=$2
     local NAME=$3
-	local FRZR_VER=$4
+    local FRZR_VER=$4
 
     local subcmd=$(df -P "${SUBVOL}" | tail -n1 | cut -d' ' -f1)
 

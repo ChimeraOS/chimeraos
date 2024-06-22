@@ -20,9 +20,9 @@ check_subvol() {
 
 pre_removal() {
     local MOUNT_PATH=$1
-	local SUBVOL=$2
+    local SUBVOL=$2
     local NAME=$3
-	local FRZR_VER=$4
+    local FRZR_VER=$4
 
     DEPLOYMENT_DATA="${MOUNT_PATH}/deployments_data"
     SUBVOL_DATA="${DEPLOYMENT_DATA}/${NAME}"
