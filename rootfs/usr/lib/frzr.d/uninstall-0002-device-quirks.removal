@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# Remove the deployment-specific data
+# Remove the deployment-specific device-quirks
 
 frzr_migration_version=1
 
