@@ -1,0 +1,11 @@
+#! /bin/bash
+
+# triggers notification for reboot in old BPM
+
+frzr_migration_version=1
+
+post_install() {
+  if [ -d /var/run ]; then
+    touch /var/run/reboot-required
+  fi
+}

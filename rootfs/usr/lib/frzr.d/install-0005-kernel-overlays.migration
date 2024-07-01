@@ -1,0 +1,70 @@
+#! /bin/bash
+
+# Create the needed overlays to host a kernel compiled and installed by the "frzr kernel" tool
+
+frzr_migration_version=1
+
+post_install() {
+    local MOUNT_PATH=$1
+	local SUBVOL=$2
+    local NAME=$3
+	local FRZR_VER=$4
+
+    local KERNEL_OVERLAYS_PATH="${MOUNT_PATH}/kernels"
+
+    if [ ! -d "${KERNEL_OVERLAYS_PATH}" ]; then
+        btrfs subvolume create "${KERNEL_OVERLAYS_PATH}"
+    fi
+    
+    # NOTE: the guid 379 is "frzr" group
+
+    if mkdir -p -m 775 "${KERNEL_OVERLAYS_PATH}/usr"; then
+        if mkdir -p -m 775 "${KERNEL_OVERLAYS_PATH}/boot"; then
+            if mkdir -p -m 775 "${KERNEL_OVERLAYS_PATH}/etc"; then
+                if mkdir -p -m 775 "${KERNEL_OVERLAYS_PATH}/var"; then
+                    if chown 0:379 "${KERNEL_OVERLAYS_PATH}/usr"; then
+                        if chown 0:379 "${KERNEL_OVERLAYS_PATH}/boot"; then
+                            if chown 0:379 "${KERNEL_OVERLAYS_PATH}/etc"; then
+                                if chown 0:379 "${KERNEL_OVERLAYS_PATH}/var"; then
+                                    if chmod g+s "${KERNEL_OVERLAYS_PATH}/usr"; then
+                                        if chmod g+s "${KERNEL_OVERLAYS_PATH}/boot"; then
+                                            if chmod g+s "${KERNEL_OVERLAYS_PATH}/etc"; then
+                                                if chmod g+s "${KERNEL_OVERLAYS_PATH}/var"; then
+                                                    echo "OK"
+                                                else
+                                                    echo "WARNING: Cannot set setgid to '${KERNEL_OVERLAYS_PATH}/var'"
+                                                fi
+                                            else
+                                                echo "WARNING: Cannot set setgid to '${KERNEL_OVERLAYS_PATH}/etc'"
+                                            fi
+                                        else
+                                            echo "WARNING: Cannot set setgid to '${KERNEL_OVERLAYS_PATH}/boot'"
+                                        fi
+                                    else
+                                        echo "WARNING: Cannot set setgid to '${KERNEL_OVERLAYS_PATH}/usr'"
+                                    fi
+                                else
+                                    echo "WARNING: Cannot set correct parmissions to '${KERNEL_OVERLAYS_PATH}/var'"
+                                fi
+                            else
+                                echo "WARNING: Cannot set correct parmissions to '${KERNEL_OVERLAYS_PATH}/etc'"
+                            fi
+                        else
+                            echo "WARNING: Cannot set correct parmissions to '${KERNEL_OVERLAYS_PATH}/boot'"
+                        fi
+                    else
+                        echo "WARNING: Cannot set correct parmissions to '${KERNEL_OVERLAYS_PATH}/usr'"
+                    fi
+                else
+                    echo "ERROR: Cannot create '${KERNEL_OVERLAYS_PATH}/var'"
+                fi
+            else
+                echo "ERROR: Cannot create '${KERNEL_OVERLAYS_PATH}/etc'"
+            fi
+        else
+            echo "ERROR: Cannot create '${KERNEL_OVERLAYS_PATH}/boot'"
+        fi
+    else
+        echo "ERROR: Cannot create '${KERNEL_OVERLAYS_PATH}/usr'"
+    fi
+}

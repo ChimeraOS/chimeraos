@@ -1,0 +1,45 @@
+#! /bin/bash
+
+# Create overlays for /usr, /boot, /etc, /var for devices-quirks
+# These overlays will be populates in the device-quirks-apply migration
+
+frzr_migration_version=1
+
+post_install() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    DEPLOYMENT_QUIRKS="${MOUNT_PATH}/device_quirks"
+    SUBVOL_QUIRKS="${DEPLOYMENT_QUIRKS}/${NAME}"
+
+    if mkdir -p "${DEPLOYMENT_QUIRKS}"; then
+        if [ ! -d "${SUBVOL_QUIRKS}" ]; then
+            echo "Creating device-quirks overlay at '${SUBVOL_QUIRKS}'"
+            if btrfs subvolume create "${SUBVOL_QUIRKS}"; then
+                if mkdir "${SUBVOL_QUIRKS}/usr"; then
+                    if mkdir "${SUBVOL_QUIRKS}/etc"; then
+                        if mkdir "${SUBVOL_QUIRKS}/boot"; then
+                            if mkdir "${SUBVOL_QUIRKS}/var"; then
+                                echo "OK"
+                            else
+                                echo "ERROR: Could not create directory '${SUBVOL_QUIRKS}/var'"
+                            fi
+                        else
+                            echo "ERROR: Could not create directory '${SUBVOL_QUIRKS}/boot'"
+                        fi
+                    else
+                        echo "ERROR: Could not create directory '${SUBVOL_QUIRKS}/etc'"
+                    fi
+                else
+                    echo "ERROR: Could not create directory '${SUBVOL_QUIRKS}/usr'"
+                fi
+            else
+                echo "ERROR: Could not create btrfs subvolume '${SUBVOL_QUIRKS}'"
+            fi
+        fi
+    else
+        echo "ERROR: Could not create directory '${DEPLOYMENT_QUIRKS}'"
+    fi
+}

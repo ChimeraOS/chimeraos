@@ -1,0 +1,49 @@
+#! /bin/bash
+
+# Remove the deployment-specific device-quirks
+
+frzr_migration_version=1
+
+check_subvol() {
+	local dir=$1
+	[ "$(stat -f --format="%T" "$dir")" == "btrfs" ] || return 1
+	inode="$(stat --format="%i" "$dir")"
+	case "$inode" in
+	2 | 256)
+		return 0
+		;;
+	*)
+		return 1
+		;;
+	esac
+}
+
+pre_removal() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    DEPLOYMENT_QUIRKS="${MOUNT_PATH}/device_quirks"
+    SUBVOL_QUIRKS="${DEPLOYMENT_QUIRKS}/${NAME}"
+
+    if [ -d "${SUBVOL_QUIRKS}" ]; then
+        # Delete the deployment-specific device-quirks with btrfs if possible, or fallback to rm -rf
+        if check_subvol "${SUBVOL_QUIRKS}"; then
+            # Delete the main subvolume
+            if btrfs subvol delete "${SUBVOL_QUIRKS}"; then
+                echo "OK"
+            else
+                echo "ERROR: Could not delete the subvolume '${SUBVOL_QUIRKS}'"
+            fi
+        else
+            if rm -rf "${SUBVOL_QUIRKS}"; then
+                echo "OK"
+            else
+                echo "ERROR: Could not delete the deployment data directory '${SUBVOL_QUIRKS}'"
+            fi
+        fi
+    else
+        echo "WARNING: no deployment data was found at '${SUBVOL_QUIRKS}'"
+    fi
+}

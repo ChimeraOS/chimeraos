@@ -1,0 +1,93 @@
+#! /bin/bash
+
+# Create the /etc and /var overlay
+
+frzr_migration_version=1
+
+post_install() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    # check unlock-0001-overlays.migration
+    DEPLOYMENT_DATA="${MOUNT_PATH}/deployments_data"
+    SUBVOL_DATA="${DEPLOYMENT_DATA}/${NAME}"
+
+    local OLD_NAME="does_not_exist"
+    if [ -e "/build_info" ]; then
+        OLD_NAME=$(cat /build_info | head -1)
+    fi
+    OLD_SUBVOL_DATA="${DEPLOYMENT_DATA}/${OLD_NAME}"
+
+    mkdir -p "${DEPLOYMENT_DATA}"
+
+    if [ -d "${OLD_SUBVOL_DATA}" ]; then
+        local sysroot_snapshot="y"
+
+        echo "Import current /etc and /var overlays to the new deployment..."
+        btrfs subvol snapshot "${OLD_SUBVOL_DATA}" "${SUBVOL_DATA}"
+
+        echo "Setting the overlay as RW..."
+        btrfs property set -fts "${SUBVOL_DATA}" ro false
+
+        # clear the old /usr overlay
+        if [ -d "${SUBVOL_DATA}/usr_overlay" ]; then
+            rm -rf "${SUBVOL_DATA}/usr_overlay"
+        fi
+
+        # clear the old /boot overlay
+        if [ -d "${SUBVOL_DATA}/boot_overlay" ]; then
+            rm -rf "${SUBVOL_DATA}/boot_overlay"
+        fi
+    else
+        echo "No previous overlay found: creating the overlay"
+
+        # prepare for /etc, /var, /usr and /boot overlays
+        btrfs subvol create "${SUBVOL_DATA}"
+    fi
+
+    echo "Ensuring overlay can be mounted at next boot"
+    mkdir -p "${SUBVOL_DATA}/etc_overlay/upperdir"
+    mkdir -p "${SUBVOL_DATA}/etc_overlay/workdir"
+    mkdir -p "${SUBVOL_DATA}/var_overlay/upperdir"
+    mkdir -p "${SUBVOL_DATA}/var_overlay/workdir"
+    btrfs subvol create "${SUBVOL_DATA}/usr_overlay"
+    mkdir "${SUBVOL_DATA}/usr_overlay/upperdir"
+    mkdir "${SUBVOL_DATA}/usr_overlay/workdir"
+    btrfs subvol create "${SUBVOL_DATA}/boot_overlay"
+    mkdir "${SUBVOL_DATA}/boot_overlay/upperdir"
+    mkdir "${SUBVOL_DATA}/boot_overlay/workdir"
+
+    btrfs property set -fts "${SUBVOL_DATA}/usr_overlay" ro true
+    btrfs property set -fts "${SUBVOL_DATA}/boot_overlay" ro true
+
+    if [ ! -d "${MOUNT_PATH}/usr" ] && [ -d "${MOUNT_PATH}/etc" ] && [ -z $sysroot_snapshot ] && [ -d "${MOUNT_PATH}/.etc" ] && [ -z $sysroot_snapshot ]; then
+        echo "Cloning the /etc overlay upperdir from '${MOUNT_PATH}/etc/' to '${SUBVOL_DATA}/etc_overlay/upperdir'..."
+        cp -a "${MOUNT_PATH}/etc" "${SUBVOL_DATA}/etc_overlay/"
+        rm -rf "${SUBVOL_DATA}/etc_overlay/upperdir"
+        mv "${SUBVOL_DATA}/etc_overlay/etc" "${SUBVOL_DATA}/etc_overlay/upperdir"
+        cp -a "${MOUNT_PATH}/.etc" "${SUBVOL_DATA}/etc_overlay/"
+        rm -rf "${SUBVOL_DATA}/etc_overlay/workdir"
+        mv "${SUBVOL_DATA}/etc_overlay/.etc" "${SUBVOL_DATA}/etc_overlay/workdir"
+    fi
+
+    if [ ! -d "${MOUNT_PATH}/usr" ] && [ -d "${MOUNT_PATH}/var" ] && [ -z $sysroot_snapshot ]; then
+        echo "Transforming the /var subolume in '${MOUNT_PATH}/var/' to an overlay upperdir in '${SUBVOL_DATA}/var_overlay/upperdir'..."
+        mount -t overlay overlay -o lowerdir="${SUBVOL}/var",upperdir="${SUBVOL_DATA}/var_overlay/upperdir",workdir="${SUBVOL_DATA}/var_overlay/workdir" "${SUBVOL}/var"
+        cp -a ${MOUNT_PATH}/var/* "${SUBVOL}/var"
+        umount "${SUBVOL}/var"
+    fi
+
+    # clear out old pacman database
+    if [ -d "${SUBVOL_DATA}/var_overlay/upperdir/lib/pacman" ]; then
+        echo "Clearing up pacman old database overlay in '${SUBVOL_DATA}/var_overlay/upperdir/lib/pacman'..."
+        rm -rf "${SUBVOL_DATA}/var_overlay/upperdir/lib/pacman"
+    fi
+
+    # Remove everything from an old pacman overlay
+    if [ -d "${SUBVOL_DATA}/etc_overlay/upperdir/pacman.d/gnupg" ]; then
+        echo "Clearing up pacman old pacman gnupg overlay in '${SUBVOL_DATA}/etc_overlay/upperdir/pacman.d/gnupg'..."
+        rm -rf "${SUBVOL_DATA}/etc_overlay/upperdir/pacman.d/gnupg"
+    fi
+}

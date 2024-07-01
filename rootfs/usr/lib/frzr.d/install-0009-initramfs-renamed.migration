@@ -1,0 +1,71 @@
+#! /bin/bash
+
+# install the kernel and initramfs: this is done to avoid renaming initramfs files leading to kernel installs/uninstall not working properly
+
+frzr_migration_version=0
+
+post_install() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    if [ -d "${SUBVOL}/boot" ]; then
+        local bootdir="${SUBVOL}/boot/"
+
+        # make sure the efi directory is present in frzr_root
+        local efi_mount_path="${MOUNT_PATH}/efi"
+        mkdir -p "${efi_mount_path}" 
+
+        if ! echo "mount" | grep -Fq "${efi_mount_path}"; then
+            if mount -L frzr_efi -o uid=0,gid=0,fmask=0077,dmask=0077 "${efi_mount_path}"; then
+                echo "frzr_root/efi created and mounted"
+            else
+                echo "ERROR: could not mount the EFI partition"
+                return 1
+            fi
+        fi
+
+        # we are ready to re-do pre-refactor frzr job with the proper file
+
+        local kernel_dest_dir="${efi_mount_path}/${NAME}"
+        if [ ! -d "${kernel_dest_dir}" ]; then
+            echo "ERROR: missing folder '${kernel_dest_dir}'"
+            return 1
+        fi
+
+        for vmlinuz_file_path in "${bootdir}"/vmlinuz-*; do
+            # Extract the matching part of the filename and remove the .img extension
+            kernel_version=$(basename "${vmlinuz_file_path}" | sed 's/^vmlinuz-//')
+
+            # Exclude vmlinuz-linux
+            if [ "$kernel_version" = "linux" ]; then
+                continue
+            fi
+
+            # $initramfs_file is the initramfs name of the file in /boot: find the corresponding vmlinuz file
+            initramfs_file="initramfs-${kernel_version}.img"
+            
+            # $vmlinuz_file is the kernel name of the file in /boot: find the corresponding initramfs file
+            vmlinuz_file="vmlinuz-${kernel_version}"
+
+            # Attempt to move vmlinuz and initramfs file into location suitable for older frzr versions
+            if cp "${bootdir}/${vmlinuz_file}" "${kernel_dest_dir}/vmlinuz-linux"; then
+                if cp "${bootdir}/${initramfs_file}" "${kernel_dest_dir}/initramfs-linux.img"; then
+                    echo ""
+                    return 0
+                else
+                    echo "ERROR: could not move '${bootdir}/${initramfs_file}' to '${kernel_dest_dir}/initramfs-linux.img'"
+                    return 1
+                fi
+            else
+                echo "ERROR: could not move '${bootdir}/${vmlinuz_file}' to '${kernel_dest_dir}/vmlinuz-linux'"
+                return 1
+            fi
+        done
+        
+    else
+        echo "ERROR: could not find directory '${SUBVOL}/boot/'"
+        return 1
+    fi
+}

@@ -1,0 +1,70 @@
+#! /bin/bash
+
+# Remove the deployment-specific data
+
+frzr_migration_version=1
+
+check_subvol() {
+	local dir=$1
+	[ "$(stat -f --format="%T" "$dir")" == "btrfs" ] || return 1
+	inode="$(stat --format="%i" "$dir")"
+	case "$inode" in
+	2 | 256)
+		return 0
+		;;
+	*)
+		return 1
+		;;
+	esac
+}
+
+pre_removal() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    DEPLOYMENT_DATA="${MOUNT_PATH}/deployments_data"
+    SUBVOL_DATA="${DEPLOYMENT_DATA}/${NAME}"
+
+    if [ -d "${SUBVOL_DATA}" ]; then
+        # Delete the deployment-specific data with btrfs if possible, or fallback to rm -rf
+        if check_subvol "${SUBVOL_DATA}"; then
+
+            if btrfs property set -fts "${SUBVOL_DATA}" ro false; then
+                # if "${SUBVOL_DATA}/usr_overlay" is a subvolume use btrfs otherwise just skip it: will be deleted with SUBVOL_DATA
+                if [ -d "${SUBVOL_DATA}/usr_overlay" ]; then
+                    if check_subvol "${SUBVOL_DATA}/usr_overlay"; then
+                        btrfs property set -fts "${SUBVOL_DATA}/usr_overlay" ro false
+                        btrfs subvol delete "${SUBVOL_DATA}/usr_overlay"
+                    fi
+                fi
+
+                # if "${SUBVOL_DATA}/boot_overlay" is a subvolume use btrfs otherwise just skip it: will be deleted with SUBVOL_DATA
+                if [ -d "${SUBVOL_DATA}/boot_overlay" ]; then
+                    if check_subvol "${SUBVOL_DATA}/boot_overlay"; then
+                        btrfs property set -fts "${SUBVOL_DATA}/boot_overlay" ro false
+                        btrfs subvol delete "${SUBVOL_DATA}/boot_overlay"
+                    fi
+                fi
+
+                # Delete the main subvolume
+                if btrfs subvol delete "${SUBVOL_DATA}"; then
+                    echo "OK"
+                else
+                    echo "ERROR: Could not delete the subvolume '${SUBVOL_DATA}'"
+                fi
+            else
+                echo "ERROR: Could not set deployment-specific data subvolume at '${SUBVOL_DATA}' to r/w"
+            fi
+        else
+            if rm -rf "${SUBVOL_DATA}"; then
+                echo "OK"
+            else
+                echo "ERROR: Could not delete the deployment data directory '${SUBVOL_DATA}'"
+            fi
+        fi
+    else
+        echo "WARNING: no deployment data was found at '${SUBVOL_DATA}'"
+    fi
+}

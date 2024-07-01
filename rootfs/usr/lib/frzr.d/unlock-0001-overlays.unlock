@@ -1,0 +1,45 @@
+#! /bin/bash
+
+# Unlock overlays
+
+frzr_migration_version=1
+
+post_unlock() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    # check 0004-install_overlays.migration
+    DEPLOYMENT_DATA="${MOUNT_PATH}/deployments_data"
+    SUBVOL_DATA="${DEPLOYMENT_DATA}/${NAME}"
+
+    if [ -d "${SUBVOL_DATA}/usr_overlay" ]; then
+        if btrfs property set -fts "${SUBVOL_DATA}/usr_overlay" ro false; then
+            if [ -d "${SUBVOL_DATA}/boot_overlay" ]; then
+                if btrfs property set -fts "${SUBVOL_DATA}/boot_overlay" ro false; then
+                    local usr_lock_state_after_set=$(btrfs property get -fts "${SUBVOL_DATA}/usr_overlay")
+				    if [[ $usr_lock_state_after_set == *"ro=false"* ]]; then
+                        local boot_lock_state_after_set=$(btrfs property get -fts "${SUBVOL_DATA}/boot_overlay")
+                        if [[ $boot_lock_state_after_set == *"ro=false"* ]]; then
+                            # After checking result do
+                            echo "OK"
+                        else
+                            echo "ERROR: Subvolume '${SUBVOL_DATA}/boot_overlay' os still r/o"
+                        fi
+                    else
+                        echo "ERROR: Subvolume '${SUBVOL_DATA}/usr_overlay' os still r/o"
+                    fi
+                else
+                    echo "ERROR: Could not set '${SUBVOL_DATA}/boot_overlay' subvolume r/w"
+                fi
+            else
+                echo "ERROR: Could not find /boot overlay, '${SUBVOL_DATA}/boot_overlay' searched"
+            fi
+        else
+            echo "ERROR: Could not set '${SUBVOL_DATA}/usr_overlay' subvolume r/w"
+        fi
+    else
+        echo "ERROR: Could not find /usr overlay, '${SUBVOL_DATA}/usr_overlay' searched"
+    fi
+}
