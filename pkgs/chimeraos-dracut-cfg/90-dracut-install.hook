@@ -1,0 +1,12 @@
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = usr/lib/modules/*/pkgbase
+
+[Action]
+Description = Updating linux initcpios (with dracut!)...
+When = PostTransaction
+Exec = /usr/local/bin/dracut-install.sh
+Depends = dracut
+NeedsTargets
