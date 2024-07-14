@@ -1,0 +1,126 @@
+[submodule "aur-pkgs/asusctl"]
+	path = aur-pkgs/asusctl
+	url = https://aur.archlinux.org/asusctl.git
+[submodule "aur-pkgs/aw87559-firmware"]
+	path = aur-pkgs/aw87559-firmware
+	url = https://aur.archlinux.org/aw87559-firmware.git
+[submodule "aur-pkgs/ayaneo-platform-dkms-git"]
+	path = aur-pkgs/ayaneo-platform-dkms-git
+	url = https://aur.archlinux.org/ayaneo-platform-dkms-git.git
+[submodule "aur-pkgs/ayn-platform-dkms-git"]
+	path = aur-pkgs/ayn-platform-dkms-git
+	url = https://aur.archlinux.org/ayn-platform-dkms-git.git
+[submodule "aur-pkgs/bcm20702a1-firmware"]
+	path = aur-pkgs/bcm20702a1-firmware
+	url = https://aur.archlinux.org/bcm20702a1-firmware.git
+[submodule "aur-pkgs/boxtron"]
+	path = aur-pkgs/boxtron
+	url = https://aur.archlinux.org/boxtron.git
+[submodule "aur-pkgs/chimera"]
+	path = aur-pkgs/chimera
+	url = https://aur.archlinux.org/chimera.git
+[submodule "aur-pkgs/chimeraos-device-quirks-git"]
+	path = aur-pkgs/chimeraos-device-quirks-git
+	url = https://aur.archlinux.org/chimeraos-device-quirks-git.git
+[submodule "aur-pkgs/downgrade"]
+	path = aur-pkgs/downgrade
+	url = https://aur.archlinux.org/downgrade.git
+[submodule "aur-pkgs/evdev-keepalive"]
+	path = aur-pkgs/evdev-keepalive
+	url = https://aur.archlinux.org/evdev-keepalive.git
+[submodule "aur-pkgs/frzr"]
+	path = aur-pkgs/frzr
+	url = https://aur.archlinux.org/frzr.git
+[submodule "aur-pkgs/gamescope-plus"]
+	path = aur-pkgs/gamescope-plus
+	url = https://aur.archlinux.org/gamescope-plus.git
+[submodule "aur-pkgs/gamescope-session-steam-git"]
+	path = aur-pkgs/gamescope-session-steam-git
+	url = https://aur.archlinux.org/gamescope-session-steam-git.git
+[submodule "aur-pkgs/gamescope-session-steam-plus-git"]
+	path = aur-pkgs/gamescope-session-steam-plus-git
+	url = https://aur.archlinux.org/gamescope-session-steam-plus-git.git
+[submodule "aur-pkgs/hhfc-git"]
+	path = aur-pkgs/hhfc-git
+	url = https://aur.archlinux.org/hhfc-git.git
+[submodule "aur-pkgs/inputplumber-bin"]
+	path = aur-pkgs/inputplumber-bin
+	url = https://aur.archlinux.org/inputplumber-bin.git
+[submodule "aur-pkgs/legendary"]
+	path = aur-pkgs/legendary
+	url = https://aur.archlinux.org/legendary.git
+[submodule "aur-pkgs/lib32-gamescope-plus"]
+	path = aur-pkgs/lib32-gamescope-plus
+	url = https://aur.archlinux.org/lib32-gamescope-plus.git
+[submodule "aur-pkgs/libretro-dosbox-pure-git"]
+	path = aur-pkgs/libretro-dosbox-pure-git
+	url = https://aur.archlinux.org/libretro-dosbox-pure-git.git
+[submodule "aur-pkgs/libretro-opera-git"]
+	path = aur-pkgs/libretro-opera-git
+	url = https://aur.archlinux.org/libretro-opera-git.git
+[submodule "aur-pkgs/libretro-prosystem-git"]
+	path = aur-pkgs/libretro-prosystem-git
+	url = https://aur.archlinux.org/libretro-prosystem-git.git
+[submodule "aur-pkgs/libretro-stella2014-git"]
+	path = aur-pkgs/libretro-stella2014-git
+	url = https://aur.archlinux.org/libretro-stella2014-git.git
+[submodule "aur-pkgs/libretro-virtualjaguar-git"]
+	path = aur-pkgs/libretro-virtualjaguar-git
+	url = https://aur.archlinux.org/libretro-virtualjaguar-git.git
+[submodule "aur-pkgs/linux-firmware-valve"]
+	path = aur-pkgs/linux-firmware-valve
+	url = https://aur.archlinux.org/linux-firmware-valve.git
+[submodule "aur-pkgs/kanit-font"]
+	path = aur-pkgs/kanit-font
+	url = https://aur.archlinux.org/kanit-font.git
+[submodule "aur-pkgs/nintendo-udev"]
+	path = aur-pkgs/nintendo-udev
+	url = https://aur.archlinux.org/nintendo-udev.git
+[submodule "aur-pkgs/opengamepadui-bin"]
+	path = aur-pkgs/opengamepadui-bin
+	url = https://aur.archlinux.org/opengamepadui-bin.git
+[submodule "aur-pkgs/opengamepadui-session-git"]
+	path = aur-pkgs/opengamepadui-session-git
+	url = https://aur.archlinux.org/opengamepadui-session-git.git
+[submodule "aur-pkgs/pikaur"]
+	path = aur-pkgs/pikaur
+	url = https://aur.archlinux.org/pikaur.git
+[submodule "aur-pkgs/powerstation-bin"]
+	path = aur-pkgs/powerstation-bin
+	url = https://aur.archlinux.org/powerstation-bin.git
+[submodule "aur-pkgs/python-gbopyrator"]
+	path = aur-pkgs/python-gbopyrator
+	url = https://aur.archlinux.org/python-gbopyrator.git
+[submodule "aur-pkgs/python-vdf"]
+	path = aur-pkgs/python-vdf
+	url = https://aur.archlinux.org/python-vdf.git
+[submodule "aur-pkgs/rtl8812au-dkms-git"]
+	path = aur-pkgs/rtl8812au-dkms-git
+	url = https://aur.archlinux.org/rtl8812au-dkms-git.git
+[submodule "aur-pkgs/rtl8814au-dkms-git"]
+	path = aur-pkgs/rtl8814au-dkms-git
+	url = https://aur.archlinux.org/rtl8814au-dkms-git.git
+[submodule "aur-pkgs/rtl88x2bu-dkms-git"]
+	path = aur-pkgs/rtl88x2bu-dkms-git
+	url = https://aur.archlinux.org/rtl88x2bu-dkms-git.git
+[submodule "aur-pkgs/rtl8821au-dkms-git"]
+	path = aur-pkgs/rtl8821au-dkms-git
+	url = https://aur.archlinux.org/rtl8821au-dkms-git.git
+[submodule "aur-pkgs/ryzenadj-git"]
+	path = aur-pkgs/ryzenadj-git
+	url = https://aur.archlinux.org/ryzenadj-git.git
+[submodule "aur-pkgs/steam_notif_daemon"]
+	path = aur-pkgs/steam_notif_daemon
+	url = https://aur.archlinux.org/steam_notif_daemon.git
+[submodule "aur-pkgs/steam-powerbuttond-git"]
+	path = aur-pkgs/steam-powerbuttond-git
+	url = https://aur.archlinux.org/steam-powerbuttond-git.git
+[submodule "aur-pkgs/steam-removable-media-git"]
+	path = aur-pkgs/steam-removable-media-git
+	url = https://aur.archlinux.org/steam-removable-media-git.git
+[submodule "aur-pkgs/wyvern"]
+	path = aur-pkgs/wyvern
+	url = https://aur.archlinux.org/wyvern.git
+[submodule "aur-pkgs/zenergy-dkms-git"]
+	path = aur-pkgs/zenergy-dkms-git
+	url = https://aur.archlinux.org/zenergy-dkms-git.git
