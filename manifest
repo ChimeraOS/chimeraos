@@ -212,7 +212,6 @@ export AUR_PACKAGES="\
 	hhfc-git \
 	inputplumber-bin \
 	legendary \
-	lib32-gamescope-plus \
 	libretro-dosbox-pure-git \
 	libretro-opera-git \
 	libretro-prosystem-git \
