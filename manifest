@@ -226,6 +226,8 @@ export AUR_PACKAGES="\
 	powerstation-bin \
 	python-gbopyrator \
 	python-vdf \
+	realtime-privileges \
+	rtkit \
 	rtl8812au-dkms-git \
 	rtl8814au-dkms-git \
 	rtl88x2bu-dkms-git \
@@ -281,6 +283,9 @@ postinstallhook() {
 	${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
 	${USERNAME} ALL=(ALL) NOPASSWD: /usr/share/chimera/bin/power-tool
 	" >/etc/sudoers.d/chimera
+
+	# Add chrt permission
+	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chrt" > /etc/sudoers.d/realtime
 
 	# download and add racing wheel udev rules
 	pushd /usr/lib/udev/rules.d
