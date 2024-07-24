@@ -264,7 +264,6 @@ export USER_SERVICES="\
 "
 
 export FILES_TO_DELETE="\
-	/boot/initramfs-linux-fallback.img \
 	/usr/share/SFML \
 	/usr/share/doc \
 	/usr/share/gtk-doc \

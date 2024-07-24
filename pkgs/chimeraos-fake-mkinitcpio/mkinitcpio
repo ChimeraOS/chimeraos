@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# The pre-refactor frzr will call the target image mkinitcpio.
+# We want to avoid generating an error, yet we want this tool to do nothing as
+# device-quirks is now installed in a deployment migration.
+echo "[WARNING] Fake mkinitcpio called."
