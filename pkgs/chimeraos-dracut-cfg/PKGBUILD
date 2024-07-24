@@ -10,6 +10,7 @@ license=('MIT')
 depends=(
     'dracut' # regenerate the initramfs
     #'plymouth' # support for boot animations
+    'btrfs-progs' # btrfs hook
     'binutils' # allow usage of --strip
 )
 source=(
