@@ -1,0 +1,26 @@
+#! /bin/bash
+
+# Unlock overlays
+
+frzr_migration_version=1
+
+post_unlock() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    # check install-0004-overlays.migration
+    DEPLOYMENT_DATA="${MOUNT_PATH}/deployments_data"
+    SUBVOL_DATA="${DEPLOYMENT_DATA}/${NAME}"
+
+    if [ -d "${SUBVOL_DATA}/var_overlay/upperdir" ]; then
+        if cp -a "${SUBVOL}/usr/var/lib/pacman/local" "${SUBVOL_DATA}/var_overlay/upperdir/lib/pacman/"; then
+            echo "OK"
+        else
+            echo "ERROR: Could not copy the pacman database at '${SUBVOL_DATA}/var_overlay/upperdir/lib/pacman'"
+        fi
+    else
+        echo "ERROR: Could not find the /var overlay directory '${SUBVOL_DATA}/var_overlay/upperdir'"    
+    fi
+}

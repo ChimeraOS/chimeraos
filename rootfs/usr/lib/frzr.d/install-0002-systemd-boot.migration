@@ -1,0 +1,34 @@
+#! /bin/bash
+
+# Migrate to systemd-boot
+
+frzr_migration_version=0
+
+post_install() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    if [ -e ${MOUNT_PATH}/boot/loader/random-seed ]; then
+        # migration has already completed, exit silently
+        return 0
+    fi
+
+    echo "Migrating to systemd-boot..."
+
+    if [ "$#" -lt 1 ]; then
+        echo "Migration aborted: not enough arguments"
+        return 1
+    fi
+
+    if [ ! -d /sys/firmware/efi/efivars ]; then
+        echo "Aborting: cannot migrate legacy BIOS install to systemd-boot"
+        return 0
+    fi
+
+    rm -rf ${MOUNT_PATH}/boot/EFI
+    bootctl --esp-path=${MOUNT_PATH}/boot/ install
+
+    echo "Migration to systemd-boot complete"
+}

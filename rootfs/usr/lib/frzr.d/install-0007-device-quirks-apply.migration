@@ -1,0 +1,110 @@
+#! /bin/bash
+
+# Install device-quirks (filling previously build overlays)
+
+frzr_migration_version=1
+
+post_install() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    local DEPLOYMENT_QUIRKS="${MOUNT_PATH}/device_quirks"
+    local SUBVOL_QUIRKS="${DEPLOYMENT_QUIRKS}/${NAME}"
+    local SUBVOL_QUIRKS_WORKDIR="${DEPLOYMENT_QUIRKS}/${NAME}/workdir"
+
+    # if this installation is being done on a refactored frzr apply device-quirks here
+    #if [ -z "${FRZR_VER}" ]; then
+    #    echo "OK"
+    #else
+        if [ -n "${FIRMWARE_OVERRIDE}" ]; then
+            if [ -d "${DEPLOYMENT_QUIRKS}" ]; then
+                if [ -d "${SUBVOL_QUIRKS}/usr" ]; then
+                    if [ -d "${SUBVOL_QUIRKS}/etc" ]; then
+                        if [ -d "${SUBVOL_QUIRKS}/boot" ]; then
+                            if [ -d "${SUBVOL_QUIRKS}/var" ]; then
+                                # Execute a batch of mounts
+                                if mount -t proc /proc "${SUBVOL}/proc"; then
+                                    if mount -t sysfs /sys "${SUBVOL}/sys"; then
+                                        if mount --rbind /dev "${SUBVOL}/dev"; then
+                                            if [ -e "${SUBVOL}/usr/share/device-quirks/id-device" ]; then
+                                                # mount device quirks directory on /mnt
+                                                if mount --bind "${SUBVOL_QUIRKS}" "${SUBVOL}/mnt"; then
+                                                    
+                                                    # Create workdirs to mount the overlay
+                                                    mkdir -p "${SUBVOL_QUIRKS_WORKDIR}/usr"
+                                                    mkdir -p "${SUBVOL_QUIRKS_WORKDIR}/etc"
+                                                    mkdir -p "${SUBVOL_QUIRKS_WORKDIR}/boot"
+                                                    mkdir -p "${SUBVOL_QUIRKS_WORKDIR}/var"
+
+                                                    echo "export USE_FIRMWARE_OVERRIDES=1" > "${SUBVOL_QUIRKS}/etc/device-quirks.conf"
+
+                                                    if mount -t overlay -o lowerdir=${SUBVOL}/usr,upperdir=${SUBVOL_QUIRKS}/usr,workdir=${SUBVOL_QUIRKS_WORKDIR}/usr,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/usr"; then
+                                                        if mount -t overlay -o lowerdir=${SUBVOL}/etc,upperdir=${SUBVOL_QUIRKS}/etc,workdir=${SUBVOL_QUIRKS_WORKDIR}/etc,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/etc"; then
+                                                            if mount -t overlay -o lowerdir=${SUBVOL}/boot,upperdir=${SUBVOL_QUIRKS}/boot,workdir=${SUBVOL_QUIRKS_WORKDIR}/boot,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/boot"; then
+                                                                if mount -t overlay -o lowerdir=${SUBVOL}/var,upperdir=${SUBVOL_QUIRKS}/var,workdir=${SUBVOL_QUIRKS_WORKDIR}/var,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/var"; then
+                                                                    # Run the following in chroot
+                                                                    chroot ${SUBVOL} /bin/bash <<EOF
+frzr-tweak
+frzr-initramfs
+EOF
+
+                                                                    # umount mounted devices
+                                                                    umount -l "${SUBVOL}/mnt"
+                                                                    umount -l "${SUBVOL}/proc"
+                                                                    umount -l "${SUBVOL}/sys"
+                                                                    mount --make-rslave "${SUBVOL}/dev"
+                                                                    umount -l "${SUBVOL}/dev"
+                                                                    
+                                                                    # Do not umount the subvol as the following steps will copy SUBVOL/boot/initramfs-* to efi
+                                                                    #umount -l -R "${SUBVOL}"
+
+                                                                    echo "OK"
+                                                                else
+                                                                    echo "ERROR: Could not mount the /var device-quirks overlay"
+                                                                fi
+                                                            else
+                                                                echo "ERROR: Could not mount the /boot device-quirks overlay"
+                                                            fi
+                                                        else
+                                                            echo "ERROR: Could not mount the /etc device-quirks overlay"
+                                                        fi
+                                                    else
+                                                        echo "ERROR: Could not mount the /usr device-quirks overlay"
+                                                    fi
+                                                else
+                                                    echo "ERROR: Could not bind-mount '${SUBVOL_QUIRKS}' into '${SUBVOL}/mnt'"
+                                                fi
+                                            else
+                                                echo "WARNING: Device-quirks package was not found"
+                                            fi
+                                        else
+                                            echo "ERROR: Could not bind-mount /dev to '${SUBVOL}/dev'"
+                                        fi
+                                    else
+                                        echo "ERROR: Could not mount sysfs to '${SUBVOL}/sys'"
+                                    fi
+                                else
+                                    echo "ERROR: Could not mount proc to '${SUBVOL}/proc'"
+                                fi
+                            else
+                                echo "ERROR: Could not find directory '${DEPLOYMENT_QUIRKS}/var'"
+                            fi
+                        else
+                            echo "ERROR: Could not find directory '${DEPLOYMENT_QUIRKS}/boot'"
+                        fi
+                    else
+                        echo "ERROR: Could not find directory '${DEPLOYMENT_QUIRKS}/etc'"
+                    fi
+                else
+                    echo "ERROR: Could not find directory '${DEPLOYMENT_QUIRKS}/usr'"
+                fi
+            else
+                echo "ERROR: Could not find directory '${DEPLOYMENT_QUIRKS}'"
+            fi
+        else
+            echo "OK"
+        fi
+    #fi
+}

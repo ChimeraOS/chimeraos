@@ -1,0 +1,24 @@
+#! /bin/bash
+
+# make the new deployment the default btrfs subvolume so that frzr kernel will work
+
+frzr_migration_version=0
+
+post_install() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    local subvolid=$(btrfs subvolume show "${SUBVOL}" | grep "Subvolume ID:" | cut -d ':' -f 2 | tr -d '[:space:]')
+
+    if [ $? -eq 0 ]; then
+        if ! btrfs subvolume set-default "${subvolid}" "${MOUNT_PATH}"; then
+            echo "Default btrfs subvolume changed to ${subvolid} to enable frzr kernel"
+        else
+            echo "[WARN] Could not change the default subvolid -- frzr kernel will not work"
+        fi
+    else
+        echo "[WARN] Could not get subvolid for '${SUBVOL}'"
+    fi
+}

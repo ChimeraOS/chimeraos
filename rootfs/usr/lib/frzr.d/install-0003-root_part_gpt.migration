@@ -1,0 +1,38 @@
+#! /bin/bash
+
+# Apply the correct GPT partition type to rootfs
+
+frzr_migration_version=1
+
+post_install() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    local subcmd=$(df -P "${SUBVOL}" | tail -n1 | cut -d' ' -f1)
+
+    if [ "$subcmd" = "-" ]; then
+        echo "WARNING: unrecognised partition, using a fallback..."
+        subcmd=$(findmnt --target "${SUBVOL}" | grep "/dev" | tail -n1 | cut -d' ' -f2 )
+    fi
+
+    echo "Fetching UUID of partition '${subcmd}'"
+    local possible_uuid=$(lsblk -n -o UUID "${subcmd}")
+
+    echo "Fetching partition number of partition '$subcmd'"
+    local part_number=$(echo "${subcmd: -1}")
+
+    local disk=$(echo "$subcmd" | sed 's/p[0-9]*$//')
+    local filtered_uuid=$(echo "${possible_uuid}" | grep -E '[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}')
+
+    echo "Setting partition ${part_number} of disk ${disk} (UUID='${filtered_uuid}') to GPT type 'Linux Root (x86-64)'"
+
+    if [ -z $filtered_uuid ] || [ -z $subcmd ] || [ -z part_number ] || [ -z disk ]; then
+        echo "Error retrieving the rootfs UUID: ${rootfs_uuid}"
+        exit 1
+    else
+        echo "Writing the correct GPT type to the partition ${part_number} of disk ${disk}"
+        parted --script "${disk}" type "${part_number}" "4F68BCE3-E8CD-4DB1-96E7-FBCAF984B709"
+    fi
+}
