@@ -2,39 +2,68 @@
 
 set -eu
 
-if [[ $EUID -ne 0 ]];
-then
-    exec pkexec --disable-internal-agent "$0" "$@"
+if [[ $EUID -ne 0 ]]; then
+	exec pkexec --disable-internal-agent "$0" "$@"
 fi
 
 WRITE_PATH="$1"
 WRITE_VALUE="$2"
 
-function CommitWrite()
-{
-    echo "commit: $WRITE_VALUE -> $WRITE_PATH" | systemd-cat -t p-steamos-priv-write -p warning
-    chmod a+w "$WRITE_PATH"
-    echo "$WRITE_VALUE" > "$WRITE_PATH"
-    exit 0
+function CommitWrite() {
+	if [ ! -z "$WRITE_VALUE" ]; then
+		echo "chmod a+w: $WRITE_PATH" | systemd-cat -t p-steamos-priv-write -p warning
+		chmod a+w "$WRITE_PATH"
+		echo "commit: $WRITE_VALUE -> $WRITE_PATH" | systemd-cat -t p-steamos-priv-write -p warning
+		echo "$WRITE_VALUE" >"$WRITE_PATH"
+	fi
+	exit 0
 }
 
-function DeclineWrite()
-{
-    echo "decline: $WRITE_VALUE -> $WRITE_PATH" | systemd-cat -t p-steamos-priv-write -p err
-    exit 1
+function DeclineWrite() {
+	echo "decline: $WRITE_VALUE -> $WRITE_PATH" | systemd-cat -t p-steamos-priv-write -p err
+	exit 1
 }
 
 echo "checking: $WRITE_PATH" | systemd-cat -t p-steamos-priv-write -p warning
 if [[ "$WRITE_PATH" == /sys/class/backlight/*/brightness ]]; then
-   CommitWrite
+	CommitWrite
+fi
+
+## TODO: Don't know what this does yet. Keep it here for refrence until we can figure it out.
+#if [[ "$WRITE_PATH" == /dev/drm_dp_aux0 ]]; then
+#	CommitWrite
+#fi
+
+if [[ "$WRITE_PATH" == /sys/class/drm/card*/device/power_dpm_force_performance_level ]]; then
+	CommitWrite
+fi
+
+if [[ "$WRITE_PATH" == /sys/class/hwmon/hwmon*/power*_cap ]]; then
+	CommitWrite
+fi
+
+if [[ "$WRITE_PATH" == /sys/devices/platform/*/*/*/iio:device*/in_illuminance_integration_time ]]; then
+	CommitWrite
 fi
 
 if [[ "$WRITE_PATH" == /sys/devices/*/*/*/*/hwmon/hwmon*/led_brightness ]]; then
-   CommitWrite
+	CommitWrite
 fi
 
 if [[ "$WRITE_PATH" == /sys/devices/*/*/*/*/hwmon/hwmon*/content_adaptive_brightness ]]; then
-   CommitWrite
+	CommitWrite
+fi
+
+if [[ "$WRITE_PATH" == /sys/devices/platform/*/i2c-2/i2c-*/brightness ]]; then
+	CommitWrite
+fi
+
+if [[ "$WRITE_PATH" == /sys/devices/platform/*/i2c-2/i2c-*/bmode ]]; then
+	CommitWrite
+fi
+
+if [[ "$WRITE_PATH" == /sys/class/leds/status\:white/led_brightness_multiplier ]]; then
+	CommitWrite
 fi
 
 DeclineWrite

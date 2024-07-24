@@ -98,6 +98,9 @@ sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf
 # update package databases
 pacman --noconfirm -Syy
 
+# Avoid mkintcpio being auto-installed while installing the kernel (we want dracut)
+pacman -S --noconfirm dracut
+
 # install kernel package
 if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
 	pacman --noconfirm -U --overwrite '*' \
@@ -117,6 +120,14 @@ rm -rf /var/cache/pacman/pkg
 # install AUR packages
 pacman --noconfirm -U --overwrite '*' /extra_pkgs/*
 rm -rf /var/cache/pacman/pkg
+
+# Install the new iptables
+# See https://gitlab.archlinux.org/archlinux/packaging/packages/iptables/-/issues/1
+# Since base package group adds iptables by default
+# pacman will ask for confirmation to replace that package
+# but the default answer is no.
+# doing yes | pacman omitting --noconfirm is a necessity 
+yes | pacman -S iptables-nft
 
 # enable services
 systemctl enable ${SERVICES}
@@ -185,7 +196,7 @@ ID_LIKE=arch
 ANSI_COLOR="1;31"
 HOME_URL="${WEBSITE}"
 DOCUMENTATION_URL="${DOCUMENTATION_URL}"
-BUG_REPORT_URL="${BUG_REPORT_URL}"' > /etc/os-release
+BUG_REPORT_URL="${BUG_REPORT_URL}"' > /usr/lib/os-release
 
 # install extra certificates
 trust anchor --store /extra_certs/*.crt
@@ -206,7 +217,7 @@ if [ -e "/boot/initramfs-${KERNEL_PACKAGE}-fallback.img" ]; then
 fi
 
 # Since frzr pre-v1.0.0 has an hardcoded cp of /boot/vmlinuz-linux and /boot/initramfs-linux.img
-# create two empty files so that the cp command won't file: these will be  replaced by a migration hook.
+# create two empty files so that the cp command won't fail: these will be  replaced by a migration hook.
 #
 # Note: The following is kept for compatibility with older frzr
 # 		This can safely be removed when the compatibility with
