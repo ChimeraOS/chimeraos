@@ -2,8 +2,8 @@
 post_install() {
     if [ -d /home ]; then
         if ! lsattr /home | grep -Fqx 'C'; then
-            echo "Disabling copy-on-write for /home"
             chattr +C -R /home 2> /home/.chattr_stderr.txt 1> .chattr_stdout.txt
+            echo "OK"
         fi
     fi
 }
