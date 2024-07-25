@@ -283,10 +283,19 @@ rm -rf ${BUILD_IMG}
 
 IMG_FILENAME="${SYSTEM_NAME}-${VERSION}.img.tar.xz"
 if [ -z "${NO_COMPRESS}" ]; then
+	# This can be used only when installing from the refactored frzr
+	# Maximizes the github building space and makes the build faster
+	#
+	# Remember to remove the "btrfs send -f ${SYSTEM_NAME}-${VERSION}.img ${SNAP_PATH}" line
+	# alongside with this commend when implemented.
+	#
+	# btrfs send ${SNAP_PATH} | xz -e -9 --memory=95% -T0 > ${IMG_FILENAME}
+	# 
+	# When implementing this remember to change $IMG_FILENAME extension to .img.xz
 	tar -c -I'xz -9e --verbose -T4' -f ${IMG_FILENAME} ${SYSTEM_NAME}-${VERSION}.img
-	rm ${SYSTEM_NAME}-${VERSION}.img
+	rm -f ${SYSTEM_NAME}-${VERSION}.img
 
-	sha256sum ${SYSTEM_NAME}-${VERSION}.img.tar.xz > sha256sum.txt
+	sha256sum "$IMG_FILENAME" > sha256sum.txt
 	cat sha256sum.txt
 
 	# Move the image to the output directory, if one was specified.
