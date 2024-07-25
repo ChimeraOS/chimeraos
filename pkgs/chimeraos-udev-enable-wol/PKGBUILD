@@ -1,0 +1,21 @@
+pkgname=chimeraos-udev-enable-wol
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="Enable wake-on-lan for chimeraos"
+arch=('any')
+url="https://github.com/ChimeraOS/chimeraos"
+depends=(
+    'ethtool' # the udev rule uses ethtool
+)
+source=(
+    "81-wol.rules"
+)
+sha256sums=(
+    'efc2a04b67ea76661157e154228d4b58ae2e1b652f8ce41bc001a5a863d13573' # 81-wol.rules
+)
+
+package() {
+    mkdir -p "$pkgdir/usr/lib/udev/rules.d"
+    
+    install -m 644 "$srcdir/81-wol.rules" "$pkgdir/usr/lib/udev/rules.d"
+}
