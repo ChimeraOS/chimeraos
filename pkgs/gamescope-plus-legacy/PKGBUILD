@@ -1,0 +1,123 @@
+# Maintainer: Joaquín Aramendía <samsagax at gmail dot com>
+# Co-Maintainer: Matthew Anderson <ruinairas1992 at gmail dot com>
+# Contributor: Maxime Gauduin <alucryd@archlinux.org>
+# Contributor: Giancarlo Razzolini <grazzolini@archlinux.org>
+# Contributor: Samuel "scrufulufugus" Monson <smonson@irbash.net>
+# Contributor: PedroHLC <root@pedrohlc.com>
+
+_pkgname=gamescope
+pkgname=gamescope-plus-legacy
+pkgver=3.13.16.9.plus1
+pkgrel=4
+pkgdesc='SteamOS session compositing window manager with added patches (legacy)'
+arch=(x86_64)
+url=https://github.com/ChimeraOS/gamescope
+license=(BSD)
+provides=(gamescope-legacy)
+depends=(
+  gcc-libs
+  glibc
+  glm
+  libcap.so
+  libglvnd
+  libdrm
+  libinput
+  libpipewire-0.3.so
+  libpixman-1.so
+  libseat.so
+  libudev.so
+  libvulkan.so
+  libx11
+  libxcb
+  libxcomposite
+  libxdamage
+  libxext
+  libxfixes
+  libxkbcommon.so
+  libxmu
+  libxrender
+  libxres
+  libxtst
+  libxxf86vm
+  opengl-driver
+  openvr
+  sdl2
+  vulkan-icd-loader
+  wayland
+  xcb-util-errors
+  xcb-util-renderutil
+  xcb-util-wm
+  xorg-server-xwayland
+)
+
+makedepends=(
+  benchmark
+  git
+  glslang
+  meson
+  ninja
+  vulkan-headers
+  wayland-protocols
+)
+
+_tag=f2e47826d2bdefa8d4bb3f26a52b5cd6da09787e
+source=("git+https://github.com/ChimeraOS/gamescope.git#commit=${_tag}"
+        "git+https://github.com/nothings/stb.git#commit=af1a5bc352164740c1cc1354942b1c6b72eacb8a"
+        "git+https://github.com/Joshua-Ashton/GamescopeShaders.git#tag=v0.1"
+        "git+https://github.com/Joshua-Ashton/reshade.git"
+        "git+https://github.com/KhronosGroup/SPIRV-Headers.git"
+        "backend_fix_gcc_14.patch"
+        "libliftoff_fix_gcc_14.patch"
+        )
+
+b2sums=('c0e74b55ab476ab1bcb02ced5b230b0dbb1c9dbf39ef61a123905b9f90166b09cb069b2fb031628f073c1a86f778f8df60aafd88ad8c4fc4d402e486a67ad352'
+        'db31478999287cc5b08cc7d98d1daa43a27b339b3ad975269710bd719d30e9f1cf5ee240ee7e2a8d8551f20fa46da14acd669cb207b26a18d79b360e718ff55b'
+        'ca268553bc3dacb5bd19553702cd454ea78ed97ab39d4397c5abf9a27d32633b63e0f7f7bf567b56066e6ecd979275330e629ba202a6d7721f0cd8166cd110dd'
+        'SKIP'
+        'SKIP'
+        'd9d1b648e7cf3cc2346499ceb1fbe5281d721bd69216993baef304ea66dde816f394e276e6e5462679326f21bda5dd8e3488275bc21b58f59a2882904995a80c'
+        'da0c430da456008d5925db4ab77bdc15326f01287515b75917b1a0de1ab082bc342cce1fc0c15a753043b8a46bbc0433735530ea2f1e9d35e5f6cb8337ccbb75')
+
+prepare() {
+  cd "$srcdir/$_pkgname"
+  meson subprojects download
+  git submodule init src/reshade
+  git config submodule.src/reshade.url "$srcdir/reshade"
+  git submodule init thirdparty/SPIRV-Headers
+  git config submodule.thirdparty/SPIRV-Headers.url ../SPIRV-Headers
+  git -c protocol.file.allow=always submodule update
+
+  # make stb.wrap use our local clone
+  rm -rf subprojects/stb
+  git clone "$srcdir/stb" subprojects/stb
+  cp -av subprojects/packagefiles/stb/* subprojects/stb/ # patch from the .wrap we elided
+
+  git submodule update --init
+  cd "$srcdir/$_pkgname/subprojects/wlroots"
+  patch -Np1 < "$srcdir/backend_fix_gcc_14.patch"
+  cd "$srcdir/$_pkgname/subprojects/libliftoff"
+  patch -Np1 < "$srcdir/libliftoff_fix_gcc_14.patch"
+}
+
+pkgver() {
+  cd gamescope
+  git describe --tags | sed 's/\-/\./g'
+}
+
+build() {
+  export LDFLAGS="$LDFLAGS -lrt"
+  arch-meson gamescope build -Denable_gamescope_wsi_layer=false
+  ninja -C build
+}
+
+package() {
+  #install -d "$pkgdir"/usr/share/gamescope/reshade
+  #cp -r "$srcdir"/GamescopeShaders/* "$pkgdir"/usr/share/gamescope/reshade/
+  #chmod -R 655 "$pkgdir"/usr/share/gamescope
+
+  meson install -C build --skip-subprojects --destdir="${pkgdir}"
+  mv "$pkgdir"/usr/bin/gamescope "$pkgdir"/usr/bin/gamescope-legacy
+  install -Dm 644 gamescope/LICENSE -t "${pkgdir}"/usr/share/licenses/gamescope-legacy/
+}
+
+# vim: ts=2 sw=2 et:

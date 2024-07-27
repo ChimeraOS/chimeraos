@@ -1,0 +1,52 @@
+From f3e1f7b2a70a500b740bfc406e893eba0852699a Mon Sep 17 00:00:00 2001
+From: Sergei Trofimovich <slyich@gmail.com>
+Date: Thu, 21 Dec 2023 21:06:20 +0000
+Subject: [PATCH] backend: fix build against upcoming `gcc-14`
+ (`-Werror=calloc-transposed-args`)
+
+`gcc-14` added a new `-Wcalloc-transposed-args` warning recently. It
+detected minor infelicity in `calloc()` API usage in `wlroots`:
+
+    ../backend/libinput/tablet_pad.c: In function 'add_pad_group_from_libinput':
+    ../backend/libinput/tablet_pad.c:36:38: error: 'calloc' sizes specified with 'sizeof' in the earlier argument and not in the later argument [-Werror=calloc-transposed-args]
+       36 |         group->rings = calloc(sizeof(unsigned int), group->ring_count);
+          |                                      ^~~~~~~~
+    ../backend/libinput/tablet_pad.c:36:38: note: earlier argument should specify number of elements, later size of each element
+---
+ backend/libinput/tablet_pad.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/backend/libinput/tablet_pad.c b/backend/libinput/tablet_pad.c
+index 2e74022a58..e532752815 100644
+--- a/backend/libinput/tablet_pad.c
++++ b/backend/libinput/tablet_pad.c
+@@ -33,7 +33,7 @@ static void add_pad_group_from_libinput(struct wlr_tablet_pad *pad,
+ 			++group->ring_count;
+ 		}
+ 	}
+-	group->rings = calloc(sizeof(unsigned int), group->ring_count);
++	group->rings = calloc(group->ring_count, sizeof(unsigned int));
+ 	if (group->rings == NULL) {
+ 		goto group_fail;
+ 	}
+@@ -50,7 +50,7 @@ static void add_pad_group_from_libinput(struct wlr_tablet_pad *pad,
+ 			++group->strip_count;
+ 		}
+ 	}
+-	group->strips = calloc(sizeof(unsigned int), group->strip_count);
++	group->strips = calloc(group->strip_count, sizeof(unsigned int));
+ 	if (group->strips == NULL) {
+ 		goto group_fail;
+ 	}
+@@ -66,7 +66,7 @@ static void add_pad_group_from_libinput(struct wlr_tablet_pad *pad,
+ 			++group->button_count;
+ 		}
+ 	}
+-	group->buttons = calloc(sizeof(unsigned int), group->button_count);
++	group->buttons = calloc(group->button_count, sizeof(unsigned int));
+ 	if (group->buttons == NULL) {
+ 		goto group_fail;
+ 	}
+-- 
+GitLab
+
