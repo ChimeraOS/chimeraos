@@ -22,7 +22,7 @@ jobs:
       aur-pkgs: ${{ steps.set-aur-pkgs.outputs.matrix }}
       pkgs: ${{ steps.set-pkgs.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: set-aur-pkgs
         run: source ./manifest ; echo "matrix=$(echo ${AUR_PACKAGES} | jq -R -s -c 'split(" ")')" >> $GITHUB_OUTPUT
         shell: bash
@@ -41,7 +41,7 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
@@ -52,9 +52,9 @@ jobs:
           docker pull ${{ steps.meta.outputs.tags }}
           docker run --rm -v $(pwd):/workdir --entrypoint=/workdir/aur-pkgs/build-aur-package.sh ${{ steps.meta.outputs.tags }} ${{ matrix.package }}
       - name: Upload Package Archives
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-            name: AUR-packages
+            name: AUR-packages-${{ matrix.package }}
             path: aur-pkgs/*.pkg.tar*
 
   pkgbuild:
@@ -68,7 +68,7 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.pkgs) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
@@ -79,9 +79,9 @@ jobs:
           docker pull ${{ steps.meta.outputs.tags }}
           docker run --rm -v $(pwd):/workdir --entrypoint=/workdir/pkgs/build-package.sh ${{ steps.meta.outputs.tags }} ${{ matrix.package }}
       - name: Upload Package Archives
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-            name: Packages
+            name: Packages-${{ hashFiles(format('{0}/PKGBUILD', matrix.package)) }}
             path: pkgs/*.pkg.tar*
 
   build:
