@@ -33,19 +33,21 @@ jobs:
           sudo rm -rf /opt/hostedtoolcache
           sudo rm -rf /opt/az
           df -h
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-            name: AUR-packages
+            pattern: AUR-packages*
+            merge-multiple: true
             path: aur-pkgs/
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-            name: Packages
+            pattern: Packages*
+            merge-multiple: true
             path: pkgs/
       - name: Build system image
         id: build_image
