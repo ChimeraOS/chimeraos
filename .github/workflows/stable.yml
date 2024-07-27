@@ -60,6 +60,7 @@ jobs:
         with:
             name: AUR-packages-${{ hashFiles(format('{0}/PKGBUILD', matrix.package)) }}
             path: aur-pkgs/*.pkg.tar*
+            compression-level: 0
 
   pkgbuild:
     needs:
@@ -87,6 +88,7 @@ jobs:
         with:
             name: Packages-${{ hashFiles(format('{0}/PKGBUILD', matrix.package)) }}
             path: pkgs/*.pkg.tar*
+            compression-level: 0
 
   build:
     needs:
