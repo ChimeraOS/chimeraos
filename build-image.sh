@@ -105,7 +105,6 @@ pacman -S --noconfirm dracut
 if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
 	pacman --noconfirm -U --overwrite '*' \
 	/own_pkgs/${KERNEL_PACKAGE}-*.pkg.tar.zst 
-	rm -rf /own_pkgs/${KERNEL_PACKAGE}-*.pkg.tar.zst
 else
 	pacman --noconfirm -S "${KERNEL_PACKAGE}" "${KERNEL_PACKAGE}-headers"
 fi
