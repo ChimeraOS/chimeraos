@@ -67,8 +67,5 @@ package() {
     install -m 644 "$srcdir/70-chimeraos_exclude-nvdimm.conf" "$pkgdir/etc/dracut.conf.d"
     install -m 644 "$srcdir/80-chimeraos_exclude-qemu.conf" "$pkgdir/etc/dracut.conf.d"
     install -m 644 "$srcdir/90-chimeraos_exclude-bluetooth.conf" "$pkgdir/etc/dracut.conf.d"
-
-    install -m 644 "$srcdir/60-dracut-remove.hook" "$pkgdir/etc/dracut.conf.d"
-    install -m 644 "$srcdir/90-dracut-install.hook" "$pkgdir/etc/dracut.conf.d"
 }
 
