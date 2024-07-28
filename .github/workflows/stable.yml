@@ -60,7 +60,6 @@ jobs:
         with:
             name: AUR-packages
             path: aur-pkgs/*.pkg.tar*
-            compression-level: 0
 
   pkgbuild:
     needs:
@@ -88,7 +87,6 @@ jobs:
         with:
             name: Packages
             path: pkgs/*.pkg.tar*
-            compression-level: 0
 
   build:
     needs:
