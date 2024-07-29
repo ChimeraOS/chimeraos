@@ -273,9 +273,6 @@ export FILES_TO_DELETE="\
 "
 
 postinstallhook() {
-	# Pyglet downgrade
-	pacman --noconfirm -U --overwrite '*' /extra_pkgs/python-pyglet-2.0.15-1-any.pkg.tar.zst
-	rm -rf /var/cache/pacman/pkg
 	# Add sudo permissions
 	sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^# //g' /etc/sudoers
 	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11

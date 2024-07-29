@@ -63,6 +63,7 @@ cp -R manifest rootfs/. ${BUILD_PATH}/
 mkdir ${BUILD_PATH}/own_pkgs
 mkdir ${BUILD_PATH}/extra_pkgs
 
+rm -rf aur-pkgs/python-pyglet-2.0.16-1-any.pkg.tar.zst
 cp -rv aur-pkgs/*.pkg.tar* ${BUILD_PATH}/extra_pkgs
 cp -rv pkgs/*.pkg.tar* ${BUILD_PATH}/own_pkgs
 
