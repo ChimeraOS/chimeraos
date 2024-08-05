@@ -15,10 +15,10 @@ post_unlock() {
     SUBVOL_DATA="${DEPLOYMENT_DATA}/${NAME}"
 
     if [ -d "${SUBVOL_DATA}/var_overlay/upperdir" ]; then
-        if cp -a "${SUBVOL}/usr/var/lib/pacman/local" "${SUBVOL_DATA}/var_overlay/upperdir/lib/pacman/"; then
+        if cp -a "${SUBVOL}/usr/var/lib/pacman" "${SUBVOL_DATA}/var_overlay/upperdir/lib/"; then
             echo "OK"
         else
-            echo "ERROR: Could not copy the pacman database at '${SUBVOL_DATA}/var_overlay/upperdir/lib/pacman'"
+            echo "ERROR: Could not copy the pacman database at '${SUBVOL_DATA}/var_overlay/upperdir/lib/'"
         fi
     else
         echo "ERROR: Could not find the /var overlay directory '${SUBVOL_DATA}/var_overlay/upperdir'"    
