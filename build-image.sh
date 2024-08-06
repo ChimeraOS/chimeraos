@@ -209,8 +209,8 @@ postinstallhook
 pacman -Q > /manifest
 
 # preserve installed package database
-mkdir -p /usr/var/lib/pacman
-cp -a /var/lib/pacman/local /usr/var/lib/pacman/
+mkdir -p /usr/var/lib/
+mv /var/lib/pacman /usr/var/lib/
 
 # Remove the fallback: it is never used and takes up space
 if [ -e "/boot/initramfs-${KERNEL_PACKAGE}-fallback.img" ]; then
