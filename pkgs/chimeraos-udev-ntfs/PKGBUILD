@@ -1,0 +1,20 @@
+pkgname=chimeraos-udev-ntfs
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="Udev rule for ntfs3 driver"
+arch=('any')
+url="https://github.com/ChimeraOS/chimeraos"
+depends=(
+)
+source=(
+    "00-ntfs3-default-mount.rules"
+)
+sha256sums=(
+    '35cbd5290944b8ce9536dcee42321e5b418ff135f5b623bed6797760e1a1ad5b' # 00-ntfs3-default-mount.rules
+)
+
+package() {
+    mkdir -p "$pkgdir/usr/lib/udev/rules.d"
+    
+    install -m 644 "$srcdir/00-ntfs3-default-mount.rules" "$pkgdir/usr/lib/udev/rules.d"
+}
