@@ -91,9 +91,6 @@
 [submodule "aur-pkgs/python-gbopyrator"]
 	path = aur-pkgs/python-gbopyrator
 	url = https://aur.archlinux.org/python-gbopyrator.git
-[submodule "aur-pkgs/python-vdf"]
-	path = aur-pkgs/python-vdf
-	url = https://aur.archlinux.org/python-vdf.git
 [submodule "aur-pkgs/rtl8812au-dkms-git"]
 	path = aur-pkgs/rtl8812au-dkms-git
 	url = https://aur.archlinux.org/rtl8812au-dkms-git.git
