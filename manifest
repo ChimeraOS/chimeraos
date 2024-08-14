@@ -240,6 +240,7 @@ export AUR_PACKAGES="\
 	steam-powerbuttond-git \
 	steam-removable-media-git \
 	wyvern \
+  xpadneo-dkms-git \
 	zenergy-dkms-git \
 "
 
@@ -277,53 +278,53 @@ export FILES_TO_DELETE="\
 "
 
 postinstallhook() {
-	# Add sudo permissions
-	sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^# //g' /etc/sudoers
-	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
+  # Add sudo permissions
+  sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^# //g' /etc/sudoers
+  echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/dmidecode -t 11
 	" >/etc/sudoers.d/steam
-	echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
+  echo "${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-gamescope
 	${USERNAME} ALL=(ALL) NOPASSWD: /usr/bin/chimera-session-use-lightdm
 	${USERNAME} ALL=(ALL) NOPASSWD: /usr/share/chimera/bin/power-tool
 	" >/etc/sudoers.d/chimera
 
-	# download and add racing wheel udev rules
-	pushd /usr/lib/udev/rules.d
-	curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-fanatec-wheel-perms.rules
-	curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-logitech-wheel-perms.rules
-	curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-thrustmaster-wheel-perms.rules
-	popd
+  # download and add racing wheel udev rules
+  pushd /usr/lib/udev/rules.d
+  curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-fanatec-wheel-perms.rules
+  curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-logitech-wheel-perms.rules
+  curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-thrustmaster-wheel-perms.rules
+  popd
 
-	# Remove build tools for slimmer image
-	rm /usr/share/libalpm/hooks/70-dkms-install.hook
-	rm /usr/share/libalpm/hooks/70-dkms-upgrade.hook
-	rm /usr/share/libalpm/hooks/71-dkms-remove.hook
-	pacman --noconfirm -Rnsdd make gcc dkms ${KERNEL_PACKAGE}-headers
+  # Remove build tools for slimmer image
+  rm /usr/share/libalpm/hooks/70-dkms-install.hook
+  rm /usr/share/libalpm/hooks/70-dkms-upgrade.hook
+  rm /usr/share/libalpm/hooks/71-dkms-remove.hook
+  pacman --noconfirm -Rnsdd make gcc dkms ${KERNEL_PACKAGE}-headers
 
-	# remove dolphin standalone emulator files (only need /usr/share/dolphin-emu/sys)
-	rm /usr/bin/dolphin-emu
-	rm /usr/bin/dolphin-emu-nogui
-	# dolphin-tool is no longer created in new builds?
-	#rm /usr/bin/dolphin-tool
-	rm /usr/share/applications/dolphin-emu.desktop
+  # remove dolphin standalone emulator files (only need /usr/share/dolphin-emu/sys)
+  rm /usr/bin/dolphin-emu
+  rm /usr/bin/dolphin-emu-nogui
+  # dolphin-tool is no longer created in new builds?
+  #rm /usr/bin/dolphin-tool
+  rm /usr/share/applications/dolphin-emu.desktop
 
-	# clean up desktop shortcuts
-	sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
-	find /usr/share/applications/* |
-		grep -v org.chimeraos.Gamescope.desktop |
-		grep -v org.chimeraos.app.desktop |
-		grep -v org.gnome.Console.desktop |
-		grep -v org.gnome.DiskUtility.desktop |
-		grep -v org.gnome.FileRoller.desktop |
-		grep -v org.gnome.Nautilus.desktop |
-		grep -v org.gnome.Settings.desktop |
-		grep -v org.gnome.Software.desktop |
-		grep -v org.gnome.TextEditor.desktop |
-		grep -v steam.desktop |
-		xargs -I {} sh -c "echo NoDisplay=true >> {}"
+  # clean up desktop shortcuts
+  sed -i -e 's/Name=Steam (Runtime)/Name=Steam/' /usr/share/applications/steam.desktop
+  find /usr/share/applications/* |
+    grep -v org.chimeraos.Gamescope.desktop |
+    grep -v org.chimeraos.app.desktop |
+    grep -v org.gnome.Console.desktop |
+    grep -v org.gnome.DiskUtility.desktop |
+    grep -v org.gnome.FileRoller.desktop |
+    grep -v org.gnome.Nautilus.desktop |
+    grep -v org.gnome.Settings.desktop |
+    grep -v org.gnome.Software.desktop |
+    grep -v org.gnome.TextEditor.desktop |
+    grep -v steam.desktop |
+    xargs -I {} sh -c "echo NoDisplay=true >> {}"
 
-	# force -steamdeck option in desktop mode to prevent constant steam updates
-	sed -i 's,Exec=/usr/bin/steam-runtime,Exec=/usr/bin/steam-runtime -steamdeck,' /usr/share/applications/steam.desktop
+  # force -steamdeck option in desktop mode to prevent constant steam updates
+  sed -i 's,Exec=/usr/bin/steam-runtime,Exec=/usr/bin/steam-runtime -steamdeck,' /usr/share/applications/steam.desktop
 
-	# set permissions for intel_gpu_top and mangohud
-	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
+  # set permissions for intel_gpu_top and mangohud
+  setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
 }
