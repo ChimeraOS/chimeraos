@@ -240,6 +240,7 @@ export AUR_PACKAGES="\
 	steam-powerbuttond-git \
 	steam-removable-media-git \
 	wyvern \
+	xpadneo-dkms-git \
 	zenergy-dkms-git \
 "
 
