@@ -17,31 +17,31 @@ source=(
     "dracut-install.sh"
     "dracut-remove.sh"
     "00-chimeraos.conf"
-    "10-chimeraos_use-fstab.conf"
+    "10-chimeraos_fstab.conf"
     "20-chimeraos_plymouth.conf"
-    "30-chimeraos_include-filesystems.conf"
-    "40-chimeraos_exclude-encryption.conf"
-    "50-chimeraos_exclude-mdraid.conf"
-    "60-chimeraos_exclude-networking.conf"
-    "70-chimeraos_exclude-nvdimm.conf"
-    "80-chimeraos_exclude-qemu.conf"
-    "90-chimeraos_exclude-bluetooth.conf"
+    "30-chimeraos_filesystems.conf"
+    "40-chimeraos_encryption.conf"
+    "50-chimeraos_mdraid.conf"
+    "60-chimeraos_networking.conf"
+    "70-chimeraos_nvdimm.conf"
+    "80-chimeraos_qemu.conf"
+    "90-chimeraos_bluetooth.conf"
     "60-dracut-remove.hook"
     "90-dracut-install.hook"
 )
 sha256sums=(
     '827d59e8fda5c16b3fc45eb89ce7cd5be6c40d35dd8fe9a8d5ea825a63d3a089' # dracut-install.sh
     'daefb58a0bf6df48cceaf4f7a898c17ca1f24e18cd7981b19f5f2034499592ed' # dracut-remove.sh
-    '1f356cc895156064cec63f589ea49acc59a4faab94b7ebe99dc904893da85907' # 00-chimeraos.conf
-    '7886062a7293d2e6bd6e975c4a8aaae63342af366479db8adf1b75860081cf53' # 10-chimeraos_use-fstab.conf
+    'f15631cd887d1167af89cc4363a879e3aa1d5a2068f34a9ca8278f3d5c11fa1b' # 00-chimeraos.conf
+    '7886062a7293d2e6bd6e975c4a8aaae63342af366479db8adf1b75860081cf53' # 10-chimeraos_fstab.conf
     '103cf3322954202c3f0f740cd9079546d059f919c8b1b07ac703ec6f94cf17fb' # 20-chimeraos_plymouth.conf
-    '676b4a216cd3787882edf2e5bdaebce4577a11dbae176f81bab1c1b72917fc09' # 30-chimeraos_include-filesystems.conf
-    '8b4247161bb9158bf382517bb061360c184315e71fea244420d8db99d2730129' # 40-chimeraos_exclude-encryption.conf
-    '84cccef9706590795b37b4d949c0a34e6ee7ba34ee7ff01a8c808a2fe3ff7f89' # 50-chimeraos_exclude-mdraid.conf
-    'e1f9caf3878e65ca28951642ad02c1b167eacba777b4ccc893f6b8702a6d474e' # 60-chimeraos_exclude-networking.conf
-    '5822aa5a698577937820ab2565a203492b6af81434bf1423664ef68bba8c1617' # 70-chimeraos_exclude-nvdimm.conf
-    'b126149ca9f79bb1deb7ec640f4452dd61f4214558f954b7bc9196c5e9ca6ef0' # 80-chimeraos_exclude-qemu.conf
-    'e983493fe3e7d9395dd8d1c8949150144c8d4318ff17ff2aca004235734c8299' # 90-chimeraos_exclude-bluetooth.conf
+    '676b4a216cd3787882edf2e5bdaebce4577a11dbae176f81bab1c1b72917fc09' # 30-chimeraos_filesystems.conf
+    '8b4247161bb9158bf382517bb061360c184315e71fea244420d8db99d2730129' # 40-chimeraos_encryption.conf
+    '84cccef9706590795b37b4d949c0a34e6ee7ba34ee7ff01a8c808a2fe3ff7f89' # 50-chimeraos_mdraid.conf
+    'e1f9caf3878e65ca28951642ad02c1b167eacba777b4ccc893f6b8702a6d474e' # 60-chimeraos_networking.conf
+    '5822aa5a698577937820ab2565a203492b6af81434bf1423664ef68bba8c1617' # 70-chimeraos_nvdimm.conf
+    'b126149ca9f79bb1deb7ec640f4452dd61f4214558f954b7bc9196c5e9ca6ef0' # 80-chimeraos_qemu.conf
+    'e983493fe3e7d9395dd8d1c8949150144c8d4318ff17ff2aca004235734c8299' # 90-chimeraos_bluetooth.conf
     '41c996bf7ef90e6a81690c4a06cbef89167882a036699834fe22637a1a184982' # 60-dracut-remove.hook
     'df94baaf97d110f65f1443dd7063fe0e8ec1f73b5baf142c6ff08c260e571fcb' # 90-dracut-install.hook
 )
@@ -58,14 +58,14 @@ package() {
     install -m 644 "$srcdir/90-dracut-install.hook" "$pkgdir/usr/share/libalpm/hooks"
 
     install -m 644 "$srcdir/00-chimeraos.conf" "$pkgdir/etc/dracut.conf.d"
-    install -m 644 "$srcdir/10-chimeraos_use-fstab.conf" "$pkgdir/etc/dracut.conf.d"
+    install -m 644 "$srcdir/10-chimeraos_fstab.conf" "$pkgdir/etc/dracut.conf.d"
     install -m 644 "$srcdir/20-chimeraos_plymouth.conf" "$pkgdir/etc/dracut.conf.d"
-    install -m 644 "$srcdir/30-chimeraos_include-filesystems.conf" "$pkgdir/etc/dracut.conf.d"
-    install -m 644 "$srcdir/40-chimeraos_exclude-encryption.conf" "$pkgdir/etc/dracut.conf.d"
-    install -m 644 "$srcdir/50-chimeraos_exclude-mdraid.conf" "$pkgdir/etc/dracut.conf.d"
-    install -m 644 "$srcdir/60-chimeraos_exclude-networking.conf" "$pkgdir/etc/dracut.conf.d"
-    install -m 644 "$srcdir/70-chimeraos_exclude-nvdimm.conf" "$pkgdir/etc/dracut.conf.d"
-    install -m 644 "$srcdir/80-chimeraos_exclude-qemu.conf" "$pkgdir/etc/dracut.conf.d"
-    install -m 644 "$srcdir/90-chimeraos_exclude-bluetooth.conf" "$pkgdir/etc/dracut.conf.d"
+    install -m 644 "$srcdir/30-chimeraos_filesystems.conf" "$pkgdir/etc/dracut.conf.d"
+    install -m 644 "$srcdir/40-chimeraos_encryption.conf" "$pkgdir/etc/dracut.conf.d"
+    install -m 644 "$srcdir/50-chimeraos_mdraid.conf" "$pkgdir/etc/dracut.conf.d"
+    install -m 644 "$srcdir/60-chimeraos_networking.conf" "$pkgdir/etc/dracut.conf.d"
+    install -m 644 "$srcdir/70-chimeraos_nvdimm.conf" "$pkgdir/etc/dracut.conf.d"
+    install -m 644 "$srcdir/80-chimeraos_qemu.conf" "$pkgdir/etc/dracut.conf.d"
+    install -m 644 "$srcdir/90-chimeraos_bluetooth.conf" "$pkgdir/etc/dracut.conf.d"
 }
 
