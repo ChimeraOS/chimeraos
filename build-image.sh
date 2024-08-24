@@ -169,8 +169,10 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 " > /etc/ssh/sshd_config
 
 # Write the fstab file
+# NOTE: gid=379 is the group ID of the frzr group
 # WARNING: mounting partitions using LABEL exposes us to a bug where multiple disks cannot have frzr systems and how to solve this still is an open question
 echo "
+LABEL=frzr_efi  /efi       vfat      uid=0,gid=379,fmask=0077,dmask=0077,rw,noatime,nofail                                                                                                                                                                                                                                                                                                                                                               0   2
 LABEL=frzr_root /frzr_root btrfs     defaults,x-initrd.mount,subvolid=5,rw,noatime,nodatacow                                                                                                                                                                                                                                                                                                                                                             0   2
 LABEL=frzr_root /home      btrfs     defaults,x-systemd.rw-only,subvol=/home,rw,noatime,nodatacow,nofail                                                                                                                                                                                                                                                                                                                                                 0   0
 overlay         /root      overlay   defaults,x-systemd.requires-mounts-for=/frzr_root,x-systemd.requires-mounts-for=/sysroot/frzr_root,x-initrd.mount,lowerdir=/sysroot/root,upperdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/root_overlay/upperdir,workdir=/sysroot/frzr_root/deployments_data/${SYSTEM_NAME}-${VERSION}/root_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off,comment=rootoverlay               0   0
