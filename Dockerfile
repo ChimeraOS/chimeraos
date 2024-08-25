@@ -57,6 +57,10 @@ RUN source /manifest && \
     echo "Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist && \
     pacman --noconfirm -Syyuu; if [ -n "${PACKAGE_OVERRIDES}" ]; then wget --directory-prefix=/tmp/extra_pkgs ${PACKAGE_OVERRIDES}; pacman --noconfirm -U --overwrite '*' /tmp/extra_pkgs/*; rm -rf /tmp/extra_pkgs; fi
 
+# Use cloudflare DNS to resolve hostnames while building aur packages
+RUN echo "nameserver 1.1.1.1" >> /etc/resolve.conf
+RUN echo "nameserver 8.8.8.8" >> /etc/resolve.conf
+
 USER build
 ENV BUILD_USER "build"
 ENV GNUPGHOME  "/etc/pacman.d/gnupg"
