@@ -2,12 +2,10 @@ FROM archlinux:base-devel
 LABEL contributor="shadowapex@gmail.com"
 COPY rootfs/etc/pacman.conf /etc/pacman.conf
 COPY rootfs/etc/resolv.conf /etc/resolv.conf
-RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf
-
-# Cannot check space in chroot
-RUN sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf
-
-RUN pacman-key --init && \
+RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf && \
+    # Cannot check space in chroot
+    sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf && \
+    pacman-key --init && \
     pacman --noconfirm -Syyuu && \
     pacman --noconfirm -S \
     arch-install-scripts \
@@ -23,20 +21,12 @@ RUN pacman-key --init && \
     python-markdown-it-py \
     python-setuptools \
     python-wheel \
-    sudo
-    
-RUN pacman --noconfirm -S --needed git
-
-# No password asked for wheel group
-RUN echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-# The makepkg tool cannot use root: add a temp user to build packages
-# and add that user to wheel group so that it can install packages
-# without being asked for a password
-RUN useradd build -G wheel -m
-
-# Build and install pikaur
-RUN su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur" && \
+    sudo \
+    && \
+    pacman --noconfirm -S --needed git && \
+    echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    useradd build -G wheel -m && \
+    su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur" && \
     su - build -c "cd /tmp/pikaur && makepkg -f" && \
     pacman --noconfirm -U /tmp/pikaur/pikaur-*.pkg.tar.zst
 
