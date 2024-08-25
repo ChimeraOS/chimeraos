@@ -22,6 +22,15 @@ jobs:
       aur-pkgs: ${{ steps.set-aur-pkgs.outputs.matrix }}
       pkgs: ${{ steps.set-pkgs.outputs.matrix }}
     steps:
+      - name: Set 8.8.8.8 as dns server
+        run: |
+          sudo sed -i 's/#DNS=/DNS=8.8.8.8 8.8.4.4/g' /etc/systemd/resolved.conf
+          sudo systemctl daemon-reload
+          sudo systemctl restart systemd-networkd
+          sudo systemctl restart systemd-resolved
+      - run: |
+          sudo prlimit --pid $$ --nofile=500000:500000
+          ulimit -a
       - uses: actions/checkout@v4
       - id: set-aur-pkgs
         run: source ./manifest ; echo "matrix=$(echo ${AUR_PACKAGES} | jq -R -s -c 'split(" ")')" >> $GITHUB_OUTPUT
@@ -29,7 +38,6 @@ jobs:
       - id: set-pkgs
         run: echo "matrix=$(ls -d pkgs/*/ | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
         shell: bash
-
   aur-pkgbuild:
     needs:
      - build-docker-image
@@ -41,6 +49,15 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
     steps:
+      - name: Set 8.8.8.8 as dns server
+        run: |
+          sudo sed -i 's/#DNS=/DNS=8.8.8.8 8.8.4.4/g' /etc/systemd/resolved.conf
+          sudo systemctl daemon-reload
+          sudo systemctl restart systemd-networkd
+          sudo systemctl restart systemd-resolved
+      - run: |
+          sudo prlimit --pid $$ --nofile=500000:500000
+          ulimit -a
       - uses: actions/checkout@v4
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -69,6 +86,15 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.pkgs) }}
     steps:
+      - name: Set 8.8.8.8 as dns server
+        run: |
+          sudo sed -i 's/#DNS=/DNS=8.8.8.8 8.8.4.4/g' /etc/systemd/resolved.conf
+          sudo systemctl daemon-reload
+          sudo systemctl restart systemd-networkd
+          sudo systemctl restart systemd-resolved
+      - run: |
+          sudo prlimit --pid $$ --nofile=500000:500000
+          ulimit -a
       - uses: actions/checkout@v4
       - name: Extract metadata (tags, labels) for Docker
         id: meta

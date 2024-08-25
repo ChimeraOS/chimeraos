@@ -9,6 +9,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set 8.8.8.8 as dns server
+        run: |
+          sudo sed -i 's/#DNS=/DNS=8.8.8.8 8.8.4.4/g' /etc/systemd/resolved.conf
+          sudo systemctl daemon-reload
+          sudo systemctl restart systemd-networkd
+          sudo systemctl restart systemd-resolved
+      - run: |
+          sudo prlimit --pid $$ --nofile=500000:500000
+          ulimit -a
       - uses: actions/checkout@v4
       - name: Read version
         id: set-version
