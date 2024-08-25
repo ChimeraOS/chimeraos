@@ -11,8 +11,8 @@ post_install() {
     local FRZR_VER=$4
 
     # check unlock-0001-overlays.migration
-    DEPLOYMENT_DATA="${MOUNT_PATH}/deployments_data"
-    SUBVOL_DATA="${DEPLOYMENT_DATA}/${NAME}"
+    local DEPLOYMENT_DATA="${MOUNT_PATH}/deployments_data"
+    local SUBVOL_DATA="${DEPLOYMENT_DATA}/${NAME}"
 
     local OLD_NAME="does_not_exist"
     if [ -e "/build_info" ]; then
