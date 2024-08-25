@@ -5,7 +5,12 @@ RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.con
 
 # Cannot check space in chroot
 RUN sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf
-    
+
+# Use cloudflare DNS to resolve hostnames
+RUN echo "nameserver 1.1.1.1" >> /etc/resolv.conf
+RUN echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+RUN echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+
 RUN pacman-key --init && \
     pacman --noconfirm -Syyuu && \
     pacman --noconfirm -S \
@@ -56,10 +61,6 @@ COPY manifest /manifest
 RUN source /manifest && \
     echo "Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist && \
     pacman --noconfirm -Syyuu; if [ -n "${PACKAGE_OVERRIDES}" ]; then wget --directory-prefix=/tmp/extra_pkgs ${PACKAGE_OVERRIDES}; pacman --noconfirm -U --overwrite '*' /tmp/extra_pkgs/*; rm -rf /tmp/extra_pkgs; fi
-
-# Use cloudflare DNS to resolve hostnames while building aur packages
-RUN echo "nameserver 1.1.1.1" >> /etc/resolv.conf
-RUN echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 
 USER build
 ENV BUILD_USER "build"
