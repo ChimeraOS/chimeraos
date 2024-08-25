@@ -1,6 +1,7 @@
 FROM archlinux:base-devel
 LABEL contributor="shadowapex@gmail.com"
 COPY rootfs/etc/pacman.conf /etc/pacman.conf
+COPY rootfs/etc/resolv.conf /etc/resolv.conf
 RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf
 
 # Cannot check space in chroot
