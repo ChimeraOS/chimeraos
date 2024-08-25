@@ -35,7 +35,7 @@ RUN echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN useradd build -G wheel -m
 
 # Build and install pikaur
-RUN su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur"
+RUN su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur" && \
     su - build -c "cd /tmp/pikaur && makepkg -f" && \
     pacman --noconfirm -U /tmp/pikaur/pikaur-*.pkg.tar.zst
 
