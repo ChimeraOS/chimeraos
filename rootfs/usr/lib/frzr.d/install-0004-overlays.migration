@@ -77,9 +77,9 @@ post_install() {
 
     if [ ! -d "${MOUNT_PATH}/usr" ] && [ -d "${MOUNT_PATH}/var" ] && [ -z $sysroot_snapshot ]; then
         echo "Transforming the /var subolume in '${MOUNT_PATH}/var/' to an overlay upperdir in '${SUBVOL_DATA}/var_overlay/upperdir'..."
-        mount -t overlay overlay -o lowerdir="${SUBVOL}/var",upperdir="${SUBVOL_DATA}/var_overlay/upperdir",workdir="${SUBVOL_DATA}/var_overlay/workdir" "${SUBVOL}/var"
-        cp -a ${MOUNT_PATH}/var/* "${SUBVOL}/var"
-        umount "${SUBVOL}/var"
+        rm -rf "${SUBVOL_DATA}/var_overlay/upperdir"
+        cp -a "${MOUNT_PATH}/var" "${SUBVOL_DATA}/var_overlay/"
+        mv "${SUBVOL_DATA}/var_overlay/var" "${SUBVOL_DATA}/var_overlay/upperdir"
     fi
 
     # clear out old pacman database
