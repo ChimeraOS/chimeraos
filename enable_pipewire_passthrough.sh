@@ -3,63 +3,35 @@ set -e
 
 # Function to enable PipeWire audio passthrough with Dolby Atmos support
 enable_pipewire_passthrough() {
+    local config_path_pipewire="audio/spatial_audio/pipewire.conf"
+    local config_path_alsa="audio/spatial_audio/alsa-monitor.conf"
+
     echo "Enabling PipeWire passthrough configuration with Dolby Atmos support"
 
-    # Create PipeWire configuration directories if not exists
+    # Check if configuration files exist
+    if [ ! -f "$config_path_pipewire" ]; then
+        echo "Error: pipewire.conf not found at $config_path_pipewire"
+        exit 1
+    fi
+
+    if [ ! -f "$config_path_alsa" ]; then
+        echo "Error: alsa-monitor.conf not found at $config_path_alsa"
+        exit 1
+    fi
+
+    # Create PipeWire configuration directories if they do not exist
     mkdir -p /etc/pipewire /etc/pipewire/media-session.d
 
-    # Update pipewire.conf to support passthrough
-    cat <<EOF >/etc/pipewire/pipewire.conf
-context.properties = {
-    default.clock.rate          = 48000
-    default.clock.allowed-rates = [ 44100 48000 88200 96000 176400 192000 ]
-    default.clock.quantum       = 1024
-    default.clock.min-quantum   = 32
-    default.clock.max-quantum   = 2048
-    default.clock.force-rate    = false
-}
-EOF
+    # Copy the provided pipewire.conf to the system location
+    cp "$config_path_pipewire" /etc/pipewire/pipewire.conf
+    echo "Applied pipewire.conf from $config_path_pipewire"
 
-    # Modify ALSA monitor configuration for passthrough with Dolby Atmos support
-    cat <<EOF >/etc/pipewire/media-session.d/alsa-monitor.conf
-rules = [
-    {
-        matches = [
-            {
-                node.name = "~.*hdmi.*"
-            }
-        ]
-        actions = {
-            update-props = {
-                audio.format = "S32_LE"
-                audio.rate = 192000  # Set the max rate that supports Atmos
-                audio.allowed-rates = [ 44100 48000 88200 96000 176400 192000 ]
-                api.alsa.pcm.handle-passthrough = true
-            }
-        }
-    },
-    {
-        matches = [
-            {
-                node.name = "~.*spdif.*"
-            }
-        ]
-        actions = {
-            update-props = {
-                audio.format = "S32_LE"
-                audio.rate = 192000
-                audio.allowed-rates = [ 44100 48000 88200 96000 176400 192000 ]
-                api.alsa.pcm.handle-passthrough = true
-            }
-        }
-    }
-]
-EOF
+    # Copy the provided alsa-monitor.conf to the system location
+    cp "$config_path_alsa" /etc/pipewire/media-session.d/alsa-monitor.conf
+    echo "Applied alsa-monitor.conf from $config_path_alsa"
 
     echo "PipeWire passthrough configuration with Dolby Atmos support applied successfully."
 }
 
-# Call the function if the script is executed directly
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    enable_pipewire_passthrough
-fi
+# Call the function
+enable_pipewire_passthrough
