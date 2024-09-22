@@ -13,6 +13,9 @@ OUTPUT_DIR=${OUTPUT_DIR:-}
 
 
 source manifest
+source /path/to/enable_pipewire_passthrough.sh
+
+enable_pipewire_passthrough
 
 if [ -z "${SYSTEM_NAME}" ]; then
   echo "SYSTEM_NAME must be specified"
