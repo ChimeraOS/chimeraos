@@ -19,7 +19,7 @@ RequiresMountsFor=/home/swapfile
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/mkswapfile /home/swapfile 1024
+ExecStart=/usr/bin/mkswapfile /home/swapfile 4096
 
 [Install]
 WantedBy=swap.target
