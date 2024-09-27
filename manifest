@@ -319,4 +319,22 @@ postinstallhook() {
 
 	# set permissions for intel_gpu_top and mangohud
 	setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
+    	
+    	# Setup for WirePlumber HDMI passthrough script and loader
+    	echo "Setting up WirePlumber HDMI passthrough script and loader"
+
+    	# Create the WirePlumber script directory if it doesn't exist
+    	mkdir -p /etc/wireplumber/scripts
+
+    	# Copy the hdmi_passthrough.lua script to the /etc/wireplumber/scripts directory
+    	cp ./etc/wireplumber/scripts/hdmi_passthrough.lua /etc/wireplumber/scripts/hdmi_passthrough.lua
+
+    	# Copy the loader file to WirePlumber's main.lua.d directory
+    	mkdir -p /usr/share/wireplumber/main.lua.d
+    	cp ./etc/wireplumber/scripts/hdmi_passthrough_loader.lua /usr/share/wireplumber/main.lua.d/90-hdmi-passthrough-loader.lua
+
+    	echo "WirePlumber HDMI passthrough script and loader have been set up successfully."
+
+    	# Restart WirePlumber service to apply changes
+    	systemctl --user restart wireplumber
 }
