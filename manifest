@@ -156,13 +156,11 @@ export PACKAGES="\
 	xorg-server \
 	xz \
 	zip \
-	# Replacing GNOME packages with Cosmic DE
 	cosmic \
 	cosmic-dock \
 	cosmic-launcher \
 	cosmic-panel \
 	cosmic-settings \
-	cosmic-calendar \
 	cosmic-text-editor \
 	cosmic-file-manager \
 "
@@ -216,9 +214,6 @@ export AUR_PACKAGES="\
 	wyvern \
 	xpadneo-dkms-git \
 	zenergy-dkms-git \
-	# Added stremio and discord packages from AUR
-	stremio \
-	discord \
 "
 
 export SERVICES="\
