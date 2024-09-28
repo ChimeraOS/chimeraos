@@ -170,6 +170,7 @@ export PACKAGES="\
 	xorg-server \
 	xz \
 	zip \
+        zstd \
 "
 
 export PACKAGE_OVERRIDES="\
