@@ -42,7 +42,6 @@ export PACKAGES="\
 	cosmic-text-editor \
 	cosmic-wallpapers \
 	cosmic-workspaces \
-	xdg-desktop-portal-cosmic \
 	cpupower \
 	diffutils \
 	dkms \
@@ -170,6 +169,7 @@ export PACKAGES="\
 	wireplumber \
 	wqy-zenhei \
 	xdg-desktop-portal \
+	xdg-desktop-portal-cosmic \
 	xdg-desktop-portal-wlr \
 	xdg-user-dirs-gtk \
 	xf86-video-amdgpu \
