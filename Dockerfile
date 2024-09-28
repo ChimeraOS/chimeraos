@@ -42,7 +42,7 @@ RUN sed -i '/BUILDENV/s/check/!check/g' /etc/makepkg.conf && \
   sed -i '/OPTIONS/s/debug/!debug/g' /etc/makepkg.conf
 
 # Install aur dependencies
-RUN aur-install inputplumber-bin
+RUN aur-install inputplumber
 
 COPY manifest /manifest
 # Freeze packages and overwrite with overrides when needed
