@@ -23,6 +23,26 @@ export PACKAGES="\
 	broadcom-wl-dkms \
 	bzip2 \
 	cifs-utils \
+	cosmic-app-library \
+        cosmic-applets \
+	cosmic-bg \
+	cosmic-comp \
+	cosmic-files \
+	cosmic-greeter \
+	cosmic-launcher \
+	cosmic-notifications \
+	cosmic-osd \
+	cosmic-panel \
+	cosmic-randr \
+	cosmic-screenshot \
+	cosmic-session \
+	cosmic-settings \
+	cosmic-settings-daemon \
+	cosmic-terminal \
+	cosmic-text-editor \
+	cosmic-wallpapers \
+	cosmic-workspaces \
+	xdg-desktop-portal-cosmic \
 	cpupower \
 	diffutils \
 	dkms \
@@ -156,13 +176,6 @@ export PACKAGES="\
 	xorg-server \
 	xz \
 	zip \
-	cosmic \
-	cosmic-dock \
-	cosmic-launcher \
-	cosmic-panel \
-	cosmic-settings \
-	cosmic-text-editor \
-	cosmic-file-manager \
 "
 
 export PACKAGE_OVERRIDES="\
