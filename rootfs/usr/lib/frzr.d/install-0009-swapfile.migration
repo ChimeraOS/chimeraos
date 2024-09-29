@@ -1,0 +1,57 @@
+#! /bin/bash
+
+# Install swapfile
+
+frzr_migration_version=0
+
+post_install() {
+    local MOUNT_PATH=$1
+
+    if [ ! -f "${MOUNT_PATH}/swap/swapfile" ]; then
+        
+        # Create a directory to contain the swapfile
+        if mkdir -p "${MOUNT_PATH}/swap"; then
+
+            # Create a 4G swap file
+            if touch "${MOUNT_PATH}/swap/swapfile"; then
+
+                # Disable copy-on-write on the swapfile
+                if chattr +C "${MOUNT_PATH}/swap/swapfile"; then
+
+                    # Disable btrfs compression
+                    if btrfs property set "${MOUNT_PATH}/swap/swapfile" compression none; then
+
+                        # Set the correct permissions
+                        if chmod 600 "${MOUNT_PATH}/swap/swapfile"; then
+
+                            # Write 4GB of zeroes into swapfile
+                            if dd if=/dev/zero of="${MOUNT_PATH}/swap/swapfile" bs=1G count=4; then
+
+                                # Initialize the swapfile
+                                if mkswap "${MOUNT_PATH}/swap/swapfile"; then
+                                    echo "OK"
+                                else
+                                    echo "ERROR: Could not create the swap filesystem on swapfile '${MOUNT_PATH}/swap/swapfile'"
+                                fi
+                            else
+                                echo "ERROR: Could not initialize swapfile '${MOUNT_PATH}/swap/swapfile'"
+                            fi
+                        else
+                            echo "ERROR: Could not change permissions to swapfile '${MOUNT_PATH}/swap/swapfile'"
+                        fi
+                    else
+                        echo "ERROR: Could not disable compression for swapfile '${MOUNT_PATH}/swap/swapfile'"
+                    fi
+                else
+                    echo "ERROR: Could not disable Copy-On-Write for swapfile '${MOUNT_PATH}/swap/swapfile'"
+                fi
+            else
+                echo "ERROR: Could not create swapfile '${MOUNT_PATH}/swap/swapfile'"
+            fi
+        else
+            echo "ERROR: Could not create swap directory at '${MOUNT_PATH}/swap'"
+        fi
+    else
+        echo "OK"
+    fi
+}
