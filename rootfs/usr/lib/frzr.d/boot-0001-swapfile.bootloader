@@ -1,0 +1,57 @@
+#! /bin/bash
+
+# Resume from hibernation using swapfile 
+
+frzr_migration_version=1
+
+# Get the UUID of the disk containing the given directory
+# $1 the directory
+# stdout UUID (compatible with /dev/disk/by-uuid/), an error otherwise
+swapfile_uuid() {
+	local dir=$1
+
+	if [ -d "${dir}" ]; then
+		local subcmd=$(df -P "${dir}" | tail -n1 | cut -d' ' -f1)
+
+		if [ "$subcmd" = "-" ]; then
+			subcmd=$(findmnt --target "${dir}" | grep "/dev" | tail -n1 | cut -d' ' -f2 )
+		fi
+
+		local possible_uuid=$(lsblk -n -o UUID "${subcmd}")
+		local filtered_uuid=$(echo "${possible_uuid}" | grep -E '[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}')
+
+		if [ -z "$filtered_uuid" ]; then
+			echo ""
+		else
+			echo "${filtered_uuid}"
+		fi
+	else
+		echo ""
+	fi
+}
+
+boot_cmdline() {
+    local MOUNT_PATH=$1
+    local SUBVOL=$2
+    local NAME=$3
+    local FRZR_VER=$4
+
+    if [ -f "${MOUNT_PATH}/swap/swapfile" ]; then
+
+        local resume_uuid=$(swapfile_uuid "${MOUNT_PATH}/swap/swapfile")
+
+        if [ ! -z "${resume_uuid}" ]; then
+            local resume_offset=$(btrfs inspect-internal map-swapfile -r "${MOUNT_PATH}/swap/swapfile")
+
+            if [ ! -z "${resume_offset}" ]; then
+                echo "resume=UUID=${resume_uuid} resume_offset=${resume_offset}"
+            else
+                echo ""
+            fi
+        else
+            echo ""
+        fi
+    else
+        echo ""
+    fi
+}
