@@ -10,7 +10,7 @@ frzr_migration_version=1
 swapfile_uuid() {
 	local dir=$1
 
-	if [ -d "${dir}" ]; then
+	if [ -d "${dir}" ] || [ -f "${dir}" ]; then
 		local subcmd=$(df -P "${dir}" | tail -n1 | cut -d' ' -f1)
 
 		if [ "$subcmd" = "-" ]; then
@@ -20,10 +20,10 @@ swapfile_uuid() {
 		local possible_uuid=$(lsblk -n -o UUID "${subcmd}")
 		local filtered_uuid=$(echo "${possible_uuid}" | grep -E '[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}')
 
-		if [ -z "$filtered_uuid" ]; then
-			echo ""
-		else
+		if [ ! -z "$filtered_uuid" ]; then
 			echo "${filtered_uuid}"
+		else
+			echo ""
 		fi
 	else
 		echo ""
