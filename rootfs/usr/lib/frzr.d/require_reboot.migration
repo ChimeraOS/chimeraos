@@ -1,4 +1,0 @@
-# triggers notification for reboot in old BPM
-post_install() {
-  touch /var/run/reboot-required
-}
