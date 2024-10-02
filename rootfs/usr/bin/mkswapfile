@@ -27,9 +27,15 @@ usage() { echo >&2 "Usage: $(basename $0) FILE SIZE"; exit 1; }
 
 [ -e "$SWAPFILE" ] && fail "File '$SWAPFILE' already exists"
 
+BASE_DIR=$(dirname "$SWAPFILE")
+BUFFER_MB=10000
+AVAIL_DISK_MB=$(df -BM "$BASE_DIR" | tail -1 | tr -s ' ' | cut -d' ' -f4 | sed 's/M//')
+REQUIRED_BUFFER_MB=$(($BUFFER_MB + $SWAPSIZE))
+[ "$AVAIL_DISK_MB" -lt "$REQUIRED_BUFFER_MB" ] && fail "Not enough free disk space"
+
 touch "$SWAPFILE"
 chattr +C "$SWAPFILE"
-btrfs property set "$SWAPFILE" compression none
+btrfs property set "$SWAPFILE" compression none && true # prevent script failure when using nodatacow
 dd if=/dev/zero of="$SWAPFILE" bs=1M count="$SWAPSIZE"
 chmod 600 "$SWAPFILE"
 mkswap "$SWAPFILE"

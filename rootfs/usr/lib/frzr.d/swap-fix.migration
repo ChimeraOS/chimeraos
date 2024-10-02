@@ -1,0 +1,12 @@
+# Delete broken swapfile
+post_install() {
+	SWAPFILE="/home/swapfile"
+	if [ -e "$SWAPFILE" ] && [ $(stat -c%s "$SWAPFILE") -gt 0 ]; then
+		# swapfile is not broken, exit silently
+		return 0
+	fi
+
+	echo "Removing broken swapfile..."
+	rm -f "$SWAPFILE"
+	echo "Broken swapfile removed"
+}
