@@ -34,8 +34,9 @@ post_install() {
                                             
                                             # Run the following in chroot
                                             chroot "${SUBVOL}" /bin/bash <<EOF
-frzr-tweak
-frzr-initramfs
+mkdir /var/log/device-quirks
+CURR_DATE=$(date +%Y%m%d-%H%M%S)
+/usr/share/device-quirks/device-quirks.sh > "/var/log/device-quirks/${CURR_DATE}.log"
 EOF
 
                                             # umount mounted devices
