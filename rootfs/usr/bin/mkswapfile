@@ -33,6 +33,8 @@ AVAIL_DISK_MB=$(df -BM "$BASE_DIR" | tail -1 | tr -s ' ' | cut -d' ' -f4 | sed '
 REQUIRED_BUFFER_MB=$(($BUFFER_MB + $SWAPSIZE))
 [ "$AVAIL_DISK_MB" -lt "$REQUIRED_BUFFER_MB" ] && fail "Not enough free disk space"
 
+mkdir -p "$BASE_DIR"
+chattr +C "$BASE_DIR"
 touch "$SWAPFILE"
 chattr +C "$SWAPFILE"
 btrfs property set "$SWAPFILE" compression none && true # prevent script failure when using nodatacow
