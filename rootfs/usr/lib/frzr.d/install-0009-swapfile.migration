@@ -13,7 +13,7 @@ post_install() {
     local SWAPFILE="${MOUNT_PATH}/swap/swapfile"
     local SWAPSIZE="4096" # Multiples of 1M used in dd
 
-    if [ ! -f "${MOUNT_PATH}/swap/swapfile" ]; then
+    if [ ! -f "${SWAPFILE}" ]; then
         if "${SUBVOL}/usr/bin/mkswapfile" "${SWAPFILE}" "${SWAPSIZE}"; then
             echo "OK"
         else

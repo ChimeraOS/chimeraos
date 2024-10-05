@@ -36,12 +36,14 @@ boot_cmdline() {
     local NAME=$3
     local FRZR_VER=$4
 
-    if [ -f "${MOUNT_PATH}/swap/swapfile" ]; then
+    local SWAPFILE="${MOUNT_PATH}/swap/swapfile"
 
-        local resume_uuid=$(swapfile_uuid "${MOUNT_PATH}/swap/swapfile")
+    if [ -f "${SWAPFILE}" ]; then
+
+        local resume_uuid=$(swapfile_uuid "${SWAPFILE}")
 
         if [ ! -z "${resume_uuid}" ]; then
-            local resume_offset=$(btrfs inspect-internal map-swapfile -r "${MOUNT_PATH}/swap/swapfile")
+            local resume_offset=$(btrfs inspect-internal map-swapfile -r "${SWAPFILE}")
 
             if [ ! -z "${resume_offset}" ]; then
                 echo "resume=UUID=${resume_uuid} resume_offset=${resume_offset}"
