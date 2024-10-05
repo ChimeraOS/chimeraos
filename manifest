@@ -250,7 +250,6 @@ export SERVICES="\
 	bluetooth-workaround \
 	fstrim.timer \
 	haveged \
-	home-swapfile.swap \
 	inputplumber \
 	lightdm \
 	nvidia-powerd \
@@ -258,7 +257,6 @@ export SERVICES="\
 	steam-powerbuttond \
 	sshd \
 	systemd-timesyncd \
-	swapfile \
 "
 
 export USER_SERVICES="\
