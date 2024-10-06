@@ -23,6 +23,25 @@ export PACKAGES="\
 	broadcom-wl-dkms \
 	bzip2 \
 	cifs-utils \
+	cosmic-app-library \
+        cosmic-applets \
+	cosmic-bg \
+	cosmic-comp \
+	cosmic-files \
+	cosmic-greeter \
+	cosmic-launcher \
+	cosmic-notifications \
+	cosmic-osd \
+	cosmic-panel \
+	cosmic-randr \
+	cosmic-screenshot \
+	cosmic-session \
+	cosmic-settings \
+	cosmic-settings-daemon \
+	cosmic-terminal \
+	cosmic-text-editor \
+	cosmic-wallpapers \
+	cosmic-workspaces \
 	cpupower \
 	diffutils \
 	dkms \
@@ -44,18 +63,6 @@ export PACKAGES="\
 	fuse2 \
 	fwupd \
 	git \
-	gnome-browser-connector \
-	gnome-console \
-	gnome-control-center \
-	gnome-disk-utility \
-	gnome-keyring \
-	gnome-menus \
-	gnome-session \
-	gnome-shell \
-	gnome-software \
-	gnome-system-monitor \
-	gnome-text-editor \
-	gnome-tweaks \
 	gst-plugin-pipewire \
 	gvfs-smb \
 	gvfs-nfs \
@@ -93,7 +100,7 @@ export PACKAGES="\
 	libretro-flycast \
 	libretro-genesis-plus-gx \
 	libretro-kronos \
-	libretro-mesen-s\
+	libretro-mesen-s \
 	libretro-mgba \
 	libretro-mupen64plus-next \
 	libretro-nestopia \
@@ -116,7 +123,6 @@ export PACKAGES="\
 	mesa-demos \
 	modemmanager \
 	nano \
-	nautilus \
 	networkmanager \
 	nfs-utils \
 	noto-fonts-emoji \
@@ -163,7 +169,7 @@ export PACKAGES="\
 	wireplumber \
 	wqy-zenhei \
 	xdg-desktop-portal \
-	xdg-desktop-portal-gnome \
+	xdg-desktop-portal-cosmic \
 	xdg-desktop-portal-wlr \
 	xdg-user-dirs-gtk \
 	xf86-video-amdgpu \
@@ -198,8 +204,6 @@ export PACKAGE_OVERRIDES="\
 "
 
 # Each entry is the clone url (https://aur.archlinux.org/{AUR_PACKAGE}.git)
-# Which is often the same as the package name but it can be different.
-# Check on the AUR webpage if you are unsure
 export AUR_PACKAGES="\
 	asusctl \
 	ayaneo-platform-dkms-git \
@@ -314,13 +318,6 @@ postinstallhook() {
 	find /usr/share/applications/* |
 		grep -v org.chimeraos.Gamescope.desktop |
 		grep -v org.chimeraos.app.desktop |
-		grep -v org.gnome.Console.desktop |
-		grep -v org.gnome.DiskUtility.desktop |
-		grep -v org.gnome.FileRoller.desktop |
-		grep -v org.gnome.Nautilus.desktop |
-		grep -v org.gnome.Settings.desktop |
-		grep -v org.gnome.Software.desktop |
-		grep -v org.gnome.TextEditor.desktop |
 		grep -v steam.desktop |
 		xargs -I {} sh -c "echo NoDisplay=true >> {}"
 
