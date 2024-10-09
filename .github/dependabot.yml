@@ -1,0 +1,34 @@
+# dependabot.yml
+# Author: D.A.Pelasgus
+
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore"
+    labels:
+      - "docker"
+      - "dependencies"
+    reviewers:
+      - "alkazar"
+      - "samsagax"
+      - "pastaq"
+      - "neroreflex"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore"
+    labels:
+      - "github-actions"
+      - "dependencies"
+    reviewers:
+      - "alkazar"
+      - "samsagax"
+      - "pastaq"
+      - "neroreflex"
