@@ -218,7 +218,6 @@ export AUR_PACKAGES="\
 	hid-msi-claw-dkms-git \
 	inputplumber \
 	legendary \
-	lib32-gamescope-plus \
 	libretro-dosbox-pure-git \
 	libretro-opera-git \
 	libretro-prosystem-git \
