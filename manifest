@@ -301,11 +301,7 @@ postinstallhook() {
 	rm /usr/share/libalpm/hooks/71-dkms-remove.hook
 	pacman --noconfirm -Rnsdd make gcc dkms ${KERNEL_PACKAGE}-headers
 
-	# remove dolphin standalone emulator files (only need /usr/share/dolphin-emu/sys)
-	rm /usr/bin/dolphin-emu
-	rm /usr/bin/dolphin-emu-nogui
-	# dolphin-tool is no longer created in new builds?
-	#rm /usr/bin/dolphin-tool
+	# remove dolphin shortcut to not clutter up the desktop
 	rm /usr/share/applications/dolphin-emu.desktop
 
 	# clean up desktop shortcuts
