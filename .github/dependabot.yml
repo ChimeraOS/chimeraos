@@ -21,9 +21,6 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "chore"
-    labels:
-      - "github-actions"
-      - "dependencies"
     reviewers:
       - "alkazar"
       - "samsagax"
