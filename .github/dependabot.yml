@@ -9,9 +9,6 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "chore"
-    labels:
-      - "docker"
-      - "dependencies"
     reviewers:
       - "alkazar"
       - "samsagax"
