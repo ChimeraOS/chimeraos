@@ -202,6 +202,7 @@ export AUR_PACKAGES="\
 	gamescope-plus \
 	gamescope-session-steam-git \
 	gamescope-session-steam-plus-git \
+	gpd-fan-driver-dkms-git \
 	hhfc-git \
 	hid-msi-claw-dkms-git \
 	legendary \
