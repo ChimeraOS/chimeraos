@@ -66,7 +66,7 @@ jobs:
           echo -e "$(docker inspect --format='{{index .RepoDigests 0}}' ${{ steps.meta.outputs.tags }})" > output/container.txt
       - name: Create release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ steps.build_image.outputs.version }}

@@ -9,9 +9,6 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "chore"
-    labels:
-      - "docker"
-      - "dependencies"
     reviewers:
       - "alkazar"
       - "samsagax"
@@ -24,9 +21,6 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "chore"
-    labels:
-      - "github-actions"
-      - "dependencies"
     reviewers:
       - "alkazar"
       - "samsagax"
