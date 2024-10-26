@@ -217,7 +217,6 @@ export AUR_PACKAGES="\
 	gpd-fan-driver-dkms-git \
 	hhfc-git \
 	hid-msi-claw-dkms-git \
-	inputplumber \
 	legendary \
 	libretro-dosbox-pure-git \
 	libretro-opera-git \
