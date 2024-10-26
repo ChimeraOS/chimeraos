@@ -11,8 +11,6 @@ sudo chown build:build /workdir/aur-pkgs
 
 git clone --depth=1 https://aur.archlinux.org/${1}.git /temp/package
 
-pikaur --noconfirm -S inputplumber
-
 PIKAUR_CMD="PKGDEST=/workdir/aur-pkgs pikaur --noconfirm --build-gpgdir /etc/pacman.d/gnupg -S -P /temp/package/PKGBUILD"
 PIKAUR_RUN=(bash -c "${PIKAUR_CMD}")
 "${PIKAUR_RUN[@]}"
