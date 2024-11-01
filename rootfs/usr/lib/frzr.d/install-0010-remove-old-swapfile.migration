@@ -1,6 +1,9 @@
 #! /bin/bash
 
 # Delete broken swapfile
+
+frzr_migration_version=1
+
 post_install() {
 	SWAPFILE="/home/swapfile"
 	if [ -e "$SWAPFILE" ] && [ $(stat -c%s "$SWAPFILE") -gt 0 ]; then

@@ -2,7 +2,7 @@
 
 # Install swapfile
 
-frzr_migration_version=0
+frzr_migration_version=1
 
 post_install() {
     local MOUNT_PATH=$1
@@ -10,10 +10,13 @@ post_install() {
     local NAME=$3
     local FRZR_VER=$4
 
-    local SWAPFILE="${MOUNT_PATH}/swap/swapfile"
+    local SWAPDIR="${MOUNT_PATH}/swap"
+    local SWAPFILE="${SWAPDIR}/swapfile"
     local SWAPSIZE="4096" # Multiples of 1M used in dd
 
     if [ ! -f "${SWAPFILE}" ]; then
+        mkdir -p "${SWAPDIR}"
+
         if "${SUBVOL}/usr/bin/mkswapfile" "${SWAPFILE}" "${SWAPSIZE}"; then
             echo "OK"
         else
