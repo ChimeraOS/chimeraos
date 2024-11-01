@@ -16,68 +16,62 @@ post_install() {
     local DEPLOYMENT_QUIRKS="${DEPLOYMENT_DATA}"
     local SUBVOL_QUIRKS="${SUBVOL_DATA}"
 
-    # NOTE: it is important this file is named in a way that will be listed
-    #       after the migration that creates the overlays, thus ensuring overlays exists.
-    if [ -n "${FIRMWARE_OVERRIDE}" ]; then
-        # Execute a batch of mounts
-        if mount -t proc /proc "${SUBVOL}/proc"; then
-            if mount -t sysfs /sys "${SUBVOL}/sys"; then
-                if mount --rbind /dev "${SUBVOL}/dev"; then
-                    if [ -e "${SUBVOL}/usr/share/device-quirks/id-device" ]; then
-                        # mount device quirks directory on /mnt
-                        if mount --bind "${SUBVOL_QUIRKS}" "${SUBVOL}/mnt"; then
-                            if mount -t overlay -o lowerdir=${SUBVOL}/usr,upperdir=${SUBVOL_QUIRKS}/usr_overlay/upperdir,workdir=${SUBVOL_QUIRKS_WORKDIR}/usr_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/usr"; then
-                                if mount -t overlay -o lowerdir=${SUBVOL}/etc,upperdir=${SUBVOL_QUIRKS}/etc_overlay/upperdir,workdir=${SUBVOL_QUIRKS_WORKDIR}/etc_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/etc"; then
-                                    if mount -t overlay -o lowerdir=${SUBVOL}/boot,upperdir=${SUBVOL_QUIRKS}/boot_overlay/upperdir,workdir=${SUBVOL_QUIRKS_WORKDIR}/boot_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/boot"; then
-                                        if mount -t overlay -o lowerdir=${SUBVOL}/var,upperdir=${SUBVOL_QUIRKS}/var_overlay/upperdir,workdir=${SUBVOL_QUIRKS_WORKDIR}/var_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/var"; then
-                                            echo "export USE_FIRMWARE_OVERRIDES=1" >> "${SUBVOL}/etc/device-quirks.conf"
-                                            
-                                            # Run the following in chroot
-                                            chroot "${SUBVOL}" /bin/bash <<EOF
+    # Execute a batch of mounts
+    if mount -t proc /proc "${SUBVOL}/proc"; then
+        if mount -t sysfs /sys "${SUBVOL}/sys"; then
+            if mount --rbind /dev "${SUBVOL}/dev"; then
+                if [ -e "${SUBVOL}/usr/share/device-quirks/id-device" ]; then
+                    # mount device quirks directory on /mnt
+                    if mount --bind "${SUBVOL_QUIRKS}" "${SUBVOL}/mnt"; then
+                        if mount -t overlay -o lowerdir=${SUBVOL}/usr,upperdir=${SUBVOL_QUIRKS}/usr_overlay/upperdir,workdir=${SUBVOL_QUIRKS}/usr_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/usr"; then
+                            if mount -t overlay -o lowerdir=${SUBVOL}/etc,upperdir=${SUBVOL_QUIRKS}/etc_overlay/upperdir,workdir=${SUBVOL_QUIRKS}/etc_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/etc"; then
+                                if mount -t overlay -o lowerdir=${SUBVOL}/boot,upperdir=${SUBVOL_QUIRKS}/boot_overlay/upperdir,workdir=${SUBVOL_QUIRKS}/boot_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/boot"; then
+                                    if mount -t overlay -o lowerdir=${SUBVOL}/var,upperdir=${SUBVOL_QUIRKS}/var_overlay/upperdir,workdir=${SUBVOL_QUIRKS}/var_overlay/workdir,index=off,metacopy=off,xino=off,redirect_dir=off overlay "${SUBVOL}/var"; then
+                                        echo "export USE_FIRMWARE_OVERRIDES=1" >> "${SUBVOL}/etc/device-quirks.conf"
+                                        
+                                        # Run the following in chroot
+                                        chroot "${SUBVOL}" /bin/bash <<EOF
 mkdir /var/log/device-quirks
 CURR_DATE=$(date +%Y%m%d-%H%M%S)
 /usr/share/device-quirks/device-quirks.sh > "/var/log/device-quirks/${CURR_DATE}.log"
 EOF
 
-                                            # umount mounted devices
-                                            umount -l "${SUBVOL}/mnt"
-                                            umount -l "${SUBVOL}/proc"
-                                            umount -l "${SUBVOL}/sys"
-                                            mount --make-rslave "${SUBVOL}/dev"
-                                            umount -l "${SUBVOL}/dev"
-                                            
-                                            # Do not umount the subvol as the following steps will copy SUBVOL/boot/initramfs-* to efi
-                                            #umount -l -R "${SUBVOL}"
+                                        # umount mounted devices
+                                        umount -l "${SUBVOL}/mnt"
+                                        umount -l "${SUBVOL}/proc"
+                                        umount -l "${SUBVOL}/sys"
+                                        mount --make-rslave "${SUBVOL}/dev"
+                                        umount -l "${SUBVOL}/dev"
+                                        
+                                        # Do not umount the subvol as the following steps will copy SUBVOL/boot/initramfs-* to efi
+                                        #umount -l -R "${SUBVOL}"
 
-                                            echo "OK"
-                                        else
-                                            echo "ERROR: Could not mount the /var device-quirks overlay"
-                                        fi
+                                        echo "OK"
                                     else
-                                        echo "ERROR: Could not mount the /boot device-quirks overlay"
+                                        echo "ERROR: Could not mount the /var device-quirks overlay"
                                     fi
                                 else
-                                    echo "ERROR: Could not mount the /etc device-quirks overlay"
+                                    echo "ERROR: Could not mount the /boot device-quirks overlay"
                                 fi
                             else
-                                echo "ERROR: Could not mount the /usr device-quirks overlay"
+                                echo "ERROR: Could not mount the /etc device-quirks overlay"
                             fi
                         else
-                            echo "ERROR: Could not bind-mount '${SUBVOL_QUIRKS}' into '${SUBVOL}/mnt'"
+                            echo "ERROR: Could not mount the /usr device-quirks overlay"
                         fi
                     else
-                        echo "WARNING: Device-quirks package was not found"
+                        echo "ERROR: Could not bind-mount '${SUBVOL_QUIRKS}' into '${SUBVOL}/mnt'"
                     fi
                 else
-                    echo "ERROR: Could not bind-mount /dev to '${SUBVOL}/dev'"
+                    echo "WARNING: Device-quirks package was not found"
                 fi
             else
-                echo "ERROR: Could not mount sysfs to '${SUBVOL}/sys'"
+                echo "ERROR: Could not bind-mount /dev to '${SUBVOL}/dev'"
             fi
         else
-            echo "ERROR: Could not mount proc to '${SUBVOL}/proc'"
+            echo "ERROR: Could not mount sysfs to '${SUBVOL}/sys'"
         fi
     else
-        echo "OK"
+        echo "ERROR: Could not mount proc to '${SUBVOL}/proc'"
     fi
 }
