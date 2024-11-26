@@ -15,8 +15,6 @@ post_install() {
     local SWAPSIZE="4096" # Multiples of 1M used in dd
 
     if [ ! -f "${SWAPFILE}" ]; then
-        mkdir -p "${SWAPDIR}"
-
         if "${SUBVOL}/usr/bin/mkswapfile" "${SWAPFILE}" "${SWAPSIZE}"; then
             echo "OK"
         else

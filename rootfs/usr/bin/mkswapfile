@@ -16,6 +16,24 @@
 
 set -euo pipefail
 
+is_btrfs_subvol() {
+	local dir=$1
+	if [ ! -d "${dir}" ]; then
+		return 1
+	fi
+
+	[ "$(stat -f --format="%T" "$dir")" == "btrfs" ] || return 1
+	inode="$(stat --format="%i" "$dir")"
+	case "$inode" in
+	2 | 256)
+		return 0
+		;;
+	*)
+		return 1
+		;;
+	esac
+}
+
 SWAPFILE=${1:-}
 SWAPSIZE=${2:-}
 
@@ -27,17 +45,23 @@ usage() { echo >&2 "Usage: $(basename $0) FILE SIZE"; exit 1; }
 
 [ -e "$SWAPFILE" ] && fail "File '$SWAPFILE' already exists"
 
+if [ ! -d "$BASE_DIR" ]; then
+    btrfs subvolume create "$BASE_DIR"
+fi
+
 BASE_DIR=$(dirname "$SWAPFILE")
 BUFFER_MB=10000
 AVAIL_DISK_MB=$(df -BM "$BASE_DIR" | tail -1 | tr -s ' ' | cut -d' ' -f4 | sed 's/M//')
 REQUIRED_BUFFER_MB=$(($BUFFER_MB + $SWAPSIZE))
 [ "$AVAIL_DISK_MB" -lt "$REQUIRED_BUFFER_MB" ] && fail "Not enough free disk space"
-
-mkdir -p "$BASE_DIR"
 chattr +C "$BASE_DIR"
 touch "$SWAPFILE"
 chattr +C "$SWAPFILE"
-btrfs property set "$SWAPFILE" compression none && true # prevent script failure when using nodatacow
+
+if is_btrfs_subvol "$BASE_DIR"; then
+    btrfs property set "$BASE_DIR" compression none && true # prevent script failure when using nodatacow
+fi
+
 dd if=/dev/zero of="$SWAPFILE" bs=1M count="$SWAPSIZE"
 chmod 600 "$SWAPFILE"
 mkswap "$SWAPFILE"
