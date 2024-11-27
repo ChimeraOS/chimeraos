@@ -100,6 +100,9 @@ pacman --noconfirm -Syy
 
 # Avoid mkintcpio being auto-installed while installing the kernel (we want dracut)
 pacman -S --noconfirm dracut
+# Disable check and debug for makepkg on the final image
+sed -i '/BUILDENV/s/ check/ !check/g' /etc/makepkg.conf
+sed -i '/OPTIONS/s/ debug/ !debug/g' /etc/makepkg.conf
 
 # install kernel package
 if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
