@@ -102,7 +102,6 @@ export PACKAGES="\
 	libretro-shaders-slang \
 	libretro-snes9x \
 	libva-intel-driver \
-	libva-vdpau-driver \
 	libxcrypt-compat \
 	libxss \
 	lightdm \
