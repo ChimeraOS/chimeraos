@@ -3,32 +3,33 @@ LABEL contributor="shadowapex@gmail.com"
 COPY rootfs/etc/pacman.conf /etc/pacman.conf
 COPY rootfs/etc/resolv.conf /etc/resolv.conf
 RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf && \
-    # Cannot check space in chroot
-    sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf && \
-    pacman-key --init && \
-    pacman --noconfirm -Syyuu && \
-    pacman --noconfirm -S \
-    arch-install-scripts \
-    btrfs-progs \
-    fmt \
-    xcb-util-wm \
-    wget \
-    pyalpm \
-    python \
-    python-build \
-    python-installer \
-    python-hatchling \
-    python-markdown-it-py \
-    python-setuptools \
-    python-wheel \
-    sudo \
-    && \
-    pacman --noconfirm -S --needed git && \
-    echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    useradd build -G wheel -m && \
-    su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur" && \
-    su - build -c "cd /tmp/pikaur && makepkg -f" && \
-    pacman --noconfirm -U /tmp/pikaur/pikaur-*.pkg.tar.zst
+  # Cannot check space in chroot
+  sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf && \
+  pacman-key --init && \
+  pacman --noconfirm -Syyuu && \
+  pacman --noconfirm -S \
+  arch-install-scripts \
+  btrfs-progs \
+  fmt \
+  xcb-util-wm \
+  wget \
+  pyalpm \
+  python \
+  python-build \
+  python-flit-core \
+  python-installer \
+  python-hatchling \
+  python-markdown-it-py \
+  python-setuptools \
+  python-wheel \
+  sudo \
+  && \
+  pacman --noconfirm -S --needed git && \
+  echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+  useradd build -G wheel -m && \
+  su - build -c "git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur" && \
+  su - build -c "cd /tmp/pikaur && makepkg -f" && \
+  pacman --noconfirm -U /tmp/pikaur/pikaur-*.pkg.tar.zst
 
 # Auto add PGP keys for users
 RUN mkdir -p /etc/gnupg/ && echo -e "keyserver-options auto-key-retrieve" >> /etc/gnupg/gpg.conf
