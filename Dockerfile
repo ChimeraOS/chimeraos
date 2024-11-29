@@ -15,6 +15,7 @@ RUN echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.con
   pyalpm \
   python \
   python-build \
+  python-flit-core \
   python-installer \
   python-hatchling \
   python-markdown-it-py \
