@@ -164,18 +164,6 @@ export PACKAGES="\
 	xorg-server \
 	xz \
 	zip \
-	mesa \
-	vulkan-intel \
-	opencl-rusticl-mesa \
-	vulkan-mesa-layers \
-	vulkan-radeon \
-	vulkan-swrast \
-	lib32-mesa \
-	lib32-opencl-rusticl-mesa \
-	lib32-vulkan-intel \
-	lib32-vulkan-mesa-layers \
-	lib32-vulkan-radeon \
-	lib32-vulkan-swrast \
 "
 
 export PACKAGE_OVERRIDES="\
