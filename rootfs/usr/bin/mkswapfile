@@ -45,15 +45,16 @@ usage() { echo >&2 "Usage: $(basename $0) FILE SIZE"; exit 1; }
 
 [ -e "$SWAPFILE" ] && fail "File '$SWAPFILE' already exists"
 
-if [ ! -d "$BASE_DIR" ]; then
-    btrfs subvolume create "$BASE_DIR"
-fi
-
 BASE_DIR=$(dirname "$SWAPFILE")
 BUFFER_MB=10000
 AVAIL_DISK_MB=$(df -BM "$BASE_DIR" | tail -1 | tr -s ' ' | cut -d' ' -f4 | sed 's/M//')
 REQUIRED_BUFFER_MB=$(($BUFFER_MB + $SWAPSIZE))
 [ "$AVAIL_DISK_MB" -lt "$REQUIRED_BUFFER_MB" ] && fail "Not enough free disk space"
+
+if [ ! -d "$BASE_DIR" ]; then
+    btrfs subvolume create "$BASE_DIR"
+fi
+
 chattr +C "$BASE_DIR"
 touch "$SWAPFILE"
 chattr +C "$SWAPFILE"
