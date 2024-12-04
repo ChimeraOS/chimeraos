@@ -155,6 +155,7 @@ export PACKAGES="\
 	wget \
 	which \
 	wireplumber \
+	wireless-regdb \
 	wqy-zenhei \
 	xdg-desktop-portal \
 	xdg-desktop-portal-gnome \
