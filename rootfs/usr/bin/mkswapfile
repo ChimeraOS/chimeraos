@@ -47,21 +47,18 @@ usage() { echo >&2 "Usage: $(basename $0) FILE SIZE"; exit 1; }
 
 BASE_DIR=$(dirname "$SWAPFILE")
 BUFFER_MB=10000
-AVAIL_DISK_MB=$(df -BM "$BASE_DIR" | tail -1 | tr -s ' ' | cut -d' ' -f4 | sed 's/M//')
-REQUIRED_BUFFER_MB=$(($BUFFER_MB + $SWAPSIZE))
-[ "$AVAIL_DISK_MB" -lt "$REQUIRED_BUFFER_MB" ] && fail "Not enough free disk space"
 
 if [ ! -d "$BASE_DIR" ]; then
     btrfs subvolume create "$BASE_DIR"
 fi
 
+AVAIL_DISK_MB=$(df -BM "$BASE_DIR" | tail -1 | tr -s ' ' | cut -d' ' -f4 | sed 's/M//')
+REQUIRED_BUFFER_MB=$(($BUFFER_MB + $SWAPSIZE))
+[ "$AVAIL_DISK_MB" -lt "$REQUIRED_BUFFER_MB" ] && fail "Not enough free disk space"
+
 chattr +C "$BASE_DIR"
 touch "$SWAPFILE"
 chattr +C "$SWAPFILE"
-
-if is_btrfs_subvol "$BASE_DIR"; then
-    btrfs property set "$BASE_DIR" compression none && true # prevent script failure when using nodatacow
-fi
 
 dd if=/dev/zero of="$SWAPFILE" bs=1M count="$SWAPSIZE"
 chmod 600 "$SWAPFILE"
