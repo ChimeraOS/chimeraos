@@ -94,6 +94,10 @@ sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf
 # update package databases
 pacman --noconfirm -Syy
 
+# Disable check and debug for makepkg on the final image
+sed -i '/BUILDENV/s/ check/ !check/g' /etc/makepkg.conf
+sed -i '/OPTIONS/s/ debug/ !debug/g' /etc/makepkg.conf
+
 # install kernel package
 if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
 	pacman --noconfirm -U --overwrite '*' \
