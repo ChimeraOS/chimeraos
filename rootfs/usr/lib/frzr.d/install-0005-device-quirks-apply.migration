@@ -31,7 +31,7 @@ post_install() {
                                         
                                         # Run the following in chroot
                                         chroot "${SUBVOL}" /bin/bash <<EOF
-mkdir /var/log/device-quirks
+mkdir -p /var/log/device-quirks
 CURR_DATE=$(date +%Y%m%d-%H%M%S)
 /usr/share/device-quirks/device-quirks.sh > "/var/log/device-quirks/${CURR_DATE}.log"
 EOF
