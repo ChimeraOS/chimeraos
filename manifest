@@ -241,6 +241,7 @@ export SERVICES="\
 	fstrim.timer \
 	haveged \
 	inputplumber \
+	inputplumber-suspend \
 	lightdm \
 	nvidia-powerd \
 	powerstation \
