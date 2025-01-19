@@ -243,6 +243,7 @@ export SERVICES="\
 	haveged \
 	home-swapfile.swap \
 	inputplumber \
+	inputplumber-suspend \
 	lightdm \
 	nvidia-powerd \
 	powerstation \
