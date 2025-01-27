@@ -1,6 +1,6 @@
 #! /bin/bash
 
-export VERSION="47"
+export VERSION="48"
 export SYSTEM_DESC="ChimeraOS"
 export SYSTEM_NAME="chimeraos"
 export USERNAME="gamer"
