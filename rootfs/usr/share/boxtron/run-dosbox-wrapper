@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# prevent Steam running the compatibility tool prematurely
+if echo "$@" | grep "d3ddriverquery64.exe" > /dev/null; then
+	echo "boxtron: skip d3ddriverquery64.exe"
+        exit
+fi
+
+/usr/share/boxtron/run-dosbox "$@"
