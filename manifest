@@ -86,7 +86,6 @@ export PACKAGES="\
 	libnfc \
 	libretro-beetle-pce-fast \
 	libretro-beetle-psx-hw \
-	libretro-citra \
 	libretro-desmume \
 	libretro-dolphin \
 	libretro-flycast \
