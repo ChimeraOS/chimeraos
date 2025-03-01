@@ -171,8 +171,8 @@ export PACKAGES="\
 "
 
 export PACKAGE_OVERRIDES="\
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.13.4-chos2-2/linux-chimeraos-6.13.4.chos2-2-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.13.4-chos2-2/linux-chimeraos-headers-6.13.4.chos2-2-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.13.5-chos2-1/linux-chimeraos-6.13.5.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.13.5-chos2-1/linux-chimeraos-headers-6.13.5.chos2-1-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.0.0-chos1-4/lib32-mesa-1--25.0.0.chos1-4-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.0.0-chos1-4/lib32-opencl-rusticl-mesa-1--25.0.0.chos1-4-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.0.0-chos1-4/lib32-vulkan-intel-1--25.0.0.chos1-4-x86_64.pkg.tar.zst \
