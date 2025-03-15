@@ -324,4 +324,7 @@ postinstallhook() {
 
 	# workaround for dosbox compatibility tool being run unnecessarily by Steam at startup
 	sed -i 's,/run-dosbox,/run-dosbox-wrapper,' /usr/share/boxtron/toolmanifest.vdf
+
+	# Disable SPDIF/IEC958 audio output
+	sudo sed -e '/\[Mapping iec958/,+5 s/^/#/' -i '/usr/share/alsa-card-profile/mixer/profile-sets/default.conf'
 }
