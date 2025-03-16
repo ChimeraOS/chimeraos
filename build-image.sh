@@ -101,7 +101,7 @@ sed -i '/OPTIONS/s/ debug/ !debug/g' /etc/makepkg.conf
 # install kernel package
 if [ "$KERNEL_PACKAGE_ORIGIN" == "local" ] ; then
 	pacman --noconfirm -U --overwrite '*' \
-	/own_pkgs/${KERNEL_PACKAGE}-*.pkg.tar.zst 
+	/override_pkgs/${KERNEL_PACKAGE}-*.pkg.tar.zst
 else
 	pacman --noconfirm -S "${KERNEL_PACKAGE}" "${KERNEL_PACKAGE}-headers"
 fi
@@ -119,10 +119,6 @@ rm -rf /var/cache/pacman/pkg
 
 # install AUR packages
 pacman --noconfirm -U --overwrite '*' /aur_pkgs/*
-rm -rf /var/cache/pacman/pkg
-
-# install self-built/own packages
-pacman --noconfirm -U --overwrite '*' /own_pkgs/*
 rm -rf /var/cache/pacman/pkg
 
 # install override packages
