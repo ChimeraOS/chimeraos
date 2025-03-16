@@ -204,7 +204,6 @@ export AUR_PACKAGES="\
 	downgrade \
 	evdev-keepalive \
 	frzr \
-	gamescope-plus \
 	gamescope-session-steam-git \
 	gamescope-session-steam-plus-git \
 	gpd-fan-driver-dkms-git \

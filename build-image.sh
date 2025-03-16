@@ -71,6 +71,8 @@ if [ -n "${PACKAGE_OVERRIDES}" ]; then
 	wget --directory-prefix=${BUILD_PATH}/override_pkgs ${PACKAGE_OVERRIDES}
 fi
 
+# Temporary work around to install gamescope-plus from a pre-built package
+mv ${BUILD_PATH}/extra/*.pkg.tar.zst ${BUILD_PATH}/aur_pkgs/
 
 # chroot into target
 mount --bind ${BUILD_PATH} ${BUILD_PATH}
@@ -196,7 +198,7 @@ DOCUMENTATION_URL="${DOCUMENTATION_URL}"
 BUG_REPORT_URL="${BUG_REPORT_URL}"' > /usr/lib/os-release
 
 # install extra certificates
-trust anchor --store /extra_certs/*.crt
+trust anchor --store /extra/*.crt
 
 # run post install hook
 postinstallhook
@@ -220,7 +222,7 @@ rm -rf \
 /local_pkgs \
 /aur_pkgs \
 /override_pkgs \
-/extra_certs \
+/extra \
 /home \
 /var \
 
@@ -238,7 +240,7 @@ btrfs filesystem defragment -r ${BUILD_PATH}
 
 # copy files into chroot again
 cp -R rootfs/. ${BUILD_PATH}/
-rm -rf ${BUILD_PATH}/extra_certs
+rm -rf ${BUILD_PATH}/extra
 
 echo "${SYSTEM_NAME}-${VERSION}" > ${BUILD_PATH}/build_info
 echo "" >> ${BUILD_PATH}/build_info
