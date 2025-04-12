@@ -62,7 +62,6 @@ export PACKAGES="\
 	gvfs-smb \
 	gvfs-nfs \
 	gzip \
-	haveged \
 	htop \
 	intel-gpu-tools \
 	intel-media-driver \
@@ -241,7 +240,6 @@ export SERVICES="\
 	bluetooth \
 	bluetooth-workaround \
 	fstrim.timer \
-	haveged \
 	home-swapfile.swap \
 	inputplumber \
 	inputplumber-suspend \
