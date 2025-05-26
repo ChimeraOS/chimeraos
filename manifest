@@ -92,7 +92,7 @@ export PACKAGES="\
 	libretro-genesis-plus-gx \
 	libretro-kronos \
 	libretro-mame \
-	libretro-mesen-s\
+	libretro-mesen-s \
 	libretro-mgba \
 	libretro-mupen64plus-next \
 	libretro-nestopia \
