@@ -96,7 +96,7 @@ export PACKAGES="\
 	libretro-mgba \
 	libretro-mupen64plus-next \
 	libretro-nestopia \
-	libretro-pcsx2 \
+	libretro-lrps2-git \
 	libretro-picodrive \
 	libretro-ppsspp \
 	libretro-shaders-slang \
@@ -209,7 +209,6 @@ export AUR_PACKAGES="\
 	legendary \
 	libretro-dosbox-pure-git \
 	libretro-opera-git \
-	libretro-pcsx2-launcher-git \
 	libretro-prosystem-git \
 	libretro-stella2014-git \
 	libretro-virtualjaguar-git \
