@@ -184,6 +184,7 @@ export PACKAGE_OVERRIDES="\
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-2/vulkan-intel-1--25.1.1.chos1-2-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-2/vulkan-mesa-layers-1--25.1.1.chos1-2-x86_64.pkg.tar.zst \
 	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-2/vulkan-radeon-1--25.1.1.chos1-2-x86_64.pkg.tar.zst \
+	https://archive.archlinux.org/packages/l/libretro-ppsspp/libretro-ppsspp-42704-1-x86_64.pkg.tar.zst \
 "
 
 # Each entry is the clone url (https://aur.archlinux.org/{AUR_PACKAGE}.git)
