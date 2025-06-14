@@ -323,4 +323,8 @@ postinstallhook() {
 
 	# Disable SPDIF/IEC958 audio output
 	sudo sed -e '/\[Mapping iec958/,+5 s/^/#/' -i '/usr/share/alsa-card-profile/mixer/profile-sets/default.conf'
+
+	# Replace wpctl with a wrapper to work around Steam resetting audio
+	mv /usr/bin/wpctl /usr/libexec/wpctl
+	mv /usr/bin/wpctl-wrapper /usr/bin/wpctl
 }

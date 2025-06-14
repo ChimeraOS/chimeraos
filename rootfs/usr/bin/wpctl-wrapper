@@ -1,0 +1,14 @@
+#! /bin/bash
+
+parents=$(pstree --show-parents $$)
+
+steam_parent=0
+if echo "$parents" | grep "\-steam\-" &> /dev/null; then
+	steam_parent=1
+fi
+
+if [[ "$steam_parent" == "1" ]] && [[ "$1" == "clear-default" ]]; then
+	exit 0
+fi
+
+/usr/libexec/wpctl $@
