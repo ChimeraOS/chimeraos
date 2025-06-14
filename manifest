@@ -321,8 +321,8 @@ postinstallhook() {
 	# workaround for dosbox compatibility tool being run unnecessarily by Steam at startup
 	sed -i 's,/run-dosbox,/run-dosbox-wrapper,' /usr/share/boxtron/toolmanifest.vdf
 
-	# Disable SPDIF/IEC958 audio output
-	sudo sed -e '/\[Mapping iec958/,+5 s/^/#/' -i '/usr/share/alsa-card-profile/mixer/profile-sets/default.conf'
+	# Disable SPDIF/IEC958 audio output to make it more likely the correct HDMI output will be selected by default
+	sed -e '/\[Mapping iec958/,+5 s/^/#/' -i '/usr/share/alsa-card-profile/mixer/profile-sets/default.conf'
 
 	# Replace wpctl with a wrapper to work around Steam resetting audio
 	mv /usr/bin/wpctl /usr/libexec/wpctl
