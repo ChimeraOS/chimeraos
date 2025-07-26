@@ -1,6 +1,0 @@
-# Run setcap on required binaries.
-# These operations cannot be done at build time because the OS extraction process removes the changes.
-post_install() {
-        setcap cap_perfmon=+ep /usr/bin/intel_gpu_top
-        setcap 'CAP_SYS_NICE=eip' /usr/bin/gamescope
-}
