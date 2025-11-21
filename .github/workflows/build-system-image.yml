@@ -33,7 +33,7 @@ jobs:
           sudo rm -rf /opt/hostedtoolcache
           sudo rm -rf /opt/az
           df -h
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
