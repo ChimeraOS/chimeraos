@@ -82,8 +82,6 @@ export PACKAGES="\
 	lib32-sdl2 \
 	lib32-systemd \
 	lib32-vulkan-icd-loader \
-	libcurl-gnutls \
-	libidn11 \
 	libnfc \
 	libretro-beetle-pce-fast \
 	libretro-beetle-psx-hw \
