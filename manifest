@@ -1,17 +1,17 @@
 #! /bin/bash
 
-export VERSION="49-1"
+export VERSION="50"
 export SYSTEM_DESC="ChimeraOS"
 export SYSTEM_NAME="chimeraos"
 export USERNAME="gamer"
 export SIZE="12000MB"
-export ARCHIVE_DATE="2025/06/20"
+export ARCHIVE_DATE=$(date -d 'yesterday' +%Y/%m/%d)
 export WEBSITE="https://chimeraos.org"
 export DOCUMENTATION_URL="https://chimeraos.org/about"
 export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 
-export KERNEL_PACKAGE="linux-chimeraos"
-export KERNEL_PACKAGE_ORIGIN="local"
+export KERNEL_PACKAGE="linux"
+export KERNEL_PACKAGE_ORIGIN="repo"
 
 export PACKAGES="\
 	accountsservice \
