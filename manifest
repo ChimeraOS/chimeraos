@@ -172,23 +172,6 @@ export PACKAGES="\
 	zip \
 "
 
-export PACKAGE_OVERRIDES="\
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.14.7-chos4-2/linux-chimeraos-6.14.7.chos4-2-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.14.7-chos4-2/linux-chimeraos-headers-6.14.7.chos4-2-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/lib32-mesa-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/lib32-opencl-mesa-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/lib32-vulkan-intel-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/lib32-vulkan-mesa-layers-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/lib32-vulkan-radeon-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/mesa-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/opencl-mesa-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/vulkan-intel-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/vulkan-mesa-layers-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/25.1.1-chos1-3/vulkan-radeon-1--25.1.1.chos1-3-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/l/libretro-ppsspp/libretro-ppsspp-42704-1-x86_64.pkg.tar.zst \
-	https://archive.archlinux.org/packages/i/inputplumber/inputplumber-0.60.7-1-x86_64.pkg.tar.zst \
-"
-
 # Each entry is the clone url (https://aur.archlinux.org/{AUR_PACKAGE}.git)
 # Which is often the same as the package name but it can be different.
 # Check on the AUR webpage if you are unsure
