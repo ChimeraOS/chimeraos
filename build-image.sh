@@ -146,7 +146,7 @@ passwd --lock root
 
 # create user
 groupadd -r autologin
-useradd -m ${USERNAME} -G autologin,wheel,plugdev
+useradd -m ${USERNAME} -G autologin,wheel
 echo "${USERNAME}:${USERNAME}" | chpasswd
 
 # set the default editor, so visudo works
