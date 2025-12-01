@@ -122,8 +122,10 @@ pacman --noconfirm -U --overwrite '*' /aur_pkgs/*
 rm -rf /var/cache/pacman/pkg
 
 # install override packages
-pacman --noconfirm -U --overwrite '*' /override_pkgs/*
-rm -rf /var/cache/pacman/pkg
+if [ -n "${PACKAGE_OVERRIDES}" ]; then
+	pacman --noconfirm -U --overwrite '*' /override_pkgs/*
+	rm -rf /var/cache/pacman/pkg
+fi
 
 # Install the new iptables
 # See https://gitlab.archlinux.org/archlinux/packaging/packages/iptables/-/issues/1
