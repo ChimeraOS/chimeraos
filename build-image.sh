@@ -228,6 +228,9 @@ rm -rf \
 
 rm -rf ${FILES_TO_DELETE}
 
+# create dummy initramfs file if it does not exist because frzr expects this file to exist
+touch /boot/initramfs-linux.img
+
 # create necessary directories
 mkdir -p /home
 mkdir -p /var
