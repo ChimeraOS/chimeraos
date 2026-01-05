@@ -83,6 +83,8 @@ export PACKAGES="\
 	lib32-sdl2 \
 	lib32-systemd \
 	lib32-vulkan-icd-loader \
+	lib32-vulkan-intel \
+	lib32-vulkan-radeon \
 	libnfc \
 	libretro-beetle-pce-fast \
 	libretro-beetle-psx-hw \
@@ -153,6 +155,8 @@ export PACKAGES="\
 	usbutils \
 	vim \
 	vulkan-icd-loader \
+	vulkan-intel \
+	vulkan-radeon \
 	wavpack \
 	wget \
 	which \
