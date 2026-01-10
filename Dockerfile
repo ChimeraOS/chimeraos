@@ -49,9 +49,9 @@ RUN source /manifest && \
   pacman --noconfirm -Syyuu; if [ -n "${PACKAGE_OVERRIDES}" ]; then wget --directory-prefix=/tmp/extra_pkgs ${PACKAGE_OVERRIDES}; pacman --noconfirm -U --overwrite '*' /tmp/extra_pkgs/*; rm -rf /tmp/extra_pkgs; fi
 
 USER build
-ENV BUILD_USER "build"
-ENV GNUPGHOME  "/etc/pacman.d/gnupg"
+ENV BUILD_USER="build"
+ENV GNUPGHOME="/etc/pacman.d/gnupg"
 # Built image will be moved here. This should be a host mount to get the output.
-ENV OUTPUT_DIR /output
+ENV OUTPUT_DIR="/output"
 
 WORKDIR /workdir
