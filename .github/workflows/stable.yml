@@ -22,7 +22,7 @@ jobs:
       aur-pkgs: ${{ steps.set-aur-pkgs.outputs.matrix }}
       pkgs: ${{ steps.set-pkgs.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive 
       - id: set-aur-pkgs
@@ -43,7 +43,7 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.aur-pkgs) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive 
       - name: Extract metadata (tags, labels) for Docker
@@ -72,7 +72,7 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.list-pkgbuilds.outputs.pkgs) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
