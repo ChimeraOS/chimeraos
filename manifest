@@ -221,6 +221,7 @@ export SERVICES="\
 	NetworkManager \
 	avahi-daemon \
 	bluetooth \
+	bluetooth-auto-connect \
 	bluetooth-workaround \
 	fstrim.timer \
 	home-swapfile.swap \
