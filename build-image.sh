@@ -103,6 +103,13 @@ pacman --noconfirm -Syy
 sed -i '/BUILDENV/s/ check/ !check/g' /etc/makepkg.conf
 sed -i '/OPTIONS/s/ debug/ !debug/g' /etc/makepkg.conf
 
+# Trust signing keys for the OGC repository
+pacman-key --recv-keys F79100EF8C802DAB81C323BB8EEA5962FE510E19
+pacman-key --lsign-key F79100EF8C802DAB81C323BB8EEA5962FE510E19
+
+echo "[ogc]" >> /etc/pacman.conf
+echo "Server = https://pacman.opengamingcollective.org" >> /etc/pacman.conf
+
 # install kernel package
 if [ "$KERNEL_PACKAGE_ORIGIN" == "repo" ] ; then
 	pacman --noconfirm -S "${KERNEL_PACKAGE}" "${KERNEL_PACKAGE}-headers"
